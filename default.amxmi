@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<central:AMALTHEA xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:central="http://www.amalthea.itea2.org/model/1.1.0/central" xmlns:os="http://www.amalthea.itea2.org/model/1.1.0/os" xmlns:stimuli="http://www.amalthea.itea2.org/model/1.1.0/stimuli" xmlns:sw="http://www.amalthea.itea2.org/model/1.1.0/sw" xmi:id="_v2e9EE9rEeWwMe4PZKED1A">
+  <swModel xmi:id="_jb8gQE9xEeWwMe4PZKED1A">
+    <tasks xmi:id="_4lFj8E_DEeWwMe4PZKED1A" name="Task_1">
+      <deadline xmi:id="_zkYK8Hs4EeWToL13K3D-FQ" value="25" unit="ms"/>
+      <callGraph xmi:id="_tkLjEHs4EeWToL13K3D-FQ">
+        <graphEntries xsi:type="sw:CallSequence" xmi:id="_vBf1oHs4EeWToL13K3D-FQ">
+          <calls xsi:type="sw:TaskRunnableCall" xmi:id="_xq4SsHs4EeWToL13K3D-FQ" runnable="_MgxMoFAvEeWwMe4PZKED1A"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks xmi:id="_d7BAYHs5EeWToL13K3D-FQ" name="Task_2">
+      <deadline xmi:id="_6NohcHs5EeWToL13K3D-FQ" value="25" unit="ms"/>
+      <callGraph xmi:id="_75iCkHs5EeWToL13K3D-FQ">
+        <graphEntries xsi:type="sw:CallSequence" xmi:id="_8zHV8Hs5EeWToL13K3D-FQ">
+          <calls xsi:type="sw:TaskRunnableCall" xmi:id="_9aamgHs5EeWToL13K3D-FQ" runnable="_fGoyAFAjEeWwMe4PZKED1A"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks xmi:id="_hM62AHs5EeWToL13K3D-FQ" name="Task_3">
+      <deadline xmi:id="_V4gGAHs6EeWToL13K3D-FQ" value="25" unit="ms"/>
+      <callGraph xmi:id="_HF7pkHs6EeWToL13K3D-FQ">
+        <graphEntries xsi:type="sw:CallSequence" xmi:id="_Hr7SkHs6EeWToL13K3D-FQ">
+          <calls xsi:type="sw:TaskRunnableCall" xmi:id="_ISm4EHs6EeWToL13K3D-FQ" runnable="_38o2sFAtEeWwMe4PZKED1A"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks xmi:id="_jK9QAHs5EeWToL13K3D-FQ" name="Task_4">
+      <deadline xmi:id="_lKJgkHs5EeWToL13K3D-FQ" value="25" unit="ms"/>
+      <callGraph xmi:id="_oaoZ4Hs5EeWToL13K3D-FQ">
+        <graphEntries xsi:type="sw:CallSequence" xmi:id="_pPwrEHs5EeWToL13K3D-FQ">
+          <calls xsi:type="sw:TaskRunnableCall" xmi:id="_qEbCMHs5EeWToL13K3D-FQ" runnable="_PF2_kFAvEeWwMe4PZKED1A"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <runnables xmi:id="_fGoyAFAjEeWwMe4PZKED1A" name="PWM">
+      <runnableItems xsi:type="sw:InstructionsConstant" xmi:id="_1r4p4HfeEeWn8a5jbAjKfg" value="10000"/>
+      <runnableItems xsi:type="sw:LabelAccess" xmi:id="_mYfGkHznEeW5GaYxbSUiJw" data="_-Zn1IHclEeWn8a5jbAjKfg" access="write"/>
+      <runnableItems xsi:type="sw:LabelAccess" xmi:id="_ogRScHznEeW5GaYxbSUiJw" data="_9Ikc8HclEeWn8a5jbAjKfg" access="write"/>
+    </runnables>
+    <runnables xmi:id="_38o2sFAtEeWwMe4PZKED1A" name="Ultraschallmessung">
+      <runnableItems xsi:type="sw:InstructionsConstant" xmi:id="_0k9eEHfeEeWn8a5jbAjKfg" value="100000"/>
+      <runnableItems xsi:type="sw:LabelAccess" xmi:id="_94vr4HznEeW5GaYxbSUiJw" data="_-CEQwHclEeWn8a5jbAjKfg" access="write"/>
+    </runnables>
+    <runnables xmi:id="_MgxMoFAvEeWwMe4PZKED1A" name="Abstandsregelung">
+      <runnableItems xsi:type="sw:InstructionsConstant" xmi:id="_2Th4sHfeEeWn8a5jbAjKfg" value="40000"/>
+      <runnableItems xsi:type="sw:LabelAccess" xmi:id="_HAMOAHznEeW5GaYxbSUiJw" data="_-Zn1IHclEeWn8a5jbAjKfg" access="write"/>
+      <runnableItems xsi:type="sw:LabelAccess" xmi:id="_JNxf4HznEeW5GaYxbSUiJw" data="_-CEQwHclEeWn8a5jbAjKfg"/>
+      <runnableItems xsi:type="sw:LabelAccess" xmi:id="_Ne3hoHznEeW5GaYxbSUiJw" data="_9Ikc8HclEeWn8a5jbAjKfg" access="write"/>
+      <runnableItems xsi:type="sw:LabelAccess" xmi:id="_hQt7gHznEeW5GaYxbSUiJw" data="_-x_R0HclEeWn8a5jbAjKfg"/>
+    </runnables>
+    <runnables xmi:id="_PF2_kFAvEeWwMe4PZKED1A" name="Button">
+      <runnableItems xsi:type="sw:InstructionsConstant" xmi:id="_UmsxsHfeEeWn8a5jbAjKfg" value="10000"/>
+      <runnableItems xsi:type="sw:LabelAccess" xmi:id="_jROasHznEeW5GaYxbSUiJw" data="_-x_R0HclEeWn8a5jbAjKfg" access="write"/>
+    </runnables>
+    <labels xmi:id="_-x_R0HclEeWn8a5jbAjKfg" name="Button"/>
+    <labels xmi:id="_-CEQwHclEeWn8a5jbAjKfg" name="Sensorwerte"/>
+    <labels xmi:id="_9Ikc8HclEeWn8a5jbAjKfg" name="Lenkwinkel"/>
+    <labels xmi:id="_-Zn1IHclEeWn8a5jbAjKfg" name="Geschwindigkeit"/>
+    <processPrototypes xmi:id="_m6bZIHs-EeWToL13K3D-FQ">
+      <runnableCalls xmi:id="_cE_S8HzmEeW5GaYxbSUiJw" runnable="_MgxMoFAvEeWwMe4PZKED1A"/>
+      <runnableCalls xmi:id="_doftEHzmEeW5GaYxbSUiJw" runnable="_PF2_kFAvEeWwMe4PZKED1A"/>
+      <runnableCalls xmi:id="_e8V6kHzmEeW5GaYxbSUiJw" runnable="_fGoyAFAjEeWwMe4PZKED1A"/>
+      <runnableCalls xmi:id="_fpQq8HzmEeW5GaYxbSUiJw" runnable="_38o2sFAtEeWwMe4PZKED1A"/>
+    </processPrototypes>
+    <activations xsi:type="sw:CustomActivation" xmi:id="_4cF5QE9xEeWwMe4PZKED1A"/>
+  </swModel>
+  <hwModel xmi:id="_xIeJYE9rEeWwMe4PZKED1A">
+    <coreTypes xmi:id="_yZYXoE9rEeWwMe4PZKED1A" instructionsPerCycle="1"/>
+    <system xmi:id="_2iapkE9rEeWwMe4PZKED1A">
+      <ecus xmi:id="_6k0vEE9rEeWwMe4PZKED1A">
+        <quartzes xmi:id="_8mXwEE9rEeWwMe4PZKED1A" frequency="100000" type="STATIC"/>
+        <microcontrollers xmi:id="_qsSToE9sEeWwMe4PZKED1A" name="Tile_1">
+          <memories xmi:id="_sn9WIE9sEeWwMe4PZKED1A" name="SRAM 64KB"/>
+          <memories xmi:id="_CQrDoE9wEeWwMe4PZKED1A" name="internal OTP 8KB"/>
+          <quartzes xmi:id="_xd4GwE9tEeWwMe4PZKED1A" name="reference clock" frequency="100000000" type="STATIC"/>
+          <cores xmi:id="_rz2_sE9sEeWwMe4PZKED1A" name="XCore_logical_core_1"/>
+          <cores xmi:id="_vmoGsE9sEeWwMe4PZKED1A" name="XCore_logical_core_2"/>
+          <cores xmi:id="_wLRr4E9sEeWwMe4PZKED1A" name="XCore_logical_core_3"/>
+          <cores xmi:id="_wk4esE9sEeWwMe4PZKED1A" name="XCore_logical_core_4"/>
+          <cores xmi:id="_w_vOsE9sEeWwMe4PZKED1A" name="XCore_logical_core_5"/>
+          <cores xmi:id="_xftIME9sEeWwMe4PZKED1A" name="XCore_logical_core_6"/>
+          <cores xmi:id="_yXPNIE9sEeWwMe4PZKED1A" name="XCore_logical_core_7"/>
+          <cores xmi:id="_yzd2IE9sEeWwMe4PZKED1A" name="XCore_logical_core_8"/>
+        </microcontrollers>
+        <microcontrollers xmi:id="_Fsw6kE9xEeWwMe4PZKED1A" name="Tile_2">
+          <memories xmi:id="_Fsw6kU9xEeWwMe4PZKED1A" name="SRAM 64KB"/>
+          <memories xmi:id="_Fsw6kk9xEeWwMe4PZKED1A" name="internal OTP 8KB"/>
+          <quartzes xmi:id="_Fsw6k09xEeWwMe4PZKED1A" name="reference clock" frequency="100000000" type="STATIC"/>
+          <cores xmi:id="_Fsw6lE9xEeWwMe4PZKED1A" name="XCore_logical_core_1"/>
+          <cores xmi:id="_Fsw6lU9xEeWwMe4PZKED1A" name="XCore_logical_core_2"/>
+          <cores xmi:id="_Fsw6lk9xEeWwMe4PZKED1A" name="XCore_logical_core_3"/>
+          <cores xmi:id="_Fsw6l09xEeWwMe4PZKED1A" name="XCore_logical_core_4"/>
+          <cores xmi:id="_Fsw6mE9xEeWwMe4PZKED1A" name="XCore_logical_core_5"/>
+          <cores xmi:id="_Fsw6mU9xEeWwMe4PZKED1A" name="XCore_logical_core_6"/>
+          <cores xmi:id="_Fsw6mk9xEeWwMe4PZKED1A" name="XCore_logical_core_7"/>
+          <cores xmi:id="_Fsw6m09xEeWwMe4PZKED1A" name="XCore_logical_core_8"/>
+        </microcontrollers>
+      </ecus>
+    </system>
+  </hwModel>
+  <osModel xmi:id="_p98mUE_BEeWwMe4PZKED1A">
+    <scheduler xmi:id="_rjYTEE_BEeWwMe4PZKED1A" name="_1">
+      <schedulingAlgorithm xsi:type="os:OSEK" xmi:id="_tzpskE_BEeWwMe4PZKED1A"/>
+      <schedulingUnit xsi:type="os:SchedulingHWUnit" xmi:id="_vXgsAE_BEeWwMe4PZKED1A">
+        <delay xmi:id="_wErUAE_BEeWwMe4PZKED1A" value="100" unit="ns"/>
+      </schedulingUnit>
+    </scheduler>
+    <scheduler xmi:id="_xYy80Hs7EeWToL13K3D-FQ" name="_2">
+      <schedulingAlgorithm xsi:type="os:OSEK" xmi:id="_zycUwHs7EeWToL13K3D-FQ"/>
+      <schedulingUnit xsi:type="os:SchedulingHWUnit" xmi:id="_0ukl0Hs7EeWToL13K3D-FQ">
+        <delay xmi:id="_2lqqUHs7EeWToL13K3D-FQ" value="100" unit="ns"/>
+      </schedulingUnit>
+    </scheduler>
+    <scheduler xmi:id="_5eSdQHs7EeWToL13K3D-FQ" name="_3">
+      <schedulingAlgorithm xsi:type="os:OSEK" xmi:id="_5eSdQXs7EeWToL13K3D-FQ"/>
+      <schedulingUnit xsi:type="os:SchedulingHWUnit" xmi:id="_5eSdQns7EeWToL13K3D-FQ">
+        <delay xmi:id="_5eSdQ3s7EeWToL13K3D-FQ" value="100" unit="ns"/>
+      </schedulingUnit>
+    </scheduler>
+    <scheduler xmi:id="_5_8Y0Hs7EeWToL13K3D-FQ" name="_4">
+      <schedulingAlgorithm xsi:type="os:OSEK" xmi:id="_5_8Y0Xs7EeWToL13K3D-FQ"/>
+      <schedulingUnit xsi:type="os:SchedulingHWUnit" xmi:id="_5_8Y0ns7EeWToL13K3D-FQ">
+        <delay xmi:id="_5_8Y03s7EeWToL13K3D-FQ" value="100" unit="ns"/>
+      </schedulingUnit>
+    </scheduler>
+  </osModel>
+  <stimuliModel xmi:id="_Ptj7YE_EEeWwMe4PZKED1A">
+    <stimuli xsi:type="stimuli:Periodic" xmi:id="_Ia1fME_FEeWwMe4PZKED1A" name="Stimulus_Task3">
+      <offset xmi:id="_PCK_kE_FEeWwMe4PZKED1A"/>
+      <recurrence xmi:id="_QIV9cE_FEeWwMe4PZKED1A" value="200" unit="ms"/>
+    </stimuli>
+    <stimuli xsi:type="stimuli:InterProcess" xmi:id="_Jig48E_FEeWwMe4PZKED1A" name="Stimulus_Task1"/>
+    <stimuli xsi:type="stimuli:InterProcess" xmi:id="_ymCogHs6EeWToL13K3D-FQ" name="Stimulus_Task2"/>
+    <stimuli xsi:type="stimuli:InterProcess" xmi:id="_Edmf8Hs7EeWToL13K3D-FQ" name="Stimulus_Task4"/>
+  </stimuliModel>
+</central:AMALTHEA>
