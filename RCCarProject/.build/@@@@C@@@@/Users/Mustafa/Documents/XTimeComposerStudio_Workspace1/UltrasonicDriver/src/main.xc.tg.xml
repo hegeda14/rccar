@@ -1,0 +1,211 @@
+<taskgraph>
+<task>
+  <name>delay_seconds</name>
+  <inFunction>delay_seconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>delay_milliseconds</name>
+  <inFunction>delay_milliseconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>delay_microseconds</name>
+  <inFunction>delay_microseconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>_safe_memcmp</name>
+  <inFunction>_safe_memcmp</inFunction>
+</task>
+<task>
+  <name>_safe_memmove</name>
+  <inFunction>_safe_memmove</inFunction>
+</task>
+<task>
+  <name>_safe_memset</name>
+  <inFunction>_safe_memset</inFunction>
+</task>
+<task>
+  <name>wait_for_data_and_read</name>
+  <inFunction>wait_for_data_and_read</inFunction>
+</task>
+<task>
+  <name>multi_uart_data_ready</name>
+  <inFunction>multi_uart_data_ready</inFunction>
+</task>
+<task>
+  <name>read_reg</name>
+  <inFunction>read_reg</inFunction>
+</task>
+<task>
+  <name>write_reg</name>
+  <inFunction>write_reg</inFunction>
+</task>
+<task>
+  <name>read_reg8_addr16</name>
+  <inFunction>read_reg8_addr16</inFunction>
+</task>
+<task>
+  <name>write_reg8_addr16</name>
+  <inFunction>write_reg8_addr16</inFunction>
+</task>
+<task>
+  <name>read_reg16</name>
+  <inFunction>read_reg16</inFunction>
+</task>
+<task>
+  <name>write_reg16</name>
+  <inFunction>write_reg16</inFunction>
+</task>
+<task>
+  <name>read_reg16_addr8</name>
+  <inFunction>read_reg16_addr8</inFunction>
+</task>
+<task>
+  <name>write_reg16_addr8</name>
+  <inFunction>write_reg16_addr8</inFunction>
+</task>
+<task>
+  <name>getDistanceSensorAddr</name>
+  <inFunction>getDistanceSensorAddr</inFunction>
+</task>
+<task>
+  <name>Task_ReadSonarSensor</name>
+  <inFunction>Task_ReadSonarSensor</inFunction>
+</task>
+<task>
+  <name>Task_ProduceMotorControlOutputs</name>
+  <inFunction>Task_ProduceMotorControlOutputs</inFunction>
+</task>
+<task>
+  <name>Task_DriveMotorsUsingPWM</name>
+  <inFunction>Task_DriveMotorsUsingPWM</inFunction>
+</task>
+<task>
+  <name>main</name>
+  <inFunction>main</inFunction>
+</task>
+<task>
+  <name>_task_i2c_master_0</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>i2c_master</calledFunction>
+  <tile>tile[0]</tile>
+  <distributed/>
+  <inPar/>
+</task>
+<task>
+  <name>_task_Task_ReadSonarSensor_1</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>Task_ReadSonarSensor</calledFunction>
+  <tile>tile[0]</tile>
+  <core>1</core>
+  <inPar/>
+</task>
+<task>
+  <name>_task_Task_ReadSonarSensor_2</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>Task_ReadSonarSensor</calledFunction>
+  <tile>tile[0]</tile>
+  <core>2</core>
+  <inPar/>
+</task>
+<task>
+  <name>_task_Task_ReadSonarSensor_3</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>Task_ReadSonarSensor</calledFunction>
+  <tile>tile[0]</tile>
+  <core>3</core>
+  <inPar/>
+</task>
+<task>
+  <name>_task_Task_ReadSonarSensor_4</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>Task_ReadSonarSensor</calledFunction>
+  <tile>tile[0]</tile>
+  <core>4</core>
+  <inPar/>
+</task>
+<task>
+  <name>_task_Task_ProduceMotorControlOutputs_5</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>Task_ProduceMotorControlOutputs</calledFunction>
+  <tile>tile[0]</tile>
+  <core>5</core>
+  <inPar/>
+</task>
+<connection>
+  <ends>
+    <end task="_task_i2c_master_0" type="server"/>
+    <end task="_task_Task_ReadSonarSensor_1" type="client"/>
+  </ends>
+    <index>0</index>
+  <name>i2c_client_device_instances</name>
+   <interface>i2c_master_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_i2c_master_0" type="server"/>
+    <end task="_task_Task_ReadSonarSensor_2" type="client"/>
+  </ends>
+    <index>1</index>
+  <name>i2c_client_device_instances</name>
+   <interface>i2c_master_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_i2c_master_0" type="server"/>
+    <end task="_task_Task_ReadSonarSensor_3" type="client"/>
+  </ends>
+    <index>2</index>
+  <name>i2c_client_device_instances</name>
+   <interface>i2c_master_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_i2c_master_0" type="server"/>
+    <end task="_task_Task_ReadSonarSensor_4" type="client"/>
+  </ends>
+    <index>3</index>
+  <name>i2c_client_device_instances</name>
+   <interface>i2c_master_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_Task_ProduceMotorControlOutputs_5" type="server"/>
+    <end task="_task_Task_ReadSonarSensor_1" type="client"/>
+  </ends>
+  <name>leftsensor_interface</name>
+   <interface>distancesensor_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_Task_ProduceMotorControlOutputs_5" type="server"/>
+    <end task="_task_Task_ReadSonarSensor_2" type="client"/>
+  </ends>
+  <name>rightsensor_interface</name>
+   <interface>distancesensor_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_Task_ProduceMotorControlOutputs_5" type="server"/>
+    <end task="_task_Task_ReadSonarSensor_3" type="client"/>
+  </ends>
+  <name>frontsensor_interface</name>
+   <interface>distancesensor_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_Task_ProduceMotorControlOutputs_5" type="server"/>
+    <end task="_task_Task_ReadSonarSensor_4" type="client"/>
+  </ends>
+  <name>rearsensor_interface</name>
+   <interface>distancesensor_if</interface>
+</connection>
+</taskgraph>

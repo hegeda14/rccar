@@ -1,0 +1,3 @@
+debug_printf.o: \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_logging/lib_logging/src/debug_printf.c \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_logging/lib_logging/api\debug_print.h

@@ -1,0 +1,108 @@
+<taskgraph>
+<task>
+  <name>delay_seconds</name>
+  <inFunction>delay_seconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>delay_milliseconds</name>
+  <inFunction>delay_milliseconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>delay_microseconds</name>
+  <inFunction>delay_microseconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>gpio_handler</name>
+  <inFunction>gpio_handler</inFunction>
+</task>
+<task>
+  <name>main</name>
+  <inFunction>main</inFunction>
+</task>
+<task>
+  <name>_task_input_gpio_with_events_0</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>input_gpio_with_events</calledFunction>
+  <tile>tile[0]</tile>
+  <core>u0</core>
+  <inPar/>
+</task>
+<task>
+  <name>_task_output_gpio_1</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>output_gpio</calledFunction>
+  <tile>tile[0]</tile>
+  <core>u1</core>
+  <inPar/>
+</task>
+<task>
+  <name>_task_gpio_handler_2</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>gpio_handler</calledFunction>
+  <tile>tile[0]</tile>
+  <core>u2</core>
+  <inPar/>
+</task>
+<connection>
+  <ends>
+    <end task="_task_input_gpio_with_events_0" type="server"/>
+    <end task="_task_gpio_handler_2" type="client"/>
+  </ends>
+    <index>0</index>
+  <name>i_explorer_buttons</name>
+   <interface>input_gpio_if</interface>
+   <notification>event</notification>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_input_gpio_with_events_0" type="server"/>
+    <end task="_task_gpio_handler_2" type="client"/>
+  </ends>
+    <index>1</index>
+  <name>i_explorer_buttons</name>
+   <interface>input_gpio_if</interface>
+   <notification>event</notification>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_output_gpio_1" type="server"/>
+    <end task="_task_gpio_handler_2" type="client"/>
+  </ends>
+    <index>0</index>
+  <name>i_explorer_leds</name>
+   <interface>output_gpio_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_output_gpio_1" type="server"/>
+    <end task="_task_gpio_handler_2" type="client"/>
+  </ends>
+    <index>1</index>
+  <name>i_explorer_leds</name>
+   <interface>output_gpio_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_output_gpio_1" type="server"/>
+    <end task="_task_gpio_handler_2" type="client"/>
+  </ends>
+    <index>2</index>
+  <name>i_explorer_leds</name>
+   <interface>output_gpio_if</interface>
+</connection>
+<connection>
+  <ends>
+    <end task="_task_output_gpio_1" type="server"/>
+    <end task="_task_gpio_handler_2" type="client"/>
+  </ends>
+    <index>3</index>
+  <name>i_explorer_leds</name>
+   <interface>output_gpio_if</interface>
+</connection>
+</taskgraph>
