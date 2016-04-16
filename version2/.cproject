@@ -65,6 +65,53 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_i2c/doc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_i2c/doc/rst}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_i2c/doc/rst/images}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/doc/rst/images}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/doc/pdf}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/tftp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/sys}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip/dhcpc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/net/rime}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/mdns}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/net}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/lib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip/igmp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/uip_arch}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip/autoip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/net/rpl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip/autoip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip/igmp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/doc/rst/images}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip/dhcpc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/api}&quot;"/>
 								</option>
 								<option id="com.xmos.xc.compiler.option.defined.symbols.1295046923" name="com.xmos.xc.compiler.option.defined.symbols" superClass="com.xmos.xc.compiler.option.defined.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__XC__=1"/>
@@ -260,6 +307,53 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_i2c/doc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_i2c/doc/rst}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_i2c/doc/rst/images}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/doc/rst/images}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/doc/pdf}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/tftp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/sys}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip/dhcpc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/net/rime}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/mdns}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/net}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/lib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip/igmp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/uip_arch}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip/autoip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/net/rpl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip/autoip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip/igmp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/doc/rst/images}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip/dhcpc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/api}&quot;"/>
 								</option>
 								<option id="com.xmos.c.compiler.option.defined.symbols.1037579336" name="com.xmos.c.compiler.option.defined.symbols" superClass="com.xmos.c.compiler.option.defined.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__llvm__=1"/>
@@ -603,6 +697,53 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_i2c/doc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_i2c/doc/rst}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_i2c/doc/rst/images}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/doc/rst/images}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_uart/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/doc/pdf}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/tftp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/sys}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip/dhcpc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/net/rime}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/mdns}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/net}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/lib}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip/igmp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/uip_arch}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip/autoip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/src/xtcp_uip6/contiki/net/rpl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/lib_xtcp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip/autoip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/api}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip/igmp}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/doc/rst/images}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/doc/rst}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks/doc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_locks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_xtcp/src/xtcp_uip/dhcpc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_otpinfo/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lib_ethernet/api}&quot;"/>
 								</option>
 								<option id="com.xmos.cxx.compiler.option.defined.symbols.1282337316" name="com.xmos.cxx.compiler.option.defined.symbols" superClass="com.xmos.cxx.compiler.option.defined.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="__llvm__=1"/>

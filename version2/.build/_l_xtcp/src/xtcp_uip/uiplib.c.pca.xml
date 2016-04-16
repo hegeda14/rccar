@@ -1,0 +1,7 @@
+<preCompilationAnalysis file="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_xtcp/src/xtcp_uip/uiplib.c">
+  <fCall global="true" name="uiplib_ipaddrconv"/>
+  <fCall global="true" name="uiplib_ipaddrconv.nstackwords"/>
+  <fCall global="true" name="uiplib_ipaddrconv.maxcores"/>
+  <fCall global="true" name="uiplib_ipaddrconv.maxtimers"/>
+  <fCall global="true" name="uiplib_ipaddrconv.maxchanends"/>
+</preCompilationAnalysis>
