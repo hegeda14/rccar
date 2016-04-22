@@ -1310,7 +1310,6 @@
   </arg>
   <arg num="1" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="64"/></value>
     </values>
   </arg>
   <arg num="2" specialize="false">
@@ -1525,9 +1524,10 @@
 </fInfo>
 <fInfo name="mii_send" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_xtcp/src/xtcp_uip/xcoredev.xc" specialize="false" noreturn="false" doNotSpecialize="false" numParams="0">
 </fInfo>
-<fInfo name="ShareControlValue" global="true" interface="control_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
+<fInfo name="ShareDirectionValue" global="true" interface="control_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
 </fInfo>
@@ -1553,19 +1553,21 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="ShareSteeringValue" global="true" interface="control_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
+<fInfo name="ShareSpeedValue" global="true" interface="control_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
 </fInfo>
 <fInfo name="ShareSteeringValue" global="true" interface="steering_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
 </fInfo>
-<fInfo name="Task_DriveMotorsUsingPWM" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
+<fInfo name="Task_ApplyPWMTo1BitPort" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="false">
     <values>
     </values>
@@ -1575,10 +1577,28 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="Task_GetRemoteCommandsViaBluetooth" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="4">
+<fInfo name="Task_DriveTBLE02S_MotorController" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="2">
+  <arg num="0" specialize="false">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1" specialize="true">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="unknown"/></values></arg>
+    <arg num="1"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+   </specialization>
+ </specializations>
+</fInfo>
+<fInfo name="Task_GetRemoteCommandsViaBluetooth" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
   <arg num="1" specialize="true">
@@ -1598,25 +1618,15 @@
   </arg>
  <specializations>
    <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value></values></arg>
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
     <arg num="1"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
     <arg num="2"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
     <arg num="3"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
    </specialization>
  </specializations>
 </fInfo>
-<fInfo name="Task_ProduceMotorControlOutputs" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="3">
+<fInfo name="Task_ProduceMotorControlOutputs" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="1">
   <arg num="0" specialize="true">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
-  <arg num="1" specialize="true">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
-  <arg num="2" specialize="true">
     <values>
       <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
@@ -1624,15 +1634,13 @@
  <specializations>
    <specialization id="0">
     <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
-    <arg num="1"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
-    <arg num="2"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
    </specialization>
  </specializations>
 </fInfo>
 <fInfo name="Task_ReadSonarSensors" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="true">
@@ -1642,7 +1650,25 @@
   </arg>
  <specializations>
    <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value></values></arg>
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value></values></arg>
+    <arg num="1"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+   </specialization>
+ </specializations>
+</fInfo>
+<fInfo name="Task_SteeringServo_MotorController" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="2">
+  <arg num="0" specialize="false">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1" specialize="true">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="unknown"/></values></arg>
     <arg num="1"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
    </specialization>
  </specializations>
@@ -1859,18 +1885,6 @@
     <values>
     </values>
   </arg>
-</fInfo>
-<fInfo name="demo_servo" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="1">
-  <arg num="0" specialize="true">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
- <specializations>
-   <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
-   </specialization>
- </specializations>
 </fInfo>
 <fInfo name="disable_link_status_notification" global="true" interface="ethernet_cfg_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
   <arg num="0" specialize="false">
@@ -2215,8 +2229,8 @@
 <fInfo name="i2c_master" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="5">
   <arg num="0" specialize="false">
     <values>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
       <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master_async.xc" impId="0" param="0"/></value>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="true">
@@ -2492,23 +2506,15 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="input_gpio_1bit_with_events" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="2">
-  <arg num="0" specialize="true">
+<fInfo name="input_gpio_1bit_with_events" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="2">
+  <arg num="0" specialize="false">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
- <specializations>
-   <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value></values></arg>
-    <arg num="1"><values><value type="unknown"/></values></arg>
-   </specialization>
- </specializations>
 </fInfo>
 <fInfo name="input_gpio_with_events" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="false">
@@ -3352,35 +3358,23 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="output_gpio" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="4">
-  <arg num="0" specialize="true">
+<fInfo name="output_gpio" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="4">
+  <arg num="0" specialize="false">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
     </values>
   </arg>
-  <arg num="1" specialize="true">
+  <arg num="1" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
   <arg num="2" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
-  <arg num="3" specialize="true">
+  <arg num="3" specialize="false">
     <values>
-      <value type="null"/>
     </values>
   </arg>
- <specializations>
-   <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value></values></arg>
-    <arg num="1"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
-    <arg num="2"><values><value type="unknown"/></values></arg>
-    <arg num="3"><values><value type="null"/></values></arg>
-   </specialization>
- </specializations>
 </fInfo>
 <fInfo name="packet_ready" global="true" interface="ethernet_rx_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="0">
 </fInfo>
@@ -3954,36 +3948,6 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="servo_task" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="4">
-  <arg num="0" specialize="true">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
-  <arg num="1" specialize="false">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="2" specialize="true">
-    <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
-    </values>
-  </arg>
-  <arg num="3" specialize="true">
-    <values>
-      <value type="intval"><intval isSigned="false" val="150000"/></value>
-    </values>
-  </arg>
- <specializations>
-   <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
-    <arg num="1"><values><value type="unknown"/></values></arg>
-    <arg num="2"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
-    <arg num="3"><values><value type="intval"><intval isSigned="false" val="150000"/></value></values></arg>
-   </specialization>
- </specializations>
-</fInfo>
 <fInfo name="set_baud_rate" global="true" interface="multi_uart_rx_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="false">
     <values>
@@ -4145,18 +4109,6 @@
 <fInfo name="set_parity" global="true" interface="uart_config_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
   <arg num="0" specialize="false">
     <values>
-    </values>
-  </arg>
-</fInfo>
-<fInfo name="set_pos" global="true" interface="servo_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
-  <arg num="0" specialize="false">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1" specialize="false">
-    <values>
-      <value type="unknown"/>
     </values>
   </arg>
 </fInfo>
@@ -4349,59 +4301,39 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="uart_rx" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="8">
-  <arg num="0" specialize="true">
+<fInfo name="uart_rx" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="8">
+  <arg num="0" specialize="false">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
-  <arg num="1" specialize="true">
+  <arg num="1" specialize="false">
     <values>
-      <value type="null"/>
     </values>
   </arg>
-  <arg num="2" specialize="true">
+  <arg num="2" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="64"/></value>
     </values>
   </arg>
-  <arg num="3" specialize="true">
+  <arg num="3" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="115200"/></value>
     </values>
   </arg>
-  <arg num="4" specialize="true">
+  <arg num="4" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="2"/></value>
     </values>
   </arg>
-  <arg num="5" specialize="true">
+  <arg num="5" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="8"/></value>
     </values>
   </arg>
-  <arg num="6" specialize="true">
+  <arg num="6" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
-  <arg num="7" specialize="true">
+  <arg num="7" specialize="false">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value>
     </values>
   </arg>
- <specializations>
-   <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
-    <arg num="1"><values><value type="null"/></values></arg>
-    <arg num="2"><values><value type="intval"><intval isSigned="true" val="64"/></value></values></arg>
-    <arg num="3"><values><value type="intval"><intval isSigned="true" val="115200"/></value></values></arg>
-    <arg num="4"><values><value type="intval"><intval isSigned="true" val="2"/></value></values></arg>
-    <arg num="5"><values><value type="intval"><intval isSigned="true" val="8"/></value></values></arg>
-    <arg num="6"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
-    <arg num="7"><values><value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value></values></arg>
-   </specialization>
- </specializations>
 </fInfo>
 <fInfo name="uart_rx_fast_init" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="false">
@@ -4437,53 +4369,35 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="uart_tx" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="7">
-  <arg num="0" specialize="true">
+<fInfo name="uart_tx" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="7">
+  <arg num="0" specialize="false">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value>
     </values>
   </arg>
-  <arg num="1" specialize="true">
+  <arg num="1" specialize="false">
     <values>
-      <value type="null"/>
     </values>
   </arg>
-  <arg num="2" specialize="true">
+  <arg num="2" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="115200"/></value>
     </values>
   </arg>
-  <arg num="3" specialize="true">
+  <arg num="3" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="2"/></value>
     </values>
   </arg>
-  <arg num="4" specialize="true">
+  <arg num="4" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="8"/></value>
     </values>
   </arg>
-  <arg num="5" specialize="true">
+  <arg num="5" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
-  <arg num="6" specialize="true">
+  <arg num="6" specialize="false">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
     </values>
   </arg>
- <specializations>
-   <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value></values></arg>
-    <arg num="1"><values><value type="null"/></values></arg>
-    <arg num="2"><values><value type="intval"><intval isSigned="true" val="115200"/></value></values></arg>
-    <arg num="3"><values><value type="intval"><intval isSigned="true" val="2"/></value></values></arg>
-    <arg num="4"><values><value type="intval"><intval isSigned="true" val="8"/></value></values></arg>
-    <arg num="5"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
-    <arg num="6"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value></values></arg>
-   </specialization>
- </specializations>
 </fInfo>
 <fInfo name="uart_tx_assemble_word" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="false">
@@ -5338,25 +5252,17 @@
     </values>
   </arg>
 </fInfo>
-<fCall name="output_gpio" global="true" callerUnit="../src/main.xc" numArgs="4" impId="0" specializationId="0">
+<fCall name="i2c_master" global="true" callerUnit="../src/main.xc" numArgs="5" impId="0" specializationId="0">
 </fCall>
-<fCall name="uart_tx" global="true" callerUnit="../src/main.xc" numArgs="7" impId="1" specializationId="0">
+<fCall name="Task_DriveTBLE02S_MotorController" global="true" callerUnit="../src/main.xc" numArgs="2" impId="1" specializationId="0">
 </fCall>
-<fCall name="input_gpio_1bit_with_events" global="true" callerUnit="../src/main.xc" numArgs="2" impId="2" specializationId="0">
+<fCall name="Task_SteeringServo_MotorController" global="true" callerUnit="../src/main.xc" numArgs="2" impId="2" specializationId="0">
 </fCall>
-<fCall name="uart_rx" global="true" callerUnit="../src/main.xc" numArgs="8" impId="3" specializationId="0">
+<fCall name="Task_ReadSonarSensors" global="true" callerUnit="../src/main.xc" numArgs="2" impId="3" specializationId="0">
 </fCall>
-<fCall name="i2c_master" global="true" callerUnit="../src/main.xc" numArgs="5" impId="4" specializationId="0">
+<fCall name="Task_GetRemoteCommandsViaBluetooth" global="true" callerUnit="../src/main.xc" numArgs="4" impId="4" specializationId="0">
 </fCall>
-<fCall name="demo_servo" global="true" callerUnit="../src/main.xc" numArgs="1" impId="5" specializationId="0">
-</fCall>
-<fCall name="servo_task" global="true" callerUnit="../src/main.xc" numArgs="4" impId="6" specializationId="0">
-</fCall>
-<fCall name="Task_ReadSonarSensors" global="true" callerUnit="../src/main.xc" numArgs="2" impId="7" specializationId="0">
-</fCall>
-<fCall name="Task_ProduceMotorControlOutputs" global="true" callerUnit="../src/main.xc" numArgs="3" impId="8" specializationId="0">
-</fCall>
-<fCall name="Task_GetRemoteCommandsViaBluetooth" global="true" callerUnit="../src/main.xc" numArgs="4" impId="9" specializationId="0">
+<fCall name="Task_ProduceMotorControlOutputs" global="true" callerUnit="../src/main.xc" numArgs="1" impId="5" specializationId="0">
 </fCall>
 <fCall name="mii_handler" global="true" callerUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" numArgs="5" impId="1" specializationId="0">
 </fCall>

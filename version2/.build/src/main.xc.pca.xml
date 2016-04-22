@@ -1,12 +1,14 @@
 <preCompilationAnalysis file="../src/main.xc">
-<fDef name="ShareControlValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="ShareDirectionValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareDistanceSensorValues" global="true" interface="distancesensor_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
-<fDef name="ShareSteeringValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSteeringValue" global="true" interface="steering_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
-<fDef name="Task_DriveMotorsUsingPWM" global="true" noreturn="false" doNotSpecialize="false" numParams="2"/>
-<fDef name="Task_GetRemoteCommandsViaBluetooth" global="true" noreturn="false" doNotSpecialize="false" numParams="4"/>
-<fDef name="Task_ProduceMotorControlOutputs" global="true" noreturn="true" doNotSpecialize="false" numParams="3"/>
+<fDef name="Task_ApplyPWMTo1BitPort" global="true" noreturn="true" doNotSpecialize="false" numParams="2"/>
+<fDef name="Task_DriveTBLE02S_MotorController" global="true" noreturn="true" doNotSpecialize="false" numParams="2"/>
+<fDef name="Task_GetRemoteCommandsViaBluetooth" global="true" noreturn="true" doNotSpecialize="false" numParams="4"/>
+<fDef name="Task_ProduceMotorControlOutputs" global="true" noreturn="true" doNotSpecialize="false" numParams="1"/>
 <fDef name="Task_ReadSonarSensors" global="true" noreturn="true" doNotSpecialize="false" numParams="2"/>
+<fDef name="Task_SteeringServo_MotorController" global="true" noreturn="true" doNotSpecialize="false" numParams="2"/>
 <fDef name="_complete_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="_get_outgoing_timestamp" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="0"/>
 <fDef name="_init_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
@@ -24,7 +26,6 @@
 <fDef name="delay_microseconds" global="true" noreturn="false" doNotSpecialize="true" numParams="1"/>
 <fDef name="delay_milliseconds" global="true" noreturn="false" doNotSpecialize="true" numParams="1"/>
 <fDef name="delay_seconds" global="true" noreturn="false" doNotSpecialize="true" numParams="1"/>
-<fDef name="demo_servo" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="disable_link_status_notification" global="true" interface="ethernet_cfg_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="disable_strip_vlan_tag" global="true" interface="ethernet_cfg_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="enable_link_status_notification" global="true" interface="ethernet_cfg_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
@@ -96,7 +97,6 @@
 <fDef name="set_parity" global="true" interface="multi_uart_rx_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
 <fDef name="set_parity" global="true" interface="multi_uart_tx_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
 <fDef name="set_parity" global="true" interface="uart_config_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
-<fDef name="set_pos" global="true" interface="servo_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
 <fDef name="set_stop_bits" global="true" interface="multi_uart_rx_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
 <fDef name="set_stop_bits" global="true" interface="multi_uart_tx_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
 <fDef name="set_stop_bits" global="true" interface="uart_config_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
@@ -700,6 +700,18 @@
     </values>
   </arg>
 </fCall>
+<fCall name="__builtin_timer_after" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="write_reg" global="true" numArgs="4">
   <arg num="0">
     <passThroughArg param="0" caller="Task_ReadSonarSensors" global="true"/>
@@ -872,6 +884,13 @@
     </values>
   </arg>
 </fCall>
+<fCall name="printf" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="read_reg" global="true" numArgs="4">
   <arg num="0">
     <passThroughArg param="0" caller="Task_ReadSonarSensors" global="true"/>
@@ -930,6 +949,13 @@
     </values>
   </arg>
 </fCall>
+<fCall name="printf" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="read_reg" global="true" numArgs="4">
   <arg num="0">
     <passThroughArg param="0" caller="Task_ReadSonarSensors" global="true"/>
@@ -985,6 +1011,13 @@
   <arg num="0">
     <values>
       <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="printf" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
     </values>
   </arg>
 </fCall>
@@ -1126,6 +1159,39 @@
     </values>
   </arg>
 </fCall>
+<fCall name="__builtin_timer_after" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareSteeringValue" global="true" interface="steering_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareDirectionValue" global="true" interface="control_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareSpeedValue" global="true" interface="control_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="printf" global="true" numArgs="5">
   <arg num="0">
     <values>
@@ -1153,14 +1219,24 @@
     </values>
   </arg>
 </fCall>
-<fCall name="printstrln" global="true" numArgs="1">
+<fCall name="printf" global="true" numArgs="3">
   <arg num="0">
     <values>
       <value type="unknown"/>
     </values>
   </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
 </fCall>
-<fCall name="set_pos" global="true" interface="servo_if" numArgs="2">
+<fCall name="__builtin_timer_after" global="true" numArgs="2">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -1184,13 +1260,6 @@
     </values>
   </arg>
 </fCall>
-<fCall name="printstrln" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
 <fCall name="__builtin_timer_after" global="true" numArgs="2">
   <arg num="0">
     <values>
@@ -1203,147 +1272,10 @@
     </values>
   </arg>
 </fCall>
-<fCall name="set_pos" global="true" interface="servo_if" numArgs="2">
+<fCall name="i2c_master" global="true" numArgs="5" impId="0">
   <arg num="0">
     <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="__builtin_timer_after" global="true" numArgs="2">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="output_gpio" global="true" numArgs="4" impId="0">
-  <arg num="0">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="output_gpio" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="null"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="uart_tx" global="true" numArgs="7" impId="1">
-  <arg num="0">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="uart_tx" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="null"/>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="intval"><intval isSigned="true" val="115200"/></value>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="intval"><intval isSigned="true" val="2"/></value>
-    </values>
-  </arg>
-  <arg num="4">
-    <values>
-      <value type="intval"><intval isSigned="true" val="8"/></value>
-    </values>
-  </arg>
-  <arg num="5">
-    <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
-    </values>
-  </arg>
-  <arg num="6">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="output_gpio" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="input_gpio_1bit_with_events" global="true" numArgs="2" impId="2">
-  <arg num="0">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="comb" func="input_gpio_1bit_with_events" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="uart_rx" global="true" numArgs="8" impId="3">
-  <arg num="0">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="null"/>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="intval"><intval isSigned="true" val="64"/></value>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="intval"><intval isSigned="true" val="115200"/></value>
-    </values>
-  </arg>
-  <arg num="4">
-    <values>
-      <value type="intval"><intval isSigned="true" val="2"/></value>
-    </values>
-  </arg>
-  <arg num="5">
-    <values>
-      <value type="intval"><intval isSigned="true" val="8"/></value>
-    </values>
-  </arg>
-  <arg num="6">
-    <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
-    </values>
-  </arg>
-  <arg num="7">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="comb" func="input_gpio_1bit_with_events" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="i2c_master" global="true" numArgs="5" impId="4">
-  <arg num="0">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
     </values>
   </arg>
   <arg num="1">
@@ -1367,39 +1299,22 @@
     </values>
   </arg>
 </fCall>
-<fCall name="demo_servo" global="true" numArgs="1" impId="5">
+<fCall name="Task_DriveTBLE02S_MotorController" global="true" numArgs="2" impId="1">
   <arg num="0">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="servo_task" global="true" numArgs="4" impId="6">
-  <arg num="0">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
-  <arg num="1">
     <values>
       <value type="unknown"/>
     </values>
   </arg>
-  <arg num="2">
+  <arg num="1">
     <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="intval"><intval isSigned="false" val="150000"/></value>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
 </fCall>
-<fCall name="Task_ReadSonarSensors" global="true" numArgs="2" impId="7">
+<fCall name="Task_SteeringServo_MotorController" global="true" numArgs="2" impId="2">
   <arg num="0">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1">
@@ -1408,10 +1323,10 @@
     </values>
   </arg>
 </fCall>
-<fCall name="Task_ProduceMotorControlOutputs" global="true" numArgs="3" impId="8">
+<fCall name="Task_ReadSonarSensors" global="true" numArgs="2" impId="3">
   <arg num="0">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
     </values>
   </arg>
   <arg num="1">
@@ -1419,16 +1334,11 @@
       <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
-  <arg num="2">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
 </fCall>
-<fCall name="Task_GetRemoteCommandsViaBluetooth" global="true" numArgs="4" impId="9">
+<fCall name="Task_GetRemoteCommandsViaBluetooth" global="true" numArgs="4" impId="4">
   <arg num="0">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="uart_tx" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
   <arg num="1">
@@ -1442,6 +1352,13 @@
     </values>
   </arg>
   <arg num="3">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="Task_ProduceMotorControlOutputs" global="true" numArgs="1" impId="5">
+  <arg num="0">
     <values>
       <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>

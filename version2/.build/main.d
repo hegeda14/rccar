@@ -12,6 +12,5 @@ main.o: ../src/main.xc \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/api/ethernet.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_otpinfo/api/otp_board_info.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_xtcp/src/xtcp_conf_derived.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_xtcp/src/xtcp_impl.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/RCCarProject/src/servo.h
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_xtcp/src/xtcp_impl.h
 
