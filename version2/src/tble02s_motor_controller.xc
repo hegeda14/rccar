@@ -57,7 +57,7 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
                    {
                        on_period = TBLE02S_FWD_MINSPEED_PULSE_WIDTH;
                    }
-                   else if (speed_val > 100)
+                   else if (speed_val > 99)
                    {
                        on_period = TBLE02S_FWD_MAXSPEED_PULSE_WIDTH;
                    }
@@ -75,7 +75,7 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
                    {
                        on_period = TBLE02S_REV_MINSPEED_PULSE_WIDTH;
                    }
-                   else if (speed_val > 100)
+                   else if (speed_val > 99)
                    {
                        on_period = TBLE02S_REV_MAXSPEED_PULSE_WIDTH;
                    }

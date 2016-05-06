@@ -112,7 +112,7 @@ int main() {
      // MII/ethernet driver
      on tile[1]: mii(i_mii, p_eth_rxclk, p_eth_rxerr, p_eth_rxd, p_eth_rxdv,
                      p_eth_txclk, p_eth_txen, p_eth_txd, p_eth_timing,
-                     eth_rxclk, eth_txclk, XTCP_MII_BUFSIZE) // The missing semicolon is intentional!
+                     eth_rxclk, eth_txclk, XTCP_MII_BUFSIZE) // The missing semicolon is intentional! This is a macro
 
      // SMI/ethernet phy driver
      on tile[1]: smi(i_smi, p_smi_mdio, p_smi_mdc);

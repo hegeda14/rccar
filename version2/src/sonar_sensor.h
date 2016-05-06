@@ -27,10 +27,10 @@
 #define FRONT_DISTANCE_SENSOR_ID        2
 #define REAR_DISTANCE_SENSOR_ID         3
 
-#define LEFT_DISTANCE_SENSOR_DEVICEADDR     ((uint8_t) 0x71)
-#define RIGHT_DISTANCE_SENSOR_DEVICEADDR    ((uint8_t) 0x70)
-#define FRONT_DISTANCE_SENSOR_DEVICEADDR    ((uint8_t) 0x73)
-#define REAR_DISTANCE_SENSOR_DEVICEADDR     ((uint8_t) 0x74)
+#define LEFT_DISTANCE_SENSOR_DEVICEADDR     ((uint8_t) 0x7B)
+#define RIGHT_DISTANCE_SENSOR_DEVICEADDR    ((uint8_t) 0x7A)
+#define FRONT_DISTANCE_SENSOR_DEVICEADDR    ((uint8_t) 0x7C)
+#define REAR_DISTANCE_SENSOR_DEVICEADDR     ((uint8_t) 0x79)
 
 // Prototypes
 uint8_t getDistanceSensorAddr (int sensor_id);

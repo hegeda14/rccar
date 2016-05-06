@@ -1,4 +1,7 @@
 <preCompilationAnalysis file="../src/rn42_driver.xc">
+<fDef name="CharToDigit" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="InitializeRN42asSlave" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="ParseRCCommandString" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareDirectionValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareDistanceSensorValues" global="true" interface="distancesensor_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
@@ -45,6 +48,7 @@
 <fDef name="init" global="true" interface="multi_uart_tx_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="input" global="true" interface="input_gpio_if" noreturn="false" doNotSpecialize="false" numParams="0"/>
 <fDef name="input_and_timestamp" global="true" interface="input_gpio_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="isDigit" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="is_slot_free" global="true" interface="multi_uart_tx_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="master_requires_data" global="true" interface="i2c_slave_callback_if" noreturn="false" doNotSpecialize="false" numParams="0"/>
 <fDef name="master_sent_data" global="true" interface="i2c_slave_callback_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
@@ -709,6 +713,183 @@
     </values>
   </arg>
 </fCall>
+<fCall name="_safe_strlen" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="CharToDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="CharToDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="CharToDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="CharToDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="WriteData" global="true" numArgs="2">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeRN42asSlave" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_microseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="300000"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="WriteData" global="true" numArgs="2">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeRN42asSlave" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_microseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="300000"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="WriteData" global="true" numArgs="2">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeRN42asSlave" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_microseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="300000"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="WriteData" global="true" numArgs="2">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeRN42asSlave" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_microseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="300000"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="WriteData" global="true" numArgs="2">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeRN42asSlave" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_microseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="300000"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="WriteData" global="true" numArgs="2">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeRN42asSlave" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_microseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="300000"/></value>
+    </values>
+  </arg>
+</fCall>
 <fCall name="WriteData" global="true" numArgs="2">
   <arg num="0">
     <passThroughArg param="0" caller="Task_GetRemoteCommandsViaBluetooth2" global="true"/>
@@ -721,10 +902,12 @@
     </values>
   </arg>
 </fCall>
-<fCall name="WriteData" global="true" numArgs="2">
+<fCall name="read" global="true" interface="uart_rx_if" numArgs="0">
+</fCall>
+<fCall name="printf" global="true" numArgs="2">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_GetRemoteCommandsViaBluetooth" global="true"/>
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1">
@@ -733,13 +916,15 @@
     </values>
   </arg>
 </fCall>
-<fCall name="__builtin_timer_after" global="true" numArgs="2">
+<fCall name="_safe_strlen" global="true" numArgs="1">
   <arg num="0">
     <values>
       <value type="unknown"/>
     </values>
   </arg>
-  <arg num="1">
+</fCall>
+<fCall name="ParseRCCommandString" global="true" numArgs="1">
+  <arg num="0">
     <values>
       <value type="unknown"/>
     </values>
@@ -761,20 +946,6 @@
 </fCall>
 <fCall name="ShareSpeedValue" global="true" interface="control_if" numArgs="1">
   <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="read" global="true" interface="uart_rx_if" numArgs="0">
-</fCall>
-<fCall name="printf" global="true" numArgs="2">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
     <values>
       <value type="unknown"/>
     </values>
