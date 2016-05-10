@@ -34,6 +34,7 @@
 #include "tble02s_motor_controller.h"
 #include "port_definitions.h"
 #include "ethernet_app.h"
+#include "ethernet_config.h"
 
 /***
  *  Function Name:              Task_ProduceMotorControlOutputs
@@ -95,7 +96,7 @@ int main() {
      on tile[0].core[0] : uart_rx(i_rx, null, RX_BUFFER_SIZE, BAUD_RATE, UART_PARITY_NONE, 8, 1, i_gpio_rx);
 
      // I2C Task
-     on tile[0] :         Task_MaintainI2CConnection(i2c_client_device_instances, 1, PortSCL, PortSDA, I2C_SPEED_KBITPERSEC);
+     //on tile[0] :         Task_MaintainI2CConnection(i2c_client_device_instances, 1, PortSCL, PortSDA, I2C_SPEED_KBITPERSEC);
 
      // Motor Speed Controller (PWM) Tasks
      on tile[0] :         Task_DriveTBLE02S_MotorController(PortMotorSpeedController, control_interface);
@@ -104,9 +105,9 @@ int main() {
      on tile[0] :         Task_SteeringServo_MotorController (PortSteeringServo, steering_interface);
 
      //Other Tasks
-     on tile[0] :         Task_ReadSonarSensors(i2c_client_device_instances[0], sensors_interface);
-     on tile[0] :         Task_GetRemoteCommandsViaBluetooth(i_tx, i_rx, control_interface, steering_interface);
-     on tile[0] :         Task_ProduceMotorControlOutputs (sensors_interface);
+     //on tile[0] :         Task_ReadSonarSensors(i2c_client_device_instances[0], sensors_interface);
+     on tile[0].core[1] :   Task_GetRemoteCommandsViaBluetooth(i_tx, i_rx, control_interface, steering_interface);
+     //on tile[0] :         Task_ProduceMotorControlOutputs (sensors_interface);
 
      // Ethernet App Tasks
      // MII/ethernet driver

@@ -46,15 +46,6 @@
     port p_smi_mdio = on tile[1]: XS1_PORT_1M;
     port p_smi_mdc  = on tile[1]: XS1_PORT_1N;
 
-    // These ports are for accessing the OTP memory
-    otp_ports_t otp_ports = on tile[1]: OTP_PORTS_INITIALIZER;
-
-    xtcp_ipconfig_t ipconfig = {
-            { 0, 0, 0, 0 }, // ip address (eg 192,168,0,2)
-            { 0, 0, 0, 0 }, // netmask (eg 255,255,255,0)
-            { 0, 0, 0, 0 } // gateway (eg 192,168,0,1)
-    };
-
 
 
 

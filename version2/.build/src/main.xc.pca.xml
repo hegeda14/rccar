@@ -834,34 +834,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="i2c_master" global="true" numArgs="5" impId="6">
-  <arg num="0">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="../src/main.xc" impId="6" param="0"/></value>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="4">
-    <values>
-      <value type="intval"><intval isSigned="false" val="10"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="Task_DriveTBLE02S_MotorController" global="true" numArgs="2" impId="7">
+<fCall name="Task_DriveTBLE02S_MotorController" global="true" numArgs="2" impId="6">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -873,7 +846,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="Task_SteeringServo_MotorController" global="true" numArgs="2" impId="8">
+<fCall name="Task_SteeringServo_MotorController" global="true" numArgs="2" impId="7">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -885,19 +858,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="Task_ReadSonarSensors" global="true" numArgs="2" impId="9">
-  <arg num="0">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="../src/main.xc" impId="6" param="0"/></value>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="Task_GetRemoteCommandsViaBluetooth" global="true" numArgs="4" impId="10">
+<fCall name="Task_GetRemoteCommandsViaBluetooth" global="true" numArgs="4" impId="8">
   <arg num="0">
     <values>
       <value type="interface"><interfaceInfo index="0" type="dist" func="uart_tx" global="true" impUnit="../src/main.xc" impId="3" param="0"/></value>
@@ -914,13 +875,6 @@
     </values>
   </arg>
   <arg num="3">
-    <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="Task_ProduceMotorControlOutputs" global="true" numArgs="1" impId="11">
-  <arg num="0">
     <values>
       <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
@@ -1020,10 +974,10 @@
     </values>
   </arg>
 </fCall>
-<fCall name="smi" global="true" numArgs="3" impId="12">
+<fCall name="smi" global="true" numArgs="3" impId="9">
   <arg num="0">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="smi" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="smi" global="true" impUnit="../src/main.xc" impId="9" param="0"/></value>
     </values>
   </arg>
   <arg num="1">
@@ -1037,7 +991,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="xtcp" global="true" numArgs="11" impId="13">
+<fCall name="xtcp" global="true" numArgs="11" impId="10">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -1070,7 +1024,7 @@
   </arg>
   <arg num="6">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="smi" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="smi" global="true" impUnit="../src/main.xc" impId="9" param="0"/></value>
     </values>
   </arg>
   <arg num="7">
@@ -1094,7 +1048,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="Task_EthernetAppUDPServer" global="true" numArgs="1" impId="14">
+<fCall name="Task_EthernetAppUDPServer" global="true" numArgs="1" impId="11">
   <arg num="0">
     <values>
       <value type="unknown"/>

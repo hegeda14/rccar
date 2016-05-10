@@ -7,22 +7,22 @@
  * @author Mustafa Ozcelikors
  * @contact mozcelikors@gmail.com
  ************************************************************************************/
-
-#include "tble02s_motor_controller.h"
+#include "l298n_motor_controller.h"
 
 /***
- *  Function Name:              Task_DriveTBLE02S_MotorController
- *  Function Description :      Generates the appropriote PWM to the motors to drive the TBLE02S Motor
+ *  Function Name:              Task_DriveL298N_MotorController1Channel
+ *  Function Description :      Generates the appropriote PWM to the motors to drive the L298N Motor Driver
  *
  *  Argument       Type           Description
- *  p              port           1-bit port to have pwm output
+ *  ENA            port           1-bit port to have pwm output (to control speed)
+ *  IN1 and IN2    port           ports for direction adjustment
  *  control_interface             direction + speed
  *  direction      int            FORWARD (0) or REVERSE (1)
  *  speed          int            0-100
  */
-void Task_DriveTBLE02S_MotorController (port p, server control_if control_interface)
+void Task_DriveL298N_MotorController1Channel (port ENA, port IN1, port IN2, server control_if control_interface)
 {
-    uint32_t overall_pwm_period = TBLE02S_PWM_PERIOD ; //20ms
+    uint32_t overall_pwm_period = L298N_OVERALL_PWM_PERIOD ; //20ms
     uint32_t on_period ;
     uint32_t off_period ;
 
@@ -36,6 +36,7 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
     // Timing measurement/debugging related definitions
     timer debug_timer;
     uint32_t start_time, end_time;
+
 
     while(1)
     {
@@ -54,65 +55,56 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
             //Calculate PWM periods and apply period within the timer
             case tmr when timerafter(time) :> void :
                 //Measure start time
-                debug_timer :> start_time;
+               debug_timer :> start_time;
 
                 tmr :> time;
 
+                //Configure direction
                 if (direction_val == FORWARD) //Forward speed 0-100 mapping to on period
                 {
-                   if (speed_val == 0)
-                   {
-                       on_period = TBLE02S_FWD_MINSPEED_PULSE_WIDTH;
-                   }
-                   else if (speed_val > 99)
-                   {
-                       on_period = TBLE02S_FWD_MAXSPEED_PULSE_WIDTH;
-                   }
-                   else
-                   {
-                       on_period = (TBLE02S_FWD_MINSPEED_PULSE_WIDTH - ((TBLE02S_FWD_MINSPEED_PULSE_WIDTH - TBLE02S_FWD_MAXSPEED_PULSE_WIDTH) * (speed_val/100.0)));
-                       //printf("on_period : %d", on_period);
-                   }
-
-                   off_period = overall_pwm_period - on_period;
+                    IN1 <: 1;
+                    IN2 <: 0;
                 }
                 else if (direction_val == REVERSE) //Reverse speed 0-100 mapping to on period
                 {
-                   if (speed_val == 0)
-                   {
-                       on_period = TBLE02S_REV_MINSPEED_PULSE_WIDTH;
-                   }
-                   else if (speed_val > 99)
-                   {
-                       on_period = TBLE02S_REV_MAXSPEED_PULSE_WIDTH;
-                   }
-                   else
-                   {
-                       on_period = (TBLE02S_REV_MINSPEED_PULSE_WIDTH + ((TBLE02S_REV_MAXSPEED_PULSE_WIDTH - TBLE02S_REV_MINSPEED_PULSE_WIDTH) * (speed_val/100.0)));
-                       //printf("on_period : %d", on_period);
-                   }
-
-                   off_period = overall_pwm_period - on_period;
+                    IN1 <: 0;
+                    IN2 <: 1;
                 }
 
+                //Configure period to adjust speeds
+
+                if(speed_val < 5)
+                {
+                    on_period = 0;
+                }
+                else if (speed_val > 95)
+                {
+                    on_period = overall_pwm_period;
+                }
+                else
+                {
+                    on_period  =   (speed_val * overall_pwm_period * (1.0/100));
+                }
+
+                off_period =   overall_pwm_period - on_period;
 
                 //PWM Port Toggling
                 if(port_state == 0)
                 {
-                    p <: 1;
+                    ENA <: 1;
                     port_state = 1;
                     time += on_period; //Extend timer deadline
                 }
                 else if(port_state == 1)
                 {
-                    p <: 0;
+                    ENA <: 0;
                     port_state = 0;
                     time += off_period; //Extend timer deadline
                 }
 
                 //Measure end time
                 debug_timer :> end_time;
-                printf("TBLE t: %u", end_time - start_time);
+                printf("L298 t: %u", end_time - start_time);
 
                 break;
         }

@@ -65,7 +65,7 @@ int CharToDigit (char digit)
 /***
  *  Function Name:              ParseRCCommandString
  *  Function Description :      Parses the command string and returns steering, speed, and direction values
- *                              Returns: S<2 char speed>S<2 char steering><F or R>
+ *                              Returns: S<2 char speed>A<2 char steering><F or R>
  *
  *  Argument                Type                        Description
  *  data                    char[]                      Data to be parsed
@@ -73,36 +73,25 @@ int CharToDigit (char digit)
  */
 {int, int, int} ParseRCCommandString (char data[])
 {
-    //Neutral values
-    int steering = 50;
+
+    // Data is valid, now parse it..
     int speed = 0;
+    int steering = 50;
     int direction = FORWARD;
 
-    // Check if incoming data is as expected..
-    if (strlen(data) < 8)
+    speed = CharToDigit(data[1])*10 + CharToDigit(data[2]);
+    steering = CharToDigit(data[4])*10 + CharToDigit(data[5]);
+
+    if(data[6] == 'F')
     {
-        if (data[0] == 'S' && data[3] == 'S' && (data[6] == 'F' || data[6] == 'R'))
-        {
-            if((isDigit(data[1]) != -1) && (isDigit(data[2]) != -1) && (isDigit(data[4]) != -1) && (isDigit(data[5]) != -1) )
-            {
-                // Data is valid, now parse it..
-
-                speed = CharToDigit(data[1])*10 + CharToDigit(data[2]);
-                steering = CharToDigit(data[4])*10 + CharToDigit(data[5]);
-
-                if(data[6] == 'F')
-                {
-                    direction = FORWARD;
-                }
-                else
-                {
-                    direction = REVERSE;
-                }
-            }
-        }
+        direction = FORWARD;
+    }
+    else
+    {
+        direction = REVERSE;
     }
 
-    return {steering, speed, direction};
+    return {speed, steering, direction};
 }
 
 
@@ -166,6 +155,7 @@ void Task_GetRemoteCommandsViaBluetooth2 (client uart_tx_if uart_tx,
  *  uart_tx                 client uart_tx_if           UART TX Interface
  *  uart_rx                 client uart_rx_if           UART RX Interface
  */
+[[combinable]]
 void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
                                         client uart_rx_if uart_rx,
                                         client control_if control_interface,
@@ -173,7 +163,7 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
 {
     //Debugging related definitions
     timer tmr2;
-    unsigned int time2, delay2 = 4000 * MILLISECOND; //4sec
+    unsigned int time2, delay2 = 300 * MILLISECOND; //.3sec
     int set_val = 0;
     int direction_val = REVERSE;
     int speed_val = 0;
@@ -183,9 +173,17 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
     int char_index = 0;
     char command[COMMANDLINE_BUFSIZE];
     int command_line_ready = 0;
-    int speed = 50;
+    int speed = 0;
     int steering = 50;
     int direction = FORWARD;
+
+    int ctr = 0;
+
+    char data, data1;
+
+    // Timing measurement/debugging related definitions
+    timer debug_timer;
+    uint32_t start_time, end_time;
 
 #ifdef RN42_INITIAL_CONFIG
     // Send initialization commands to RN42
@@ -197,60 +195,71 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
         //[[ordered]] // Priority in event selection is as ordered below..
         select
         {
-            /* DEBUGGING
-             * case tmr2 when timerafter(time2) :> void : // Timer event
-                steering_interface.ShareSteeringValue(set_val);
-                control_interface.ShareDirectionValue(direction_val);
-                control_interface.ShareSpeedValue(speed_val);
+        case uart_rx.data_ready(): //Read when data is available
+
+            //Measure start time
+            debug_timer :> start_time;
+
+            data = uart_rx.read();
+            //Using so many printf's to debug causes malfunction..
+            //printf("Data received: %c\n", data);
+            //printf("CommandLine buffer= ");
+            //for(int x = 0; x < 7; x++)
+                //printf("%c", command[x]);
+            //printf("\n");
+            // This section is basically dedicated to use the bytes and when the end of line reached,
+            // construct the command line.
+            if(data != 'E')
+            {
+                    CommandLine_Buffer[char_index] = data;
+                    if(char_index >= COMMANDLINE_BUFSIZE-1) char_index = 0;
+                    else char_index++;
+            }
+            else // data == E
+            {
+                char_index = 0;
+                ctr = 0;
+                //Copy the string to construct the command
+                for(int x = 0; x < COMMANDLINE_BUFSIZE; x++)
+                    command[x] = CommandLine_Buffer[x];
+
+                //Raise the command line ready flag
+                command_line_ready = 1;
+            }
+
+            //Measure end time
+            debug_timer :> end_time;
+            printf("RN42 t: %u", end_time - start_time);
+
+            break;
+
+        case tmr2 when timerafter(time2) :> void : // Timer event
                 time2 += delay2;
-
-                //Toggle to other set value for testing
-                if(set_val == 0)
-                {
-                    set_val = 100;
-                    speed_val = 10;
-                }
-                else if(set_val == 100)
-                {
-                    set_val = 0;
-                    speed_val = 0;
-                }
-
-                break;*/
-
-            case uart_rx.data_ready(): //Read when data is available
-                uint8_t data = uart_rx.read();
-
-                printf("Data received: %d\n", data);
-
-                // This section is basically dedicated to use the bytes and when the end of line reached,
-                // construct the command line.
-                if(data != '\r')
-                {
-                    CommandLine_Buffer[char_index++] = data;
-                }
-                else // data == \r
-                {
-                    char_index = 0;
-
-                    //Copy the string to construct the command
-                    for(int x = 0; x < strlen(CommandLine_Buffer); x++)
-                        command[x] = CommandLine_Buffer[x];
-
-                    //Raise the command line ready flag
-                    command_line_ready = 1;
-                }
-
                 if ( command_line_ready )
                 {
-                    {speed, steering, direction} = ParseRCCommandString (command);
-                    steering_interface.ShareSteeringValue(steering);
-                    control_interface.ShareDirectionValue(direction);
-                    control_interface.ShareSpeedValue(speed);
-                    command_line_ready = 0;
+                    // Check if incoming data is as expected..
+                    if (1)
+                    {
+                        if (command[0] == 'S' && command[3] == 'A' && (command[6] == 'F' || command[6] == 'R'))
+                        {
+                            if((isDigit(command[1]) != -1) && (isDigit(command[2]) != -1) && (isDigit(command[4]) != -1) && (isDigit(command[5]) != -1) )
+                            {
+                                {speed, steering, direction} = ParseRCCommandString (command);
+                                steering_interface.ShareSteeringValue(steering);
+                                control_interface.ShareDirectionValue(direction);
+                                control_interface.ShareSpeedValue(speed);
+                                command_line_ready = 0;
+                                printf("speed=%i\n",speed);
+                                printf("steering=%i\n",steering);
+                                printf("direction=%i\n",direction);
+                            }
+                        }
+                    }
                 }
 
                 break;
+
+
         }
     }
 }

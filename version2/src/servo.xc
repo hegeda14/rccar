@@ -81,6 +81,10 @@ void Task_SteeringServo_MotorController (out port p, server steering_if steering
 
     int steering;
 
+    // Timing measurement/debugging related definitions
+    timer debug_timer;
+    uint32_t start_time, end_time;
+
     while (1)
     {
         select
@@ -92,6 +96,9 @@ void Task_SteeringServo_MotorController (out port p, server steering_if steering
 
             //Calculate PWM periods and apply period within the timer
             case tmr when timerafter(time) :> void :
+                //Measure start time
+                debug_timer :> start_time;
+
                 tmr :> time;
 
                 if  (steering == 0)
@@ -122,6 +129,10 @@ void Task_SteeringServo_MotorController (out port p, server steering_if steering
                     port_state = 0;
                     time += off_period; //Extend timer deadline
                 }
+
+                //Measure end time
+                debug_timer :> end_time;
+                printf("SERVO t: %u", end_time - start_time);
 
                 break;
 

@@ -19,5 +19,6 @@ main.o: ../src/main.xc \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/RCCarProject/src/sonar_sensor.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/RCCarProject/src/tble02s_motor_controller.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/RCCarProject/src/port_definitions.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/RCCarProject/src/ethernet_app.h
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/RCCarProject/src/ethernet_app.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/RCCarProject/src/ethernet_config.h
 

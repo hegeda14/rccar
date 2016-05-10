@@ -713,41 +713,6 @@
     </values>
   </arg>
 </fCall>
-<fCall name="_safe_strlen" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="isDigit" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="isDigit" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="isDigit" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="isDigit" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
 <fCall name="CharToDigit" global="true" numArgs="1">
   <arg num="0">
     <values>
@@ -916,7 +881,40 @@
     </values>
   </arg>
 </fCall>
-<fCall name="_safe_strlen" global="true" numArgs="1">
+<fCall name="__builtin_timer_after" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -946,6 +944,42 @@
 </fCall>
 <fCall name="ShareSpeedValue" global="true" interface="control_if" numArgs="1">
   <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="printf" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="printf" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="printf" global="true" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
     <values>
       <value type="unknown"/>
     </values>

@@ -14,17 +14,18 @@
 #include "defines.h"
 
 // Command line buffer size
-#define COMMANDLINE_BUFSIZE 7
+#define COMMANDLINE_BUFSIZE 8
 
 
 // UART Related Defines
 #define BAUD_RATE       115200
-#define RX_BUFFER_SIZE  64
+#define RX_BUFFER_SIZE  512
 
 //Configure RN42 for the first time?
 //#define RN42_INITIAL_CONFIG
 
 // Prototypes
+[[combinable]]
 void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
                                         client uart_rx_if uart_rx,
                                         client control_if control_interface,

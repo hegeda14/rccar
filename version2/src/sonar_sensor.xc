@@ -48,11 +48,18 @@ void Task_ReadSonarSensors(client i2c_master_if i2c_interface, client distancese
     timer tmr3;
     uint32_t time3, delay3 = SENSOR_READ_PERIOD; //.8sec
 
+    // Timing measurement/debugging related definitions
+    timer debug_timer;
+    uint32_t start_time, end_time;
+
     tmr3 :> time3;
     while (1) {
         select
         {
             case tmr3 when timerafter(time3) :> void :
+                //Measure start time
+                debug_timer :> start_time;
+
                 // Start messaging
                 result = i2c_interface.write_reg(getDistanceSensorAddr(LEFT_DISTANCE_SENSOR_ID), 0x00, WRDATA_CENTIMETERS); //Left Sensor //Args: addr, reg, data
                 if (result != I2C_REGOP_SUCCESS) {
@@ -147,6 +154,10 @@ void Task_ReadSonarSensors(client i2c_master_if i2c_interface, client distancese
 
                 // Delay
                 time3 += delay3;
+
+                //Measure end time
+                debug_timer :> end_time;
+                printf("SONAR t: %u", end_time - start_time);
                 break;
         }
     }

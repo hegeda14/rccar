@@ -1,10 +1,9 @@
-<preCompilationAnalysis file="../src/servo.xc">
+<preCompilationAnalysis file="../src/l298n_motor_controller.xc">
 <fDef name="ShareDirectionValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareDistanceSensorValues" global="true" interface="distancesensor_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSteeringValue" global="true" interface="steering_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
-<fDef name="Task_ApplyPWMTo1BitPort" global="true" noreturn="true" doNotSpecialize="false" numParams="2"/>
-<fDef name="Task_SteeringServo_MotorController" global="true" noreturn="true" doNotSpecialize="false" numParams="2"/>
+<fDef name="Task_DriveL298N_MotorController1Channel" global="true" noreturn="true" doNotSpecialize="false" numParams="4"/>
 <fDef name="_complete_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="_get_outgoing_timestamp" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="0"/>
 <fDef name="_init_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
@@ -691,35 +690,6 @@
   <arg num="2">
     <values>
       <value type="intval"><intval isSigned="true" val="0"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printf" global="true" numArgs="3">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="__builtin_timer_after" global="true" numArgs="2">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
     </values>
   </arg>
 </fCall>
