@@ -27,6 +27,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends Activity {
 
@@ -454,7 +455,7 @@ public class MainActivity extends Activity {
             try {
                 for(char c : msgBuffer) {
                     outStream.write(c);
-                    wait(10);
+                    TimeUnit.MILLISECONDS.sleep(10);
                 }
                 outStream.flush();
             } catch (Exception e) {}
@@ -478,7 +479,7 @@ public class MainActivity extends Activity {
                             //send the command to the rc car
                             sendData(command);
                             //periodic of 500ms to send the data to the RC Car
-                            wait(500);
+                            TimeUnit.MILLISECONDS.sleep(500);
                         }catch (Exception e){}
                     }
                 });

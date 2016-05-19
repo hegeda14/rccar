@@ -446,12 +446,13 @@ public class MainActivity extends Activity {
      */
     public void sendData(String message) {
         char[] msgBuffer = message.toCharArray();
-        if (outStream != null) {
+        if (outStream == null) {
             try {
                 for(char c : msgBuffer) {
                     outStream.write(c);
-                    wait(10);
+                    TimeUnit.MILLISECONDS.sleep(10);
                 }
+                outStream.flush();
             } catch (Exception e) {}
         } else connectionView.setText("outStream is Null.");
     }
