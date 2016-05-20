@@ -54,7 +54,7 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
             //Calculate PWM periods and apply period within the timer
             case tmr when timerafter(time) :> void :
                 //Measure start time
-                debug_timer :> start_time;
+                ////debug_timer :> start_time;
 
                 tmr :> time;
 
@@ -111,8 +111,8 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
                 }
 
                 //Measure end time
-                debug_timer :> end_time;
-                printf("TBLE t: %u", end_time - start_time);
+                ////debug_timer :> end_time;
+                ////printf("TBLE t: %u", end_time - start_time);
 
                 break;
         }

@@ -111,6 +111,10 @@
   <inFunction>Task_ProduceMotorControlOutputs</inFunction>
 </task>
 <task>
+  <name>ar8035_phy_driver</name>
+  <inFunction>ar8035_phy_driver</inFunction>
+</task>
+<task>
   <name>main</name>
   <inFunction>main</inFunction>
 </task>
@@ -192,46 +196,38 @@
   <parent>main</parent>
   <calledFunction>Task_GetRemoteCommandsViaBluetooth</calledFunction>
   <tile>tile[0]</tile>
+  <core>u1</core>
+  <inPar/>
+</task>
+<task>
+  <name>_task_rgmii_ethernet_mac_9</name>
+  <inFunction>main</inFunction>
+  <parent>main</parent>
+  <calledFunction>rgmii_ethernet_mac</calledFunction>
+  <tile>tile[1]</tile>
   <core>6</core>
   <inPar/>
 </task>
 <task>
-  <name>_task_Task_ProduceMotorControlOutputs_9</name>
+  <name>_task_rgmii_ethernet_mac_config_10</name>
   <inFunction>main</inFunction>
   <parent>main</parent>
-  <calledFunction>Task_ProduceMotorControlOutputs</calledFunction>
-  <tile>tile[0]</tile>
-  <core>7</core>
+  <calledFunction>rgmii_ethernet_mac_config</calledFunction>
+  <tile>tile[1]</tile>
+  <core>u0</core>
   <inPar/>
 </task>
 <task>
-  <name>_task_10</name>
+  <name>_task_ar8035_phy_driver_11</name>
   <inFunction>main</inFunction>
   <parent>main</parent>
+  <calledFunction>ar8035_phy_driver</calledFunction>
   <tile>tile[1]</tile>
-  <core>8</core>
+  <core>u0</core>
   <inPar/>
 </task>
 <task>
-  <name>_task_mii_driver_11</name>
-  <inFunction>main</inFunction>
-  <parent>_task_10</parent>
-  <calledFunction>mii_driver</calledFunction>
-  <tile>tile[1]</tile>
-  <core>9</core>
-  <inPar/>
-</task>
-<task>
-  <name>_task_mii_handler_12</name>
-  <inFunction>main</inFunction>
-  <parent>_task_10</parent>
-  <calledFunction>mii_handler</calledFunction>
-  <tile>tile[1]</tile>
-  <distributed/>
-  <inPar/>
-</task>
-<task>
-  <name>_task_smi_13</name>
+  <name>_task_smi_12</name>
   <inFunction>main</inFunction>
   <parent>main</parent>
   <calledFunction>smi</calledFunction>
@@ -240,21 +236,21 @@
   <inPar/>
 </task>
 <task>
-  <name>_task_xtcp_14</name>
+  <name>_task_xtcp_13</name>
   <inFunction>main</inFunction>
   <parent>main</parent>
   <calledFunction>xtcp</calledFunction>
-  <tile>tile[1]</tile>
-  <core>12</core>
+  <tile>tile[0]</tile>
+  <core>8</core>
   <inPar/>
 </task>
 <task>
-  <name>_task_Task_EthernetAppUDPServer_15</name>
+  <name>_task_Task_EthernetAppTCPServer_14</name>
   <inFunction>main</inFunction>
   <parent>main</parent>
-  <calledFunction>Task_EthernetAppUDPServer</calledFunction>
-  <tile>tile[1]</tile>
-  <core>13</core>
+  <calledFunction>Task_EthernetAppTCPServer</calledFunction>
+  <tile>tile[0]</tile>
+  <core>9</core>
   <inPar/>
 </task>
 <connection>
@@ -319,53 +315,60 @@
 </connection>
 <connection>
   <ends>
-    <end task="_task_Task_ProduceMotorControlOutputs_9" type="server"/>
-    <end task="_task_Task_ReadSonarSensors_7" type="client"/>
+    <end task="_task_rgmii_ethernet_mac_9" type="server"/>
+    <end task="_task_xtcp_13" type="client"/>
   </ends>
-  <name>sensors_interface</name>
-   <interface>distancesensor_if</interface>
+    <index>0</index>
+  <name>i_eth_rx</name>
+   <interface>ethernet_rx_if</interface>
+   <notification>get_packet</notification>
 </connection>
 <connection>
   <ends>
-    <end task="_task_mii_driver_11" type="chan"/>
-    <end task="_task_mii_handler_12" type="chan"/>
+    <end task="_task_rgmii_ethernet_mac_9" type="server"/>
+    <end task="_task_xtcp_13" type="client"/>
   </ends>
-  <name>c_in</name>
+    <index>0</index>
+  <name>i_eth_tx</name>
+   <interface>ethernet_tx_if</interface>
 </connection>
 <connection>
   <ends>
-    <end task="_task_mii_driver_11" type="chan"/>
-    <end task="_task_mii_handler_12" type="chan"/>
+    <end task="_task_rgmii_ethernet_mac_9" type="schan"/>
+    <end task="_task_rgmii_ethernet_mac_config_10" type="schan"/>
   </ends>
-  <name>c_out</name>
+  <name>c_rgmii_cfg</name>
 </connection>
 <connection>
   <ends>
-    <end task="_task_mii_driver_11" type="chan"/>
-    <end task="_task_mii_handler_12" type="chan"/>
+    <end task="_task_rgmii_ethernet_mac_config_10" type="server"/>
+    <end task="_task_xtcp_13" type="client"/>
   </ends>
-  <name>c_notif</name>
+    <index>0</index>
+  <name>i_eth_cfg</name>
+   <interface>ethernet_cfg_if</interface>
 </connection>
 <connection>
   <ends>
-    <end task="_task_mii_handler_12" type="server"/>
-    <end task="_task_xtcp_14" type="client"/>
+    <end task="_task_rgmii_ethernet_mac_config_10" type="server"/>
+    <end task="_task_ar8035_phy_driver_11" type="client"/>
   </ends>
-  <name>i_mii</name>
-   <interface>mii_if</interface>
+    <index>1</index>
+  <name>i_eth_cfg</name>
+   <interface>ethernet_cfg_if</interface>
 </connection>
 <connection>
   <ends>
-    <end task="_task_smi_13" type="server"/>
-    <end task="_task_xtcp_14" type="client"/>
+    <end task="_task_smi_12" type="server"/>
+    <end task="_task_ar8035_phy_driver_11" type="client"/>
   </ends>
   <name>i_smi</name>
    <interface>smi_if</interface>
 </connection>
 <connection>
   <ends>
-    <end task="_task_xtcp_14" type="chan"/>
-    <end task="_task_Task_EthernetAppUDPServer_15" type="chan"/>
+    <end task="_task_xtcp_13" type="chan"/>
+    <end task="_task_Task_EthernetAppTCPServer_14" type="chan"/>
   </ends>
     <index>0</index>
   <name>c_xtcp</name>

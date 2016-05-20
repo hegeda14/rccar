@@ -14,20 +14,18 @@
 #include "defines.h"
 
 // Defines
-#define RX_BUFFER_SIZE 300
-#define INCOMING_PORT 15553//9040//15533
-#define BROADCAST_INTERVAL 600000000
-#define BROADCAST_PORT 15553//9045//15534
-#define BROADCAST_ADDR {255,255,255,255}//{192,168,20,40}//{255,255,255,255}
-#define BROADCAST_MSG "XMOS Broadcast\n"
-#define INIT_VAL -1
+// Defines
 
-#define XTCP_MII_BUFSIZE (4096)
+
+#define RX_BUFFER_SIZE 1400
+#define INCOMING_PORT 15533
+#define INIT_VAL -1
+#define YOUSEND "You sent: "
 #define ETHERNET_SMI_PHY_ADDRESS (0)
 
 enum flag_status {TRUE=1, FALSE=0};
 
 // Prototypes
-void Task_EthernetAppUDPServer(chanend c_xtcp);
+void Task_EthernetAppTCPServer(chanend c_xtcp);
 
 #endif /* ETHERNET_APP_H_ */

@@ -55,7 +55,7 @@ void Task_DriveL298N_MotorController1Channel (port ENA, port IN1, port IN2, serv
             //Calculate PWM periods and apply period within the timer
             case tmr when timerafter(time) :> void :
                 //Measure start time
-               debug_timer :> start_time;
+                ////debug_timer :> start_time;
 
                 tmr :> time;
 
@@ -103,8 +103,8 @@ void Task_DriveL298N_MotorController1Channel (port ENA, port IN1, port IN2, serv
                 }
 
                 //Measure end time
-                debug_timer :> end_time;
-                printf("L298 t: %u", end_time - start_time);
+                ////debug_timer :> end_time;
+                ////printf("L298 t: %u", end_time - start_time);
 
                 break;
         }

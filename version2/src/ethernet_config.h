@@ -16,14 +16,36 @@
 
 #include "defines.h"
 
-    // These ports are for accessing the OTP memory
-    otp_ports_t otp_ports = on tile[1]: OTP_PORTS_INITIALIZER;
+// Defines
+#define DEBUG 1
+#define ETHERNET_SMI_PHY_ADDRESS (0)
+#define DATAINTERFACES  5
 
-    xtcp_ipconfig_t ipconfig = {
-            { 192, 168, 20, 60 }, // ip address (eg 192,168,0,2)
-            { 255, 255, 255, 0 }, // netmask (eg 255,255,255,0)
-            { 192, 168, 20, 1 }  // gateway (eg 192,168,0,1)
-    };
+// An enum to manage the array of connections from the ethernet component
+// to its clients.
+enum eth_clients {
+  ETH_TO_ICMP,
+  NUM_ETH_CLIENTS
+};
+
+enum cfg_clients {
+  CFG_TO_ICMP,
+  CFG_TO_PHY_DRIVER,
+  NUM_CFG_CLIENTS
+};
+
+// IP Config - change this to suit your network.  Leave with all
+// 0 values to use DHCP/AutoIP
+xtcp_ipconfig_t ipconfig = {
+        {192,168,1,92},//{ 0,0,0,0 }, // ip address (eg 192,168,0,2)
+        {255,255,255,0},//{ 0, 0, 0, 0 }, // netmask (eg 255,255,255,0)
+        {192,168,1,1}//{ 0, 0, 0, 0 } // gateway (eg 192,168,0,1)
+};
+//xtcp_ipconfig_t ipconfig = {
+//        { 0,0,0,0 }, // ip address (eg 192,168,0,2)
+//        { 0, 0, 0, 0 }, // netmask (eg 255,255,255,0)
+//        { 0, 0, 0, 0 } // gateway (eg 192,168,0,1)
+//};
 
 
 #endif /* ETHERNET_CONFIG_H_ */

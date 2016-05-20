@@ -111,6 +111,23 @@
   <inFunction>WriteData</inFunction>
 </task>
 <task>
+  <name>isDigit</name>
+  <inFunction>isDigit</inFunction>
+</task>
+<task>
+  <name>CharToDigit</name>
+  <inFunction>CharToDigit</inFunction>
+</task>
+<task>
+  <name>ParseRCCommandString</name>
+  <inFunction>ParseRCCommandString</inFunction>
+</task>
+<task>
+  <name>InitializeRN42asSlave</name>
+  <inFunction>InitializeRN42asSlave</inFunction>
+  <endOfSeqCalledFunction>delay_microseconds</endOfSeqCalledFunction>
+</task>
+<task>
   <name>Task_GetRemoteCommandsViaBluetooth2</name>
   <inFunction>Task_GetRemoteCommandsViaBluetooth2</inFunction>
   <endOfSeqCalledFunction>WriteData</endOfSeqCalledFunction>

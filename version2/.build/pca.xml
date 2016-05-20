@@ -29,7 +29,7 @@
 <fInfo name="mii_ethernet_aux" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" specialize="true" noreturn="false" doNotSpecialize="false" numParams="7">
   <arg num="0" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="mii_handler" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" impId="1" param="3"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Smii_handler_0" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" impId="1" param="3"/></value>
     </values>
   </arg>
   <arg num="1" specialize="true">
@@ -61,7 +61,7 @@
   </arg>
  <specializations>
    <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="mii_handler" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" impId="1" param="3"/></value></values></arg>
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Smii_handler_0" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" impId="1" param="3"/></value></values></arg>
     <arg num="1"><values><value type="interface"/></values></arg>
     <arg num="2"><values><value type="unknown"/></values></arg>
     <arg num="3"><values><value type="interface"/></values></arg>
@@ -610,14 +610,15 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="drop_lp_packets" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/rgmii_buffering.xc" specialize="false" noreturn="false" doNotSpecialize="false" numParams="4">
+<fInfo name="drop_lp_packets" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/rgmii_buffering.xc" specialize="true" noreturn="false" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="false">
     <values>
       <value type="unknown"/>
     </values>
   </arg>
-  <arg num="1" specialize="false">
+  <arg num="1" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
   <arg num="2" specialize="false">
@@ -630,10 +631,19 @@
       <value type="unknown"/>
     </values>
   </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="unknown"/></values></arg>
+    <arg num="1"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
+    <arg num="2"><values><value type="unknown"/></values></arg>
+    <arg num="3"><values><value type="unknown"/></values></arg>
+   </specialization>
+ </specializations>
 </fInfo>
 <fInfo name="get_tile_id_from_chanend" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/rgmii_buffering.xc" specialize="false" noreturn="false" doNotSpecialize="true" numParams="1">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
 </fInfo>
@@ -648,8 +658,9 @@
       <value type="interface"/>
     </values>
   </arg>
-  <arg num="2" specialize="false">
+  <arg num="2" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
   <arg num="3" specialize="false">
@@ -666,7 +677,7 @@
    <specialization id="0">
     <arg num="0"><values><value type="unknown"/></values></arg>
     <arg num="1"><values><value type="interface"/></values></arg>
-    <arg num="2"><values><value type="unknown"/></values></arg>
+    <arg num="2"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
     <arg num="3"><values><value type="unknown"/></values></arg>
     <arg num="4"><values><value type="unknown"/></values></arg>
    </specialization>
@@ -730,6 +741,7 @@
 <fInfo name="high_pulse" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master.xc" specialize="false" noreturn="false" doNotSpecialize="false" numParams="3">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1" specialize="false">
@@ -746,6 +758,7 @@
 <fInfo name="high_pulse_sample" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master.xc" specialize="false" noreturn="false" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1" specialize="false">
@@ -768,6 +781,7 @@
 <fInfo name="release_clock_and_wait" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master.xc" specialize="false" noreturn="false" doNotSpecialize="false" numParams="3">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1" specialize="false">
@@ -784,10 +798,12 @@
 <fInfo name="start_bit" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master.xc" specialize="false" noreturn="false" doNotSpecialize="false" numParams="3">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="2" specialize="false">
@@ -799,10 +815,12 @@
 <fInfo name="stop_bit" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master.xc" specialize="false" noreturn="false" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="2" specialize="false">
@@ -819,10 +837,12 @@
 <fInfo name="tx8" global="false" unit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master.xc" specialize="false" noreturn="false" doNotSpecialize="false" numParams="5">
   <arg num="0" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="2" specialize="false">
@@ -1302,7 +1322,7 @@
   </arg>
   <arg num="1" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="300"/></value>
+      <value type="intval"><intval isSigned="true" val="1400"/></value>
     </values>
   </arg>
   <arg num="2" specialize="false">
@@ -1627,7 +1647,7 @@
    </specialization>
  </specializations>
 </fInfo>
-<fInfo name="Task_EthernetAppUDPServer" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="1">
+<fInfo name="Task_EthernetAppTCPServer" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="1">
   <arg num="0" specialize="false">
     <values>
       <value type="unknown"/>
@@ -1637,7 +1657,7 @@
 <fInfo name="Task_GetRemoteCommandsViaBluetooth" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="3" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="true">
@@ -1657,7 +1677,7 @@
   </arg>
  <specializations>
    <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="3" param="0"/></value></values></arg>
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value></values></arg>
     <arg num="1"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
     <arg num="2"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
     <arg num="3"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
@@ -1688,15 +1708,23 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="Task_ReadSonarSensors" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="2">
-  <arg num="0" specialize="false">
+<fInfo name="Task_ReadSonarSensors" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="2">
+  <arg num="0" specialize="true">
     <values>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
     </values>
   </arg>
-  <arg num="1" specialize="false">
+  <arg num="1" specialize="true">
     <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value></values></arg>
+    <arg num="1"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+   </specialization>
+ </specializations>
 </fInfo>
 <fInfo name="Task_SteeringServo_MotorController" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="false">
@@ -1716,9 +1744,10 @@
    </specialization>
  </specializations>
 </fInfo>
-<fInfo name="WriteData" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
-  <arg num="0" specialize="false">
+<fInfo name="WriteData" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="2">
+  <arg num="0" specialize="true">
     <values>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="false">
@@ -1726,6 +1755,12 @@
       <value type="unknown"/>
     </values>
   </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value></values></arg>
+    <arg num="1"><values><value type="unknown"/></values></arg>
+   </specialization>
+ </specializations>
 </fInfo>
 <fInfo name="_complete_send_packet" global="true" interface="ethernet_tx_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="false">
@@ -1847,6 +1882,24 @@
    </specialization>
  </specializations>
 </fInfo>
+<fInfo name="ar8035_phy_driver" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="2">
+  <arg num="0" specialize="true">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value>
+    </values>
+  </arg>
+  <arg num="1" specialize="true">
+    <values>
+      <value type="interface"><interfaceInfo index="1" type="comb" func="_Srgmii_ethernet_mac_config_0" global="true" impUnit="../src/main.xc" impId="10" param="0"/></value>
+    </values>
+  </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value></values></arg>
+    <arg num="1"><values><value type="interface"><interfaceInfo index="1" type="comb" func="_Srgmii_ethernet_mac_config_0" global="true" impUnit="../src/main.xc" impId="10" param="0"/></value></values></arg>
+   </specialization>
+ </specializations>
+</fInfo>
 <fInfo name="buffers_free_initialize" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="false">
     <values>
@@ -1930,6 +1983,7 @@
 <fInfo name="delay_milliseconds" global="true" specialize="false" noreturn="false" doNotSpecialize="true" numParams="1">
   <arg num="0" specialize="false">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
       <value type="intval"><intval isSigned="true" val="10"/></value>
       <value type="intval"><intval isSigned="true" val="20"/></value>
     </values>
@@ -2282,9 +2336,10 @@
   </arg>
 </fInfo>
 <fInfo name="i2c_master" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="5">
-  <arg num="0" specialize="true">
+  <arg num="0" specialize="false">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master_async.xc" impId="0" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master_async.xc" impId="0" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="true">
@@ -2294,23 +2349,26 @@
   </arg>
   <arg num="2" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="3" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
-  <arg num="4" specialize="false">
+  <arg num="4" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="false" val="10"/></value>
     </values>
   </arg>
  <specializations>
    <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master_async.xc" impId="0" param="0"/></value></values></arg>
+    <arg num="0"><values><value type="unknown"/></values></arg>
     <arg num="1"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
     <arg num="2"><values><value type="unknown"/></values></arg>
     <arg num="3"><values><value type="unknown"/></values></arg>
-    <arg num="4"><values><value type="unknown"/></values></arg>
+    <arg num="4"><values><value type="intval"><intval isSigned="false" val="10"/></value></values></arg>
    </specialization>
  </specializations>
 </fInfo>
@@ -2352,7 +2410,7 @@
   </arg>
   <arg num="2" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master_async.xc" impId="0" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master_async.xc" impId="0" param="0"/></value>
     </values>
   </arg>
   <arg num="3" specialize="false">
@@ -2363,7 +2421,7 @@
    <specialization id="0">
     <arg num="0"><values><value type="interface"/></values></arg>
     <arg num="1"><values><value type="unknown"/></values></arg>
-    <arg num="2"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Si2c_master_0" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master_async.xc" impId="0" param="0"/></value></values></arg>
+    <arg num="2"><values><value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_i2c/src/i2c_master_async.xc" impId="0" param="0"/></value></values></arg>
     <arg num="3"><values><value type="unknown"/></values></arg>
    </specialization>
  </specializations>
@@ -2560,7 +2618,7 @@
 <fInfo name="input_gpio_1bit_with_events" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="false">
@@ -2570,7 +2628,7 @@
   </arg>
  <specializations>
    <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value></values></arg>
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value></values></arg>
     <arg num="1"><values><value type="unknown"/></values></arg>
    </specialization>
  </specializations>
@@ -2656,52 +2714,42 @@
 <fInfo name="mii_driver" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="13">
   <arg num="0" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="2" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="3" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="4" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="5" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="6" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="7" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="8" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="9" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="10" specialize="false">
@@ -2929,15 +2977,13 @@
       <value type="unknown"/>
     </values>
   </arg>
-  <arg num="3" specialize="false">
+  <arg num="3" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Smii_handler_0" global="true" impUnit="../src/main.xc" impId="1" param="3"/></value>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="mii_handler" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" impId="1" param="3"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Smii_handler_0" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" impId="1" param="3"/></value>
     </values>
   </arg>
-  <arg num="4" specialize="true">
+  <arg num="4" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="4096"/></value>
     </values>
   </arg>
  <specializations>
@@ -2945,8 +2991,8 @@
     <arg num="0"><values><value type="unknown"/></values></arg>
     <arg num="1"><values><value type="unknown"/></values></arg>
     <arg num="2"><values><value type="unknown"/></values></arg>
-    <arg num="3"><values><value type="unknown"/></values></arg>
-    <arg num="4"><values><value type="intval"><intval isSigned="true" val="4096"/></value></values></arg>
+    <arg num="3"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Smii_handler_0" global="true" impUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" impId="1" param="3"/></value></values></arg>
+    <arg num="4"><values><value type="unknown"/></values></arg>
    </specialization>
  </specializations>
 </fInfo>
@@ -3002,7 +3048,6 @@
   </arg>
   <arg num="1" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="2" specialize="false">
@@ -3012,7 +3057,6 @@
   </arg>
   <arg num="3" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="4" specialize="false">
@@ -3103,7 +3147,6 @@
 <fInfo name="mii_master_init" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="9">
   <arg num="0" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1" specialize="false">
@@ -3113,22 +3156,18 @@
   </arg>
   <arg num="2" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="3" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="4" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="5" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="6" specialize="false">
@@ -3138,7 +3177,6 @@
   </arg>
   <arg num="7" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="8" specialize="false">
@@ -3447,7 +3485,7 @@
 <fInfo name="output_gpio" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="true">
@@ -3467,7 +3505,7 @@
   </arg>
  <specializations>
    <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value></values></arg>
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value></values></arg>
     <arg num="1"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
     <arg num="2"><values><value type="unknown"/></values></arg>
     <arg num="3"><values><value type="null"/></values></arg>
@@ -3549,10 +3587,11 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="read_reg" global="true" interface="smi_if" specialize="true" noreturn="false" doNotSpecialize="false" numParams="2">
-  <arg num="0" specialize="true">
+<fInfo name="read_reg" global="true" interface="smi_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
+  <arg num="0" specialize="false">
     <values>
       <value type="intval"><intval isSigned="true" val="0"/></value>
+      <value type="intval"><intval isSigned="true" val="4"/></value>
     </values>
   </arg>
   <arg num="1" specialize="false">
@@ -3563,14 +3602,9 @@
       <value type="intval"><intval isSigned="true" val="3"/></value>
       <value type="intval"><intval isSigned="true" val="4"/></value>
       <value type="intval"><intval isSigned="true" val="9"/></value>
+      <value type="intval"><intval isSigned="true" val="17"/></value>
     </values>
   </arg>
- <specializations>
-   <specialization id="0">
-    <arg num="0"><values><value type="intval"><intval isSigned="true" val="0"/></value></values></arg>
-    <arg num="1"><values><value type="unknown"/></values></arg>
-   </specialization>
- </specializations>
 </fInfo>
 <fInfo name="read_reg16" global="true" interface="i2c_master_if" specialize="false" noreturn="false" doNotSpecialize="true" numParams="4">
   <arg num="0" specialize="false">
@@ -3798,57 +3832,89 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="rgmii_ethernet_mac" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="9">
-  <arg num="0" specialize="false">
+<fInfo name="rgmii_ethernet_mac" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="9">
+  <arg num="0" specialize="true">
     <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
-  <arg num="1" specialize="false">
+  <arg num="1" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
-  <arg num="2" specialize="false">
+  <arg num="2" specialize="true">
     <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
-  <arg num="3" specialize="false">
+  <arg num="3" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
-  <arg num="4" specialize="false">
+  <arg num="4" specialize="true">
     <values>
+      <value type="null"/>
     </values>
   </arg>
-  <arg num="5" specialize="false">
+  <arg num="5" specialize="true">
     <values>
+      <value type="null"/>
     </values>
   </arg>
   <arg num="6" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="7" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
-  <arg num="8" specialize="false">
+  <arg num="8" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+    <arg num="1"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
+    <arg num="2"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+    <arg num="3"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
+    <arg num="4"><values><value type="null"/></values></arg>
+    <arg num="5"><values><value type="null"/></values></arg>
+    <arg num="6"><values><value type="unknown"/></values></arg>
+    <arg num="7"><values><value type="unknown"/></values></arg>
+    <arg num="8"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
+   </specialization>
+ </specializations>
 </fInfo>
-<fInfo name="rgmii_ethernet_mac_config" global="true" specialize="false" noreturn="true" doNotSpecialize="false" numParams="3">
-  <arg num="0" specialize="false">
+<fInfo name="rgmii_ethernet_mac_config" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="3">
+  <arg num="0" specialize="true">
     <values>
+      <value type="interface"><interfaceInfo index="1" type="comb" func="_Srgmii_ethernet_mac_config_0" global="true" impUnit="../src/main.xc" impId="10" param="0"/><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
-  <arg num="1" specialize="false">
+  <arg num="1" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="2"/></value>
     </values>
   </arg>
   <arg num="2" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="interface"><interfaceInfo index="1" type="comb" func="_Srgmii_ethernet_mac_config_0" global="true" impUnit="../src/main.xc" impId="10" param="0"/><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+    <arg num="1"><values><value type="intval"><intval isSigned="true" val="2"/></value></values></arg>
+    <arg num="2"><values><value type="unknown"/></values></arg>
+   </specialization>
+ </specializations>
 </fInfo>
 <fInfo name="rgmii_ethernet_rx_server" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="13">
   <arg num="0" specialize="false">
@@ -3861,16 +3927,19 @@
       <value type="interface"/>
     </values>
   </arg>
-  <arg num="2" specialize="false">
+  <arg num="2" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
-  <arg num="3" specialize="false">
+  <arg num="3" specialize="true">
     <values>
+      <value type="null"/>
     </values>
   </arg>
   <arg num="4" specialize="false">
     <values>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="5" specialize="false">
@@ -3917,8 +3986,8 @@
    <specialization id="0">
     <arg num="0"><values><value type="unknown"/></values></arg>
     <arg num="1"><values><value type="interface"/></values></arg>
-    <arg num="2"><values><value type="unknown"/></values></arg>
-    <arg num="3"><values><value type="unknown"/></values></arg>
+    <arg num="2"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
+    <arg num="3"><values><value type="null"/></values></arg>
     <arg num="4"><values><value type="unknown"/></values></arg>
     <arg num="5"><values><value type="unknown"/></values></arg>
     <arg num="6"><values><value type="unknown"/></values></arg>
@@ -3942,12 +4011,14 @@
       <value type="interface"/>
     </values>
   </arg>
-  <arg num="2" specialize="false">
+  <arg num="2" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
-  <arg num="3" specialize="false">
+  <arg num="3" specialize="true">
     <values>
+      <value type="null"/>
     </values>
   </arg>
   <arg num="4" specialize="false">
@@ -3989,8 +4060,8 @@
    <specialization id="0">
     <arg num="0"><values><value type="unknown"/></values></arg>
     <arg num="1"><values><value type="interface"/></values></arg>
-    <arg num="2"><values><value type="unknown"/></values></arg>
-    <arg num="3"><values><value type="unknown"/></values></arg>
+    <arg num="2"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
+    <arg num="3"><values><value type="null"/></values></arg>
     <arg num="4"><values><value type="unknown"/></values></arg>
     <arg num="5"><values><value type="unknown"/></values></arg>
     <arg num="6"><values><value type="unknown"/></values></arg>
@@ -4154,8 +4225,9 @@
       <value type="unknown"/>
     </values>
   </arg>
-  <arg num="2" specialize="true">
+  <arg num="2" specialize="false">
     <values>
+      <value type="unknown"/>
       <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
@@ -4163,7 +4235,7 @@
    <specialization id="0">
     <arg num="0"><values><value type="intval"><intval isSigned="true" val="0"/></value></values></arg>
     <arg num="1"><values><value type="unknown"/></values></arg>
-    <arg num="2"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
+    <arg num="2"><values><value type="unknown"/></values></arg>
    </specialization>
  </specializations>
 </fInfo>
@@ -4252,7 +4324,7 @@
 <fInfo name="smi" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="3">
   <arg num="0" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="9" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="false">
@@ -4267,29 +4339,41 @@
   </arg>
  <specializations>
    <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="9" param="0"/></value></values></arg>
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value></values></arg>
     <arg num="1"><values><value type="unknown"/></values></arg>
     <arg num="2"><values><value type="unknown"/></values></arg>
    </specialization>
  </specializations>
 </fInfo>
-<fInfo name="smi_configure" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="4">
-  <arg num="0" specialize="false">
+<fInfo name="smi_configure" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="4">
+  <arg num="0" specialize="true">
     <values>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value>
     </values>
   </arg>
-  <arg num="1" specialize="false">
+  <arg num="1" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="4"/></value>
     </values>
   </arg>
-  <arg num="2" specialize="false">
+  <arg num="2" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="2"/></value>
     </values>
   </arg>
-  <arg num="3" specialize="false">
+  <arg num="3" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value></values></arg>
+    <arg num="1"><values><value type="intval"><intval isSigned="true" val="4"/></value></values></arg>
+    <arg num="2"><values><value type="intval"><intval isSigned="true" val="2"/></value></values></arg>
+    <arg num="3"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
+   </specialization>
+ </specializations>
 </fInfo>
 <fInfo name="smi_get_id" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="false">
@@ -4301,33 +4385,37 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="smi_get_link_state" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="2">
-  <arg num="0" specialize="true">
-    <values>
-      <value type="interface"/>
-    </values>
-  </arg>
-  <arg num="1" specialize="true">
-    <values>
-      <value type="intval"><intval isSigned="true" val="0"/></value>
-    </values>
-  </arg>
- <specializations>
-   <specialization id="0">
-    <arg num="0"><values><value type="interface"/></values></arg>
-    <arg num="1"><values><value type="intval"><intval isSigned="true" val="0"/></value></values></arg>
-   </specialization>
- </specializations>
-</fInfo>
-<fInfo name="smi_phy_is_powered_down" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
+<fInfo name="smi_get_link_state" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="false">
     <values>
+      <value type="interface"/>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="false">
     <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+      <value type="intval"><intval isSigned="true" val="4"/></value>
     </values>
   </arg>
+</fInfo>
+<fInfo name="smi_phy_is_powered_down" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="2">
+  <arg num="0" specialize="true">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value>
+    </values>
+  </arg>
+  <arg num="1" specialize="true">
+    <values>
+      <value type="intval"><intval isSigned="true" val="4"/></value>
+    </values>
+  </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="12" param="0"/></value></values></arg>
+    <arg num="1"><values><value type="intval"><intval isSigned="true" val="4"/></value></values></arg>
+   </specialization>
+ </specializations>
 </fInfo>
 <fInfo name="smi_set_loopback_mode" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="3">
   <arg num="0" specialize="false">
@@ -4430,7 +4518,7 @@
   </arg>
   <arg num="2" specialize="true">
     <values>
-      <value type="intval"><intval isSigned="true" val="300"/></value>
+      <value type="intval"><intval isSigned="true" val="1400"/></value>
     </values>
   </arg>
   <arg num="3" specialize="true">
@@ -4455,19 +4543,19 @@
   </arg>
   <arg num="7" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value>
     </values>
   </arg>
  <specializations>
    <specialization id="0">
     <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
     <arg num="1"><values><value type="null"/></values></arg>
-    <arg num="2"><values><value type="intval"><intval isSigned="true" val="300"/></value></values></arg>
+    <arg num="2"><values><value type="intval"><intval isSigned="true" val="1400"/></value></values></arg>
     <arg num="3"><values><value type="intval"><intval isSigned="true" val="115200"/></value></values></arg>
     <arg num="4"><values><value type="intval"><intval isSigned="true" val="2"/></value></values></arg>
     <arg num="5"><values><value type="intval"><intval isSigned="true" val="8"/></value></values></arg>
     <arg num="6"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
-    <arg num="7"><values><value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value></values></arg>
+    <arg num="7"><values><value type="interface"><interfaceInfo index="0" type="comb" func="_Sinput_gpio_1bit_with_events_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value></values></arg>
    </specialization>
  </specializations>
 </fInfo>
@@ -4508,7 +4596,7 @@
 <fInfo name="uart_tx" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="7">
   <arg num="0" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="3" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value>
     </values>
   </arg>
   <arg num="1" specialize="true">
@@ -4538,18 +4626,18 @@
   </arg>
   <arg num="6" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value>
     </values>
   </arg>
  <specializations>
    <specialization id="0">
-    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="3" param="0"/></value></values></arg>
+    <arg num="0"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Suart_tx_0" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value></values></arg>
     <arg num="1"><values><value type="null"/></values></arg>
     <arg num="2"><values><value type="intval"><intval isSigned="true" val="115200"/></value></values></arg>
     <arg num="3"><values><value type="intval"><intval isSigned="true" val="2"/></value></values></arg>
     <arg num="4"><values><value type="intval"><intval isSigned="true" val="8"/></value></values></arg>
     <arg num="5"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
-    <arg num="6"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="2" param="0"/></value></values></arg>
+    <arg num="6"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Soutput_gpio_0" global="true" impUnit="../src/main.xc" impId="0" param="0"/></value></values></arg>
    </specialization>
  </specializations>
 </fInfo>
@@ -4731,9 +4819,10 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="write_reg" global="true" interface="smi_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="3">
-  <arg num="0" specialize="false">
+<fInfo name="write_reg" global="true" interface="smi_if" specialize="true" noreturn="false" doNotSpecialize="false" numParams="3">
+  <arg num="0" specialize="true">
     <values>
+      <value type="intval"><intval isSigned="true" val="4"/></value>
     </values>
   </arg>
   <arg num="1" specialize="false">
@@ -4748,6 +4837,13 @@
       <value type="unknown"/>
     </values>
   </arg>
+ <specializations>
+   <specialization id="0">
+    <arg num="0"><values><value type="intval"><intval isSigned="true" val="4"/></value></values></arg>
+    <arg num="1"><values><value type="unknown"/></values></arg>
+    <arg num="2"><values><value type="unknown"/></values></arg>
+   </specialization>
+ </specializations>
 </fInfo>
 <fInfo name="write_reg16" global="true" interface="i2c_master_if" specialize="false" noreturn="false" doNotSpecialize="true" numParams="4">
   <arg num="0" specialize="false">
@@ -4824,27 +4920,27 @@
   </arg>
   <arg num="2" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Smii_handler_0" global="true" impUnit="../src/main.xc" impId="1" param="3"/></value>
+      <value type="null"/>
     </values>
   </arg>
   <arg num="3" specialize="true">
     <values>
-      <value type="null"/>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
   <arg num="4" specialize="true">
     <values>
-      <value type="null"/>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
   <arg num="5" specialize="true">
     <values>
-      <value type="null"/>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
   <arg num="6" specialize="true">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="9" param="0"/></value>
+      <value type="null"/>
     </values>
   </arg>
   <arg num="7" specialize="true">
@@ -4871,11 +4967,11 @@
    <specialization id="0">
     <arg num="0"><values><value type="unknown"/></values></arg>
     <arg num="1"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
-    <arg num="2"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Smii_handler_0" global="true" impUnit="../src/main.xc" impId="1" param="3"/></value></values></arg>
-    <arg num="3"><values><value type="null"/></values></arg>
-    <arg num="4"><values><value type="null"/></values></arg>
-    <arg num="5"><values><value type="null"/></values></arg>
-    <arg num="6"><values><value type="interface"><interfaceInfo index="0" type="dist" func="_Ssmi_0" global="true" impUnit="../src/main.xc" impId="9" param="0"/></value></values></arg>
+    <arg num="2"><values><value type="null"/></values></arg>
+    <arg num="3"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+    <arg num="4"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+    <arg num="5"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+    <arg num="6"><values><value type="null"/></values></arg>
     <arg num="7"><values><value type="intval"><intval isSigned="true" val="0"/></value></values></arg>
     <arg num="8"><values><value type="null"/></values></arg>
     <arg num="9"><values><value type="unknown"/></values></arg>
@@ -4974,35 +5070,23 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="xtcp_connect" global="true" specialize="true" noreturn="false" doNotSpecialize="false" numParams="4">
+<fInfo name="xtcp_connect" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
-  <arg num="1" specialize="true">
+  <arg num="1" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="15553"/></value>
     </values>
   </arg>
   <arg num="2" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
-  <arg num="3" specialize="true">
+  <arg num="3" specialize="false">
     <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
- <specializations>
-   <specialization id="0">
-    <arg num="0"><values><value type="unknown"/></values></arg>
-    <arg num="1"><values><value type="intval"><intval isSigned="true" val="15553"/></value></values></arg>
-    <arg num="2"><values><value type="unknown"/></values></arg>
-    <arg num="3"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
-   </specialization>
- </specializations>
 </fInfo>
 <fInfo name="xtcp_event" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="2">
   <arg num="0" specialize="false">
@@ -5082,19 +5166,19 @@
   </arg>
   <arg num="1" specialize="true">
     <values>
-      <value type="intval"><intval isSigned="true" val="15553"/></value>
+      <value type="intval"><intval isSigned="true" val="15533"/></value>
     </values>
   </arg>
   <arg num="2" specialize="true">
     <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
     </values>
   </arg>
  <specializations>
    <specialization id="0">
     <arg num="0"><values><value type="unknown"/></values></arg>
-    <arg num="1"><values><value type="intval"><intval isSigned="true" val="15553"/></value></values></arg>
-    <arg num="2"><values><value type="intval"><intval isSigned="true" val="1"/></value></values></arg>
+    <arg num="1"><values><value type="intval"><intval isSigned="true" val="15533"/></value></values></arg>
+    <arg num="2"><values><value type="intval"><intval isSigned="true" val="0"/></value></values></arg>
    </specialization>
  </specializations>
 </fInfo>
@@ -5149,14 +5233,14 @@
   </arg>
   <arg num="2" specialize="true">
     <values>
-      <value type="intval"><intval isSigned="true" val="300"/></value>
+      <value type="intval"><intval isSigned="true" val="1400"/></value>
     </values>
   </arg>
  <specializations>
    <specialization id="0">
     <arg num="0"><values><value type="unknown"/></values></arg>
     <arg num="1"><values><value type="unknown"/></values></arg>
-    <arg num="2"><values><value type="intval"><intval isSigned="true" val="300"/></value></values></arg>
+    <arg num="2"><values><value type="intval"><intval isSigned="true" val="1400"/></value></values></arg>
    </specialization>
  </specializations>
 </fInfo>
@@ -5466,25 +5550,33 @@
     </values>
   </arg>
 </fInfo>
-<fCall name="output_gpio" global="true" callerUnit="../src/main.xc" numArgs="4" impId="2" specializationId="0">
+<fCall name="output_gpio" global="true" callerUnit="../src/main.xc" numArgs="4" impId="0" specializationId="0">
 </fCall>
-<fCall name="uart_tx" global="true" callerUnit="../src/main.xc" numArgs="7" impId="3" specializationId="0">
+<fCall name="uart_tx" global="true" callerUnit="../src/main.xc" numArgs="7" impId="1" specializationId="0">
 </fCall>
-<fCall name="input_gpio_1bit_with_events" global="true" callerUnit="../src/main.xc" numArgs="2" impId="4" specializationId="0">
+<fCall name="input_gpio_1bit_with_events" global="true" callerUnit="../src/main.xc" numArgs="2" impId="2" specializationId="0">
 </fCall>
-<fCall name="uart_rx" global="true" callerUnit="../src/main.xc" numArgs="8" impId="5" specializationId="0">
+<fCall name="uart_rx" global="true" callerUnit="../src/main.xc" numArgs="8" impId="3" specializationId="0">
 </fCall>
-<fCall name="Task_DriveTBLE02S_MotorController" global="true" callerUnit="../src/main.xc" numArgs="2" impId="6" specializationId="0">
+<fCall name="i2c_master" global="true" callerUnit="../src/main.xc" numArgs="5" impId="4" specializationId="0">
 </fCall>
-<fCall name="Task_SteeringServo_MotorController" global="true" callerUnit="../src/main.xc" numArgs="2" impId="7" specializationId="0">
+<fCall name="Task_DriveTBLE02S_MotorController" global="true" callerUnit="../src/main.xc" numArgs="2" impId="5" specializationId="0">
+</fCall>
+<fCall name="Task_SteeringServo_MotorController" global="true" callerUnit="../src/main.xc" numArgs="2" impId="6" specializationId="0">
+</fCall>
+<fCall name="Task_ReadSonarSensors" global="true" callerUnit="../src/main.xc" numArgs="2" impId="7" specializationId="0">
 </fCall>
 <fCall name="Task_GetRemoteCommandsViaBluetooth" global="true" callerUnit="../src/main.xc" numArgs="4" impId="8" specializationId="0">
 </fCall>
-<fCall name="mii_handler" global="true" callerUnit="../src/main.xc" numArgs="5" impId="1" specializationId="0">
+<fCall name="rgmii_ethernet_mac" global="true" callerUnit="../src/main.xc" numArgs="9" impId="9" specializationId="0">
 </fCall>
-<fCall name="smi" global="true" callerUnit="../src/main.xc" numArgs="3" impId="9" specializationId="0">
+<fCall name="rgmii_ethernet_mac_config" global="true" callerUnit="../src/main.xc" numArgs="3" impId="10" specializationId="0">
 </fCall>
-<fCall name="xtcp" global="true" callerUnit="../src/main.xc" numArgs="11" impId="10" specializationId="0">
+<fCall name="ar8035_phy_driver" global="true" callerUnit="../src/main.xc" numArgs="2" impId="11" specializationId="0">
+</fCall>
+<fCall name="smi" global="true" callerUnit="../src/main.xc" numArgs="3" impId="12" specializationId="0">
+</fCall>
+<fCall name="xtcp" global="true" callerUnit="../src/main.xc" numArgs="11" impId="13" specializationId="0">
 </fCall>
 <fCall name="mii_handler" global="true" callerUnit="C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace1/lib_ethernet/src/mii_ethernet_mac.xc" numArgs="5" impId="1" specializationId="0">
 </fCall>

@@ -118,6 +118,10 @@ void InitializeRN42asSlave(client uart_tx_if uart_tx)
     WriteData(uart_tx, buffer2);
     delay_microseconds(300000); //0.03sec //Wait for the response
 
+    char buffer6[]= "SA,0\r";                // set to open mode (no authentication)
+    WriteData(uart_tx, buffer6);
+    delay_microseconds(300000); //0.03sec //Wait for the response
+
     char buffer3[]= "SN,RCCar Bluetooth\r";  // Setting bluetooth name
     WriteData(uart_tx, buffer3);
     delay_microseconds(300000); //0.03sec //Wait for the response
@@ -185,6 +189,10 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
     timer debug_timer;
     uint32_t start_time, end_time;
 
+    char buffer2[]= "SA,0\r";                // set to open mode (no authentication)
+    WriteData(uart_tx, buffer2);
+    delay_microseconds(300000); //0.03sec //Wait for the response
+
 #ifdef RN42_INITIAL_CONFIG
     // Send initialization commands to RN42
     // Do for only first time. Change RN42_INITIAL CONFIG section in rn42_driver.h to do so.
@@ -198,9 +206,10 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
         case uart_rx.data_ready(): //Read when data is available
 
             //Measure start time
-            debug_timer :> start_time;
+            //debug_timer :> start_time;
 
             data = uart_rx.read();
+            printf("%c",data);
             //Using so many printf's to debug causes malfunction..
             //printf("Data received: %c\n", data);
             //printf("CommandLine buffer= ");
@@ -228,8 +237,8 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
             }
 
             //Measure end time
-            debug_timer :> end_time;
-            printf("RN42 t: %u", end_time - start_time);
+            ////debug_timer :> end_time;
+            ////printf("RN42 t: %u", end_time - start_time);
 
             break;
 

@@ -3,7 +3,7 @@
 <fDef name="ShareDistanceSensorValues" global="true" interface="distancesensor_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSteeringValue" global="true" interface="steering_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
-<fDef name="Task_EthernetAppUDPServer" global="true" noreturn="true" doNotSpecialize="false" numParams="1"/>
+<fDef name="Task_EthernetAppTCPServer" global="true" noreturn="true" doNotSpecialize="false" numParams="1"/>
 <fDef name="_complete_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="_get_outgoing_timestamp" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="0"/>
 <fDef name="_init_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
@@ -695,58 +695,24 @@
 </fCall>
 <fCall name="xtcp_listen" global="true" numArgs="3">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
+    <passThroughArg param="0" caller="Task_EthernetAppTCPServer" global="true"/>
     <values>
     </values>
   </arg>
   <arg num="1">
     <values>
-      <value type="intval"><intval isSigned="true" val="15553"/></value>
+      <value type="intval"><intval isSigned="true" val="15533"/></value>
     </values>
   </arg>
   <arg num="2">
     <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
     </values>
   </arg>
 </fCall>
 <fCall name="xtcp_event" global="true" numArgs="2">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
-    <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="xtcp_connect" global="true" numArgs="4">
-  <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
-    <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="intval"><intval isSigned="true" val="15553"/></value>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="xtcp_close" global="true" numArgs="2">
-  <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
+    <passThroughArg param="0" caller="Task_EthernetAppTCPServer" global="true"/>
     <values>
     </values>
   </arg>
@@ -758,54 +724,7 @@
 </fCall>
 <fCall name="xtcp_close" global="true" numArgs="2">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
-    <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printstr" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printintln" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printstr" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printintln" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printstr" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="xtcp_close" global="true" numArgs="2">
-  <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
+    <passThroughArg param="0" caller="Task_EthernetAppTCPServer" global="true"/>
     <values>
     </values>
   </arg>
@@ -817,7 +736,7 @@
 </fCall>
 <fCall name="xtcp_recv_count" global="true" numArgs="3">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
+    <passThroughArg param="0" caller="Task_EthernetAppTCPServer" global="true"/>
     <values>
     </values>
   </arg>
@@ -828,34 +747,13 @@
   </arg>
   <arg num="2">
     <values>
-      <value type="intval"><intval isSigned="true" val="300"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printstr" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printint" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printstrln" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
+      <value type="intval"><intval isSigned="true" val="1400"/></value>
     </values>
   </arg>
 </fCall>
 <fCall name="xtcp_init_send" global="true" numArgs="2">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
+    <passThroughArg param="0" caller="Task_EthernetAppTCPServer" global="true"/>
     <values>
     </values>
   </arg>
@@ -865,33 +763,9 @@
     </values>
   </arg>
 </fCall>
-<fCall name="printstrln" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
 <fCall name="xtcp_send" global="true" numArgs="3">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
-    <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="xtcp_send" global="true" numArgs="3">
-  <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
+    <passThroughArg param="0" caller="Task_EthernetAppTCPServer" global="true"/>
     <values>
     </values>
   </arg>
@@ -908,80 +782,14 @@
 </fCall>
 <fCall name="xtcp_complete_send" global="true" numArgs="1">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
+    <passThroughArg param="0" caller="Task_EthernetAppTCPServer" global="true"/>
     <values>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printstrln" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printstrln" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
     </values>
   </arg>
 </fCall>
 <fCall name="xtcp_close" global="true" numArgs="2">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
-    <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printstr" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printintln" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="__builtin_timer_after" global="true" numArgs="2">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printstrln" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="_safe_strlen" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="xtcp_init_send" global="true" numArgs="2">
-  <arg num="0">
-    <passThroughArg param="0" caller="Task_EthernetAppUDPServer" global="true"/>
+    <passThroughArg param="0" caller="Task_EthernetAppTCPServer" global="true"/>
     <values>
     </values>
   </arg>

@@ -30,22 +30,18 @@
     on tile[0] : port PortSDA = XS1_PORT_1F;
 
 // Ethernet related Ports & clocks
-    port p_eth_rxclk  = on tile[1]: XS1_PORT_1J;
-    port p_eth_rxd    = on tile[1]: XS1_PORT_4E;
-    port p_eth_txd    = on tile[1]: XS1_PORT_4F;
-    port p_eth_rxdv   = on tile[1]: XS1_PORT_1K;
-    port p_eth_txen   = on tile[1]: XS1_PORT_1L;
-    port p_eth_txclk  = on tile[1]: XS1_PORT_1I;
-    port p_eth_int    = on tile[1]: XS1_PORT_1O;
-    port p_eth_rxerr  = on tile[1]: XS1_PORT_1P;
-    port p_eth_timing = on tile[1]: XS1_PORT_8C;
+    // These ports are for accessing the OTP memory
+    otp_ports_t otp_ports = on tile[0]: OTP_PORTS_INITIALIZER;
 
-    clock eth_rxclk   = on tile[1]: XS1_CLKBLK_1;
-    clock eth_txclk   = on tile[1]: XS1_CLKBLK_2;
+    rgmii_ports_t rgmii_ports = on tile[1]: RGMII_PORTS_INITIALIZER;
 
-    port p_smi_mdio = on tile[1]: XS1_PORT_1M;
-    port p_smi_mdc  = on tile[1]: XS1_PORT_1N;
+    port p_smi_mdio   = on tile[1]: XS1_PORT_1C;
+    port p_smi_mdc    = on tile[1]: XS1_PORT_1D;
+    port p_eth_reset  = on tile[1]: XS1_PORT_1N;
 
+    port leds = on tile[0]: XS1_PORT_4F;
+
+    clock clk = on tile[0]: XS1_CLKBLK_1;
 
 
 
