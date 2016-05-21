@@ -446,7 +446,7 @@ public class MainActivity extends Activity {
      */
     public void sendData(String message) {
         char[] msgBuffer = message.toCharArray();
-        if (outStream == null) {
+        if (outStream != null) {
             try {
                 for(char c : msgBuffer) {
                     outStream.write(c);
