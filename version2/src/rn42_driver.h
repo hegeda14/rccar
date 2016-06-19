@@ -29,7 +29,8 @@
 void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
                                         client uart_rx_if uart_rx,
                                         client control_if control_interface,
-                                        client steering_if steering_interface);
+                                        client steering_if steering_interface,
+                                        server ethernet_to_cmdparser_if cmd_from_ethernet_to_override);
 void Task_GetRemoteCommandsViaBluetooth2 (client uart_tx_if uart_tx,
                                          client uart_rx_if uart_rx,
                                          client control_if control_interface,

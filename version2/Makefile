@@ -7,7 +7,7 @@ TARGET = XCORE-200-EXPLORER
 # The APP_NAME variable determines the name of the final .xe file. It should
 # not include the .xe postfix. If left blank the name will default to
 # the project name
-APP_NAME = RCCarBuild12
+APP_NAME = RCCarBuild15
 
 # The flags passed to xcc when building the application
 # You can also set the following to override flags for a particular language:
@@ -18,9 +18,9 @@ APP_NAME = RCCarBuild12
 # xcc for the final link (mapping) stage.
 
 XCC_FLAGS = -Wall -O3 -report -fxscope
-XCC_XC_FLAGS = -report
-XCC_C_FLAGS = -report
-XCC_CPP_FLAGS = -report
+XCC_XC_FLAGS = -report -fxscope
+XCC_C_FLAGS = -report -fxscope
+XCC_CPP_FLAGS = -report -fxscope
 XCC_MAP_FLAGS = -report
 XCC_ASM_FLAGS = -report
 

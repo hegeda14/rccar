@@ -20,10 +20,10 @@
     on tile[0] : port PortUART_RX = XS1_PORT_1M;
 
 // Steering Servo Related Defines
-    on tile[0] : out port PortSteeringServo = XS1_PORT_1H; //J13
+    on tile[0] : out port PortSteeringServo = XS1_PORT_1L; //J10
 
 // Motor Speed Controller Defines
-    on tile[0] : port PortMotorSpeedController = XS1_PORT_1K; //J12
+    on tile[0] : port PortMotorSpeedController = XS1_PORT_1G; //J8
 
 // I2C Related Ports
     on tile[0] : port PortSCL = XS1_PORT_1E;

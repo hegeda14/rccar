@@ -25,6 +25,10 @@
  * 16.04.2016           Revisions and addition of Servo   M.Ozcelikors       2.0.1
  * 22.04.2016           PWM & Motor Speed Control v1      M.Ozcelikors       2.0.2
  * 23.04.2016           Ethernet v1 + File hierarchy      M.Ozcelikors       2.0.3
+ * 20.05.2016           RGMII PHY Updated                 M.Ozcelikors       2.0.4
+ * 19.06.2016           Ethernet commands are integrated  M.Ozcelikors       2.0.5
+ *                      into system to override bluetooth
+ *                      commands.
  ************************************************************************************/
 
 #include "defines.h"
@@ -35,39 +39,6 @@
 #include "port_definitions.h"
 #include "ethernet_app.h"
 #include "ethernet_config.h"
-
-/***
- *  Function Name:              Task_ProduceMotorControlOutputs
- *  Function Description :      This function uses distance sensor values and motor control values
- *                              in order to produce low level outputs to drive motors
- *
- *  Argument                Type                        Description
- *  control_interface       server control_if           Motor speed control value (high level)
- *  steering_interface      server steering_if          Steering control value (high level)
- *  sensors_interface       server distancesensor_if    Used to obtain distance sensor values
- */
-void Task_ProduceMotorControlOutputs (server distancesensor_if sensors_interface)
-{
-    uint8_t left, right, front, rear;
-
-    while(1)
-    {
-        select
-        {
-            case sensors_interface.ShareDistanceSensorValues (uint8_t left_sensor_value,
-                                                              uint8_t right_sensor_value,
-                                                              uint8_t front_sensor_value,
-                                                              uint8_t rear_sensor_value):
-                left = left_sensor_value;
-                right = right_sensor_value;
-                front = front_sensor_value;
-                rear = rear_sensor_value;
-                break;
-        }
-
-        printf("%d %d %d %d\n",left, right, front, rear);
-    }
-}
 
 
 /***
@@ -110,6 +81,43 @@ void Task_ProduceMotorControlOutputs (server distancesensor_if sensors_interface
 }
 
 
+
+/***
+ *  Function Name:              Task_ProduceMotorControlOutputs
+ *  Function Description :      This function uses distance sensor values and motor control values
+ *                              in order to produce low level outputs to drive motors
+ *
+ *  Argument                Type                        Description
+ *  control_interface       server control_if           Motor speed control value (high level)
+ *  steering_interface      server steering_if          Steering control value (high level)
+ *  sensors_interface       server distancesensor_if    Used to obtain distance sensor values
+ */
+void Task_ProduceMotorControlOutputs (server distancesensor_if sensors_interface)
+{
+    uint8_t left, right, front, rear;
+
+    while(1)
+    {
+        select
+        {
+            case sensors_interface.ShareDistanceSensorValues (uint8_t left_sensor_value,
+                                                              uint8_t right_sensor_value,
+                                                              uint8_t front_sensor_value,
+                                                              uint8_t rear_sensor_value):
+                left = left_sensor_value;
+                right = right_sensor_value;
+                front = front_sensor_value;
+                rear = rear_sensor_value;
+                break;
+        }
+
+        printf("%d %d %d %d\n",left, right, front, rear);
+    }
+}
+
+
+
+
 int main() {
   // Interface instances to be used
   interface uart_rx_if i_rx;
@@ -128,6 +136,7 @@ int main() {
   ethernet_tx_if i_eth_tx[NUM_ETH_CLIENTS];
   streaming chan c_rgmii_cfg;
   smi_if i_smi;
+  ethernet_to_cmdparser_if i_cmd_from_ethernet_to_override;
 
 
   par {
@@ -140,7 +149,7 @@ int main() {
      on tile[0].core[0] : uart_rx(i_rx, null, RX_BUFFER_SIZE, BAUD_RATE, UART_PARITY_NONE, 8, 1, i_gpio_rx);
 
      // I2C Task
-     on tile[0] :         Task_MaintainI2CConnection(i2c_client_device_instances, 1, PortSCL, PortSDA, I2C_SPEED_KBITPERSEC);
+     //on tile[0] :         Task_MaintainI2CConnection(i2c_client_device_instances, 1, PortSCL, PortSDA, I2C_SPEED_KBITPERSEC);
 
      // Motor Speed Controller (PWM) Tasks
      on tile[0] :         Task_DriveTBLE02S_MotorController(PortMotorSpeedController, control_interface);
@@ -149,8 +158,8 @@ int main() {
      on tile[0] :         Task_SteeringServo_MotorController (PortSteeringServo, steering_interface);
 
      //Other Tasks
-     on tile[0] :         Task_ReadSonarSensors(i2c_client_device_instances[0], sensors_interface);
-     on tile[0].core[1] :   Task_GetRemoteCommandsViaBluetooth(i_tx, i_rx, control_interface, steering_interface);
+     //on tile[0] :         Task_ReadSonarSensors(i2c_client_device_instances[0], sensors_interface);
+     on tile[0].core[1] :   Task_GetRemoteCommandsViaBluetooth(i_tx, i_rx, control_interface, steering_interface, i_cmd_from_ethernet_to_override);
      //on tile[0] :         Task_ProduceMotorControlOutputs (sensors_interface);
 
      // Ethernet App Tasks
@@ -175,7 +184,7 @@ int main() {
              ipconfig);
 
 
-     on tile[0]: Task_EthernetAppTCPServer(c_xtcp[0]);
+     on tile[0]: Task_EthernetAppTCPServer(c_xtcp[0], i_cmd_from_ethernet_to_override);
   }
 
    return 0;

@@ -163,11 +163,13 @@ void Task_GetRemoteCommandsViaBluetooth2 (client uart_tx_if uart_tx,
 void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
                                         client uart_rx_if uart_rx,
                                         client control_if control_interface,
-                                        client steering_if steering_interface)
+                                        client steering_if steering_interface,
+                                        server ethernet_to_cmdparser_if cmd_from_ethernet_to_override)
 {
     //Debugging related definitions
     timer tmr2;
-    unsigned int time2, delay2 = 300 * MILLISECOND; //.3sec
+#define RCCAR_STATUS_UPDATE_RATE    (50 * MILLISECOND)
+    unsigned int time2, delay2 = RCCAR_STATUS_UPDATE_RATE; //.05sec
     int set_val = 0;
     int direction_val = REVERSE;
     int speed_val = 0;
@@ -209,12 +211,12 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
             //debug_timer :> start_time;
 
             data = uart_rx.read();
-            printf("%c",data);
+            //printf("%c",data);
             //Using so many printf's to debug causes malfunction..
             //printf("Data received: %c\n", data);
             //printf("CommandLine buffer= ");
             //for(int x = 0; x < 7; x++)
-                //printf("%c", command[x]);
+            //    printf("%c", command[x]);
             //printf("\n");
             // This section is basically dedicated to use the bytes and when the end of line reached,
             // construct the command line.
@@ -242,31 +244,43 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
 
             break;
 
+        //Whenever a command comes over ethernet to override our bluetooth commands,
+        //we need to process it.
+        case cmd_from_ethernet_to_override.SendCmd(char* override_command, int cmd_length):
+            //printf("override command=%s\n", override_command);
+            command_line_ready = 1;
+            for(int k=0; k<=cmd_length; k++)
+            {
+                command[k] = override_command[k];
+            }
+            break;
+
+        //Process the commands received above in a timer event
         case tmr2 when timerafter(time2) :> void : // Timer event
-                time2 += delay2;
-                if ( command_line_ready )
+            time2 += delay2;
+            if ( command_line_ready )
+            {
+                // Check if incoming data is as expected..
+                if (1)
                 {
-                    // Check if incoming data is as expected..
-                    if (1)
+                    if (command[0] == 'S' && command[3] == 'A' && (command[6] == 'F' || command[6] == 'R'))
                     {
-                        if (command[0] == 'S' && command[3] == 'A' && (command[6] == 'F' || command[6] == 'R'))
+                        if((isDigit(command[1]) != -1) && (isDigit(command[2]) != -1) && (isDigit(command[4]) != -1) && (isDigit(command[5]) != -1) )
                         {
-                            if((isDigit(command[1]) != -1) && (isDigit(command[2]) != -1) && (isDigit(command[4]) != -1) && (isDigit(command[5]) != -1) )
-                            {
-                                {speed, steering, direction} = ParseRCCommandString (command);
-                                steering_interface.ShareSteeringValue(steering);
-                                control_interface.ShareDirectionValue(direction);
-                                control_interface.ShareSpeedValue(speed);
-                                command_line_ready = 0;
-                                printf("speed=%i\n",speed);
-                                printf("steering=%i\n",steering);
-                                printf("direction=%i\n",direction);
-                            }
+                            {speed, steering, direction} = ParseRCCommandString (command);
+                            steering_interface.ShareSteeringValue(steering);
+                            control_interface.ShareDirectionValue(direction);
+                            control_interface.ShareSpeedValue(speed);
+                            command_line_ready = 0;
+                            //printf("speed=%i\n",speed);
+                            //printf("steering=%i\n",steering);
+                            //printf("direction=%i\n",direction);
                         }
                     }
                 }
+            }
 
-                break;
+            break;
 
 
         }

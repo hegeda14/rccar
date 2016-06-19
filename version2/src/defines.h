@@ -55,6 +55,11 @@ typedef interface steering_if
 {
     void ShareSteeringValue (int  steering_val);
 } steering_if;
+
+typedef interface ethernet_to_cmdparser_if
+{
+    void SendCmd (char* override_command, int cmd_length);
+} ethernet_to_cmdparser_if;
 //------------------------------------------------------Interface Definitions----
 
 

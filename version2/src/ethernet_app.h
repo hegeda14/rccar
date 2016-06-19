@@ -26,6 +26,6 @@
 enum flag_status {TRUE=1, FALSE=0};
 
 // Prototypes
-void Task_EthernetAppTCPServer(chanend c_xtcp);
+void Task_EthernetAppTCPServer (chanend c_xtcp, client ethernet_to_cmdparser_if cmd_from_ethernet_to_override);
 
 #endif /* ETHERNET_APP_H_ */

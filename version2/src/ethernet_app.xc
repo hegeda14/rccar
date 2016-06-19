@@ -22,7 +22,7 @@
  *     value is received. In this case, the connection isn't closed.
  *
  */
-void Task_EthernetAppTCPServer(chanend c_xtcp)
+void Task_EthernetAppTCPServer(chanend c_xtcp, client ethernet_to_cmdparser_if cmd_from_ethernet_to_override)
 {
     xtcp_connection_t conn;     // A temporary variable to hold
       // connections associated with an event
@@ -95,6 +95,10 @@ void Task_EthernetAppTCPServer(chanend c_xtcp)
 
               for (int i = 0; i < response_len; i++)
                   tx_buffer[i] = rx_buffer[i];
+
+              //Send data to bluetooth command parser to override the command -optional
+              cmd_from_ethernet_to_override.SendCmd(rx_buffer, response_len);
+
 
   #ifdef DEBUG
               printstrln(rx_buffer);

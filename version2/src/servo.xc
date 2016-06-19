@@ -103,15 +103,15 @@ void Task_SteeringServo_MotorController (out port p, server steering_if steering
 
                 if  (steering == 0)
                 {
-                    on_period = STEERINGSERVO_PWM_MAXLEFT_PULSE_WIDTH;
+                    on_period = STEERINGSERVO_PWM_MAXRIGHT_PULSE_WIDTH;
                 }
                 else if (steering > 100)
                 {
-                    on_period = STEERINGSERVO_PWM_MAXRIGHT_PULSE_WIDTH;
+                    on_period = STEERINGSERVO_PWM_MAXLEFT_PULSE_WIDTH;
                 }
                 else
                 {
-                    on_period = (STEERINGSERVO_PWM_MAXLEFT_PULSE_WIDTH + ((STEERINGSERVO_PWM_MAXRIGHT_PULSE_WIDTH - STEERINGSERVO_PWM_MAXLEFT_PULSE_WIDTH) * (steering/100.0)));
+                    on_period = (STEERINGSERVO_PWM_MAXRIGHT_PULSE_WIDTH - ((STEERINGSERVO_PWM_MAXRIGHT_PULSE_WIDTH - STEERINGSERVO_PWM_MAXLEFT_PULSE_WIDTH) * (steering/100.0)));
                 }
 
                 off_period = overall_pwm_period - on_period;
