@@ -115,19 +115,18 @@ public class RCCarControl extends Activity {
             // so that there is always the right value in the Text Field.
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(progress > 50){
+                if (progress > 50) {
                     progress = progress - 50;
                     directionChar = 'F';
                     dVField.setText("F");
+                } else {
+                    progress = (progress - 50) * -1;
+                    directionChar = 'R';
+                    dVField.setText("R");
                 }
-                else{
-                        progress = (progress - 50) * -1;
-                        directionChar = 'R';
-                        dVField.setText("R");
-                    }
 
                 if (progress <= 9) {
-                    if (progress == 0) {
+                    if (progress == 0 & progress <= 5) {
                         speed = progress;
                         formatter = new DecimalFormat("00");
                         speedZero = formatter.format(speed);
@@ -168,8 +167,10 @@ public class RCCarControl extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // switch on
-                    command = "S00A00E";
-                    Bluetooth.sendData(command);
+                    if(Bluetooth.blConnection == true) {
+                        command = "S00A00OE";
+                        Bluetooth.sendData(command);
+                    }else{aVField.setText("Bluetooth Connection is not available / on");}
                 } else {
                     // switch off
                     command = "S00A00CE";
@@ -183,8 +184,8 @@ public class RCCarControl extends Activity {
      * method to set the right command for the controlling of the rc car
      */
     private void sendRCCar(){
-        if(directionChar != ' ') {
-            if(speed == 0){
+        if(directionChar != ' ' & Bluetooth.blConnection == true) {
+            if(speed == 0 | speed <= 5){
                 if(angle == 0) {
                     command = "S" + speedZero + "A" + angleZero + directionChar + endOFCommand;
                 }else if(angle <= 9){
@@ -193,21 +194,21 @@ public class RCCarControl extends Activity {
                     command = "S" + speedZero + "A" + angle + directionChar + endOFCommand;
                 }
             }else if(angle == 0){
-                if(speed == 0) {
+                if(speed == 0 | speed <= 5) {
                     command = "S" + speedZero + "A" + angleZero + directionChar + endOFCommand;
-                }else if(speed <= 9){
+                }else if(speed <= 9 & speed > 5){
                     command = "S" + speedTen + "A" + angleZero + directionChar + endOFCommand;
                 } else{
                     command = "S" + speed + "A" + angleZero + directionChar + endOFCommand;
                 }
-            }else if(speed <= 9){
+            }else if(speed <= 9 & speed > 5){
                 if(angle <= 9) {
                     command = "S" + speedTen + "A" + angleTen + directionChar + endOFCommand;
                 }else{
                     command = "S" + speedTen + "A" + angle + directionChar + endOFCommand;
                 }
             }else if(angle <= 9){
-                if(speed <= 9) {
+                if(speed <= 9 & speed > 5) {
                     command = "S" + speedTen + "A" + angleTen + directionChar + endOFCommand;
                 }else{
                     command = "S" + speed + "A" + angleTen + directionChar + endOFCommand;
@@ -216,7 +217,7 @@ public class RCCarControl extends Activity {
                 command = "S" + speed + "A" + angle + directionChar + endOFCommand;
             }
             Bluetooth.sendData(command);
-        }else{}
+        }else{aVField.setText("Bluetooth Connection is not available / on");}
     }
 
 }

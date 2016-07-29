@@ -41,6 +41,7 @@ public class Bluetooth extends Activity {
     public static TextView connectionView;
     private static OutputStream outStream = null;
     private boolean isBluetoothOn = false;
+    public static boolean blConnection = false;
     private static final int BLUETOOTH_ON = 1;
     // SPP UUID service
     private static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -74,6 +75,7 @@ public class Bluetooth extends Activity {
         unregisterReceiver(mReceiver);
         try {
             myBluetoothSocket.close();
+            blConnection = false;
         } catch (Exception e) {
         }
         super.onDestroy();
@@ -207,6 +209,7 @@ public class Bluetooth extends Activity {
                         myBluetoothSocket.connect();
                         outStream = myBluetoothSocket.getOutputStream();
                         connectionView.setText("connected to " + connectBluetoothDevice);
+                        blConnection = true;
                     } catch (Exception e) {
                         try {
                             myBluetoothSocket.close();

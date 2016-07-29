@@ -66,8 +66,10 @@ public class RCCarControl extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // switch on
-                    command = "S00A00E";
-                    Bluetooth.sendData(command);
+                    if(Bluetooth.blConnection == true){
+                        command = "S00A00OE";
+                        Bluetooth.sendData(command);
+                    }else{powerTextView.setText("Bluetooth Connection is not available / on");}
                 } else {
                     // switch off
                     command = "S00A00CE";
@@ -160,6 +162,10 @@ public class RCCarControl extends Activity {
                         break;
                     default:
                         directionTextView.setText("center");
+                        command = "S00A50E";
+                        if(Bluetooth.blConnection == true) {
+                            Bluetooth.sendData(command);
+                        }else{powerTextView.setText("Bluetooth Connection is not available / on");}
                 }
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
@@ -169,7 +175,7 @@ public class RCCarControl extends Activity {
      * method to set the right command for the controlling of the rc car
      */
     private void sendRCCar(){
-        if(directionChar != ' ') {
+        if(directionChar != ' ' & Bluetooth.blConnection == true) {
             if(speed == 0){
                 if(aValue == 0) {
                     command = "S" + speedZero + "A" + angleZero + directionChar + endOFCommand;
@@ -202,6 +208,6 @@ public class RCCarControl extends Activity {
                 command = "S" + speed + "A" + aValue + directionChar + endOFCommand;
             }
             Bluetooth.sendData(command);
-        }else{}
+        }else{powerTextView.setText("Bluetooth Connection is not available / on");}
     }
 }
