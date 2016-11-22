@@ -14,6 +14,7 @@
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_ethernet/api/ethernet.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_otpinfo/api/otp_board_info.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_conf_derived.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_impl.h
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_impl.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/string_itoa.h
 
 

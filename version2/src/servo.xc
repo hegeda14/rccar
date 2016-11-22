@@ -69,6 +69,7 @@ void Task_ApplyPWMTo1BitPort (port p, int duty_cycle) // int duty_cycle later to
  *  p                   port           1-bit port to have pwm output
  *  steering_interface  steering_if    0-> MOST RIGHT  100-> MOST LEFT
  */
+[[combinable]]
 void Task_SteeringServo_MotorController (out port p, server steering_if steering_interface)
 {
     uint32_t overall_pwm_period = STEERINGSERVO_PWM_PERIOD;

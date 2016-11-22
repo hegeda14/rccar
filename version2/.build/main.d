@@ -20,5 +20,7 @@ main.o: ../src/main.xc \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/tble02s_motor_controller.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/port_definitions.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/ethernet_app.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/ethernet_config.h
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/ethernet_config.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/light_system.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/core_monitoring.h
 

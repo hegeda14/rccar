@@ -1,13 +1,17 @@
 <preCompilationAnalysis file="../src/rn42_driver.xc">
 <fDef name="CharToDigit" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="CheckIfCommandFormatIsValid" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="GetLightStateFromCommands" global="true" noreturn="false" doNotSpecialize="false" numParams="3"/>
 <fDef name="InitializeRN42asSlave" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ParseRCCommandString" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
-<fDef name="SendCmd" global="true" interface="ethernet_to_cmdparser_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="SendCmd" global="true" interface="ethernet_to_cmdparser_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
+<fDef name="ShareCoreUsage" global="true" interface="core_stats_if" noreturn="false" doNotSpecialize="false" numParams="8"/>
 <fDef name="ShareDirectionValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareDistanceSensorValues" global="true" interface="distancesensor_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
+<fDef name="ShareLightSystemState" global="true" interface="lightstate_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSteeringValue" global="true" interface="steering_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
-<fDef name="Task_GetRemoteCommandsViaBluetooth" global="true" noreturn="true" doNotSpecialize="false" numParams="5"/>
+<fDef name="Task_GetRemoteCommandsViaBluetooth" global="true" noreturn="true" doNotSpecialize="false" numParams="6"/>
 <fDef name="Task_GetRemoteCommandsViaBluetooth2" global="true" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="WriteData" global="true" noreturn="false" doNotSpecialize="false" numParams="2"/>
 <fDef name="_complete_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
@@ -875,6 +879,34 @@
     </values>
   </arg>
 </fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="isDigit" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="WriteData" global="true" numArgs="2">
   <arg num="0">
     <passThroughArg param="0" caller="Task_GetRemoteCommandsViaBluetooth2" global="true"/>
@@ -908,18 +940,6 @@
 </fCall>
 <fCall name="read" global="true" interface="uart_rx_if" numArgs="0">
 </fCall>
-<fCall name="printf" global="true" numArgs="2">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
 <fCall name="__builtin_timer_after" global="true" numArgs="2">
   <arg num="0">
     <values>
@@ -932,28 +952,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="isDigit" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="isDigit" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="isDigit" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="isDigit" global="true" numArgs="1">
+<fCall name="CheckIfCommandFormatIsValid" global="true" numArgs="1">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -964,6 +963,114 @@
   <arg num="0">
     <values>
       <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="GetLightStateFromCommands" global="true" numArgs="3">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareLightSystemState" global="true" interface="lightstate_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareSteeringValue" global="true" interface="steering_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="50"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareDirectionValue" global="true" interface="control_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareSpeedValue" global="true" interface="control_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="11"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_milliseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="20"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareSteeringValue" global="true" interface="steering_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="50"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareDirectionValue" global="true" interface="control_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareSpeedValue" global="true" interface="control_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="53"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_milliseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="150"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareSteeringValue" global="true" interface="steering_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="50"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareDirectionValue" global="true" interface="control_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="ShareSpeedValue" global="true" interface="control_if" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="6"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="delay_milliseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="50"/></value>
     </values>
   </arg>
 </fCall>

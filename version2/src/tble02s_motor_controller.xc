@@ -20,11 +20,15 @@
  *  direction      int            FORWARD (0) or REVERSE (1)
  *  speed          int            0-100
  */
-void Task_DriveTBLE02S_MotorController (port p, server control_if control_interface)
+[[combinable]]
+void Task_DriveTBLE02S_MotorController (port p, server control_if control_interface, server distancesensor_if sensors_interface)
 {
     uint32_t overall_pwm_period = TBLE02S_PWM_PERIOD ; //20ms
     uint32_t on_period ;
     uint32_t off_period ;
+
+    uint8_t left, right, front, rear;
+    uint8_t front_old_old, front_old, front_avg;
 
     uint32_t    time;
     int         port_state = 0;
@@ -41,6 +45,22 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
     {
         select
         {
+            //Wait for the sensor values
+            case sensors_interface.ShareDistanceSensorValues (uint8_t left_sensor_value,
+                                                              uint8_t right_sensor_value,
+                                                              uint8_t front_sensor_value,
+                                                              uint8_t rear_sensor_value):
+                front_old_old = front_old;
+                front_old = front;
+                left = left_sensor_value;
+                right = right_sensor_value;
+                front = front_sensor_value;
+                rear = rear_sensor_value;
+
+                front_avg = (front_old_old + front_old + front) / 3;
+
+                //printf("%d %d %d %d\n", left, right, front, rear);
+                break;
             //Wait for the direction value
             case control_interface.ShareDirectionValue (int direction):
                 direction_val = direction;
@@ -58,26 +78,35 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
 
                 tmr :> time;
 
+
                 if (direction_val == FORWARD) //Forward speed 0-100 mapping to on period
                 {
-                   if (speed_val == 0)
+                   //Sonar sensor interference
+                   if ( front_avg >= 0 && front_avg < MIN_SAFE_DISTANCE)
                    {
                        on_period = TBLE02S_FWD_MINSPEED_PULSE_WIDTH;
                    }
-                   else if (speed_val > 99)
-                   {
-                       on_period = TBLE02S_FWD_MAXSPEED_PULSE_WIDTH;
-                   }
                    else
                    {
-                       on_period = (TBLE02S_FWD_MINSPEED_PULSE_WIDTH - ((TBLE02S_FWD_MINSPEED_PULSE_WIDTH - TBLE02S_FWD_MAXSPEED_PULSE_WIDTH) * (speed_val/100.0)));
-                       //printf("on_period : %d", on_period);
+                       if (speed_val == 0)
+                       {
+                           on_period = TBLE02S_FWD_MINSPEED_PULSE_WIDTH;
+                       }
+                       else if (speed_val > 99)
+                       {
+                           on_period = TBLE02S_FWD_MAXSPEED_PULSE_WIDTH;
+                       }
+                       else
+                       {
+                           on_period = (TBLE02S_FWD_MINSPEED_PULSE_WIDTH - ((TBLE02S_FWD_MINSPEED_PULSE_WIDTH - TBLE02S_FWD_MAXSPEED_PULSE_WIDTH) * (speed_val/100.0)));
+                           //printf("on_period : %d", on_period);
+                       }
                    }
-
                    off_period = overall_pwm_period - on_period;
                 }
                 else if (direction_val == REVERSE) //Reverse speed 0-100 mapping to on period
                 {
+
                    if (speed_val == 0)
                    {
                        on_period = TBLE02S_REV_MINSPEED_PULSE_WIDTH;
@@ -96,6 +125,7 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
                 }
 
 
+
                 //PWM Port Toggling
                 if(port_state == 0)
                 {
@@ -109,6 +139,7 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
                     port_state = 0;
                     time += off_period; //Extend timer deadline
                 }
+
 
                 //Measure end time
                 ////debug_timer :> end_time;

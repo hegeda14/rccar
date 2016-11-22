@@ -1,9 +1,11 @@
 <preCompilationAnalysis file="../src/tble02s_motor_controller.xc">
+<fDef name="SendCmd" global="true" interface="ethernet_to_cmdparser_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
+<fDef name="ShareCoreUsage" global="true" interface="core_stats_if" noreturn="false" doNotSpecialize="false" numParams="8"/>
 <fDef name="ShareDirectionValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareDistanceSensorValues" global="true" interface="distancesensor_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSteeringValue" global="true" interface="steering_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
-<fDef name="Task_DriveTBLE02S_MotorController" global="true" noreturn="true" doNotSpecialize="false" numParams="2"/>
+<fDef name="Task_DriveTBLE02S_MotorController" global="true" noreturn="true" doNotSpecialize="false" numParams="3"/>
 <fDef name="_complete_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="_get_outgoing_timestamp" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="0"/>
 <fDef name="_init_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="2"/>

@@ -1,4 +1,6 @@
 <preCompilationAnalysis file="../src/servo.xc">
+<fDef name="SendCmd" global="true" interface="ethernet_to_cmdparser_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
+<fDef name="ShareCoreUsage" global="true" interface="core_stats_if" noreturn="false" doNotSpecialize="false" numParams="8"/>
 <fDef name="ShareDirectionValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareDistanceSensorValues" global="true" interface="distancesensor_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>

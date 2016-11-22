@@ -22,8 +22,11 @@
 #define TBLE02S_REV_MAXSPEED_PULSE_WIDTH    (1.67 * MILLISECOND)//for max speed set to:(1.87 * MILLISECOND)
 #define TBLE02S_PWM_PERIOD                  (20 * MILLISECOND)
 
+#define MIN_SAFE_DISTANCE               70  //cm
+
 // Prototypes
-void Task_DriveTBLE02S_MotorController (port p, server control_if control_interface);
+[[combinable]]
+ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interface, server distancesensor_if sensors_interface);
 
 
 #endif /* TBLE02S_MOTOR_CONTROLLER_H_ */

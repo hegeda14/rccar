@@ -30,16 +30,16 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
                                         client uart_rx_if uart_rx,
                                         client control_if control_interface,
                                         client steering_if steering_interface,
-                                        server ethernet_to_cmdparser_if cmd_from_ethernet_to_override);
-void Task_GetRemoteCommandsViaBluetooth2 (client uart_tx_if uart_tx,
-                                         client uart_rx_if uart_rx,
-                                         client control_if control_interface,
-                                         client steering_if steering_interface);
+                                        server ethernet_to_cmdparser_if cmd_from_ethernet_to_override,
+                                        client lightstate_if lightstate_interface);
+
 void WriteData (client uart_tx_if uart_tx, char data[]);
 void InitializeRN42asSlave(client uart_tx_if uart_tx);
 int isDigit (char digit);
 int CharToDigit (char digit);
 {int, int, int} ParseRCCommandString (char data[]);
+int CheckIfCommandFormatIsValid (char* command);
+short int GetLightStateFromCommands (int speed, int steering, int direction);
 
 
 #endif /* RN42_DRIVER_H_ */

@@ -26,8 +26,12 @@
     on tile[0] : port PortMotorSpeedController = XS1_PORT_1G; //J8
 
 // I2C Related Ports
-    on tile[0] : port PortSCL = XS1_PORT_1E;
-    on tile[0] : port PortSDA = XS1_PORT_1F;
+    on tile[0] : port PortSCL = XS1_PORT_1E; // D12
+    on tile[0] : port PortSDA = XS1_PORT_1F; //D13
+
+// Light system PWM ports
+    on tile[0] : port PortLightSystem_TH = XS1_PORT_1K;  //J12  P1K
+    on tile[0] : port PortLightSystem_ST = XS1_PORT_1H;  //J13  P1H
 
 // Ethernet related Ports & clocks
     // These ports are for accessing the OTP memory

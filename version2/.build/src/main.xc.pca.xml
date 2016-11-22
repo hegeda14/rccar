@@ -1,7 +1,9 @@
 <preCompilationAnalysis file="../src/main.xc">
-<fDef name="SendCmd" global="true" interface="ethernet_to_cmdparser_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="SendCmd" global="true" interface="ethernet_to_cmdparser_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
+<fDef name="ShareCoreUsage" global="true" interface="core_stats_if" noreturn="false" doNotSpecialize="false" numParams="8"/>
 <fDef name="ShareDirectionValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareDistanceSensorValues" global="true" interface="distancesensor_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
+<fDef name="ShareLightSystemState" global="true" interface="lightstate_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSteeringValue" global="true" interface="steering_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="Task_ProduceMotorControlOutputs" global="true" noreturn="true" doNotSpecialize="false" numParams="1"/>
@@ -728,12 +730,12 @@
   </arg>
   <arg num="2">
     <values>
-      <value type="intval"><intval isSigned="true" val="2"/></value>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
     </values>
   </arg>
   <arg num="3">
     <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
     </values>
   </arg>
 </fCall>
@@ -930,7 +932,51 @@
     </values>
   </arg>
 </fCall>
-<fCall name="Task_DriveTBLE02S_MotorController" global="true" numArgs="2" impId="4">
+<fCall name="i2c_master" global="true" numArgs="5" impId="4">
+  <arg num="0">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="3">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="4">
+    <values>
+      <value type="intval"><intval isSigned="false" val="10"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="Task_DriveTBLE02S_MotorController" global="true" numArgs="3" impId="5">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="Task_SteeringServo_MotorController" global="true" numArgs="2" impId="6">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -942,10 +988,27 @@
     </values>
   </arg>
 </fCall>
-<fCall name="Task_SteeringServo_MotorController" global="true" numArgs="2" impId="5">
+<fCall name="Task_ControlLightSystem" global="true" numArgs="3" impId="7">
   <arg num="0">
     <values>
       <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="Task_ReadSonarSensors" global="true" numArgs="2" impId="8">
+  <arg num="0">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="i2c_master" global="true" impUnit="../src/main.xc" impId="4" param="0"/></value>
     </values>
   </arg>
   <arg num="1">
@@ -954,7 +1017,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="Task_GetRemoteCommandsViaBluetooth" global="true" numArgs="5" impId="6">
+<fCall name="Task_GetRemoteCommandsViaBluetooth" global="true" numArgs="6" impId="9">
   <arg num="0">
     <values>
       <value type="interface"><interfaceInfo index="0" type="dist" func="uart_tx" global="true" impUnit="../src/main.xc" impId="1" param="0"/></value>
@@ -980,8 +1043,27 @@
       <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
+  <arg num="5">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
 </fCall>
-<fCall name="rgmii_ethernet_mac" global="true" numArgs="9" impId="7">
+<fCall name="Task_MonitorCoresInATile" global="true" numArgs="1" impId="10">
+  <arg num="0">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="Task_MonitorCoresInATile" global="true" numArgs="1" impId="11">
+  <arg num="0">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="rgmii_ethernet_mac" global="true" numArgs="9" impId="12">
   <arg num="0">
     <values>
       <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
@@ -1028,10 +1110,10 @@
     </values>
   </arg>
 </fCall>
-<fCall name="rgmii_ethernet_mac_config" global="true" numArgs="3" impId="8">
+<fCall name="rgmii_ethernet_mac_config" global="true" numArgs="3" impId="13">
   <arg num="0">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/><interfaceInfo index="1" type="comb" func="rgmii_ethernet_mac_config" global="true" impUnit="../src/main.xc" impId="8" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/><interfaceInfo index="1" type="comb" func="rgmii_ethernet_mac_config" global="true" impUnit="../src/main.xc" impId="13" param="0"/></value>
     </values>
   </arg>
   <arg num="1">
@@ -1045,22 +1127,22 @@
     </values>
   </arg>
 </fCall>
-<fCall name="ar8035_phy_driver" global="true" numArgs="2" impId="9">
+<fCall name="ar8035_phy_driver" global="true" numArgs="2" impId="14">
   <arg num="0">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="smi" global="true" impUnit="../src/main.xc" impId="10" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="smi" global="true" impUnit="../src/main.xc" impId="15" param="0"/></value>
     </values>
   </arg>
   <arg num="1">
     <values>
-      <value type="interface"><interfaceInfo index="1" type="comb" func="rgmii_ethernet_mac_config" global="true" impUnit="../src/main.xc" impId="8" param="0"/></value>
+      <value type="interface"><interfaceInfo index="1" type="comb" func="rgmii_ethernet_mac_config" global="true" impUnit="../src/main.xc" impId="13" param="0"/></value>
     </values>
   </arg>
 </fCall>
-<fCall name="smi" global="true" numArgs="3" impId="10">
+<fCall name="smi" global="true" numArgs="3" impId="15">
   <arg num="0">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="dist" func="smi" global="true" impUnit="../src/main.xc" impId="10" param="0"/></value>
+      <value type="interface"><interfaceInfo index="0" type="dist" func="smi" global="true" impUnit="../src/main.xc" impId="15" param="0"/></value>
     </values>
   </arg>
   <arg num="1">
@@ -1074,7 +1156,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="xtcp" global="true" numArgs="11" impId="11">
+<fCall name="xtcp" global="true" numArgs="11" impId="16">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -1131,13 +1213,23 @@
     </values>
   </arg>
 </fCall>
-<fCall name="Task_EthernetAppTCPServer" global="true" numArgs="2" impId="12">
+<fCall name="Task_EthernetAppTCPServer" global="true" numArgs="4" impId="17">
   <arg num="0">
     <values>
       <value type="unknown"/>
     </values>
   </arg>
   <arg num="1">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+  <arg num="3">
     <values>
       <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>

@@ -19,6 +19,7 @@
 #define     STEERINGSERVO_PWM_MAXRIGHT_PULSE_WIDTH  (1.75 * MILLISECOND)
 
 // Prototypes
+[[combinable]]
 void Task_SteeringServo_MotorController (out port p, server steering_if steering_interface);
 void Task_ApplyPWMTo1BitPort (port p, int duty_cycle);
 

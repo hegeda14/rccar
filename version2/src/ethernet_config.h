@@ -37,9 +37,12 @@ enum cfg_clients {
 // IP Config - change this to suit your network.  Leave with all
 // 0 values to use DHCP/AutoIP
 xtcp_ipconfig_t ipconfig = {
-        {192,168,1,92},//{ 0,0,0,0 }, // ip address (eg 192,168,0,2)
+        {192,168,20,60},//{ 0,0,0,0 }, // ip address (eg 192,168,0,2)
         {255,255,255,0},//{ 0, 0, 0, 0 }, // netmask (eg 255,255,255,0)
-        {192,168,1,1}//{ 0, 0, 0, 0 } // gateway (eg 192,168,0,1)
+        {192,168,20,1}//{ 0, 0, 0, 0 } // gateway (eg 192,168,0,1)
+/*      {192,168,1,92},//{ 0,0,0,0 }, // ip address (eg 192,168,0,2)
+        {255,255,255,0},//{ 0, 0, 0, 0 }, // netmask (eg 255,255,255,0)
+        {192,168,1,1}//{ 0, 0, 0, 0 } // gateway (eg 192,168,0,1)*/
 };
 //xtcp_ipconfig_t ipconfig = {
 //        { 0,0,0,0 }, // ip address (eg 192,168,0,2)

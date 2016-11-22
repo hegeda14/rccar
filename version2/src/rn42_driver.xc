@@ -12,6 +12,51 @@
 #include "rn42_driver.h"
 
 
+short int GetLightStateFromCommands (int speed, int steering, int direction)
+{
+    short int lightstate;
+
+    if ( speed > 10) // Moving
+    {
+        if (steering >= 40 && steering <= 60)
+        {
+            // Not steering
+            if (direction == FORWARD)
+            {
+                // Going forward
+                lightstate = 2;
+            }
+            else if (direction == REVERSE)
+            {
+                // Going back
+                lightstate = 6;
+            }
+        }
+        else
+        {
+            // Steering
+            if (steering < 40)
+            {
+                // Going left
+                lightstate = 4;
+            }
+            else if (steering > 60)
+            {
+                // Going right
+                lightstate = 5;
+            }
+        }
+    }
+    else
+    {
+        // Not moving
+        lightstate = 2;
+    }
+
+    return lightstate;
+}
+
+
 /***
  *  Function Name:              WriteData
  *  Function Description :      This utility function writes a string over uart_tx.
@@ -47,6 +92,7 @@ int isDigit (char digit)
             return -1;
             break;
     }
+    return -1;
 }
 
 /***
@@ -135,6 +181,32 @@ void InitializeRN42asSlave(client uart_tx_if uart_tx)
     delay_microseconds(300000); //0.03sec //Wait for the response
 }
 
+/***
+ *  Function Name:              CheckIfCommandFormatIsValid
+ *  Function Description :      This function checks the format of the command and
+ *                              returns 1 if the string command is as expected
+ *
+ *  Argument                Type                        Description
+ *  command                 char*                       Command string to be checked
+ */
+int CheckIfCommandFormatIsValid (char* command)
+{
+    if (command[0] == 'S' && command[3] == 'A' && (command[6] == 'F' || command[6] == 'R'))
+    {
+        if((isDigit(command[1]) != -1) && (isDigit(command[2]) != -1) && (isDigit(command[4]) != -1) && (isDigit(command[5]) != -1) )
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        return 0;
+    }
+}
 
 
 void Task_GetRemoteCommandsViaBluetooth2 (client uart_tx_if uart_tx,
@@ -164,7 +236,8 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
                                         client uart_rx_if uart_rx,
                                         client control_if control_interface,
                                         client steering_if steering_interface,
-                                        server ethernet_to_cmdparser_if cmd_from_ethernet_to_override)
+                                        server ethernet_to_cmdparser_if cmd_from_ethernet_to_override,
+                                        client lightstate_if lightstate_interface)
 {
     //Debugging related definitions
     timer tmr2;
@@ -182,6 +255,7 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
     int speed = 0;
     int steering = 50;
     int direction = FORWARD;
+    int previous_direction = FORWARD;
 
     int ctr = 0;
 
@@ -194,6 +268,10 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
     char buffer2[]= "SA,0\r";                // set to open mode (no authentication)
     WriteData(uart_tx, buffer2);
     delay_microseconds(300000); //0.03sec //Wait for the response
+
+    //Light system state
+    short int lightstate = 2;
+    short int previous_lightstate = 2;
 
 #ifdef RN42_INITIAL_CONFIG
     // Send initialization commands to RN42
@@ -249,7 +327,7 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
         case cmd_from_ethernet_to_override.SendCmd(char* override_command, int cmd_length):
             //printf("override command=%s\n", override_command);
             command_line_ready = 1;
-            for(int k=0; k<=cmd_length; k++)
+            for(int k=0; k<cmd_length; k++)
             {
                 command[k] = override_command[k];
             }
@@ -261,22 +339,43 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
             if ( command_line_ready )
             {
                 // Check if incoming data is as expected..
-                if (1)
+                if ( CheckIfCommandFormatIsValid(command) == 1 )
                 {
-                    if (command[0] == 'S' && command[3] == 'A' && (command[6] == 'F' || command[6] == 'R'))
-                    {
-                        if((isDigit(command[1]) != -1) && (isDigit(command[2]) != -1) && (isDigit(command[4]) != -1) && (isDigit(command[5]) != -1) )
+                        {speed, steering, direction} = ParseRCCommandString (command);
+
+                        lightstate = GetLightStateFromCommands (speed, steering, direction);
+                        if (lightstate != previous_lightstate)
                         {
-                            {speed, steering, direction} = ParseRCCommandString (command);
-                            steering_interface.ShareSteeringValue(steering);
-                            control_interface.ShareDirectionValue(direction);
-                            control_interface.ShareSpeedValue(speed);
-                            command_line_ready = 0;
-                            //printf("speed=%i\n",speed);
-                            //printf("steering=%i\n",steering);
-                            //printf("direction=%i\n",direction);
+                                lightstate_interface.ShareLightSystemState  (lightstate);
                         }
-                    }
+
+                        if (previous_direction == FORWARD && direction == REVERSE)
+                        {
+                                //Commands to cheat into REVERSE mode, so that motor driver is ready for REVERSE movement
+                                steering_interface.ShareSteeringValue(50);
+                                control_interface.ShareDirectionValue(REVERSE);
+                                control_interface.ShareSpeedValue(11);
+                                delay_milliseconds(20);
+                                steering_interface.ShareSteeringValue(50);
+                                control_interface.ShareDirectionValue(REVERSE);
+                                control_interface.ShareSpeedValue(53);
+                                delay_milliseconds(150);
+                                steering_interface.ShareSteeringValue(50);
+                                control_interface.ShareDirectionValue(REVERSE);
+                                control_interface.ShareSpeedValue(6);
+                                delay_milliseconds(50);
+                        }
+
+                        steering_interface.ShareSteeringValue(steering);
+                        control_interface.ShareDirectionValue(direction);
+                        control_interface.ShareSpeedValue(speed);
+                        command_line_ready = 0;
+                        previous_direction = direction;
+                        previous_lightstate = lightstate;
+
+                        /*printf("speed=%i\n",speed);
+                        printf("steering=%i\n",steering);
+                        printf("direction=%i\n",direction);*/
                 }
             }
 

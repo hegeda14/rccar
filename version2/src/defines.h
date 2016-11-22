@@ -60,6 +60,16 @@ typedef interface ethernet_to_cmdparser_if
 {
     void SendCmd (char* override_command, int cmd_length);
 } ethernet_to_cmdparser_if;
+
+typedef interface core_stats_if
+{
+    void ShareCoreUsage (short int core0, short int core1, short int core2, short int core3, short int core4, short int core5, short int core6, short int core7);
+} core_stats_if;
+
+typedef interface lightstate_if
+{
+    void ShareLightSystemState (short int state);
+} lightstate_if;
 //------------------------------------------------------Interface Definitions----
 
 

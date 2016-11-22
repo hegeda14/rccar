@@ -1,4 +1,7 @@
 <preCompilationAnalysis file="../src/sonar_sensor.xc">
+<fDef name="InitializeMessaging" global="true" noreturn="false" doNotSpecialize="false" numParams="1"/>
+<fDef name="SendCmd" global="true" interface="ethernet_to_cmdparser_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
+<fDef name="ShareCoreUsage" global="true" interface="core_stats_if" noreturn="false" doNotSpecialize="false" numParams="8"/>
 <fDef name="ShareDirectionValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareDistanceSensorValues" global="true" interface="distancesensor_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
@@ -694,6 +697,122 @@
     </values>
   </arg>
 </fCall>
+<fCall name="write_reg" global="true" numArgs="4">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeMessaging" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+    </values>
+  </arg>
+  <arg num="3">
+    <values>
+      <value type="intval"><intval isSigned="false" val="81"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="getDistanceSensorAddr" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="write_reg" global="true" numArgs="4">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeMessaging" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+    </values>
+  </arg>
+  <arg num="3">
+    <values>
+      <value type="intval"><intval isSigned="false" val="81"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="getDistanceSensorAddr" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="write_reg" global="true" numArgs="4">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeMessaging" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+    </values>
+  </arg>
+  <arg num="3">
+    <values>
+      <value type="intval"><intval isSigned="false" val="81"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="getDistanceSensorAddr" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="2"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="write_reg" global="true" numArgs="4">
+  <arg num="0">
+    <passThroughArg param="0" caller="InitializeMessaging" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+    </values>
+  </arg>
+  <arg num="3">
+    <values>
+      <value type="intval"><intval isSigned="false" val="81"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="getDistanceSensorAddr" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="3"/></value>
+    </values>
+  </arg>
+</fCall>
 <fCall name="__builtin_timer_after" global="true" numArgs="2">
   <arg num="0">
     <values>
@@ -706,182 +825,10 @@
     </values>
   </arg>
 </fCall>
-<fCall name="write_reg" global="true" numArgs="4">
+<fCall name="InitializeMessaging" global="true" numArgs="1">
   <arg num="0">
     <passThroughArg param="0" caller="Task_ReadSonarSensors" global="true"/>
     <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="intval"><intval isSigned="true" val="0"/></value>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="intval"><intval isSigned="false" val="81"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="getDistanceSensorAddr" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="intval"><intval isSigned="true" val="0"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printf" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="delay_milliseconds" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="intval"><intval isSigned="true" val="10"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="write_reg" global="true" numArgs="4">
-  <arg num="0">
-    <passThroughArg param="0" caller="Task_ReadSonarSensors" global="true"/>
-    <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="intval"><intval isSigned="true" val="0"/></value>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="intval"><intval isSigned="false" val="81"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="getDistanceSensorAddr" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="intval"><intval isSigned="true" val="1"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printf" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="delay_milliseconds" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="intval"><intval isSigned="true" val="10"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="write_reg" global="true" numArgs="4">
-  <arg num="0">
-    <passThroughArg param="0" caller="Task_ReadSonarSensors" global="true"/>
-    <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="intval"><intval isSigned="true" val="0"/></value>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="intval"><intval isSigned="false" val="81"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="getDistanceSensorAddr" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="intval"><intval isSigned="true" val="2"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printf" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="delay_milliseconds" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="intval"><intval isSigned="true" val="10"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="write_reg" global="true" numArgs="4">
-  <arg num="0">
-    <passThroughArg param="0" caller="Task_ReadSonarSensors" global="true"/>
-    <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="intval"><intval isSigned="true" val="0"/></value>
-    </values>
-  </arg>
-  <arg num="3">
-    <values>
-      <value type="intval"><intval isSigned="false" val="81"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="getDistanceSensorAddr" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="intval"><intval isSigned="true" val="3"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printf" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="delay_milliseconds" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="intval"><intval isSigned="true" val="20"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printf" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
     </values>
   </arg>
 </fCall>
@@ -943,13 +890,6 @@
     </values>
   </arg>
 </fCall>
-<fCall name="printf" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
 <fCall name="read_reg" global="true" numArgs="4">
   <arg num="0">
     <passThroughArg param="0" caller="Task_ReadSonarSensors" global="true"/>
@@ -1005,13 +945,6 @@
   <arg num="0">
     <values>
       <value type="intval"><intval isSigned="true" val="1"/></value>
-    </values>
-  </arg>
-</fCall>
-<fCall name="printf" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
     </values>
   </arg>
 </fCall>
