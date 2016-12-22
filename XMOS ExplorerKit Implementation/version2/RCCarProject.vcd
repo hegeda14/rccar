@@ -1,0 +1,706 @@
+$date
+  Sun Apr 24 00:05:48 2016
+$end
+
+$version
+  Xcore C-Simulator + VcdTrace plugin (interface version: 1.8)
+$end
+
+$timescale
+  2.000000 ns
+$end
+
+$comment
+<?xml version="1.0" encoding="UTF-8"?>
+<Structure>
+    <Date value="Sun Apr 24 00:05:48 2016"/>
+    <Hierarchy>
+    <Category name="Pads">
+        <Signal name="0_X0D00" radix="HEX"/>
+        <Signal name="0_X0D01" radix="HEX"/>
+        <Signal name="0_X0D02" radix="HEX"/>
+        <Signal name="0_X0D03" radix="HEX"/>
+        <Signal name="0_X0D04" radix="HEX"/>
+        <Signal name="0_X0D05" radix="HEX"/>
+        <Signal name="0_X0D06" radix="HEX"/>
+        <Signal name="0_X0D07" radix="HEX"/>
+        <Signal name="0_X0D08" radix="HEX"/>
+        <Signal name="0_X0D09" radix="HEX"/>
+        <Signal name="0_X0D10" radix="HEX"/>
+        <Signal name="0_X0D11" radix="HEX"/>
+        <Signal name="0_X0D12" radix="HEX"/>
+        <Signal name="0_X0D13" radix="HEX"/>
+        <Signal name="0_X0D14" radix="HEX"/>
+        <Signal name="0_X0D15" radix="HEX"/>
+        <Signal name="0_X0D16" radix="HEX"/>
+        <Signal name="0_X0D17" radix="HEX"/>
+        <Signal name="0_X0D18" radix="HEX"/>
+        <Signal name="0_X0D19" radix="HEX"/>
+        <Signal name="0_X0D20" radix="HEX"/>
+        <Signal name="0_X0D21" radix="HEX"/>
+        <Signal name="0_X0D22" radix="HEX"/>
+        <Signal name="0_X0D23" radix="HEX"/>
+        <Signal name="0_X0D24" radix="HEX"/>
+        <Signal name="0_X0D25" radix="HEX"/>
+        <Signal name="0_X0D26" radix="HEX"/>
+        <Signal name="0_X0D27" radix="HEX"/>
+        <Signal name="0_X0D28" radix="HEX"/>
+        <Signal name="0_X0D29" radix="HEX"/>
+        <Signal name="0_X0D30" radix="HEX"/>
+        <Signal name="0_X0D31" radix="HEX"/>
+        <Signal name="0_X0D32" radix="HEX"/>
+        <Signal name="0_X0D33" radix="HEX"/>
+        <Signal name="0_X0D34" radix="HEX"/>
+        <Signal name="0_X0D35" radix="HEX"/>
+        <Signal name="0_X0D36" radix="HEX"/>
+        <Signal name="0_X0D37" radix="HEX"/>
+        <Signal name="0_X0D38" radix="HEX"/>
+        <Signal name="0_X0D39" radix="HEX"/>
+        <Signal name="0_X0D40" radix="HEX"/>
+        <Signal name="0_X0D41" radix="HEX"/>
+        <Signal name="0_X0D42" radix="HEX"/>
+        <Signal name="0_X0D43" radix="HEX"/>
+        <Signal name="0_X0D49" radix="HEX"/>
+        <Signal name="0_X0D50" radix="HEX"/>
+        <Signal name="0_X0D51" radix="HEX"/>
+        <Signal name="0_X0D52" radix="HEX"/>
+        <Signal name="0_X0D53" radix="HEX"/>
+        <Signal name="0_X0D54" radix="HEX"/>
+        <Signal name="0_X0D55" radix="HEX"/>
+        <Signal name="0_X0D56" radix="HEX"/>
+        <Signal name="0_X0D57" radix="HEX"/>
+        <Signal name="0_X0D58" radix="HEX"/>
+        <Signal name="0_X0D61" radix="HEX"/>
+        <Signal name="0_X0D62" radix="HEX"/>
+        <Signal name="0_X0D63" radix="HEX"/>
+        <Signal name="0_X0D64" radix="HEX"/>
+        <Signal name="0_X0D65" radix="HEX"/>
+        <Signal name="0_X0D66" radix="HEX"/>
+        <Signal name="0_X0D67" radix="HEX"/>
+        <Signal name="0_X0D68" radix="HEX"/>
+        <Signal name="0_X0D69" radix="HEX"/>
+        <Signal name="0_X0D70" radix="HEX"/>
+        <Signal name="0_X1D00" radix="HEX"/>
+        <Signal name="0_X1D01" radix="HEX"/>
+        <Signal name="0_X1D02" radix="HEX"/>
+        <Signal name="0_X1D03" radix="HEX"/>
+        <Signal name="0_X1D04" radix="HEX"/>
+        <Signal name="0_X1D05" radix="HEX"/>
+        <Signal name="0_X1D06" radix="HEX"/>
+        <Signal name="0_X1D07" radix="HEX"/>
+        <Signal name="0_X1D08" radix="HEX"/>
+        <Signal name="0_X1D09" radix="HEX"/>
+        <Signal name="0_X1D10" radix="HEX"/>
+        <Signal name="0_X1D11" radix="HEX"/>
+        <Signal name="0_X1D12" radix="HEX"/>
+        <Signal name="0_X1D13" radix="HEX"/>
+        <Signal name="0_X1D14" radix="HEX"/>
+        <Signal name="0_X1D15" radix="HEX"/>
+        <Signal name="0_X1D16" radix="HEX"/>
+        <Signal name="0_X1D17" radix="HEX"/>
+        <Signal name="0_X1D18" radix="HEX"/>
+        <Signal name="0_X1D19" radix="HEX"/>
+        <Signal name="0_X1D20" radix="HEX"/>
+        <Signal name="0_X1D21" radix="HEX"/>
+        <Signal name="0_X1D22" radix="HEX"/>
+        <Signal name="0_X1D23" radix="HEX"/>
+        <Signal name="0_X1D24" radix="HEX"/>
+        <Signal name="0_X1D25" radix="HEX"/>
+        <Signal name="0_X1D26" radix="HEX"/>
+        <Signal name="0_X1D27" radix="HEX"/>
+        <Signal name="0_X1D28" radix="HEX"/>
+        <Signal name="0_X1D29" radix="HEX"/>
+        <Signal name="0_X1D30" radix="HEX"/>
+        <Signal name="0_X1D31" radix="HEX"/>
+        <Signal name="0_X1D32" radix="HEX"/>
+        <Signal name="0_X1D33" radix="HEX"/>
+        <Signal name="0_X1D34" radix="HEX"/>
+        <Signal name="0_X1D35" radix="HEX"/>
+        <Signal name="0_X1D36" radix="HEX"/>
+        <Signal name="0_X1D37" radix="HEX"/>
+        <Signal name="0_X1D38" radix="HEX"/>
+        <Signal name="0_X1D39" radix="HEX"/>
+        <Signal name="0_X1D40" radix="HEX"/>
+        <Signal name="0_X1D41" radix="HEX"/>
+        <Signal name="0_X1D42" radix="HEX"/>
+        <Signal name="0_X1D43" radix="HEX"/>
+        <Signal name="0_X1D49" radix="HEX"/>
+        <Signal name="0_X1D50" radix="HEX"/>
+        <Signal name="0_X1D51" radix="HEX"/>
+        <Signal name="0_X1D52" radix="HEX"/>
+        <Signal name="0_X1D53" radix="HEX"/>
+        <Signal name="0_X1D54" radix="HEX"/>
+        <Signal name="0_X1D55" radix="HEX"/>
+        <Signal name="0_X1D56" radix="HEX"/>
+        <Signal name="0_X1D57" radix="HEX"/>
+        <Signal name="0_X1D58" radix="HEX"/>
+        <Signal name="0_X1D61" radix="HEX"/>
+        <Signal name="0_X1D62" radix="HEX"/>
+        <Signal name="0_X1D63" radix="HEX"/>
+        <Signal name="0_X1D64" radix="HEX"/>
+        <Signal name="0_X1D65" radix="HEX"/>
+        <Signal name="0_X1D66" radix="HEX"/>
+        <Signal name="0_X1D67" radix="HEX"/>
+        <Signal name="0_X1D68" radix="HEX"/>
+        <Signal name="0_X1D69" radix="HEX"/>
+        <Signal name="0_X1D70" radix="HEX"/>
+    </Category>
+    </Hierarchy>
+    <ValueAliases>
+    </ValueAliases>
+    <SignalDocs>
+        <SignalDoc name=".*Pad\d+" description="The value on the pad">
+            <ValueDocs>
+            </ValueDocs>
+        </SignalDoc>
+    </SignalDocs>
+    <SignalAliases>
+        <SignalAliasMap coreName="tile[0]">
+            <Entry name="XS1_PORT_1B" alias="PORT_SQI_CS"/>
+            <Entry name="XS1_PORT_1C" alias="PORT_SQI_SCLK"/>
+            <Entry name="XS1_PORT_4B" alias="PORT_SQI_SIO"/>
+        </SignalAliasMap>
+        <SignalAliasMap coreName="tile[1]">
+        </SignalAliasMap>
+    </SignalAliases>
+</Structure>
+$end
+
+$var wire 1 paa0 0_X0D00 $end
+$var wire 1 paa1 0_X0D01 $end
+$var wire 1 paa2 0_X0D02 $end
+$var wire 1 paa3 0_X0D03 $end
+$var wire 1 paa4 0_X0D04 $end
+$var wire 1 paa5 0_X0D05 $end
+$var wire 1 paa6 0_X0D06 $end
+$var wire 1 paa7 0_X0D07 $end
+$var wire 1 paa8 0_X0D08 $end
+$var wire 1 paa9 0_X0D09 $end
+$var wire 1 paa10 0_X0D10 $end
+$var wire 1 paa11 0_X0D11 $end
+$var wire 1 paa12 0_X0D12 $end
+$var wire 1 paa13 0_X0D13 $end
+$var wire 1 paa14 0_X0D14 $end
+$var wire 1 paa15 0_X0D15 $end
+$var wire 1 paa16 0_X0D16 $end
+$var wire 1 paa17 0_X0D17 $end
+$var wire 1 paa18 0_X0D18 $end
+$var wire 1 paa19 0_X0D19 $end
+$var wire 1 paa20 0_X0D20 $end
+$var wire 1 paa21 0_X0D21 $end
+$var wire 1 paa22 0_X0D22 $end
+$var wire 1 paa23 0_X0D23 $end
+$var wire 1 paa24 0_X0D24 $end
+$var wire 1 paa25 0_X0D25 $end
+$var wire 1 paa26 0_X0D26 $end
+$var wire 1 paa27 0_X0D27 $end
+$var wire 1 paa28 0_X0D28 $end
+$var wire 1 paa29 0_X0D29 $end
+$var wire 1 paa30 0_X0D30 $end
+$var wire 1 paa31 0_X0D31 $end
+$var wire 1 paa32 0_X0D32 $end
+$var wire 1 paa33 0_X0D33 $end
+$var wire 1 paa34 0_X0D34 $end
+$var wire 1 paa35 0_X0D35 $end
+$var wire 1 paa36 0_X0D36 $end
+$var wire 1 paa37 0_X0D37 $end
+$var wire 1 paa38 0_X0D38 $end
+$var wire 1 paa39 0_X0D39 $end
+$var wire 1 paa40 0_X0D40 $end
+$var wire 1 paa41 0_X0D41 $end
+$var wire 1 paa42 0_X0D42 $end
+$var wire 1 paa43 0_X0D43 $end
+$var wire 1 paa44 0_X0D49 $end
+$var wire 1 paa45 0_X0D50 $end
+$var wire 1 paa46 0_X0D51 $end
+$var wire 1 paa47 0_X0D52 $end
+$var wire 1 paa48 0_X0D53 $end
+$var wire 1 paa49 0_X0D54 $end
+$var wire 1 paa50 0_X0D55 $end
+$var wire 1 paa51 0_X0D56 $end
+$var wire 1 paa52 0_X0D57 $end
+$var wire 1 paa53 0_X0D58 $end
+$var wire 1 paa54 0_X0D61 $end
+$var wire 1 paa55 0_X0D62 $end
+$var wire 1 paa56 0_X0D63 $end
+$var wire 1 paa57 0_X0D64 $end
+$var wire 1 paa58 0_X0D65 $end
+$var wire 1 paa59 0_X0D66 $end
+$var wire 1 paa60 0_X0D67 $end
+$var wire 1 paa61 0_X0D68 $end
+$var wire 1 paa62 0_X0D69 $end
+$var wire 1 paa63 0_X0D70 $end
+$var wire 1 paa64 0_X1D00 $end
+$var wire 1 paa65 0_X1D01 $end
+$var wire 1 paa66 0_X1D02 $end
+$var wire 1 paa67 0_X1D03 $end
+$var wire 1 paa68 0_X1D04 $end
+$var wire 1 paa69 0_X1D05 $end
+$var wire 1 paa70 0_X1D06 $end
+$var wire 1 paa71 0_X1D07 $end
+$var wire 1 paa72 0_X1D08 $end
+$var wire 1 paa73 0_X1D09 $end
+$var wire 1 paa74 0_X1D10 $end
+$var wire 1 paa75 0_X1D11 $end
+$var wire 1 paa76 0_X1D12 $end
+$var wire 1 paa77 0_X1D13 $end
+$var wire 1 paa78 0_X1D14 $end
+$var wire 1 paa79 0_X1D15 $end
+$var wire 1 paa80 0_X1D16 $end
+$var wire 1 paa81 0_X1D17 $end
+$var wire 1 paa82 0_X1D18 $end
+$var wire 1 paa83 0_X1D19 $end
+$var wire 1 paa84 0_X1D20 $end
+$var wire 1 paa85 0_X1D21 $end
+$var wire 1 paa86 0_X1D22 $end
+$var wire 1 paa87 0_X1D23 $end
+$var wire 1 paa88 0_X1D24 $end
+$var wire 1 paa89 0_X1D25 $end
+$var wire 1 paa90 0_X1D26 $end
+$var wire 1 paa91 0_X1D27 $end
+$var wire 1 paa92 0_X1D28 $end
+$var wire 1 paa93 0_X1D29 $end
+$var wire 1 paa94 0_X1D30 $end
+$var wire 1 paa95 0_X1D31 $end
+$var wire 1 paa96 0_X1D32 $end
+$var wire 1 paa97 0_X1D33 $end
+$var wire 1 paa98 0_X1D34 $end
+$var wire 1 paa99 0_X1D35 $end
+$var wire 1 paa100 0_X1D36 $end
+$var wire 1 paa101 0_X1D37 $end
+$var wire 1 paa102 0_X1D38 $end
+$var wire 1 paa103 0_X1D39 $end
+$var wire 1 paa104 0_X1D40 $end
+$var wire 1 paa105 0_X1D41 $end
+$var wire 1 paa106 0_X1D42 $end
+$var wire 1 paa107 0_X1D43 $end
+$var wire 1 paa108 0_X1D49 $end
+$var wire 1 paa109 0_X1D50 $end
+$var wire 1 paa110 0_X1D51 $end
+$var wire 1 paa111 0_X1D52 $end
+$var wire 1 paa112 0_X1D53 $end
+$var wire 1 paa113 0_X1D54 $end
+$var wire 1 paa114 0_X1D55 $end
+$var wire 1 paa115 0_X1D56 $end
+$var wire 1 paa116 0_X1D57 $end
+$var wire 1 paa117 0_X1D58 $end
+$var wire 1 paa118 0_X1D61 $end
+$var wire 1 paa119 0_X1D62 $end
+$var wire 1 paa120 0_X1D63 $end
+$var wire 1 paa121 0_X1D64 $end
+$var wire 1 paa122 0_X1D65 $end
+$var wire 1 paa123 0_X1D66 $end
+$var wire 1 paa124 0_X1D67 $end
+$var wire 1 paa125 0_X1D68 $end
+$var wire 1 paa126 0_X1D69 $end
+$var wire 1 paa127 0_X1D70 $end
+
+$enddefinitions $end
+
+$dumpvars
+0paa0
+0paa1
+0paa2
+0paa3
+0paa4
+0paa5
+0paa6
+0paa7
+0paa8
+0paa9
+0paa10
+0paa11
+0paa12
+0paa13
+0paa14
+0paa15
+0paa16
+0paa17
+0paa18
+0paa19
+0paa20
+0paa21
+0paa22
+0paa23
+0paa24
+0paa25
+0paa26
+0paa27
+0paa28
+0paa29
+0paa30
+0paa31
+0paa32
+0paa33
+0paa34
+0paa35
+0paa36
+0paa37
+0paa38
+0paa39
+0paa40
+0paa41
+0paa42
+0paa43
+0paa44
+0paa45
+0paa46
+0paa47
+0paa48
+0paa49
+0paa50
+0paa51
+0paa52
+0paa53
+0paa54
+0paa55
+0paa56
+0paa57
+0paa58
+0paa59
+0paa60
+0paa61
+0paa62
+0paa63
+0paa64
+0paa65
+0paa66
+0paa67
+0paa68
+0paa69
+0paa70
+0paa71
+0paa72
+0paa73
+0paa74
+0paa75
+0paa76
+0paa77
+0paa78
+0paa79
+0paa80
+0paa81
+0paa82
+0paa83
+0paa84
+0paa85
+0paa86
+0paa87
+0paa88
+0paa89
+0paa90
+0paa91
+0paa92
+0paa93
+0paa94
+0paa95
+0paa96
+0paa97
+0paa98
+0paa99
+0paa100
+0paa101
+0paa102
+0paa103
+0paa104
+0paa105
+0paa106
+0paa107
+0paa108
+0paa109
+0paa110
+0paa111
+0paa112
+0paa113
+0paa114
+0paa115
+0paa116
+0paa117
+0paa118
+0paa119
+0paa120
+0paa121
+0paa122
+0paa123
+0paa124
+0paa125
+0paa126
+0paa127
+$end
+
+#1
+1paa0
+1paa1
+1paa2
+1paa3
+1paa4
+1paa5
+1paa6
+1paa7
+1paa8
+1paa9
+1paa10
+1paa11
+1paa12
+1paa13
+1paa14
+1paa15
+1paa16
+1paa17
+1paa18
+1paa19
+1paa20
+1paa21
+1paa22
+1paa23
+1paa24
+1paa25
+1paa26
+1paa27
+1paa28
+1paa29
+1paa30
+1paa31
+1paa32
+1paa33
+1paa34
+1paa35
+1paa36
+1paa37
+1paa38
+1paa39
+1paa40
+1paa41
+1paa42
+1paa43
+1paa44
+1paa45
+1paa46
+1paa47
+1paa48
+1paa49
+1paa50
+1paa51
+1paa52
+1paa53
+1paa54
+1paa55
+1paa56
+1paa57
+1paa58
+1paa59
+1paa60
+1paa61
+1paa62
+1paa63
+1paa64
+1paa65
+1paa66
+1paa67
+1paa68
+1paa69
+1paa70
+1paa71
+1paa72
+1paa73
+1paa74
+1paa75
+1paa76
+1paa77
+1paa78
+1paa79
+1paa80
+1paa81
+1paa82
+1paa83
+1paa84
+1paa85
+1paa86
+1paa87
+1paa88
+1paa89
+1paa90
+1paa91
+1paa92
+1paa93
+1paa94
+1paa95
+1paa96
+1paa97
+1paa98
+1paa99
+1paa100
+1paa101
+1paa102
+1paa103
+1paa104
+1paa105
+1paa106
+1paa107
+1paa108
+1paa109
+1paa110
+1paa111
+1paa112
+1paa113
+1paa114
+1paa115
+1paa116
+1paa117
+1paa118
+1paa119
+1paa120
+1paa121
+1paa122
+1paa123
+1paa124
+1paa125
+1paa126
+1paa127
+
+#2677
+0paa40
+0paa41
+0paa42
+0paa43
+
+#11961
+0paa13
+
+#12031
+0paa12
+
+#12101
+0paa34
+
+#12171
+0paa23
+
+#12241
+0paa36
+
+#12311
+0paa37
+
+#17216
+0paa101
+
+#17281
+0paa100
+
+#17456
+0paa90
+0paa91
+0paa92
+0paa93
+0paa94
+0paa95
+0paa96
+0paa97
+
+#17521
+0paa103
+
+#17586
+0paa102
+
+#17651
+0paa88
+
+#17716
+0paa99
+
+#17781
+0paa98
+
+#17976
+0paa89
+
+#21168
+1paa101
+
+#21913
+1paa37
+
+#23273
+0paa37
+
+#24068
+1paa23
+
+#24843
+1paa34
+
+#36438
+1paa37
+
+#40778
+0paa37
+
+#49458
+1paa37
+
+#53798
+0paa37
+
+#60838
+1paa13
+
+#62473
+1paa37
+
+#67088
+0paa37
+
+#80253
+1paa37
+
+#84593
+0paa37
+
+#93273
+1paa37
+
+#97613
+0paa37
+
+#106288
+1paa37
+
+#110903
+0paa37
+
+#124068
+1paa37
+
+#128408
+0paa37
+
+#137088
+1paa37
+
+#141428
+0paa37
+
+#150103
+1paa37
+
+#674093
+0paa23
+
+#759853
+0paa34
+
+#9969848
+1paa34
+
+#10024083
+1paa23
+
+#10674113
+0paa23
+
+#10759873
+0paa34
+
+#11588860

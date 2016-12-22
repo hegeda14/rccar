@@ -1,0 +1,10 @@
+GeneratorModel for yakindu::c {
+
+	statechart RC_CAR {
+
+		feature Outlet {
+			targetProject = "RC-Car"
+			targetFolder = "src-gen"
+		}
+	}
+}
