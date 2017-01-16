@@ -345,7 +345,7 @@ $(function(){
   <div id="icerik"> 
     <table class="bilgiTable1"   border="0" align="center" cellpadding="0" cellspacing="0">
       <tr>
-        <td style="padding:10px;"><div id="div" style="align:center; text-align:center;"> <img  width="640px" height="480px" src="http://192.168.1.89:8081/?action=stream" /> </div></td>
+        <td style="padding:10px;"><div id="div" style="align:center; text-align:center;"> <img  width="640px" height="480px" src="http://192.168.10.101:8081/?action=stream" /> </div></td>
         <td style="padding:10px;"><br>
         <p><br>
         </p>
@@ -374,7 +374,7 @@ $(function(){
     <br>
   <div id="sensorSectionDiv" style="display:none;"><table class="bilgiTable"   border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
-      <td style="padding:10px;"><iframe id="sensorSection" height="420px" width="970px" frameborder="0" scrolling="no" src="http://192.168.1.89/core_usage_read_rpi.php"></iframe> </td>
+      <td style="padding:10px;"><iframe id="sensorSection" height="420px" width="970px" frameborder="0" scrolling="no" src="http://192.168.10.101/core_usage_read_rpi.php"></iframe> </td>
       <td style="padding:10px;">
         </td>
     </tr>

@@ -49,6 +49,8 @@ record_core_usage_rpi =0
 burn_cycles_around25_1 =0
 burn_cycles_around25_2 =0
 burn_cycles_around25_3 =0
+burn_cycles_around25_4 =0
+burn_cycles_around25_5 =0
 burn_cycles_around100 =0
 apache2 =0
 
@@ -60,6 +62,8 @@ record_core_usage_rpi_core="0-3"
 burn_cycles_around25_1_core="0-3"
 burn_cycles_around25_2_core="0-3"
 burn_cycles_around25_3_core="0-3"
+burn_cycles_around25_4_core="0-3"
+burn_cycles_around25_5_core="0-3"
 burn_cycles_around100_core="0-3"
 apache2_core="0-3"
 
@@ -80,7 +84,10 @@ def GetMyGateway():
 	#return "192.168.1.1"
 	#for route in netinfo.get_routes():
 	#	return route['gateway']
-	return "192.168."+str(netinfo.get_ip('wlan0')[8:9])+".1"
+	try:
+		return "192.168."+str(netinfo.get_ip('wlan0')[8:9])+".1"
+	except Exception as inst:
+		return "NotFound"
 
 def GetMySSID():
 	#Only one ssid and psk allowed in wpa_supplicant.conf for this version
@@ -103,13 +110,16 @@ def GetMyPSK():
 	return m.group(1)
 
 def GetMyIPAddress(ifname): #ifname: eth0 wlan0 etc.
-	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	return socket.inet_ntoa(fcntl.ioctl(
-		s.fileno(),
-		0x8915,  # SIOCGIFADDR
-		struct.pack('256s', ifname[:15])
-	)[20:24])
-	#return netinfo.get_ip('eth0') # Can be used for IP using netinfo module
+	try:
+		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		return socket.inet_ntoa(fcntl.ioctl(
+			s.fileno(),
+			0x8915,  # SIOCGIFADDR
+			struct.pack('256s', ifname[:15])
+		)[20:24])
+		#return netinfo.get_ip('eth0') # Can be used for IP using netinfo module
+	except Exception as inst:
+		return "NotFound"
 
 def Settings_IsValidIPv4Address(address):
 	try:
@@ -273,6 +283,8 @@ def UpdateProcessInfo():
 	global burn_cycles_around25_1
 	global burn_cycles_around25_2
 	global burn_cycles_around25_3
+	global burn_cycles_around25_4
+	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
 	try:
@@ -284,6 +296,8 @@ def UpdateProcessInfo():
 		burn_cycles_around25_1 = CheckIfProcessRunning("burn_cycles_around25_1")
 		burn_cycles_around25_2 = CheckIfProcessRunning("burn_cycles_around25_2")
 		burn_cycles_around25_3 = CheckIfProcessRunning("burn_cycles_around25_3")
+		burn_cycles_around25_4 = CheckIfProcessRunning("burn_cycles_around25_4")
+		burn_cycles_around25_5 = CheckIfProcessRunning("burn_cycles_around25_5")
 		burn_cycles_around100 = CheckIfProcessRunning("burn_cycles_around100")
 		apache2 = CheckIfProcessRunning("apache2")
 	except Exception as inst:
@@ -358,7 +372,7 @@ def UpdateShowDistributionPage():
 	global current_thyme
 
 	#0.072 our deadline
-
+	deadline = 0.08#0.072
 	
 	font = pygame.font.SysFont("Roboto Condensed", 40)
 	text = font.render ("Deadline Miss:", True, (0, 0, 255))
@@ -369,12 +383,17 @@ def UpdateShowDistributionPage():
 	current_thyme = time.clock()
 	difference = current_thyme - previous_thyme
 	#print difference
-	percentage_val = int((difference-0.072)/difference*100)
+
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	text = font.render ("Response: "+str(difference), True, (0,0,0))
+	screen.blit(text,(500,190))
+
+	percentage_val = int((difference-deadline)/difference*100)
 	#print percentage_val
 	previous_thyme = current_thyme
 
 	font = pygame.font.SysFont("Roboto Condensed", 100)
-	if (difference>0.072):
+	if (difference>deadline):
 		 
 		text = font.render (str(percentage_val)+"%", True, (0, 0, 0))
 		screen.blit(text,(300,200))
@@ -412,6 +431,8 @@ def AutomaticDistributionActions():
 	global burn_cycles_around25_1
 	global burn_cycles_around25_2
 	global burn_cycles_around25_3
+	global burn_cycles_around25_4
+	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
 
@@ -450,6 +471,14 @@ def AutomaticDistributionActions():
 	except:
 		a=1
 	try:
+		os.system("sudo taskset -pc "+"0-3"+" "+burn_cycles_around25_4)
+	except:
+		a=1
+	try:
+		os.system("sudo taskset -pc "+"0-3"+" "+burn_cycles_around25_5)
+	except:
+		a=1
+	try:
 		os.system("sudo taskset -pc "+"0-3"+" "+burn_cycles_around100)
 	except:
 		a=1
@@ -468,6 +497,8 @@ def APP4MCDistributionActions():
 	global burn_cycles_around25_1
 	global burn_cycles_around25_2
 	global burn_cycles_around25_3
+	global burn_cycles_around25_4
+	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
 
@@ -478,7 +509,7 @@ def APP4MCDistributionActions():
 	except:
 		a=1
 	try:
-		os.system("sudo taskset -pc "+"1"+" "+mjpg_streamer)
+		os.system("sudo taskset -pc "+"0"+" "+mjpg_streamer)
 	except:
 		a=1
 	try:
@@ -490,11 +521,11 @@ def APP4MCDistributionActions():
 	except:
 		a=1
 	try:
-		os.system("sudo taskset -pc "+"1"+" "+record_core_usage_rpi)
+		os.system("sudo taskset -pc "+"0"+" "+record_core_usage_rpi)
 	except:
 		a=1
 	try:
-		os.system("sudo taskset -pc "+"2"+" "+burn_cycles_around25_1)
+		os.system("sudo taskset -pc "+"0"+" "+burn_cycles_around25_1)
 	except:
 		a=1
 	try:
@@ -503,6 +534,14 @@ def APP4MCDistributionActions():
 		a=1
 	try:
 		os.system("sudo taskset -pc "+"2"+" "+burn_cycles_around25_3)
+	except:
+		a=1
+	try:
+		os.system("sudo taskset -pc "+"0"+" "+burn_cycles_around25_4)
+	except:
+		a=1
+	try:
+		os.system("sudo taskset -pc "+"3"+" "+burn_cycles_around25_5)
 	except:
 		a=1
 	try:
@@ -524,6 +563,8 @@ def SequentialDistributionActions():
 	global burn_cycles_around25_1
 	global burn_cycles_around25_2
 	global burn_cycles_around25_3
+	global burn_cycles_around25_4
+	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
 
@@ -559,6 +600,14 @@ def SequentialDistributionActions():
 		a=1
 	try:
 		os.system("sudo taskset -pc "+"3"+" "+burn_cycles_around25_3)
+	except:
+		a=1
+	try:
+		os.system("sudo taskset -pc "+"3"+" "+burn_cycles_around25_4)
+	except:
+		a=1
+	try:
+		os.system("sudo taskset -pc "+"3"+" "+burn_cycles_around25_5)
 	except:
 		a=1
 	try:
@@ -602,6 +651,8 @@ def UpdateAllocationPage():
 	global burn_cycles_around25_1
 	global burn_cycles_around25_2
 	global burn_cycles_around25_3
+	global burn_cycles_around25_4
+	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
 
@@ -678,6 +729,20 @@ def UpdateAllocationPage():
 		colorc = (255,0,0)
 	text = font.render ("Cycler100", True, colorc)
 	screen.blit(text,(30+xx,120+y))
+	y=150
+	if (burn_cycles_around25_4!=0):
+		colorc = (34,139,34)
+	else:
+		colorc = (255,0,0)
+	text = font.render ("Cycler25_4", True, colorc)
+	screen.blit(text,(30+xx,120+y))
+	y=200
+	if (burn_cycles_around25_5!=0):
+		colorc = (34,139,34)
+	else:
+		colorc = (255,0,0)
+	text = font.render ("Cycler25_5", True, colorc)
+	screen.blit(text,(30+xx,120+y))
 
 
 
@@ -690,6 +755,8 @@ def KillProcess(process_name):
 	global burn_cycles_around25_1
 	global burn_cycles_around25_2
 	global burn_cycles_around25_3
+	global burn_cycles_around25_4
+	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
 
@@ -709,6 +776,10 @@ def KillProcess(process_name):
 		pid = burn_cycles_around25_2
 	elif (process_name == "burn_cycles_around25_3"):
 		pid = burn_cycles_around25_3
+	elif (process_name == "burn_cycles_around25_4"):
+		pid = burn_cycles_around25_4
+	elif (process_name == "burn_cycles_around25_5"):
+		pid = burn_cycles_around25_5
 	elif (process_name == "burn_cycles_around100"):
 		pid = burn_cycles_around100
 	elif (process_name == "apache2"):
@@ -736,6 +807,8 @@ def AllocateProcess(process_name):
 	global burn_cycles_around25_1
 	global burn_cycles_around25_2
 	global burn_cycles_around25_3
+	global burn_cycles_around25_4
+	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
 	global Xtightvnc_core
@@ -746,6 +819,8 @@ def AllocateProcess(process_name):
 	global burn_cycles_around25_1_core
 	global burn_cycles_around25_2_core
 	global burn_cycles_around25_3_core
+	global burn_cycles_around25_4_core
+	global burn_cycles_around25_5_core
 	global burn_cycles_around100_core
 	global apache2_core
 
@@ -773,6 +848,12 @@ def AllocateProcess(process_name):
 	elif (process_name == "burn_cycles_around25_3"):
 		pid = burn_cycles_around25_3
 		core = mykeys.run(screen, burn_cycles_around25_3_core)
+	elif (process_name == "burn_cycles_around25_4"):
+		pid = burn_cycles_around25_4
+		core = mykeys.run(screen, burn_cycles_around25_4_core)
+	elif (process_name == "burn_cycles_around25_5"):
+		pid = burn_cycles_around25_5
+		core = mykeys.run(screen, burn_cycles_around25_5_core)
 	elif (process_name == "burn_cycles_around100"):
 		pid = burn_cycles_around100
 		core = mykeys.run(screen, burn_cycles_around100_core)
@@ -805,6 +886,10 @@ def StartProcess(process_name):
 		os.system("cd /home/pi/process_manipulating_functions/burn_cycles && sudo python burn_cycles_around25_2.py &")
 	elif (process_name == "burn_cycles_around25_3"):
 		os.system("cd /home/pi/process_manipulating_functions/burn_cycles && sudo python burn_cycles_around25_3.py &")
+	elif (process_name == "burn_cycles_around25_4"):
+		os.system("cd /home/pi/process_manipulating_functions/burn_cycles && sudo python burn_cycles_around25_4.py &")
+	elif (process_name == "burn_cycles_around25_5"):
+		os.system("cd /home/pi/process_manipulating_functions/burn_cycles && sudo python burn_cycles_around25_5.py &")
 	elif (process_name == "burn_cycles_around100"):
 		os.system("cd /home/pi/process_manipulating_functions/burn_cycles && sudo python burn_cycles_around100.py &")
 	
@@ -943,6 +1028,30 @@ def AllocationPage():
 	text = font.render ("Kill", True, (255, 0, 0))
 	screen.blit(text,(xx+390-x,130+y))
 
+	y=150
+	font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("Cycler25_4", True, (0, 0, 0))
+	screen.blit(text,(30+xx,120+y))
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
+	text = font.render ("Start", True, (255, 0, 0))
+	screen.blit(text,(xx+320-x,130+y))
+	AddPromptBox_Passive(xx+380-x, 120+y, 50, 40)
+	text = font.render ("Kill", True, (255, 0, 0))
+	screen.blit(text,(xx+390-x,130+y))
+
+	y=200
+	font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("Cycler25_5", True, (0, 0, 0))
+	screen.blit(text,(30+xx,120+y))
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
+	text = font.render ("Start", True, (255, 0, 0))
+	screen.blit(text,(xx+320-x,130+y))
+	AddPromptBox_Passive(xx+380-x, 120+y, 50, 40)
+	text = font.render ("Kill", True, (255, 0, 0))
+	screen.blit(text,(xx+390-x,130+y))
+
 
 	return 1
 
@@ -955,6 +1064,8 @@ def GetCoreInfoRpi():
 	global burn_cycles_around25_1
 	global burn_cycles_around25_2
 	global burn_cycles_around25_3
+	global burn_cycles_around25_4
+	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
 	global Xtightvnc_core
@@ -965,6 +1076,8 @@ def GetCoreInfoRpi():
 	global burn_cycles_around25_1_core
 	global burn_cycles_around25_2_core
 	global burn_cycles_around25_3_core
+	global burn_cycles_around25_4_core
+	global burn_cycles_around25_5_core
 	global burn_cycles_around100_core
 	global apache2_core
 
@@ -978,6 +1091,8 @@ def GetCoreInfoRpi():
 	burn_cycles_around25_1_core = GetProcessCoreAffinityList(burn_cycles_around25_1)
 	burn_cycles_around25_2_core = GetProcessCoreAffinityList(burn_cycles_around25_2)
 	burn_cycles_around25_3_core = GetProcessCoreAffinityList(burn_cycles_around25_3)
+	burn_cycles_around25_4_core = GetProcessCoreAffinityList(burn_cycles_around25_4)
+	burn_cycles_around25_5_core = GetProcessCoreAffinityList(burn_cycles_around25_5)
 
 def UpdateCoreAllocationPage():
 	global Xtightvnc
@@ -988,6 +1103,8 @@ def UpdateCoreAllocationPage():
 	global burn_cycles_around25_1
 	global burn_cycles_around25_2
 	global burn_cycles_around25_3
+	global burn_cycles_around25_4
+	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
 	global Xtightvnc_core
@@ -998,6 +1115,8 @@ def UpdateCoreAllocationPage():
 	global burn_cycles_around25_1_core
 	global burn_cycles_around25_2_core
 	global burn_cycles_around25_3_core
+	global burn_cycles_around25_4_core
+	global burn_cycles_around25_5_core
 	global burn_cycles_around100_core
 	global apache2_core
 
@@ -1136,6 +1255,34 @@ def UpdateCoreAllocationPage():
 	text = font.render (str(burn_cycles_around100_core), True, (0, 0, 0))
 	screen.blit(text,(xx+320-x,130+y))
 
+	y=150
+	if (burn_cycles_around25_4!=0):
+		colorc = (34,139,34)
+	else:
+		colorc = (255,0,0)
+	font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("Cycler25_4", True, colorc)
+	screen.blit(text,(30+xx,120+y))
+	
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
+	text = font.render (str(burn_cycles_around25_4_core), True, (0, 0, 0))
+	screen.blit(text,(xx+320-x,130+y))
+
+	y=200
+	if (burn_cycles_around25_5!=0):
+		colorc = (34,139,34)
+	else:
+		colorc = (255,0,0)
+	font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("Cycler25_5", True, colorc)
+	screen.blit(text,(30+xx,120+y))
+	
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
+	text = font.render (str(burn_cycles_around25_5_core), True, (0, 0, 0))
+	screen.blit(text,(xx+320-x,130+y))
+
 	
 
 
@@ -1264,6 +1411,30 @@ def CoreAllocationPage():
 	y=100
 	font = pygame.font.SysFont("Roboto Condensed", 30)
 	text = font.render ("Cycler100", True, (0, 0, 0))
+	screen.blit(text,(30+xx,120+y))
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
+	text = font.render ("", True, (0, 0, 0))
+	screen.blit(text,(xx+320-x,130+y))
+	AddPromptBox_Passive(xx+380-x, 120+y, 80, 40)
+	text = font.render ("Allocate", True, (255, 0, 0))
+	screen.blit(text,(xx+390-x,130+y))
+
+	y=150
+	font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("Cycler25_4", True, (0, 0, 0))
+	screen.blit(text,(30+xx,120+y))
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
+	text = font.render ("", True, (0, 0, 0))
+	screen.blit(text,(xx+320-x,130+y))
+	AddPromptBox_Passive(xx+380-x, 120+y, 80, 40)
+	text = font.render ("Allocate", True, (255, 0, 0))
+	screen.blit(text,(xx+390-x,130+y))
+
+	y=200
+	font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("Cycler25_5", True, (0, 0, 0))
 	screen.blit(text,(30+xx,120+y))
 	font = pygame.font.SysFont("Roboto Condensed", 20)
 	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
@@ -1493,9 +1664,9 @@ def Thread_UpdateCoreUsageInfo():
 				target_xmos.close()
 
 				#Printing
-				print core_usage_rpi
-				print core_usage_tile0
-				print core_usage_tile1
+				#print core_usage_rpi
+				#print core_usage_tile0
+				#print core_usage_tile1
 				#print "ethernet_alive"
 				
 			except Exception as inst:
@@ -1764,6 +1935,18 @@ while not done:
 				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>220 and mouseY < 220+h)):
 					#100 kill
 					KillProcess("burn_cycles_around100")
+				if ((mouseX>560 and mouseX<560+start_w) and (mouseY>270 and mouseY < 270+h)):
+					#25_4 start
+					StartProcess("burn_cycles_around25_4")
+				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>270 and mouseY < 270+h)):
+					#25_4 kill
+					KillProcess("burn_cycles_around25_4")
+				if ((mouseX>560 and mouseX<560+start_w) and (mouseY>320 and mouseY < 320+h)):
+					#25_5 start
+					StartProcess("burn_cycles_around25_5")
+				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>320 and mouseY < 320+h)):
+					#25_5 kill
+					KillProcess("burn_cycles_around25_5")
 
 			if (Current_Page == 5 ):
 				#CoreAllocationPage
@@ -1810,6 +1993,14 @@ while not done:
 				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>220 and mouseY < 220+h)):
 					#100 allocate
 					AllocateProcess("burn_cycles_around100")
+
+				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>270 and mouseY < 270+h)):
+					#25_4 allocate
+					AllocateProcess("burn_cycles_around25_4")
+
+				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>320 and mouseY < 320+h)):
+					#25_5 allocate
+					AllocateProcess("burn_cycles_around25_5")
 
 			if (New_Current_Page == 7): #ChangeDistributionPage
 				if ((mouseX>220 and mouseX<220+350) and (mouseY>280 and mouseY<280+40)):

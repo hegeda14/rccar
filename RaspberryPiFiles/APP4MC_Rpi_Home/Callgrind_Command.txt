@@ -1,0 +1,1 @@
+ sudo valgrind -v --tool=callgrind --dump-instr=yes --collect-jumps=yes python burn_cycles_around25_1.py 
