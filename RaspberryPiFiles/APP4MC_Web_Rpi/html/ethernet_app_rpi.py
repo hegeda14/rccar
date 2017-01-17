@@ -63,7 +63,7 @@ def WriteToFile(data):
 	except Exception as inst:
 		print inst 
 
-server_address = ('192.168.20.48',15534)
+server_address = ('192.168.20.60',15534)
 
 data = ""
 
@@ -90,5 +90,5 @@ while not done:
 					prevfiledata = filedata
 			except Exception as inst:
 				done = True
-                        time.sleep(0.1)
+                        time.sleep(0.01)
 

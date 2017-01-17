@@ -1,0 +1,2 @@
+/usr/bin/ar cr libcommand.a  CMakeFiles/command.dir/home/pi/opencv_workspace/pigpio/command.c.o
+/usr/bin/ranlib libcommand.a

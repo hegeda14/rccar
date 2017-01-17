@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 2.8) project( TrafficConeDetection ) 
+find_package( OpenCV REQUIRED ) find_package(Threads) 
+include_directories( ${OpenCV_INCLUDE_DIRS} ) include_directories( 
+/home/pi/opencv_workspace/pigpio) add_library(pigpio 
+/home/pi/opencv_workspace/pigpio/pigpio.c) add_library(command 
+/home/pi/opencv_workspace/pigpio/command.c) add_executable( 
+TrafficConeDetection TrafficConeDetection.cpp ) add_executable( 
+AvoidObjects AvoidObjects.cpp ) add_executable( EmergencyStopRpi 
+EmergencyStopRpi.cpp ) target_link_libraries( EmergencyStopRpi pigpio ) 
+target_link_libraries( EmergencyStopRpi command ) target_link_libraries( 
+EmergencyStopRpi ${CMAKE_THREAD_LIBS_INIT}) target_link_libraries( 
+TrafficConeDetection ${OpenCV_LIBS} ) target_link_libraries( 
+AvoidObjects ${OpenCV_LIBS} ) target_link_libraries( AvoidObjects pigpio 
+) target_link_libraries( AvoidObjects command ) target_link_libraries( 
+AvoidObjects ${CMAKE_THREAD_LIBS_INIT} )
+

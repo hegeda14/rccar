@@ -53,6 +53,7 @@ burn_cycles_around25_4 =0
 burn_cycles_around25_5 =0
 burn_cycles_around100 =0
 apache2 =0
+avoidobjects_raspicam = 0
 
 Xtightvnc_core="0-3"
 mjpg_streamer_core="0-3"
@@ -66,6 +67,7 @@ burn_cycles_around25_4_core="0-3"
 burn_cycles_around25_5_core="0-3"
 burn_cycles_around100_core="0-3"
 apache2_core="0-3"
+avoidobjects_raspicam_core = "0-3"
 
 distribution_type=2
 current_thyme = 0
@@ -287,6 +289,7 @@ def UpdateProcessInfo():
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
+        global avoidobjects_raspicam
 	try:
 		Xtightvnc = CheckIfProcessRunning("Xtightvnc")	
 		mjpg_streamer = CheckIfProcessRunning("mjpg_streamer")
@@ -300,6 +303,7 @@ def UpdateProcessInfo():
 		burn_cycles_around25_5 = CheckIfProcessRunning("burn_cycles_around25_5")
 		burn_cycles_around100 = CheckIfProcessRunning("burn_cycles_around100")
 		apache2 = CheckIfProcessRunning("apache2")
+                avoidobjects_raspicam = CheckIfProcessRunning("AvoidObjects_Raspicam")
 	except Exception as inst:
 		print inst
 
@@ -435,6 +439,7 @@ def AutomaticDistributionActions():
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
+        global avoidobjects_raspicam
 
 	UpdateProcessInfo()
 	
@@ -486,6 +491,10 @@ def AutomaticDistributionActions():
 		os.system("sudo taskset -pc "+"0-3"+" "+apache2)
 	except:
 		a=1
+        try:
+                os.system("sudo taskset -pc "+"0-3"+" "+avoidobjects_raspicam)
+        except:
+                a=1
 	
 
 def APP4MCDistributionActions():
@@ -501,7 +510,8 @@ def APP4MCDistributionActions():
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
-
+        global avoidobjects_raspicam
+        
 	UpdateProcessInfo()
 	
 	try:
@@ -553,6 +563,12 @@ def APP4MCDistributionActions():
 	except:
 		a=1
 
+#        try:
+#                os.system("sudo taskset -pc "+"0-3"+" "+avoidobjects_raspicam)
+#        except:
+#                a=1
+#                
+
 
 def SequentialDistributionActions():
 	global Xtightvnc
@@ -567,7 +583,8 @@ def SequentialDistributionActions():
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
-
+        global avoidobjects_raspicam
+        
 	UpdateProcessInfo()
 	
 	try:
@@ -618,6 +635,10 @@ def SequentialDistributionActions():
 		os.system("sudo taskset -pc "+"3"+" "+apache2)
 	except:
 		a=1
+#        try:
+#                os.system("sudo taskset -pc "+"3"+" "+avoidobjects_raspicam)
+#        except:
+#                a=1
 
 
 def ShowDistributionPage():
@@ -655,6 +676,7 @@ def UpdateAllocationPage():
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
+        global avoidobjects_raspicam
 
 	UpdateProcessInfo()
 
@@ -743,7 +765,13 @@ def UpdateAllocationPage():
 		colorc = (255,0,0)
 	text = font.render ("Cycler25_5", True, colorc)
 	screen.blit(text,(30+xx,120+y))
-
+        y=250
+	if (avoidobjects_raspicam!=0):
+		colorc = (34,139,34)
+	else:
+		colorc = (255,0,0)
+	text = font.render ("ImageProcess", True, colorc)
+	screen.blit(text,(30+xx,120+y))
 
 
 def KillProcess(process_name):
@@ -759,6 +787,7 @@ def KillProcess(process_name):
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
+        global avoidobjects_raspicam
 
 	if (process_name == "mjpg_streamer"):
 		pid = mjpg_streamer
@@ -784,6 +813,8 @@ def KillProcess(process_name):
 		pid = burn_cycles_around100
 	elif (process_name == "apache2"):
 		pid = apache2
+        elif (process_name == "AvoidObjects_Raspicam"):
+                pid = avoidobjects_raspicam
 	else:
 		pid=""
 
@@ -811,6 +842,7 @@ def AllocateProcess(process_name):
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
+        global avoidobjects_raspicam
 	global Xtightvnc_core
 	global mjpg_streamer_core
 	global display_core
@@ -823,6 +855,7 @@ def AllocateProcess(process_name):
 	global burn_cycles_around25_5_core
 	global burn_cycles_around100_core
 	global apache2_core
+        global avoidobjects_raspicam_core
 
 	if (process_name == "mjpg_streamer"):
 		pid = mjpg_streamer
@@ -860,6 +893,9 @@ def AllocateProcess(process_name):
 	elif (process_name == "apache2"):
 		pid = apache2
 		core = mykeys.run(screen, apache2_core)
+        elif (process_name == "AvoidObjects_Raspicam"):
+                pid = avoidobjects_raspicam
+                core = mykeys.run (screen, avoidobjects_raspicam_core)
 	else:
 		pid=""
 		core=""
@@ -892,6 +928,10 @@ def StartProcess(process_name):
 		os.system("cd /home/pi/process_manipulating_functions/burn_cycles && sudo python burn_cycles_around25_5.py &")
 	elif (process_name == "burn_cycles_around100"):
 		os.system("cd /home/pi/process_manipulating_functions/burn_cycles && sudo python burn_cycles_around100.py &")
+        elif (process_name == "AvoidObjects_Raspicam"):
+                os.system("cd /home/pi/opencv_workspace/TrafficConeDetection && sudo -E ./AvoidObjects_Raspicam &")
+
+        # & at the end in commands is important to run the app in the background
 	
 
 def AllocationPage():
@@ -1052,6 +1092,18 @@ def AllocationPage():
 	text = font.render ("Kill", True, (255, 0, 0))
 	screen.blit(text,(xx+390-x,130+y))
 
+        y=250
+	font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("ImageProcess", True, (0, 0, 0))
+	screen.blit(text,(30+xx,120+y))
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
+	text = font.render ("Start", True, (255, 0, 0))
+	screen.blit(text,(xx+320-x,130+y))
+	AddPromptBox_Passive(xx+380-x, 120+y, 50, 40)
+	text = font.render ("Kill", True, (255, 0, 0))
+	screen.blit(text,(xx+390-x,130+y))
+
 
 	return 1
 
@@ -1068,6 +1120,7 @@ def GetCoreInfoRpi():
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
+        global avoidobjects_raspicam
 	global Xtightvnc_core
 	global mjpg_streamer_core
 	global display_core
@@ -1080,6 +1133,7 @@ def GetCoreInfoRpi():
 	global burn_cycles_around25_5_core
 	global burn_cycles_around100_core
 	global apache2_core
+        global avoidobjects_raspicam_core
 
 	record_core_usage_rpi_core = GetProcessCoreAffinityList(record_core_usage_rpi)
 	display_core = GetProcessCoreAffinityList(display)
@@ -1093,6 +1147,7 @@ def GetCoreInfoRpi():
 	burn_cycles_around25_3_core = GetProcessCoreAffinityList(burn_cycles_around25_3)
 	burn_cycles_around25_4_core = GetProcessCoreAffinityList(burn_cycles_around25_4)
 	burn_cycles_around25_5_core = GetProcessCoreAffinityList(burn_cycles_around25_5)
+        avoidobjects_raspicam_core = GetProcessCoreAffinityList(avoidobjects_raspicam)
 
 def UpdateCoreAllocationPage():
 	global Xtightvnc
@@ -1107,6 +1162,7 @@ def UpdateCoreAllocationPage():
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
+        global avoidobjects_raspicam
 	global Xtightvnc_core
 	global mjpg_streamer_core
 	global display_core
@@ -1119,6 +1175,7 @@ def UpdateCoreAllocationPage():
 	global burn_cycles_around25_5_core
 	global burn_cycles_around100_core
 	global apache2_core
+        global avoidobjects_raspicam_core
 
 	UpdateProcessInfo()
 	GetCoreInfoRpi()
@@ -1283,6 +1340,20 @@ def UpdateCoreAllocationPage():
 	text = font.render (str(burn_cycles_around25_5_core), True, (0, 0, 0))
 	screen.blit(text,(xx+320-x,130+y))
 
+        y=250
+	if (avoidobjects_raspicam!=0):
+		colorc = (34,139,34)
+	else:
+		colorc = (255,0,0)
+	font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("ImageProcess", True, colorc)
+	screen.blit(text,(30+xx,120+y))
+	
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
+	text = font.render (str(avoidobjects_raspicam_core), True, (0, 0, 0))
+	screen.blit(text,(xx+320-x,130+y))
+
 	
 
 
@@ -1435,6 +1506,18 @@ def CoreAllocationPage():
 	y=200
 	font = pygame.font.SysFont("Roboto Condensed", 30)
 	text = font.render ("Cycler25_5", True, (0, 0, 0))
+	screen.blit(text,(30+xx,120+y))
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
+	text = font.render ("", True, (0, 0, 0))
+	screen.blit(text,(xx+320-x,130+y))
+	AddPromptBox_Passive(xx+380-x, 120+y, 80, 40)
+	text = font.render ("Allocate", True, (255, 0, 0))
+	screen.blit(text,(xx+390-x,130+y))
+
+        y=250
+	font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("ImageProcess", True, (0, 0, 0))
 	screen.blit(text,(30+xx,120+y))
 	font = pygame.font.SysFont("Roboto Condensed", 20)
 	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
@@ -1947,7 +2030,14 @@ while not done:
 				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>320 and mouseY < 320+h)):
 					#25_5 kill
 					KillProcess("burn_cycles_around25_5")
-
+                                
+                                if ((mouseX>560 and mouseX<560+start_w) and (mouseY>370 and mouseY < 370+h)):
+					#avoidobjects_raspicam start
+					StartProcess("AvoidObjects_Raspicam")
+				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>370 and mouseY < 370+h)):
+					#avoidobjects_raspicam kill
+					KillProcess("AvoidObjects_Raspicam")
+                                
 			if (Current_Page == 5 ):
 				#CoreAllocationPage
 				start_w = 60
@@ -2001,6 +2091,13 @@ while not done:
 				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>320 and mouseY < 320+h)):
 					#25_5 allocate
 					AllocateProcess("burn_cycles_around25_5")
+
+                                if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>370 and mouseY < 370+h)):
+					#AvoidObjects_Raspicam allocate
+					AllocateProcess("AvoidObjects_Raspicam")
+
+                               
+                                        
 
 			if (New_Current_Page == 7): #ChangeDistributionPage
 				if ((mouseX>220 and mouseX<220+350) and (mouseY>280 and mouseY<280+40)):
@@ -2088,5 +2185,5 @@ while not done:
 
 	pygame.display.flip()
 
-	time.sleep(0.2)
+	time.sleep(0.1)
 	clock.tick(60)
