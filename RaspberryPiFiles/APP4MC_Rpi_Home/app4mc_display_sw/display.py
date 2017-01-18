@@ -439,7 +439,7 @@ def AutomaticDistributionActions():
 	global burn_cycles_around25_5
 	global burn_cycles_around100
 	global apache2
-        global avoidobjects_raspicam
+	global avoidobjects_raspicam
 
 	UpdateProcessInfo()
 	
@@ -491,10 +491,10 @@ def AutomaticDistributionActions():
 		os.system("sudo taskset -pc "+"0-3"+" "+apache2)
 	except:
 		a=1
-        try:
-                os.system("sudo taskset -pc "+"0-3"+" "+avoidobjects_raspicam)
-        except:
-                a=1
+	try:
+		os.system("sudo taskset -pc "+"0-3"+" "+avoidobjects_raspicam)
+	except:
+		a=1
 	
 
 def APP4MCDistributionActions():
@@ -563,11 +563,11 @@ def APP4MCDistributionActions():
 	except:
 		a=1
 
-#        try:
-#                os.system("sudo taskset -pc "+"0-3"+" "+avoidobjects_raspicam)
-#        except:
-#                a=1
-#                
+	try:
+		os.system("sudo taskset -pc "+"2"+" "+avoidobjects_raspicam)
+	except:
+		a=1
+                
 
 
 def SequentialDistributionActions():
@@ -635,10 +635,10 @@ def SequentialDistributionActions():
 		os.system("sudo taskset -pc "+"3"+" "+apache2)
 	except:
 		a=1
-#        try:
-#                os.system("sudo taskset -pc "+"3"+" "+avoidobjects_raspicam)
-#        except:
-#                a=1
+	try:
+		os.system("sudo taskset -pc "+"3"+" "+avoidobjects_raspicam)
+	except:
+		a=1
 
 
 def ShowDistributionPage():
