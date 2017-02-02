@@ -23,7 +23,7 @@ static int led_status = 0;
 static int i2c_th02_fd = 0;
 
 void init(){
-	  wiringPiSetup () ;
+	  //wiringPiSetup () ;
 
 	  pinMode (ENABLE_MOTOR_LEFT, OUTPUT) ;
 	  digitalWrite (ENABLE_MOTOR_LEFT, HIGH) ;
@@ -155,6 +155,7 @@ float getHumidity(){
 
 	return x;
 }
+
 void runside(int side, int direction, int speed){
 	// POLOLU_2756
 	if (side==LEFT){
@@ -180,6 +181,7 @@ void runside(int side, int direction, int speed){
 void go (int direction, int speed){
 	runside (LEFT, direction, speed);
 	runside (RIGHT, direction, speed);
+
 	delay (DEFAULT_DELAY) ;
 }
 

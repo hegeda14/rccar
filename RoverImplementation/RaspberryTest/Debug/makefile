@@ -8,6 +8,9 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include src/tasks/subdir.mk
+-include src/pthread_distribution_lib/subdir.mk
+-include src/api/subdir.mk
 -include src/subdir.mk
 -include subdir.mk
 -include objects.mk

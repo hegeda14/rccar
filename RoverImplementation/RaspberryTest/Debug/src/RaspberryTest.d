@@ -1,14 +1,35 @@
-src/RaspberryTest.o: ../src/RaspberryTest.cpp \
- ../src/pthread_distribution.h ../src/ultrasonic_sensor_task.h \
- ../src/rover_test_task.h ../src/basic_psys_rover.h \
- ../src/temperature_task.h
+src/RaspberryTest.o: ../src/RaspberryTest.cpp ../src/RaspberryTest.h \
+ ../src/interfaces.h \
+ ../src/pthread_distribution_lib/pthread_distribution.h \
+ ../src/tasks/ultrasonic_sensor_task.h ../src/tasks/../RaspberryTest.h \
+ ../src/tasks/rover_test_task.h ../src/tasks/../api/basic_psys_rover.h \
+ ../src/tasks/../interfaces.h ../src/tasks/temperature_task.h \
+ ../src/tasks/keycommand_task.h ../src/tasks/motordriver_task.h \
+ ../src/tasks/infrared_distance_task.h \
+ ../src/tasks/display_sensors_task.h
 
-../src/pthread_distribution.h:
+../src/RaspberryTest.h:
 
-../src/ultrasonic_sensor_task.h:
+../src/interfaces.h:
 
-../src/rover_test_task.h:
+../src/pthread_distribution_lib/pthread_distribution.h:
 
-../src/basic_psys_rover.h:
+../src/tasks/ultrasonic_sensor_task.h:
 
-../src/temperature_task.h:
+../src/tasks/../RaspberryTest.h:
+
+../src/tasks/rover_test_task.h:
+
+../src/tasks/../api/basic_psys_rover.h:
+
+../src/tasks/../interfaces.h:
+
+../src/tasks/temperature_task.h:
+
+../src/tasks/keycommand_task.h:
+
+../src/tasks/motordriver_task.h:
+
+../src/tasks/infrared_distance_task.h:
+
+../src/tasks/display_sensors_task.h:

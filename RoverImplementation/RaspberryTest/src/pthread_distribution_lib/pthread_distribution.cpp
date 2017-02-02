@@ -1,5 +1,19 @@
-// pThread Core Affinity Pinning
-// Author: M.Ozcelikors  <mozcelikors@gmail.com>
+/*
+ * Copyright (c) 2017 PIMES, Fachhochschule Dortmund
+ *
+ * Description:
+ *    pThread Core Affinity Pinning
+ *
+ * Supervision:
+ *    Robert Hottger
+ *
+ * Authors:
+ *    Mustafa Ozcelikors <mozcelikors@gmail.com>   02.02.2017 - compilation
+ *
+ * Contributors:
+ *
+ */
+
 
 #include "pthread_distribution.h"
 

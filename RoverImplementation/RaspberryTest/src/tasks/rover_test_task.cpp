@@ -9,7 +9,7 @@ void say(char *text){
 
    system(buffer);
 }
-
+/*
 void autopark() {
 	int i;
 	for (i = 0; i < 3; i = i + 1)
@@ -35,7 +35,7 @@ void autopark() {
 	}
 
 	stop();
-}
+}*/
 
 void getDistanceTrain(int channel,int rounds){
 	int i;
