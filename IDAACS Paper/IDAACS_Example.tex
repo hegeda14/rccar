@@ -41,7 +41,11 @@ component; formatting; style; styling
 
 Especially the automotive domain requires lots of constraints originating from different safety, security, timing, or similar requirements. The verification, validation, testing, and simulation stack requires dozens of tools and the consideration of established architectures, standards, models, and assessments to address product-line supporting, consistent, modular, and scalable software. However, these efforts lack in transparency likewise the comprehensive understanding of applications. Recent approaches \ref{APP4MC} already address this challenge and try to provide a common adaptable platform based on AUTOSAR while providing a standardized data model. Any specific commercial or proprietary tooling is supposed to be integratable in order to provide seamless interaction with provided tooling such as product-line management, requirements engineering, partitioning, mapping, testing, and more. 
 
-In this paper, use the open source APP4MC environment in order to address both industrial and research related models while evaluating our new developments not only regarding model results but also to validate result among a specific use case described in section \ref{sec:rccar}. The RC-Car is an advanced demonstrator that features 16 100MHz cores (XMOS ExplorerKit, XCore 200) combined with four cores clocked at 1200MHz (Raspberry Pi 3, ARM CoreTex-A53).
+In this paper, use the open source APP4MC environment in order to address both industrial and research related models while evaluating our new developments not only regarding model results but also to validate result among a specific use case described in section \ref{sec:rccar}. The RC-Car is an advanced demonstrator that features 16 100MHz cores (XMOS ExplorerKit, XCore 200) 
+%2 instructions per cycle see https://www.xmos.com/download/private/xCORE-Architecture-Flyer%281.1%29.pdf
+%2000MIPS 16 core https://www.xmos.com/download/private/xCORE-200-XE-Product-Brief%281.2%29.pdf
+
+combined with four cores clocked at 1200MHz (Raspberry Pi 3, ARM CoreTex-A53).
 The further remainder of this paper is structured as follows: The next section \ref{sec:app4mc} describes roughly the environment this contribution is based upon. Afterwards, section \ref{sec:rccar} illustrates capabilities and properties of the RC-Car demonstrator. Subsequently, section \ref{sec:impl} outlines the specific developments and solutions to precise modeling and software parallelization that is evaluated and compared to related approaches in section \ref{sec:eval}. Finally, section \ref{sec:concl} concludes this paper's contributions and discusses benefits, disadvantages, possible extensions, and promising outlooks that potentially advance the current approach.
 
 
@@ -50,7 +54,9 @@ The further remainder of this paper is structured as follows: The next section \
 
 \section{RC-Car}
 \label{sec:rccar}
+The current Raspberry Pi distribution includes processes for the touchscreen, ethernet communication, core utilization reader, mjpg streamer, vnc application, apache2, OpenCV image processing, and additional cyclewaster. The latter processes can be added in order to push the core utilization to a maximum and consider high workload. The effective distribution provided by APP4MC is here crucial to provide deadline violation free program execution. 
 
+The XMOS tasks are implemented on a more precise level and focus on necessary real time implementations. Scheduling on the XMOS is non preemptive and allows a better determinism as well as easier WCET reasoning due to less context switching and less scheduling jitter \ref{xmos}. However, since our number of tasks exceed the total number of available cores on the XMOS, we had to define high priority tasks, that run on a dedicated core, and low priority tasks that run concurrently with other low level tasks in cooperative multitask fashion on common cores. The amount of high priority tasks thereby defines the number of cores available for the low priority tasks. 
 %EQUATION-----------------------------------------------
 %\begin{equation}
 %\label{Eq_1}
