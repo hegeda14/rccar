@@ -47,13 +47,20 @@ void *MotorDriver_Task(void * arg)
 {
 	init();
 	int running = 1;
-	char local_command = 's';
+	char local_command = 'f';
+
+	//runside (LEFT, BACKWARD, FULL_SPEED);
+	//runside (RIGHT, BACKWARD, FULL_SPEED);
+
 	while (running)
 	{
 		pthread_mutex_lock(&keycommand_lock);
 			local_command = keycommand_shared;
 			//printf("got=%c\n",keycommand_shared);
 		pthread_mutex_unlock(&keycommand_lock);
+
+
+
 
 		switch (local_command)
 		{
@@ -63,16 +70,16 @@ void *MotorDriver_Task(void * arg)
 			case 'p':
 				autopark();
 				break;
-			case 'i':
+			case 'w':
 				go(FORWARD, FULL_SPEED);
 				break;
-			case 'u':
+			case 'd':
 				turn(FORWARD, LEFT, FULL_SPEED);
 				break;
-			case 'k':
+			case 's':
 				go(BACKWARD, FULL_SPEED);
 				break;
-			case 'o':
+			case 'a':
 				turn(FORWARD, RIGHT, FULL_SPEED);
 				break;
 			case 'j':
@@ -81,7 +88,7 @@ void *MotorDriver_Task(void * arg)
 			case 'l':
 				turn(BACKWARD, RIGHT, FULL_SPEED);
 				break;
-			case 's':
+			case 'f':
 				stop();
 				break;
 		}

@@ -54,7 +54,7 @@ int main()
 	temperature_shared = 0.0;
 	humidity_shared = 0.0;
 	distance_shared = 0;
-	keycommand_shared = 's';
+	keycommand_shared = 'f';
 	infrared_shared[0] = 0.0;
 	infrared_shared[1] = 0.0;
 

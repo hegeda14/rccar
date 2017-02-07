@@ -62,6 +62,8 @@ extern float getTemperature(void);
 
 extern float getHumidity(void);
 
+extern void runside(int side, int direction, int speed);
+
 #endif /* PSYS_ROVER_H_ */
 
 
