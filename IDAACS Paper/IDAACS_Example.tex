@@ -39,24 +39,42 @@ component; formatting; style; styling
 
 \section{Introduction}
 
-Especially the automotive domain requires lots of constraints originating from different safety, security, timing, or similar requirements. The verification, validation, testing, and simulation stack requires dozens of tools and the consideration of established architectures, standards, models, and assessments to address product-line supporting, consistent, modular, and scalable software. However, these efforts lack in transparency likewise the comprehensive understanding of applications. Recent approaches \ref{APP4MC} already address this challenge and try to provide a common adaptable platform based on AUTOSAR while providing a standardized data model. Any specific commercial or proprietary tooling is supposed to be integratable in order to provide seamless interaction with provided tooling such as product-line management, requirements engineering, partitioning, mapping, testing, and more. 
+Especially the automotive domain requires lots of constraints originating from different safety, security, timing, or similar requirements. The verification, validation, testing, and simulation stack requires dozens of tools and the consideration of established architectures, standards, models, and assessments to address product-line supporting, consistent, modular, and scalable software. However, these efforts lack in transparency likewise the comprehensive understanding of applications. Recent approaches \ref{APP4MC} \footnote{\underline{APP}lication \underline{P}latform \underline{P}roject for Multi and Manycore, http://eclip.se/a7, access February 2017} already address this challenge and try to provide a common adaptable platform based on AUTOSAR while providing a standardized data model. Any specific commercial or proprietary tooling is supposed to be integratable in order to provide seamless interaction with provided tooling such as product-line management, requirements engineering, partitioning, mapping, testing, and more. 
 
-In this paper, use the open source APP4MC environment in order to address both industrial and research related models while evaluating our new developments not only regarding model results but also to validate result among a specific use case described in section \ref{sec:rccar}. The RC-Car is an advanced demonstrator that features 16 100MHz cores (XMOS ExplorerKit, XCore 200) 
+In this paper, use the open source APP4MC environment in order to address both industrial and research related models while evaluating our new developments not only regarding model results but also to validate result among a specific use case described in section \ref{sec:rccar}. The RC-Car is an advanced demonstrator that features 16 100MHz logical cores (XMOS ExplorerKit, XCore-200) 
 %2 instructions per cycle see https://www.xmos.com/download/private/xCORE-Architecture-Flyer%281.1%29.pdf
 %2000MIPS 16 core https://www.xmos.com/download/private/xCORE-200-XE-Product-Brief%281.2%29.pdf
-
+%--> 125MIPS per logical core, --> 1,25 instructions per cycle?
 combined with four cores clocked at 1200MHz (Raspberry Pi 3, ARM CoreTex-A53).
+
 The further remainder of this paper is structured as follows: The next section \ref{sec:app4mc} describes roughly the environment this contribution is based upon. Afterwards, section \ref{sec:rccar} illustrates capabilities and properties of the RC-Car demonstrator. Subsequently, section \ref{sec:impl} outlines the specific developments and solutions to precise modeling and software parallelization that is evaluated and compared to related approaches in section \ref{sec:eval}. Finally, section \ref{sec:concl} concludes this paper's contributions and discusses benefits, disadvantages, possible extensions, and promising outlooks that potentially advance the current approach.
 
 
 \section{APP4MC}
 \label{sec:app4mc}
+APP4MC is an open source project for developing multi and many core systems primarily for the automotive domain. Instead of describing its different purposes and features, the focus of this section concentrates on the required steps to utilize APP4MC parallelization capabilities \cite{ICPDSSE} i.e. partitioning and mapping. Those processes have been advanced in recent years to consider affinity, allocation, and safety constraints among others. Dealing with safety constraints ensures that tasks having a specific \underline{A}utomotive \underline{S}afety \underline{I}ntegrity \underline{L}evel (ASIL) are allocated to processing units (cores) featuring the corresponding ASIL level. Allocation constraints are considered the same way, except that instead of ASIL levels, properties such as \underline{F}loating \underline{P}oint \underline{U}nit (FPU) connectivity, cache memory size, processing frequency or others are investigated. Affinity constraints are evaluated within the partitioning process since runnables, i.e. smallest executable units, have to be kept in the same partition that are later on resolved to tasks. This paper's application, i.e. the RC-Car, features all of those constraints. Affinity has to be kept for instance regarding the light system state task and the \underline{P}ulse \underline{W}idth \underline{M}odulation (PWM) signal generation (timer) tasks since their distribution would cause implementation and communication overheads. Since there are tasks that continuously check the core utilization on each X-Core Tile, those tasks feature an allocation constraint to each X-Core Tile. Finally, due to the fact that the RC-Car performs image processing from a camera as well as real time tasks for motor control, steering and bluetooth based communications, we define all tasks that are crucial for safe driving as being safety critical (safety constraint) and bind them to the real time capable XMOS board. 
 
+Apart from the constraints, software and hardware descriptions are required. While the hardware model is created manually, a C/CPP parser was used to receive necessary AMALTHEA software model data i.e. runnables, labels, label accesses, activations, runnable calls, \underline{I}nterrupts \underline{S}ervice \underline{R}outines (ISRs), Semaphores, and more. Excerpts of those models are shown in Figure \ref{fig:model}.
+\begin{figure}[bth]
+\centering
+\includegraphics[scale=0.4]{images/models.png}
+\caption{\label{fig:model}AMALTHEA software and hardware models (excerpts) for the RC-Car}
+\end{figure}
+
+Before the partitioning and mapping processes can be configured and executed, one of the most challenging key property has to be added to runnables i.e. 
 \section{RC-Car}
 \label{sec:rccar}
 The current Raspberry Pi distribution includes processes for the touchscreen, ethernet communication, core utilization reader, mjpg streamer, vnc application, apache2, OpenCV image processing, and additional cyclewaster. The latter processes can be added in order to push the core utilization to a maximum and consider high workload. The effective distribution provided by APP4MC is here crucial to provide deadline violation free program execution. 
 
 The XMOS tasks are implemented on a more precise level and focus on necessary real time implementations. Scheduling on the XMOS is non preemptive and allows a better determinism as well as easier WCET reasoning due to less context switching and less scheduling jitter \ref{xmos}. However, since our number of tasks exceed the total number of available cores on the XMOS, we had to define high priority tasks, that run on a dedicated core, and low priority tasks that run concurrently with other low level tasks in cooperative multitask fashion on common cores. The amount of high priority tasks thereby defines the number of cores available for the low priority tasks. 
+
+\begin{figure}[bth]
+\centering
+\includegraphics[scale=0.15]{images/hwarch.png}
+\caption{\label{Fig_Magnet}Magnetization as a function of applied field. Note 
+how the caption is centered in the column.}
+\end{figure}
+
 %EQUATION-----------------------------------------------
 %\begin{equation}
 %\label{Eq_1}
