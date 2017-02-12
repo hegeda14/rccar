@@ -4,3 +4,5 @@ IDAACS Paper/IDAACS_Example.log
 IDAACS Paper/IDAACS_Example.pdf
 IDAACS Paper/IDAACS_Example.synctex.gz
 *.o
+IDAACS Paper/IDAACS_Example.bbl
+IDAACS Paper/IDAACS_Example.blg
