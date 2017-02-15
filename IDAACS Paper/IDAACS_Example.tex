@@ -55,7 +55,7 @@ Finally, Section \ref{sec:concl} concludes this paper's contributions and discus
 %FOCUS Constraints
 APP4MC is an open source project for developing multi- and many-core systems primarily for the automotive domain. Instead of describing its different purposes and features, the focus of this section is on the required steps to utilize APP4MC parallelization capabilities \cite{ICPDSSE}, i.e. partitioning and mapping. Those processes have been advanced in recent years to consider affinity, allocation, and safety constraints among others. Dealing with safety constraints ensures that tasks with a specific \underline{A}utomotive \underline{S}afety \underline{I}ntegrity \underline{L}evel (ASIL) are allocated to processing units (cores) featuring the corresponding ASIL level. Allocation constraints are considered the same way, except that instead of ASIL levels properties such as \underline{F}loating \underline{P}oint \underline{U}nit (FPU) connectivity, cache memory size, processing frequency or others are investigated. Affinity constraints are evaluated within the partitioning process since runnables, i.e. smallest executable units, have to be kept in the same partition that are later on resolved to tasks. This paper's application, i.e. the RC-Car, features all of those constraints. Affinity has to be kept for instance regarding the light system state task and the \underline{P}ulse \underline{W}idth \underline{M}odulation (PWM) signal generation (timer) tasks since their distribution would cause implementation and communication overheads. Since there are tasks that continuously check the core utilization on each X-Core Tile, those tasks feature an allocation constraint to each X-Core Tile. Finally, due to the fact that the RC-Car performs image processing from a camera as well as real time tasks for motor control, steering, and bluetooth based communications, we define all tasks that are crucial for safe driving as being safety critical (safety constraint) and bind them to the real time capable XMOS board. 
 
-Apart from the constraints, software and hardware descriptions are required. While the hardware model is created manually, a C/CPP parser was used to receive necessary AMALTHEA software model data, i.e. runnables, labels, label accesses, activations, runnable calls, \underline{I}nterrupts \underline{S}ervice \underline{R}outines (ISRs), Semaphores, and more for the Raspberry Pi (RPI) implementations. Excerpts of those models are shown in Figure~\ref{fig:model}. While the RPI already features 247 Runnables and more, XMOS implementations were modeled on a higher level upon threads only, that correspond tasks. Those count 30 in total where profiling was performed via counting assembler instructions and using XXX for profiling.
+Apart from the constraints, software and hardware descriptions are required. While the hardware model is created manually, a C/CPP parser was used to receive necessary AMALTHEA software model data, i.e. runnables, labels, label accesses, activations, runnable calls, \underline{I}nterrupts \underline{S}ervice \underline{R}outines (ISRs), Semaphores, and more for the Raspberry Pi (RPI) implementations. Excerpts of those models are shown in Figure~\ref{fig:model}. While the RPI already features 247 Runnables and more, XMOS implementations were modeled on a higher level upon threads only, that correspond tasks. Those count 30 in total where profiling was performed via counting assembler instructions and using individual scripts for profiling.
 
 \begin{figure}[bth]
 	\centering
@@ -64,24 +64,16 @@ Apart from the constraints, software and hardware descriptions are required. Whi
 \end{figure}
 
 %TODO insert how instructions of XMOS threads were found out
-
-%CHECK
-The created scripts or applications need to be modeled precisely with APP4MC in order to get more accurate results. The Linux OS provides a set of important kernel-level and development tools for processes, threads, and binaries that allow us to model and manage systems. %TOO generic
-Making use of Linux OS tools has been an important part of the whole development process while modeling with APP4MC.
-
-The first step that is needed in order to properly model the runnables and tasks is getting the proper number of instructions by either looking at disassembly of binary objects or using profiling tools. 
-In order to profile the dynamic processes, which are one of the greatest parts in our application, the tool 'perf' has been used. 
-A linux system bash script has been created in order to get the dynamical instructions by making use of this tool.
-One could also make use of the kernel folders in Linux such as 'proc' in order to define constraints for the processes while modeling them in APP4MC.
-Furthermore, the runnables within C/C++ applications are disassembled and analyzed by using the tool 'objdump', which creates disassembled runnables from binary files.
-
-Linux provides other tools such as 'top' and 'taskset', which are also crucial to the development of multi-core systems. 
-The tool 'top' is used for the process monitoring, whereas the tool 'taskset' is used for core pinning/mapping to manage the multi-core distribution.
-In the RC-CAR, the aforementioned tools are used in order to manage a multi-process system distributed on multiple cores.
-The mapping on the RC-CAR is done automatically by a created Python script, which parses an included text file and makes the distribution using Linux's 'taskset'.
-
-%END CHECK
-
+%The created scripts or applications need to be modeled precisely with APP4MC in order to get more accurate results. 
+More precisely, the Linux OS provides a set of important kernel-level tools as well as methods to analyze processes, threads, and binaries. Consequently, we use those to model the implementations and transform them to Amalthea models. Since the amount of functions i.e. smallest executable units that are transformed to runnables, often reaches beyond 100, the transformation is required to be done automatically by a parser or script. The tool '\textbf{objectdump}' meets this tasks due to its capability to derive disassembled runnables from binary files created from C or C++ files. While this stays quite straight forward, deriving instructions, deadlines, or WCET has to be addressed by specific profiling tools that handle binary object disassembly. For this purpose the '\textbf{perf}' tool fits our need most and has been integrated to script to derive the required instructions. Furthermore, via accessing the kernel folder '\textbf{proc}' we derive affinity constraints to keep some specific functions from being separated during partitioning or mapping processes. 
+%The first required step that is needed in order to properly model the runnables and tasks is getting the proper number of instructions by either looking at disassembly of binary objects or using profiling tools. 
+%In order to profile the dynamic processes, which are one of the greatest parts in our application, the tool 'perf' has been used. 
+%A linux system bash script has been created in order to get the dynamical instructions by making use of this tool.
+%One could also make use of the kernel folders in Linux such as 'proc' in order to define constraints for the processes while modeling them in APP4MC.
+%Furthermore, the runnables within C/C++ applications are disassembled and analyzed by using the tool 'objdump', which creates disassembled runnables from binary files.
+Linux provides other tools such as '\textbf{top}' and '\textbf{taskset}', which are also crucial to the development of multi-core systems. The tool '\textbf{top}' is used for the process monitoring, whereas the tool '\textbf{taskset}' is used for thread to core mapping in order to manage the multi-core distribution provided by APP4MC.
+%In the RC-CAR, the aforementioned tools are used in order to manage a multi-process system distributed on multiple cores.
+The specific mapping on the RC-CAR is finally considered automatically by a created Python script, which utilizes a generated C file from APP4MC and accordingly distributes the tasks using Linux's '\textbf{taskset}'.
 
 Before the partitioning and mapping processes can be configured and executed, one of the most challenging key property has to be added to runnables, i.e. the above mentioned affinity, allocation, and safety constraints.
 %TODO  constraints modeling
