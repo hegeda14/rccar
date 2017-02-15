@@ -80,54 +80,12 @@ Before the partitioning and mapping processes can be configured and executed, on
 \section{RC-Car}
 \label{sec:rccar}
 The current Raspberry Pi distribution includes processes for the touchscreen, ethernet communication, core utilization reader, mjpg streamer, vnc application, apache2, OpenCV\cite{opencv} image processing, and additional cyclewaster. The latter processes can be added in order to push the core utilization to a maximum and consider high workload. The effective distribution by APP4MC is crucial to provide deadline violation free program execution. 
-
-The XMOS tasks focus on necessary real time implementations. Scheduling on the XMOS is non preemptive and allows a better determinism as well as easier \underline{W}orst \underline{C}ase \underline{E}xecution \underline{T}ime (WCET) reasoning due to less context switching and less scheduling jitter \cite{xmos}. However, since our number of tasks exceed the total number of available cores on the XMOS, we had to define high priority tasks, that run on dedicated cores, and low priority tasks that run concurrently with other low level tasks in cooperative multitask manner on common cores (via \textit{combinable} functions in XMOS terminology). The amount of high priority tasks thereby defines the number of cores available for the low priority tasks. 
-
-Figure \ref{fig:arch} shows the basic RC-Car architecture that uses different communication APIs such as Ethernet, I2C, or UART as well as various actuators and sensors to interact with its environment. Its current application is to approach autonomous driving scenarios.
-\begin{figure}[bth]
+\begin{figure}[h!]
 	\centering
-	\includegraphics[scale=0.118]{images/hwarch.png}
+	\includegraphics[scale=0.1]{images/hwarch.png}
 	\caption{\label{fig:arch}RC-Car architecture, interfaces, sensors, and actuators}
 \end{figure}
 
-%EQUATION-----------------------------------------------
-%\begin{equation}
-%\label{Eq_1}
-%\lambda_i = \lim \frac{1}{p} \sum_{t=1}^p \ln \frac{|w_i (t)|}{|w_i (t-1)|}
-%\end{equation}
-
-%TODO maybe skip the following chapter
-%\section{Precise modeling and Software Parallelization}
-%\label{sec:impl}
-
-%FIGURE-----------------------------------------------
-%\begin{figure}[bth]
-%\centering
-%\includegraphics[scale=0.6]{images/Fig1.png}
-%\caption{\label{Fig_Magnet}Magnetization as a function of applied field. Note 
-%how the caption is centered in the column.}
-%\end{figure}
-
-%TABLE-----------------------------------------------
-%\begin{table}[htb]
-%\caption{Table Type Styles}
-%\label{Table_I}1
-%\centering
-%\begin{tabular}{|p{1.2cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|}
-%\hline
-%\multirow{2}{1.2cm}{\textbf{Type Size (pts.)}} & \multicolumn{3}{|c|}{\textbf{Appearance}}\\
-%\cline{2-4}
-% & \textbf{\textit{Regular}}&\textbf{\textit{Bold}}&\textbf{\textit{Italic}}\\
-%\hline
-%8 & References, table header, footnotes, text subscripts, and superscripts &&\\
-%\hline
-%\end{tabular}
-%\end{table}
-
-\section{Evaluation}
-\label{sec:eval}
-The following chart (Figure \ref{fig:dischart}) shows results of three different software distribution scenarios on the RC-Car obtained from separate utilization tracker threads. \\
-For clarity purposes, the XMOS logical cores were combined to the corresponding tiles since their separation would result in less clarity as well as lessen the physical accordance. Hence, each color on a XMOS tile can consume up to 12,5\% maximal tile utilization, such that a tile is only fully utilized if all 8 cores fully express 12,5\% core utilization.
 \begin{figure*}[t!]\centering
 	\newcounter{groupcount}
 	\pgfplotsset{
@@ -224,6 +182,49 @@ For clarity purposes, the XMOS logical cores were combined to the corresponding 
 	\caption{Core utilization in \% (y-axis) for sequentail, automatic, and APP4MC distribution}
 	\label{fig:dischart}
 \end{figure*}
+The XMOS tasks focus on necessary real time implementations. Scheduling on the XMOS is non preemptive and allows a better determinism as well as easier \underline{W}orst \underline{C}ase \underline{E}xecution \underline{T}ime (WCET) reasoning due to less context switching and less scheduling jitter \cite{xmos}. However, since our number of tasks exceed the total number of available cores on the XMOS, we had to define high priority tasks, that run on dedicated cores, and low priority tasks that run concurrently with other low level tasks in cooperative multitask manner on common cores (via \textit{combinable} functions in XMOS terminology). The amount of high priority tasks thereby defines the number of cores available for the low priority tasks. 
+
+Figure \ref{fig:arch} shows the basic RC-Car architecture that uses different communication APIs such as Ethernet, I2C, or UART as well as various actuators and sensors to interact with its environment. Its current application is to approach autonomous driving scenarios.
+
+%EQUATION-----------------------------------------------
+%\begin{equation}
+%\label{Eq_1}
+%\lambda_i = \lim \frac{1}{p} \sum_{t=1}^p \ln \frac{|w_i (t)|}{|w_i (t-1)|}
+%\end{equation}
+
+%TODO maybe skip the following chapter
+%\section{Precise modeling and Software Parallelization}
+%\label{sec:impl}
+
+%FIGURE-----------------------------------------------
+%\begin{figure}[bth]
+%\centering
+%\includegraphics[scale=0.6]{images/Fig1.png}
+%\caption{\label{Fig_Magnet}Magnetization as a function of applied field. Note 
+%how the caption is centered in the column.}
+%\end{figure}
+
+%TABLE-----------------------------------------------
+%\begin{table}[htb]
+%\caption{Table Type Styles}
+%\label{Table_I}1
+%\centering
+%\begin{tabular}{|p{1.2cm}|p{1.5cm}|p{1.5cm}|p{1.5cm}|}
+%\hline
+%\multirow{2}{1.2cm}{\textbf{Type Size (pts.)}} & \multicolumn{3}{|c|}{\textbf{Appearance}}\\
+%\cline{2-4}
+% & \textbf{\textit{Regular}}&\textbf{\textit{Bold}}&\textbf{\textit{Italic}}\\
+%\hline
+%8 & References, table header, footnotes, text subscripts, and superscripts &&\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+\section{Evaluation}
+\label{sec:eval}
+Figure \ref{fig:dischart} shows results of three different software distribution scenarios on the RC-Car obtained from separate utilization tracker threads. \\
+For clarity purposes, the XMOS logical cores were combined to the corresponding tiles since their separation would result in less clarity as well as lessen the physical accordance. Hence, each color on a XMOS tile can consume up to 12,5\% maximal tile utilization, such that a tile is only fully utilized if all 8 cores fully express 12,5\% core utilization.
+
 The distributed sequential parallelization (left part of Figure \ref{fig:dischart}) shows that each board (RPI \& XMOS) has one fully utilized processing unit. Consequently, applications and tasks can hardly meet their deadlines and execute with very low throughput. In contrast to that, when using the Linux \underline{C}ompletely \underline{F}air \underline{Q}ueuing (CFQ) scheduler without explicitly defining priority or scheduling classes %more info required?
 on the RPI as well as the round robin scheduler on the XMOS via \texttt{par} statements, one can experience great benefits due to concurrent progressing on both hardware units (see mid part of Figure \ref{fig:dischart}). Nevertheless, for this case programmers still need to manually separate the real time applications from the non-critical programs and map them to the corresponding processing elements (critical programs to the XMOS, non-critical to the RPI). It is important to note here, that the non-critical tasks still have deadlines to meet in order to assess effectiveness, i.e. that results are produced within a limited time period predefined by requirements.
 
@@ -236,7 +237,7 @@ With the advent of multi- or many-core hardware in embedded systems, a lot of wo
 Xiao et al. \cite{Xiao2016} focus on minimizing the energy consumption by scheduling parallel application towards heterogeneous distributed environments based on energy consumption constraints, while Liang et al. \cite{LiXi13} propose an algorithm for reducing the energy consumption of high performance clusters via precedence
 constrained without increasing the schedule length. In contrast to the prementioned work, our approach takes several kinds of design constraints, e.g. affinity, allocation or ASIL constraints, into account.
 
- \cite{Kritikakou2014} 
+In \cite{Kritikakou2014}, Kritikakou et al. describe a WCET analyzer that has similarities to how we receive instruction parameters. However, their main focus is an extensive modeling technique required for design-time analysis that considers both critical and non-critical tasks to target better resource utilization. This graph based design is equivalent to graphs in APP4MC whereas some additional notation are used to derive conditions, hierarchies, loops, calls and more. While those additions can be added to improve WCET reasoning, the focus of heterogeneous systems is the advancement of this paper.
 
 \section{Conclusion}
 \label{sec:concl}
@@ -245,7 +246,7 @@ Within this paper, we successfully validated that using APP4MC for efficient mix
 
 %TODO maybe more Amalthea paper?
 \section*{Acknowledgment}
-The authors would like to express their appreciation to the AMALTHEA4public consortium for sharing experience, knowledge, and know-how. Special thanks to 
+The authors would like to express their appreciation to the AMALTHEA4public consortium for sharing experience, knowledge, and expertise. %Special thanks to 
 %\enlargethispage{-7in}
 \bibliographystyle{IEEEtran}
 \bibliography{ref}
