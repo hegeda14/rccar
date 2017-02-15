@@ -47,7 +47,7 @@ In this paper, we use the open source APP4MC environment in order to address bot
 %--> 125MIPS per logical core, --> 1,25 instructions per cycle?
 combined with four cores clocked at 1200MHz (Raspberry Pi 3, ARM CoreTex-A53). With using APP4MC, we show that automatic OS driven distributions not always create the most efficient results.
 
-The further remainder of this paper is structured as follows: Section \ref{sec:app4mc} roughly describes the environment this contribution is based upon and its specifics among constraints and instructions. Afterwards, Section \ref{sec:rccar} illustrates capabilities and properties of the RC-Car demonstrator as well as its distributed architecture and concurrency capabilities. Subsequently, Section \ref{sec:eval} evaluates the results and benefits gained from using APP4MC for an automatic, constrained based parallelization of a mixed critical application. %outlines the specific developments and solutions to precise modeling and software parallelization that is evaluated and compared to related approaches in section \ref{sec:eval}. 
+The further remainder of this paper is structured as follows: Section \ref{sec:app4mc} roughly describes the environment this contribution is based upon and its specifics among constraints and instructions. Afterwards, Section \ref{sec:rccar} illustrates capabilities and properties of the RC-Car demonstrator as well as its distributed architecture and concurrency capabilities. Subsequently, Section \ref{sec:eval} evaluates the results and benefits gained from using APP4MC for an automatic, constrained based parallelization of a mixed critical application, while Section \ref{sec:relatedWork} reviews related work.  %outlines the specific developments and solutions to precise modeling and software parallelization that is evaluated and compared to related approaches in section \ref{sec:eval}. 
 Finally, Section \ref{sec:concl} concludes this paper's contributions and discusses benefits, disadvantages, possible extensions, and promising outlooks that potentially advance the current approach.
 
 \section{APP4MC}
@@ -124,7 +124,7 @@ Figure \ref{fig:arch} shows the basic RC-Car architecture that uses different co
 %\end{tabular}
 %\end{table}
 
-\section{Evaluation and Related Work}
+\section{Evaluation}
 \label{sec:eval}
 The following chart (Figure \ref{fig:dischart}) shows results of three different software distribution scenarios on the RC-Car obtained from separate utilization tracker threads. \\
 For clarity purposes, the XMOS logical cores were combined to the corresponding tiles since their separation would result in less clarity as well as lessen the physical accordance. Hence, each color on a XMOS tile can consume up to 12,5\% maximal tile utilization, such that a tile is only fully utilized if all 8 cores fully express 12,5\% core utilization.
@@ -230,6 +230,8 @@ on the RPI as well as the round robin scheduler on the XMOS via \texttt{par} sta
 However, as pointed out earlier in this paper, the automatic distributions are not always the prior choice when targeting efficiency. Deadlines may be met comprehensively (the effect is the same), but long slack times waste processing cycles that could be spent otherwise. The APP4MC distribution (right part of Figure \ref{fig:dischart}) do not only considers any types of constraints but also can be configured to balance load as much as possible such that for instance the total frequency (here on the RPI) could be scaled down to safe energy. Assuming a global \underline{D}ynamic \underline{V}oltage and \underline{F}requency \underline{S}caling (DVFS) feature on the RPI, we measured up to 9\% less energy consumption when commonly reducing the CPU frequencies from 1200MHz to 800MHz while still meeting all deadlines.  %TODO real measurements required; also assumption: DFVS global, since Linus does not allow CPUinfo_min_freq per-core
 
 %in parallel and distributed systems like
+\section{Related Work}
+\label{sec:relatedWork}
 With the advent of multi- or many-core hardware in embedded systems, a lot of work dealing with the efficient distribution of software to the respective cores with regard to specific constraints has been published. Socci et al. \cite{Socci2015} provide an algorithm for multi-processor scheduling of mixed criticality task graphs in synchronous systems through precedence constraints. 
 Xiao et al. \cite{Xiao2016} focus on minimizing the energy consumption by scheduling parallel application towards heterogeneous distributed environments based on energy consumption constraints, while Liang et al. \cite{LiXi13} propose an algorithm for reducing the energy consumption of high performance clusters via precedence
 constrained without increasing the schedule length. In contrast to the prementioned work, our approach takes several kinds of design constraints, e.g. affinity, allocation or ASIL constraints, into account.
