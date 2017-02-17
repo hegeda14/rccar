@@ -14,13 +14,13 @@
 %\title{Constrained Parallelization of Mixed-Critical Applications to Distributed Heterogeneous Hardware}
 \title{Constrained Mixed-Critical Parallelization for Distributed Heterogeneous Systems}
 \author{
-%	No authors given for review
-\IEEEauthorblockN{Robert Höttger, Mustafa Özcelikörs, Lukas Krawczyk, Philipp Heisig, Carsten Wolff, Burkhard Igel}
+	No authors given for review
+%\IEEEauthorblockN{Robert Höttger, Mustafa Özcelikörs, Philipp Heisig, Lukas Krawczyk, Carsten Wolff, Burkhard Igel}
 %						Third Author's Name\IEEEauthorrefmark{2}}
-\IEEEauthorblockA{IDiAL Institute - Dortmund University of Applied Sciences and Arts, \\\{robert.hoettger, mustafa.ozcelikors, lukas.krawczyk,  philipp.heisig, carsten.wolff, igel\}@fh-dortmund.de \\ www.idial.institute 
+%\IEEEauthorblockA{IDiAL Institute - Dortmund University of Applied Sciences and Arts, \\\{robert.hoettger, mustafa.ozcelikors, lukas.krawczyk,  philipp.heisig, carsten.wolff, igel\}@fh-dortmund.de \\ www.idial.institute 
 %						\IEEEauthorrefmark{2}Affiliation, Postal address, e-mail, Web address (URL)\\
 %						\IEEEauthorrefmark{3}Affiliation, Postal address, e-mail, Web address (URL)\\
-	}
+%	}
 }
 \begin{document}
 \maketitle
@@ -28,7 +28,7 @@
 \let\thefootnote\relax\footnotetext{As part of the AMALTHEA4public project, this work has been funded by the German Federal Ministry of Education and Research - BMBF, under funding no. $01|S14029K$}
 
 \begin{abstract}
-Distributing software effectively to multi core, many core, and distributed systems has been studied for decades and still advances successively driven by domain specific constraints. Programming vehicle ECUs is one of the most constrained domains that just recently approached the need for concurrency due to advanced driver assistant systems or autonomous driving approaches. In this paper, various challenges for such systems are outlined, discussed, and solutions are given upon instruction precise modeling, affinity constrained distribution, and effective software parallelization. The solutions are compared upon bare-metal and OS based implementations while considering fixed priorities for sequential, OS based, and APP4MC scheduling. The latter case has been published at \cite{ICPDSSE} and evolved to consider affinity constraints, SWC-based partitioning and communication cost related mapping. Results show that using APP4MC based distributions on a distributed heterogeneous system outperforms available approaches for mixed-critical applications.
+Distributing software effectively to multi core, many core, and distributed systems has been studied for decades and still advances successively driven by domain specific constraints. Programming vehicle ECUs is one of the most constrained domains that just recently approached the need for concurrency due to advanced driver assistant systems or autonomous driving approaches. In this paper, various challenges for such systems are outlined, discussed, and solutions are given upon instruction precise modeling, affinity constrained distribution, and effective software parallelization. The solutions are compared upon bare-metal and OS based implementations while considering fixed priorities for sequential, OS based, and APP4MC scheduling. The latter case has been described and published already but further evolved to consider affinity constraints, SWC-based partitioning and communication cost related mapping desribed in this paper. Results show that using APP4MC based distributions on a distributed heterogeneous system outperforms available approaches for mixed-critical applications.
 %TODO percent
 \end{abstract}
 
@@ -89,7 +89,7 @@ The current Raspberry Pi distribution includes processes for the touchscreen, et
 \begin{figure*}[t!]\centering
 	\newcounter{groupcount}
 	\pgfplotsset{
-		legend style={at={(axis cs:24,0)},anchor=south west},
+		legend style={at={(axis cs:21,0)},anchor=south west},
 		draw group line/.style n args={5}{
 			after end axis/.append code={
 				\setcounter{groupcount}{0}
@@ -124,34 +124,34 @@ The current Raspberry Pi distribution includes processes for the touchscreen, et
 			}
 		}
 	}
-	\begin{tikzpicture}
+	\begin{tikzpicture}%NO COMMENTS ALLOWED IN PGFPLOT VALUES
 	\pgfplotstableread{
 		X Gp D1 Name RPI C0 C1 C2 C3 C4 C5 C6 C7
 		1 Sequential RPI Core0 100 0 0 0 0 0 0 0 0 
 		2   Sequential RPI Core1 0 0 0 0 0 0 0 0 0
 		3   Sequential RPI Core2 0 0 0 0 0 0 0 0 0
 		4   Sequential RPI Core3 0 0 0 0 0 0 0 0 0
-		6   Sequential XMOS Tile0 0 12.5 0 0 0 0 0 0 0 
-		7   Sequential XMOS Tile1 0 0 0 0 0 0 0 0 0 
-		9 Automatic RPI Core0 96 0 0 0 0 0 0 0 0
-		10  Automatic RPI Core1 49.6 0 0 0 0 0 0 0 0
-		11  Automatic RPI Core2 22.9 0 0 0 0 0 0 0 0
-		12  Automatic RPI Core3 15.1 0 0 0 0 0 0 0 0
-		14  Automatic XMOS Tile0 0 12.5 12.5 12.5 12.5 12.5 10 9 12.5 
-		15  Automatic XMOS Tile1 0 12.5 12.5 12.5 12.5 12.5 12.5 12.5 10 
-		17  APP4MC RPI Core0 47 0 0 0 0 0 0 0 0
-		18  APP4MC RPI Core1 34 0 0 0 0 0 0 0 0
-		19  APP4MC RPI Core2 44 0 0 0 0 0 0 0 0
-		20  APP4MC RPI Core3 60 0 0 0 0 0 0 0 0
-		22  APP4MC XMOS Tile0 0 12.5 12.5 5 5 8 6 14 7 
-		23  APP4MC XMOS Tile1 0 8 9 10 11 9 8 12 10 
+		5   Sequential XMOS Tile0 0 12.5 0 0 0 0 0 0 0 
+		6   Sequential XMOS Tile1 0 0 0 0 0 0 0 0 0 
+		8 Automatic RPI Core0 96 0 0 0 0 0 0 0 0
+		9  Automatic RPI Core1 79.6 0 0 0 0 0 0 0 0
+		10  Automatic RPI Core2 22.9 0 0 0 0 0 0 0 0
+		11  Automatic RPI Core3 15.1 0 0 0 0 0 0 0 0
+		12  Automatic XMOS Tile0 0 12.5 12.5 12.5 12.5 12.5 10 12.5 12.5 
+		13  Automatic XMOS Tile1 0 12.5 12.5 12.5 12.5 0 0 0 0
+		15  APP4MC RPI Core0 47 0 0 0 0 0 0 0 0
+		16  APP4MC RPI Core1 34 0 0 0 0 0 0 0 0
+		17  APP4MC RPI Core2 44 0 0 0 0 0 0 0 0
+		18  APP4MC RPI Core3 60 0 0 0 0 0 0 0 0
+		19  APP4MC XMOS Tile0 0 12.5 12.5 5 5 8 6 14 7 
+		20  APP4MC XMOS Tile1 0 8 9 10 11 9 8 12 10 
 	}\datatable
 	\begin{axis}[
 	axis lines*=left, ymajorgrids,
-	width=15cm, height=6cm,
+	width=16cm, height=6cm,
 	ymin=0,
 	ybar stacked,
-	bar width=7pt,
+	bar width=9pt,
 	xtick=data,
 	xticklabels from table={\datatable}{Name},
 	xticklabel style={rotate=90,xshift=-7ex,anchor=mid east},
@@ -228,8 +228,9 @@ For clarity purposes, the XMOS logical cores were combined to the corresponding 
 The distributed sequential parallelization (left part of Figure \ref{fig:dischart}) shows that each board (RPI \& XMOS) has one fully utilized processing unit. Consequently, applications and tasks can hardly meet their deadlines and execute with very low throughput. In contrast to that, when using the Linux \underline{C}ompletely \underline{F}air \underline{Q}ueuing (CFQ) scheduler without explicitly defining priority or scheduling classes %more info required?
 on the RPI as well as the round robin scheduler on the XMOS via \texttt{par} statements, one can experience great benefits due to concurrent progressing on both hardware units (see mid part of Figure \ref{fig:dischart}). Nevertheless, for this case programmers still need to manually separate the real time applications from the non-critical programs and map them to the corresponding processing elements (critical programs to the XMOS, non-critical to the RPI). It is important to note here, that the non-critical tasks still have deadlines to meet in order to assess effectiveness, i.e. that results are produced within a limited time period predefined by requirements.
 
-However, as pointed out earlier in this paper, the automatic distributions are not always the prior choice when targeting efficiency. Deadlines may be met comprehensively (the effect is the same), but long slack times waste processing cycles that could be spent otherwise. The APP4MC distribution (right part of Figure \ref{fig:dischart}) do not only considers any types of constraints but also can be configured to balance load as much as possible such that for instance the total frequency (here on the RPI) could be scaled down to safe energy. Assuming a global \underline{D}ynamic \underline{V}oltage and \underline{F}requency \underline{S}caling (DVFS) feature on the RPI, we measured up to 9\% less energy consumption when commonly reducing the CPU frequencies from 1200MHz to 800MHz while still meeting all deadlines.  %TODO real measurements required; also assumption: DFVS global, since Linus does not allow CPUinfo_min_freq per-core
-
+However, as pointed out earlier in this paper, the automatic distributions are not always the prior choice when targeting efficiency. Deadlines may be met comprehensively (the effect is the same), but long slack times waste processing cycles that could be spent otherwise. The APP4MC distribution (right part of Figure \ref{fig:dischart}) not only considers any types of constraints but also can be configured to balance load as much as possible such that for instance the total frequency (here on the RPI) could be scaled down to safe energy. Assuming a global \underline{D}ynamic \underline{V}oltage and \underline{F}requency \underline{S}caling (DVFS) feature on the RPI, we measured up to 9\% less energy consumption when commonly reducing the CPU frequencies from 1200MHz to 800MHz while still meeting all deadlines.  %TODO real measurements required; also assumption: DFVS global, since Linus does not allow CPUinfo_min_freq per-core
+In addition, all real time tasks running on the XMOS could be relieved from some load, such that tile utilization could be reduced and task response times occur even earlier than at the automatic distribution. 
+It has to be added here, that there are various configuration possibilities for both the partitioning and the mapping. Each configuration may result in different outcomes. Figure \ref{fig:dischart} shows results obtained from critical path partitioning whereas the global critical path is used to define the schedule length for all other tasks and activation consideration switched on. The mapping process has been configured to use an Integer Linear Programming (ILP) solver for load balnacing with the default values for max gap, iterations, etc. 
 %in parallel and distributed systems like
 \section{Related Work}
 \label{sec:relatedWork}
@@ -241,9 +242,9 @@ In \cite{Kritikakou2014}, Kritikakou et al. describe a WCET analyzer that has si
 
 \section{Conclusion}
 \label{sec:concl}
-Within this paper, we successfully validated that using APP4MC for efficient mixed-critical software parallelization to distributed heterogeneous systems eases development processes on various levels. Error prone and time consuming manual software distribution can be avoided and utilizing APP4MC results even outperforms OS or compiler based automatic approaches. While the constraint modeling requires certain efforts, it considers crucial requirements emerging from timing, safety, or security demands that are inevitable in modern industrial developments. Our experiments among an 
+Within this paper, we successfully validated that using APP4MC for efficient mixed-critical software parallelization to distributed heterogeneous systems eases development processes on various levels. Error prone and time consuming manual software distribution can be avoided and utilizing APP4MC results even outperforms OS or compiler based automatic approaches regarding load balancing and energy consumption. While the constraint modeling still requires certain efforts, it considers crucial requirements emerging from timing, safety, or security demands that are inevitable in modern industrial developments. Our experiments among the RC-Car example show that load balancing, energy consumption (9\%), and system responsiveness (less deadline proximity) can be significantly improved when using APP4MC features.
 
-
+Upcoming work addresses advanced WCET reasoning, utilizing preemtiveRT\cite{preemptrt} on the linux kernel, and software component (SWC) based partitioning in order to extend parallelism utilization by less runnable pairing constraints and the possibility of merging SWCs to create even less slack or idle times during system execution.
 %TODO maybe more Amalthea paper?
 \section*{Acknowledgment}
 The authors would like to express their appreciation to the AMALTHEA4public consortium for sharing experience, knowledge, and expertise. %Special thanks to 
