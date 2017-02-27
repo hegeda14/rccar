@@ -1,0 +1,2 @@
+/usr/bin/ar cr libpigpio.a  CMakeFiles/pigpio.dir/home/pi/opencv_workspace/pigpio/pigpio.c.o
+/usr/bin/ranlib libpigpio.a

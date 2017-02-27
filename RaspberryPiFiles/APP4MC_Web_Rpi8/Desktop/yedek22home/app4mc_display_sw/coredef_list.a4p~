@@ -1,0 +1,13 @@
+[COREDEF_LIST_APP4MC]
+Assign Task Xtightvnc To Core 1
+Assign Task mjpg_streamer To Core 0
+Assign Task display To Core 3
+Assign Task ethernet_app_rpi To Core 0
+Assign Task record_core_usage_rpi To Core 0
+Assign Task burn_cycles_around25_1 To Core 1
+Assign Task burn_cycles_around25_2 To Core 2
+Assign Task burn_cycles_around25_3 To Core 1
+Assign Task burn_cycles_around25_4 To Core 0
+Assign Task burn_cycles_around25_5 To Core 2
+Assign Task burn_cycles_around100 To Core 3
+Assign Task apache2 To Core 1

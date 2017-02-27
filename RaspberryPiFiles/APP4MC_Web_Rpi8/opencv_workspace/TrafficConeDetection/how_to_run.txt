@@ -1,0 +1,4 @@
+sudo -E ./TrafficConeDetection
+or
+gksudo ./TrafficConeDetection
+Camera must be plugged for it to run
