@@ -3439,7 +3439,7 @@ between column types.}%
            \newpage\global\@topnum\z@ \@maketitle\@IEEEstatictitlevskip\@IEEEaftertitletext%
         \else
 %Modified by Wanderlust
-           \twocolumn[{\vspace{-0.29cm}\begin{flushleft}\scriptsize The 8\textsuperscript{th} IEEE International Conference on Intelligent Data Acquisition and 
+           \twocolumn[{\vspace{-0.29cm}\begin{flushleft}\scriptsize The 9\textsuperscript{th} IEEE International Conference on Intelligent Data Acquisition and 
 				Advanced Computing Systems: Technology and Applications\\ 21-23 September 2017, Bucharest, 
 				Romania\end{flushleft}}{\@maketitle\@IEEEdynamictitlevspace\@IEEEaftertitletext}]%
         \fi
