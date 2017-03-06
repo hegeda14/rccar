@@ -1,0 +1,20 @@
+\begin{thebibliography}{1}
+
+\bibitem{importantpaper}
+Diego Huang and J.~Gregory Steffan.
+\newblock Programmer-assisted automatic parallelization.
+\newblock In {\em Proceedings of the 2011 Conference of the Center for Advanced
+  Studies on Collaborative Research}, CASCON '11, pages 84--98, Riverton, NJ,
+  USA, 2011. IBM Corp.
+
+\bibitem{EntwurfsmusterGamma}
+Erich Gamma and John Vlissides.
+\newblock {\em {E}lemente wiederverwendbarer objektorientierter {S}oftware}.
+\newblock Addison-Wesley, München, 2004.
+
+\bibitem{DesignPatternsHerold}
+Helmut Herold, Michael Klar, and Susanne Klar.
+\newblock {\em C++, UML und Design Patterns}.
+\newblock Prentice Hall, München, 2005.
+
+\end{thebibliography}
