@@ -64,7 +64,7 @@ void *MotorDriver_Task(void * arg)
 
 		switch (local_command)
 		{
-			case 'q':
+			case 'g':
 				running = 0;
 				break;
 			case 'p':
@@ -74,19 +74,19 @@ void *MotorDriver_Task(void * arg)
 				go(FORWARD, FULL_SPEED);
 				break;
 			case 'd':
-				turn(FORWARD, LEFT, FULL_SPEED);
+				turn(BACKWARD, LEFT, FULL_SPEED);
 				break;
 			case 's':
 				go(BACKWARD, FULL_SPEED);
 				break;
 			case 'a':
+				turn(BACKWARD, RIGHT, FULL_SPEED);
+				break;
+			case 'q':
 				turn(FORWARD, RIGHT, FULL_SPEED);
 				break;
-			case 'j':
-				turn(BACKWARD, LEFT, FULL_SPEED);
-				break;
-			case 'l':
-				turn(BACKWARD, RIGHT, FULL_SPEED);
+			case 'e':
+				turn(FORWARD, LEFT, FULL_SPEED);
 				break;
 			case 'f':
 				stop();

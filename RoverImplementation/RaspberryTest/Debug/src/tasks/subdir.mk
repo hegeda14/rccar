@@ -10,7 +10,8 @@ CPP_SRCS += \
 ../src/tasks/motordriver_task.cpp \
 ../src/tasks/rover_test_task.cpp \
 ../src/tasks/temperature_task.cpp \
-../src/tasks/ultrasonic_sensor_task.cpp 
+../src/tasks/ultrasonic_sensor_task.cpp \
+../src/tasks/webserver_motordrive_task.cpp 
 
 OBJS += \
 ./src/tasks/display_sensors_task.o \
@@ -19,7 +20,8 @@ OBJS += \
 ./src/tasks/motordriver_task.o \
 ./src/tasks/rover_test_task.o \
 ./src/tasks/temperature_task.o \
-./src/tasks/ultrasonic_sensor_task.o 
+./src/tasks/ultrasonic_sensor_task.o \
+./src/tasks/webserver_motordrive_task.o 
 
 CPP_DEPS += \
 ./src/tasks/display_sensors_task.d \
@@ -28,7 +30,8 @@ CPP_DEPS += \
 ./src/tasks/motordriver_task.d \
 ./src/tasks/rover_test_task.d \
 ./src/tasks/temperature_task.d \
-./src/tasks/ultrasonic_sensor_task.d 
+./src/tasks/ultrasonic_sensor_task.d \
+./src/tasks/webserver_motordrive_task.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -29,7 +29,7 @@ void *KeyCommandInput_Task(void * arg)
 			if (isalpha(keys))
 			{
 				keycommand_shared = keys;
-				printf("Entered Command = %c\n",keycommand_shared);
+				//printf("Entered Command = %c\n",keycommand_shared);
 			}
 		pthread_mutex_unlock(&keycommand_lock);
 		delayMicroseconds(200000);

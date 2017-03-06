@@ -25,6 +25,7 @@
 #include "tasks/motordriver_task.h"
 #include "tasks/infrared_distance_task.h"
 #include "tasks/display_sensors_task.h"
+#include "tasks/webserver_motordrive_task.h"
 
 #include "interfaces.h"
 
@@ -73,6 +74,7 @@ int main()
 	pthread_t motordriver_thread;
 	pthread_t infrared_thread;
 	pthread_t displaysensors_thread;
+	pthread_t webserver_motordrive_thread;
 
 	//Thread creation
 	if(pthread_create(&ultrasonic_thread, NULL, Groove_Ultrasonic_Sensor_Task, NULL)) {
@@ -85,10 +87,10 @@ int main()
 			return 1;
 	}
 
-	if(pthread_create(&keycommand_input_thread, NULL, KeyCommandInput_Task, NULL)) {
+	/*if(pthread_create(&keycommand_input_thread, NULL, KeyCommandInput_Task, NULL)) {
 			fprintf(stderr, "Error creating thread\n");
 			return 1;
-	}
+	}*/
 
 	if(pthread_create(&motordriver_thread, NULL, MotorDriver_Task, NULL)) {
 			fprintf(stderr, "Error creating thread\n");
@@ -105,14 +107,20 @@ int main()
 			return 1;
 	}
 
+	if(pthread_create(&webserver_motordrive_thread, NULL, WebServer_MotorDrive_Task, NULL)) {
+			fprintf(stderr, "Error creating thread\n");
+			return 1;
+	}
+
 	//Core pinning/mapping
 	placeAThreadToCore (main_thread, 0);
 	placeAThreadToCore (ultrasonic_thread, 2);
 	placeAThreadToCore (temperature_thread ,3);
-	placeAThreadToCore (keycommand_input_thread, 3);
+	//placeAThreadToCore (keycommand_input_thread, 3);
 	placeAThreadToCore (motordriver_thread, 1);
 	placeAThreadToCore (infrared_thread, 2);
-	placeAThreadToCore (displaysensors_thread, 0);
+	placeAThreadToCore (displaysensors_thread, 2);
+	placeAThreadToCore (webserver_motordrive_thread, 1);
 
 	while (1)
 	{

@@ -6,7 +6,8 @@ src/RaspberryTest.o: ../src/RaspberryTest.cpp ../src/RaspberryTest.h \
  ../src/tasks/../interfaces.h ../src/tasks/temperature_task.h \
  ../src/tasks/keycommand_task.h ../src/tasks/motordriver_task.h \
  ../src/tasks/infrared_distance_task.h \
- ../src/tasks/display_sensors_task.h
+ ../src/tasks/display_sensors_task.h \
+ ../src/tasks/webserver_motordrive_task.h
 
 ../src/RaspberryTest.h:
 
@@ -33,3 +34,5 @@ src/RaspberryTest.o: ../src/RaspberryTest.cpp ../src/RaspberryTest.h \
 ../src/tasks/infrared_distance_task.h:
 
 ../src/tasks/display_sensors_task.h:
+
+../src/tasks/webserver_motordrive_task.h:
