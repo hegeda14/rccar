@@ -1,0 +1,3 @@
+newmjpg-streamer must be built in system. A clean build.
+
+copied .so files and executable mjpg_streamer should be chmodded to 777.
