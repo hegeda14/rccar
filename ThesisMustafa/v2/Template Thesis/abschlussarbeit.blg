@@ -1,3 +1,9 @@
 This is BibTeX, Version 0.99dThe top-level auxiliary file: abschlussarbeit.aux
 The style file: unsrt.bst
 Database file #1: bib/bib.bib
+Warning--entry type for "amalthea4publicweb" isn't style-file defined
+--line 17 of file bib/bib.bib
+Warning--entry type for "app4mcproposaleclipse" isn't style-file defined
+--line 22 of file bib/bib.bib
+Warning--I didn't find a database entry for "importantpaper"
+(There were 3 warnings)

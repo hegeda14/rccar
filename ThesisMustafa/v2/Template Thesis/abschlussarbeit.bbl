@@ -1,20 +1,17 @@
 \begin{thebibliography}{1}
 
-\bibitem{importantpaper}
-Diego Huang and J.~Gregory Steffan.
-\newblock Programmer-assisted automatic parallelization.
-\newblock In {\em Proceedings of the 2011 Conference of the Center for Advanced
-  Studies on Collaborative Research}, CASCON '11, pages 84--98, Riverton, NJ,
-  USA, 2011. IBM Corp.
+\bibitem{ICPDSSE}
+Robert H{\"o}ttger, Lukas Krawczyk, and Burkhard Igel.
+\newblock {Model-Based Automotive Partitioning and Mapping for Embedded
+  Multicore Systems}.
+\newblock In {\em International Conference on Parallel, Distributed Systems and
+  Software Engineering}, volume~2 of {\em ICPDSSE'15}, pages 2643--2649. World
+  Academy of Science, Engineering and Technology, 2015.
 
-\bibitem{EntwurfsmusterGamma}
-Erich Gamma and John Vlissides.
-\newblock {\em {E}lemente wiederverwendbarer objektorientierter {S}oftware}.
-\newblock Addison-Wesley, München, 2004.
+\bibitem{amalthea4publicweb}
+http://www.amalthea-project.org/.
 
-\bibitem{DesignPatternsHerold}
-Helmut Herold, Michael Klar, and Susanne Klar.
-\newblock {\em C++, UML und Design Patterns}.
-\newblock Prentice Hall, München, 2005.
+\bibitem{app4mcproposaleclipse}
+https://projects.eclipse.org/proposals/app4mc.
 
 \end{thebibliography}
