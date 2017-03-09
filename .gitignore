@@ -6,3 +6,4 @@ IDAACS Paper/IDAACS_Example.synctex.gz
 *.o
 IDAACS Paper/IDAACS_Example.bbl
 IDAACS Paper/IDAACS_Example.blg
+*.log
