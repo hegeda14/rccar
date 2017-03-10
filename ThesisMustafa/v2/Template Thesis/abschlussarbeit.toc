@@ -56,6 +56,7 @@
 \contentsline {section}{\numberline {5.2}Information Tracing via APP4MC}{23}{section.5.2}
 \contentsline {section}{\numberline {5.3}Constructing an APP4MC Model for A4MCAR}{23}{section.5.3}
 \contentsline {chapter}{\numberline {6}Effective Parallelism Evaluation}{25}{chapter.6}
+\contentsline {section}{\numberline {6.1}Determining Efficiency}{25}{section.6.1}
 \contentsline {chapter}{\numberline {7}Conclusion}{26}{chapter.7}
 \contentsline {chapter}{\numberline {8}Wissenschaftliches Arbeiten}{27}{chapter.8}
 \contentsline {section}{\numberline {8.1}Vorgehen}{27}{section.8.1}

@@ -3,37 +3,49 @@ import psutil
 import time
 import string
 import numpy
-a= 9999999999999
 
-#---
-DEADLINE=0.42#0.40#0.42
-current_time=0
-previous_time=0
-#---
+#Timing Related ---start
+_DEADLINE = 0.50
+_START_TIME = 0
+_END_TIME = 0
+_EXECUTION_TIME = 0                  
+_PREV_SLACK_TIME = 0
+_PERIOD = 1.40
+#Timing Related ---end
 
+def CreateTimingLog(filename):
+	global _START_TIME
+	global _DEADLINE
+	global _END_TIME
+	global _EXECUTION_TIME
+	global _PREV_SLACK_TIME
+	
+	try:
+		file_obj = open(str(filename), "w+r")
+	except Exception as inst:
+		print inst
+	_END_TIME = time.time()
+	_EXECUTION_TIME = _END_TIME - _START_TIME
+	try:
+		file_obj.write(str(_PREV_SLACK_TIME)+' '+str(_EXECUTION_TIME)+' '+str(_PERIOD)+' '+str(_DEADLINE))
+		file_obj.close()
+	except Exception as inst:
+		print inst
+	
 while True:
-	a=numpy.random.random([1000,1000])
+		#Timing Related ---start
+		_START_TIME = time.time() 
+		_PREV_SLACK_TIME = _START_TIME - _END_TIME
+		#Timing Related ---end
+
+		#TASK CONTENT
+        a=numpy.random.random([1000,1000])
         b=numpy.random.random([1000,1000])
         c=numpy.mean(a*b)
-
-        #---
-        deadline_logger_burn_cycles_around25_3 = open("deadline_logger_burn_cycles_around25_3.inc","w+r")
-        current_time = time.clock()
-        difference = current_time - previous_time
-        percentage_val = int((difference-DEADLINE)/difference*100)
+		
+		#Timing Related ---start
+		CreateTimingLog("deadline_logger_burn_cycles_around25_3.inc")
+        #Timing Related ---end
         
-        #print difference
-                
-        if (difference > DEADLINE):
-                deadline_logger_burn_cycles_around25_3.write('1 '+str(percentage_val))
-        else:
-                deadline_logger_burn_cycles_around25_3.write('0 '+str(percentage_val))
-                        
-        deadline_logger_burn_cycles_around25_3.close()
-                
-        
-        previous_time = current_time
-	#---
-        
-	#time.sleep(0.00001)
-        time.sleep(1)
+		#Sleep
+        time.sleep(_PERIOD - _EXECUTION_TIME)
