@@ -1,0 +1,28 @@
+\documentclass[fleqn]{article}
+\usepackage{accsupp}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{graphics}
+\usepackage[utf8]{inputenc} 
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{url}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+\usepackage{fancyhdr}
+\setlength{\headsep}{0pt}
+\pagestyle{fancy} 
+\rfoot{\thepage\ of \pageref{LastPage}}
+\lfoot{Rover documentation: camera stream and browser control}
+\renewcommand{\footrulewidth}{1pt}
+
+\lstset{language=C, numbers=left, numberstyle=\small, basicstyle=\small, basicstyle=\bfseries, showstringspaces=false, numbersep=10pt, numberblanklines=false, frame=single,  backgroundcolor=\color{mygray}, xleftmargin=15pt,  linewidth=1\linewidth,  breaklines=true, captionpos=b, tabsize=2, keywordstyle=\bfseries, morekeywords={package, class, final, new, WHILE, ENDWHILE, FOR, ENDFOR, IF, ENDIF, ELSE, SWITCH, CASE, ENDSWITCH}, escapeinside={*@}{@*}, breakindent=5pt}
+%commentstyle=\color{olive},
