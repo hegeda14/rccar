@@ -7,3 +7,5 @@ IDAACS Paper/IDAACS_Example.synctex.gz
 IDAACS Paper/IDAACS_Example.bbl
 IDAACS Paper/IDAACS_Example.blg
 *.log
+*.aux
+*.gz
