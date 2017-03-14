@@ -19,7 +19,7 @@
 \vspace{15pt}\\
 \begin{tabularx}{\textwidth}{cXc}
 %	\begin{figure}
-		\includegraphics{rover.png}%\caption{Rover} \label{fig:rover}&&
+		\includegraphics{rover.png}&&%\caption{Rover} \label{fig:rover}&&
 %	\end{figure}& &	
 	%\begin{figure}
 		\includegraphics{page.png}%\caption{Browser webpage}\label{fig:browser}\\
@@ -109,9 +109,10 @@ sudo cp output_http.so input_raspicam.so input_uvc.so /usr/local/lib/
 \end{lstlisting}
 Before testing the camera,  permissions to the executables and libraries have to be set:
 \begin{lstlisting}
-sudo chmod 777 /usr/local/lib/*.so
+sudo chmod 777 /usr/local/lib*@/@**.so
 sudo chmod 777 /usr/local/bin/mjpg_streamer
 \end{lstlisting}
+%sudo chmod 777 /usr/local/lib/*.so
 Finally, the camera can be tested. With the following command (if there are no errors)the setup should be working. The following not only makes the executables know the location of the libraries but also sets up a reliable and fast input connection for raspberry pi camera:
 \begin{lstlisting}
 sudo bash /var/www/html/camerastuff/webcam_stream_start_from_rpi_camera.sh
