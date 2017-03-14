@@ -70,19 +70,32 @@ Within the editor, add the following to the end, save the file, and exit (depend
 www-data ALL=(ALL) NOPASSWD: ALL
 \end{lstlisting}
 \section{Setting up the webpage}
-After the RPI setup is complete, move the provided webpage zip file to the web server folder,extract it, and delete the zip via the following: (Change <path-to-directory> to where you downloaded the .zip file.)
+Before we begin, we need some building tools and git in order to continue. Execute the following to make this work:
 \begin{lstlisting}
-sudo mv /<path-to-directory>/RoverWebpage_FHDO.zip /var/www/
-cd /var/www/ 
-sudo unzip RoverWebpage_FHDO.zip
-sudo rm -rf RoverWebpage_FHDO.zip
+sudo apt-get install build-essential
+sudo apt-get install git
+\end{lstlisting}
+After the RPI setup is complete, download the provided files from our repository, and make the following changes in order to merge it with you current /var/www/html/ folder. 
+\begin{lstlisting}
+cd /var/www/
+sudo git clone https://gitlab.pimes.fh-dortmund.de/RPublic/RoverWeb.git
+sudo cp -r /var/www/RoverWeb*@/@** /var/www/
+sudo rm -rf RoverWeb/
 \end{lstlisting}
 \section{Installing psutil}
-In order to monitor core utilization, a python pip package called 'psutil' needs to be installed:
+In order to monitor core utilization, a python pip package called 'psutil' needs to be installed. First, we need to get the essential building and packaging tools for python.
 \begin{lstlisting}
-sudo apt-get install python-dev python3-dev
+sudo apt-get install build-essential python-dev python3-dev python-pkg-resources python3-pkg-resources python-pip
 cd /var/www/html/
 sudo pip install psutil/
+\end{lstlisting}
+\textbf{OPTIONAL:} The last command, in some Linux distributions (such as Jessie Lite) created error regarding the pip version. In case you get an error, try to fix your pip by the following: (Replace 1.5.6 with the version of pip it requires) 
+\begin{lstlisting}
+sudo easy_install pip==1.5.6
+\end{lstlisting}
+Now, we are ready to test if our script is running. To move forward check if the following command results in an error. If it does not, hit Ctrl+C to exit the program and move onto the next section.
+\begin{lstlisting}
+sudo python /var/www/html/record_core_usage_rpi.py
 \end{lstlisting}
 \section{Installing Raspberry Pi Camera and Streamer}
 \textit{Note: The following parts are quite error prone. Please contact us if you have problems.}
