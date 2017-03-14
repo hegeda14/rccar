@@ -32,7 +32,7 @@ Automotive or any vehicle control related field tends to require very complex sy
 
 The demonstrator, A4MCAR, is equipped with a distributed architecture that involves a 16-core multi-core microcontroller development board (XMOS xCore-200 eXplorerKIT) and a 4-core single board computer (Raspberry Pi 3) with Linux OS. The software nodes with respect to their priorities and low-level and high-level purposes are distributed along those hardware modules. The demonstrator is not only designed to match up the capabilities of a real vehicle but also involves parts that are related to semi-autonomous driving and control. It can handle wifi and bluetooth connection requests and drive itself accordingly over a web interface or an Android application. Since A4MCAR is specifically designed as a demonstrator, it has the capability to monitor and visualize core utilization and display it using a touchscreen or its web interface. Furthermore, it is equipped with four ultrasonic sensors and a camera with image processing embedded to support its autonomous driving and web interface streaming functions.
 
-In this paper, the development and parallelism evaluation of the demonstrator A4MCAR as well as the studies on parallel computing and tracing options are discussed. Obtained results are used in APP4MC for better development. The remainder of this paper is organized as follows: Section 2 is dedicated to Multi-core programming while Section 3 is dedicated to explaining APP4MC environment. In Section 4, the demonstrator design will be explained. After Section 4, Section 5 and 6 will involve Information Tracing and System Modeling with APP4MC and Effective Parallelism Evaluation, respectively. The paper will be concluded with Section 7.
+In this paper, the development and parallelism evaluation of the demonstrator A4MCAR as well as the studies on parallel computing and tracing options are discussed. Obtained results are used in APP4MC for better development. The remainder of this paper is organized as follows: Section 2 is dedicated to Multi-core programming while Section 3 is dedicated to explaining APP4MC environment. In Section 4, the demonstrator design and implementation will be explained. After Section 4, Section 5 and 6 will involve Information Tracing and System Modeling with APP4MC and Effective Parallelism Evaluation, respectively. The paper will be concluded with Section 7.
 
 %%% CHAPTER Introduction ------------------------------end----
 %%% CHAPTER Multi-core Programming ------------------begin----
@@ -60,6 +60,9 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 \section{Task Coordination and Agreement}
 \section{Optimization}
+\section{Real-time Emphasis of Parallel Computing}
+\paragraph{Linux Kernel and Real-time Scheduling with Linux}
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 %%% CHAPTER Multi-core Programming ------------------end----
 %%% CHAPTER APP4MC Development Environment ----------begin----
@@ -67,7 +70,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 %%% CHAPTER APP4MC Development Environment ------------end----
 %%% CHAPTER A4MCAR ----------------------------------begin----
-\chapter{Distributed Multi-core Demonstrator (A4MCAR) Design}
+\chapter{Distributed Multi-core Demonstrator (A4MCAR) Design and Implementation}
 \section{System Overview}
 As introduced in the Introduction chapter, A4MCAR is a demonstrator RC-Car for the APP4MC development environment. A4MCAR provides a distributed multi-core architecture that allows the demonstration of embedded low-level and high-level applications. 
 
@@ -91,13 +94,10 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 \subsubsection{Raspberry Pi 3 Infrastructure}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-\paragraph{Linux Kernel Preliminaries}
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
 \subsection{Sensors}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-\subsection{Hardware Design}
+\subsection{Hardware Design and Implementation}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 \begin{figure}[htb]
 	\includegraphics[scale=0.35]{content/images/hwoverview.png}
@@ -109,7 +109,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 \subsection{Safety and Power}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-\section{Low-Level Module Design}
+\section{Low-Level Module Design and Implementation}
 \subsection{Overview}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
@@ -138,7 +138,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 
-\section{High-Level Module Design}
+\section{High-Level Module Design and Implementation}
 \subsection{Overview}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
@@ -151,7 +151,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 \subsubsection{Web Server}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-\subsubsection{Web Page Design}  %Very briefly
+\subsubsection{Web Page Design and Implementation}  %Very briefly
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 \subsubsection{Controlling A4MCAR via Web Page}
@@ -170,7 +170,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 \subsection{Touchscreen Display}
-\subsubsection{Touchscreen Display Design}
+\subsubsection{Touchscreen Display Implementation}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 \subsubsection{Touchscreen Display Functions}
@@ -183,7 +183,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 \subsection{Additional Bash Scripts}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-\section{Android Application Design}
+\section{Android Application Implementation}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 
@@ -207,6 +207,18 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 %The main benefit for having release, start, (preemption), end, and deadline values is deriving efficiency. For each task instance, you can calculate e.g. the slack time, that indicates how much time is left before its next execution. The higher the slack time is, the better was its execution. Different scenarios and different tasks have different profiling results (slack time is just one of them) and their investigation leads to a precise assessment of software distribution!
 %Real-time Scheduling in Linux?????
 %time.time (real time) vs time.clock (processor time) (does not count cpu sleeps)
+
+%Overall mean slack time -> longer means distribution is better.
+% Core execution times should be same but Response times  (= GETs ) will slightly differ.
+%Why dont we have IPT? which causes Response times = GETs
+
+%Different measurements -> scenerios -> results evaluation using kernelshark, lttng and other tools.
+
+%Online efficiency calculation using rpi and offline distribution analysis.
+
+% Real-time EMPHASIS REALLY IMPORTANT. MAKE A CHAPTER ON THAT
+
+%Why real-time computing not supported in ARM architecture, especially Raspberry Pi ? (search this!!)
 
 
 %%% CHAPTER Effective Parallelism Evaluation --------end----
