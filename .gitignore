@@ -9,3 +9,9 @@ IDAACS Paper/IDAACS_Example.blg
 *.log
 *.aux
 *.gz
+*.lof
+*.out
+abschlussarbeit.pdf
+*.toc
+*.lot
+*.lol
