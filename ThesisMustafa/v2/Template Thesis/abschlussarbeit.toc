@@ -5,81 +5,82 @@
 \contentsline {section}{\numberline {1.3}Methodology}{9}{section.1.3}
 \contentsline {chapter}{\numberline {2}Multi-core Programming}{10}{chapter.2}
 \contentsline {section}{\numberline {2.1}Introduction to Parallelization Terminology}{10}{section.2.1}
-\contentsline {section}{\numberline {2.2}Multi-core Hardware and Software Co-Design Stages}{10}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}Partitioning}{10}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2.2.2}Task Generation}{10}{subsection.2.2.2}
-\contentsline {subsection}{\numberline {2.2.3}Mapping}{11}{subsection.2.2.3}
-\contentsline {subsection}{\numberline {2.2.4}Implementation}{11}{subsection.2.2.4}
-\contentsline {subsection}{\numberline {2.2.5}...}{11}{subsection.2.2.5}
-\contentsline {section}{\numberline {2.3}Task Coordination and Agreement}{11}{section.2.3}
-\contentsline {section}{\numberline {2.4}Optimization}{11}{section.2.4}
-\contentsline {chapter}{\numberline {3}APP4MC Development Environment}{12}{chapter.3}
-\contentsline {chapter}{\numberline {4}Distributed Multi-core Demonstrator (A4MCAR) Design}{13}{chapter.4}
-\contentsline {section}{\numberline {4.1}System Overview}{13}{section.4.1}
-\contentsline {subsection}{\numberline {4.1.1}System Features}{13}{subsection.4.1.1}
-\contentsline {subsection}{\numberline {4.1.2}Infrastructure}{13}{subsection.4.1.2}
-\contentsline {subsubsection}{\numberline {4.1.2.1}XMOS XS-1 Infrastructure}{14}{subsubsection.4.1.2.1}
-\contentsline {subsubsection}{\numberline {4.1.2.2}Raspberry Pi 3 Infrastructure}{14}{subsubsection.4.1.2.2}
-\contentsline {paragraph}{\numberline {4.1.2.2.1}Linux Kernel Preliminaries}{14}{paragraph.4.1.2.2.1}
-\contentsline {subsection}{\numberline {4.1.3}Sensors}{14}{subsection.4.1.3}
-\contentsline {subsection}{\numberline {4.1.4}Hardware Design}{15}{subsection.4.1.4}
-\contentsline {subsection}{\numberline {4.1.5}Safety and Power}{15}{subsection.4.1.5}
-\contentsline {section}{\numberline {4.2}Low-Level Module Design}{15}{section.4.2}
-\contentsline {subsection}{\numberline {4.2.1}Overview}{15}{subsection.4.2.1}
-\contentsline {subsection}{\numberline {4.2.2}Actuation}{16}{subsection.4.2.2}
-\contentsline {subsubsection}{\numberline {4.2.2.1}Acceleration}{16}{subsubsection.4.2.2.1}
-\contentsline {subsubsection}{\numberline {4.2.2.2}Steering}{16}{subsubsection.4.2.2.2}
-\contentsline {subsection}{\numberline {4.2.3}Proximity Sensing}{16}{subsection.4.2.3}
-\contentsline {subsection}{\numberline {4.2.4}Lighting System}{17}{subsection.4.2.4}
-\contentsline {subsection}{\numberline {4.2.5}Bluetooth Communication}{17}{subsection.4.2.5}
-\contentsline {subsection}{\numberline {4.2.6}Ethernet (TCP) Communication}{17}{subsection.4.2.6}
-\contentsline {subsection}{\numberline {4.2.7}Core and Tile Monitoring}{17}{subsection.4.2.7}
-\contentsline {section}{\numberline {4.3}High-Level Module Design}{18}{section.4.3}
-\contentsline {subsection}{\numberline {4.3.1}Overview}{18}{subsection.4.3.1}
-\contentsline {subsection}{\numberline {4.3.2}Core Monitoring}{18}{subsection.4.3.2}
-\contentsline {subsection}{\numberline {4.3.3}Web Server and its Applications}{18}{subsection.4.3.3}
-\contentsline {subsubsection}{\numberline {4.3.3.1}Web Server}{18}{subsubsection.4.3.3.1}
-\contentsline {subsubsection}{\numberline {4.3.3.2}Web Page Design}{19}{subsubsection.4.3.3.2}
-\contentsline {subsubsection}{\numberline {4.3.3.3}Controlling A4MCAR via Web Page}{19}{subsubsection.4.3.3.3}
-\contentsline {subsubsection}{\numberline {4.3.3.4}Camera Streaming}{19}{subsubsection.4.3.3.4}
-\contentsline {subsubsection}{\numberline {4.3.3.5}Core Utilization Display}{19}{subsubsection.4.3.3.5}
-\contentsline {subsection}{\numberline {4.3.4}Dummy Loads}{20}{subsection.4.3.4}
-\contentsline {subsection}{\numberline {4.3.5}Image Processing with OpenCV}{20}{subsection.4.3.5}
-\contentsline {subsection}{\numberline {4.3.6}Touchscreen Display}{20}{subsection.4.3.6}
-\contentsline {subsubsection}{\numberline {4.3.6.1}Touchscreen Display Design}{20}{subsubsection.4.3.6.1}
-\contentsline {subsubsection}{\numberline {4.3.6.2}Touchscreen Display Functions}{21}{subsubsection.4.3.6.2}
-\contentsline {subsection}{\numberline {4.3.7}VNC Server}{21}{subsection.4.3.7}
-\contentsline {subsection}{\numberline {4.3.8}Additional Bash Scripts}{21}{subsection.4.3.8}
-\contentsline {section}{\numberline {4.4}Android Application Design}{21}{section.4.4}
-\contentsline {chapter}{\numberline {5}Information Tracing and System Modeling}{23}{chapter.5}
-\contentsline {section}{\numberline {5.1}Information Tracing via Linux Kernel}{23}{section.5.1}
-\contentsline {section}{\numberline {5.2}Information Tracing via APP4MC}{23}{section.5.2}
-\contentsline {section}{\numberline {5.3}Constructing an APP4MC Model for A4MCAR}{23}{section.5.3}
-\contentsline {chapter}{\numberline {6}Effective Parallelism Evaluation}{25}{chapter.6}
-\contentsline {section}{\numberline {6.1}Determining Efficiency}{25}{section.6.1}
-\contentsline {chapter}{\numberline {7}Conclusion}{26}{chapter.7}
-\contentsline {chapter}{\numberline {8}Wissenschaftliches Arbeiten}{27}{chapter.8}
-\contentsline {section}{\numberline {8.1}Vorgehen}{27}{section.8.1}
-\contentsline {section}{\numberline {8.2}Bewertungskriterien}{27}{section.8.2}
-\contentsline {subsection}{\numberline {8.2.1}Bewertung schriftlicher Arbeiten}{27}{subsection.8.2.1}
-\contentsline {subsection}{\numberline {8.2.2}Bewertung von Pr\"asentationen im Kolloquium}{29}{subsection.8.2.2}
-\contentsline {section}{\numberline {8.3}Vortragstipps}{29}{section.8.3}
-\contentsline {chapter}{\numberline {9}Arbeiten mit \LaTeX }{31}{chapter.9}
-\contentsline {section}{\numberline {9.1}Quelltext und Bilder}{31}{section.9.1}
-\contentsline {subsection}{\numberline {9.1.1}XML}{31}{subsection.9.1.1}
-\contentsline {subsection}{\numberline {9.1.2}JAVA}{31}{subsection.9.1.2}
-\contentsline {subsection}{\numberline {9.1.3}Bilder}{32}{subsection.9.1.3}
-\contentsline {subsection}{\numberline {9.1.4}Formeln}{32}{subsection.9.1.4}
-\contentsline {section}{\numberline {9.2}Zeichnungen}{33}{section.9.2}
-\contentsline {subsection}{\numberline {9.2.1}Zustandsdiagramm}{33}{subsection.9.2.1}
-\contentsline {subsection}{\numberline {9.2.2}Petrinetz}{34}{subsection.9.2.2}
-\contentsline {subsection}{\numberline {9.2.3}Graph}{34}{subsection.9.2.3}
-\contentsline {section}{\numberline {9.3}Tabellen}{35}{section.9.3}
-\contentsline {section}{\numberline {9.4}soth?ng}{35}{section.9.4}
-\contentsline {section}{\numberline {9.5}dgsd}{36}{section.9.5}
-\contentsline {chapter}{\numberline {10}Conclusions}{38}{chapter.10}
-\contentsline {chapter}{\numberline {11}List of Figures}{40}{chapter.11}
-\contentsline {chapter}{\numberline {12}List of Tables}{41}{chapter.12}
-\contentsline {chapter}{\numberline {13}Listings}{42}{chapter.13}
-\contentsline {chapter}{\numberline {A}Bibliography}{43}{appendix.A}
-\contentsline {chapter}{\numberline {B}Eidesstattliche Erkl\"arung}{44}{appendix.B}
+\contentsline {section}{\numberline {2.2}Multi-core Architectures}{10}{section.2.2}
+\contentsline {section}{\numberline {2.3}Multi-core Hardware and Software Co-Design Stages}{10}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Partitioning}{10}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Task Generation}{10}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}Mapping}{11}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.3.4}Implementation}{11}{subsection.2.3.4}
+\contentsline {subsection}{\numberline {2.3.5}...}{11}{subsection.2.3.5}
+\contentsline {section}{\numberline {2.4}Task Coordination and Agreement}{12}{section.2.4}
+\contentsline {section}{\numberline {2.5}Optimization}{12}{section.2.5}
+\contentsline {chapter}{\numberline {3}APP4MC Development Environment}{13}{chapter.3}
+\contentsline {chapter}{\numberline {4}Distributed Multi-core Demonstrator (A4MCAR) Design}{14}{chapter.4}
+\contentsline {section}{\numberline {4.1}System Overview}{14}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}System Features}{14}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Infrastructure}{14}{subsection.4.1.2}
+\contentsline {subsubsection}{\numberline {4.1.2.1}XMOS XS-1 Infrastructure}{15}{subsubsection.4.1.2.1}
+\contentsline {subsubsection}{\numberline {4.1.2.2}Raspberry Pi 3 Infrastructure}{15}{subsubsection.4.1.2.2}
+\contentsline {paragraph}{\numberline {4.1.2.2.1}Linux Kernel Preliminaries}{15}{paragraph.4.1.2.2.1}
+\contentsline {subsection}{\numberline {4.1.3}Sensors}{16}{subsection.4.1.3}
+\contentsline {subsection}{\numberline {4.1.4}Hardware Design}{16}{subsection.4.1.4}
+\contentsline {subsection}{\numberline {4.1.5}Safety and Power}{16}{subsection.4.1.5}
+\contentsline {section}{\numberline {4.2}Low-Level Module Design}{17}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Overview}{17}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Actuation}{18}{subsection.4.2.2}
+\contentsline {subsubsection}{\numberline {4.2.2.1}Acceleration}{18}{subsubsection.4.2.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2.2}Steering}{18}{subsubsection.4.2.2.2}
+\contentsline {subsection}{\numberline {4.2.3}Proximity Sensing}{18}{subsection.4.2.3}
+\contentsline {subsection}{\numberline {4.2.4}Lighting System}{19}{subsection.4.2.4}
+\contentsline {subsection}{\numberline {4.2.5}Bluetooth Communication}{19}{subsection.4.2.5}
+\contentsline {subsection}{\numberline {4.2.6}Ethernet (TCP) Communication}{19}{subsection.4.2.6}
+\contentsline {subsection}{\numberline {4.2.7}Core and Tile Monitoring}{19}{subsection.4.2.7}
+\contentsline {section}{\numberline {4.3}High-Level Module Design}{20}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Overview}{20}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}Core Monitoring}{20}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Web Server and its Applications}{20}{subsection.4.3.3}
+\contentsline {subsubsection}{\numberline {4.3.3.1}Web Server}{20}{subsubsection.4.3.3.1}
+\contentsline {subsubsection}{\numberline {4.3.3.2}Web Page Design}{21}{subsubsection.4.3.3.2}
+\contentsline {subsubsection}{\numberline {4.3.3.3}Controlling A4MCAR via Web Page}{21}{subsubsection.4.3.3.3}
+\contentsline {subsubsection}{\numberline {4.3.3.4}Camera Streaming}{21}{subsubsection.4.3.3.4}
+\contentsline {subsubsection}{\numberline {4.3.3.5}Core Utilization Display}{21}{subsubsection.4.3.3.5}
+\contentsline {subsection}{\numberline {4.3.4}Dummy Loads}{22}{subsection.4.3.4}
+\contentsline {subsection}{\numberline {4.3.5}Image Processing with OpenCV}{22}{subsection.4.3.5}
+\contentsline {subsection}{\numberline {4.3.6}Touchscreen Display}{22}{subsection.4.3.6}
+\contentsline {subsubsection}{\numberline {4.3.6.1}Touchscreen Display Design}{22}{subsubsection.4.3.6.1}
+\contentsline {subsubsection}{\numberline {4.3.6.2}Touchscreen Display Functions}{23}{subsubsection.4.3.6.2}
+\contentsline {subsection}{\numberline {4.3.7}VNC Server}{23}{subsection.4.3.7}
+\contentsline {subsection}{\numberline {4.3.8}Additional Bash Scripts}{23}{subsection.4.3.8}
+\contentsline {section}{\numberline {4.4}Android Application Design}{23}{section.4.4}
+\contentsline {chapter}{\numberline {5}Information Tracing and System Modeling}{25}{chapter.5}
+\contentsline {section}{\numberline {5.1}Information Tracing via Linux Kernel}{25}{section.5.1}
+\contentsline {section}{\numberline {5.2}Information Tracing via APP4MC}{25}{section.5.2}
+\contentsline {section}{\numberline {5.3}Constructing an APP4MC Model for A4MCAR}{25}{section.5.3}
+\contentsline {chapter}{\numberline {6}Effective Parallelism Evaluation}{27}{chapter.6}
+\contentsline {section}{\numberline {6.1}Determining Efficiency}{27}{section.6.1}
+\contentsline {chapter}{\numberline {7}Conclusion}{28}{chapter.7}
+\contentsline {chapter}{\numberline {8}Wissenschaftliches Arbeiten}{29}{chapter.8}
+\contentsline {section}{\numberline {8.1}Vorgehen}{29}{section.8.1}
+\contentsline {section}{\numberline {8.2}Bewertungskriterien}{29}{section.8.2}
+\contentsline {subsection}{\numberline {8.2.1}Bewertung schriftlicher Arbeiten}{29}{subsection.8.2.1}
+\contentsline {subsection}{\numberline {8.2.2}Bewertung von Pr\"asentationen im Kolloquium}{31}{subsection.8.2.2}
+\contentsline {section}{\numberline {8.3}Vortragstipps}{31}{section.8.3}
+\contentsline {chapter}{\numberline {9}Arbeiten mit \LaTeX }{33}{chapter.9}
+\contentsline {section}{\numberline {9.1}Quelltext und Bilder}{33}{section.9.1}
+\contentsline {subsection}{\numberline {9.1.1}XML}{33}{subsection.9.1.1}
+\contentsline {subsection}{\numberline {9.1.2}JAVA}{33}{subsection.9.1.2}
+\contentsline {subsection}{\numberline {9.1.3}Bilder}{34}{subsection.9.1.3}
+\contentsline {subsection}{\numberline {9.1.4}Formeln}{34}{subsection.9.1.4}
+\contentsline {section}{\numberline {9.2}Zeichnungen}{35}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Zustandsdiagramm}{35}{subsection.9.2.1}
+\contentsline {subsection}{\numberline {9.2.2}Petrinetz}{36}{subsection.9.2.2}
+\contentsline {subsection}{\numberline {9.2.3}Graph}{36}{subsection.9.2.3}
+\contentsline {section}{\numberline {9.3}Tabellen}{37}{section.9.3}
+\contentsline {section}{\numberline {9.4}soth?ng}{37}{section.9.4}
+\contentsline {section}{\numberline {9.5}dgsd}{38}{section.9.5}
+\contentsline {chapter}{\numberline {10}Conclusions}{40}{chapter.10}
+\contentsline {chapter}{\numberline {11}List of Figures}{42}{chapter.11}
+\contentsline {chapter}{\numberline {12}List of Tables}{43}{chapter.12}
+\contentsline {chapter}{\numberline {13}Listings}{44}{chapter.13}
+\contentsline {chapter}{\numberline {A}Bibliography}{45}{appendix.A}
+\contentsline {chapter}{\numberline {B}Eidesstattliche Erkl\"arung}{46}{appendix.B}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.2.13)  10 MAR 2017 13:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2017.2.13)  13 MAR 2017 18:38
 entering extended mode
 **./abschlussarbeit.tex
 (abschlussarbeit.tex
@@ -1436,7 +1436,7 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(content/title.tex <content/images/fhlogo.png, id=362, 579.16376pt x 208.78pt>
+(content/title.tex <content/images/fhlogo.png, id=370, 579.16376pt x 208.78pt>
 File: content/images/fhlogo.png Graphic file (type png)
 
 <use content/images/fhlogo.png>
@@ -1552,10 +1552,10 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 3.
  [4
 
-]
+] [5]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <8> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 66.
- [5])
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+)
 \tf@toc=\write7
 \openout7 = `abschlussarbeit.toc'.
 
@@ -1604,7 +1604,7 @@ Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 [9]
 chapter 2.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 44.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 46.
 
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
@@ -1616,15 +1616,11 @@ Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
 [11]
-chapter 3.
-
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[12
-
-]
-chapter 4.
+[12]
+chapter 3.
 
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
@@ -1632,14 +1628,45 @@ Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 [13
 
 ]
+chapter 4.
+
+Overfull \hbox (6.98672pt too wide) in paragraph at lines 72--73
+\T1/phv/m/n/10.95 As in-tro-duced in the In-tro-duc-tion chap-ter, A4MCAR is a 
+demon-stra-tor RC-Car for the APP4MC
+ []
+
+<content/images/tasksoverall.png, id=526, 1675.25874pt x 834.11626pt>
+File: content/images/tasksoverall.png Graphic file (type png)
+
+<use content/images/tasksoverall.png>
+Package pdftex.def Info: content/images/tasksoverall.png used on input line 80.
+
+(pdftex.def)             Requested size: 502.58151pt x 250.2368pt.
+
+Overfull \hbox (61.56378pt too wide) in paragraph at lines 80--81
+[][] 
+ []
+
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 81.
+
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[14]
+[14
+
+]
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[15]
+[15 <./content/images/tasksoverall.png>]
+<content/images/hwoverview.png, id=538, 1204.5pt x 1026.83624pt>
+File: content/images/hwoverview.png Graphic file (type png)
+
+<use content/images/hwoverview.png>
+Package pdftex.def Info: content/images/hwoverview.png used on input line 103.
+(pdftex.def)             Requested size: 421.58131pt x 359.39807pt.
+
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
@@ -1647,7 +1674,7 @@ Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[17]
+[17 <./content/images/hwoverview.png>]
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
@@ -1668,19 +1695,15 @@ Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
 [22]
-chapter 5.
-
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[23
-
-]
+[23]
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
 [24]
-chapter 6.
+chapter 5.
 
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
@@ -1688,12 +1711,24 @@ Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 [25
 
 ]
+Overfull \vbox (2.70238pt too high) has occurred while \output is active []
+
+
+[26]
+chapter 6.
+
+Overfull \vbox (2.70238pt too high) has occurred while \output is active []
+
+
+[27
+
+]
 chapter 7.
 )
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[26
+[28
 
 ]
 chapter 8.
@@ -1701,13 +1736,13 @@ chapter 8.
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[27
+[29
 
 ]
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[28]
+[30]
 Overfull \hbox (0.95396pt too wide) in paragraph at lines 85--86
 []\T1/phv/m/n/10.95 Nicht nur vor-lesen, was auf den Folien steht: zusät-zliche
  In-for-ma-tio-nen und Er-läuterun-
@@ -1717,11 +1752,11 @@ Overfull \hbox (0.95396pt too wide) in paragraph at lines 85--86
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[29])
+[31])
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[30]
+[32]
 chapter 9.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <20.74> on input line 140.
@@ -1748,9 +1783,6 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <5> on input line 1.
 )
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 9.
-
 ("C:\Program Files\MiKTeX 2.9\tex\latex\listings\lstlang1.sty"
 File: lstlang1.sty 2015/06/04 1.6 listings language file
 )
@@ -1761,10 +1793,10 @@ LaTeX Font Info:    Font shape `OMS/phv/m/n' in size <9> not available
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[31
+[33
 
 ])
-<content/images/52_Foto_FHDortmund_Gebaeude.jpg, id=620, 376.40625pt x 282.0537
+<content/images/52_Foto_FHDortmund_Gebaeude.jpg, id=644, 376.40625pt x 282.0537
 6pt>
 File: content/images/52_Foto_FHDortmund_Gebaeude.jpg Graphic file (type jpg)
  <use content/images/52_Foto_FHDortmund_Gebaeude.jpg>
@@ -1780,7 +1812,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 37--38
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[32 <./content/images/52_Foto_FHDortmund_Gebaeude.jpg>])
+[34 <./content/images/52_Foto_FHDortmund_Gebaeude.jpg>])
 (content/zeichnungen.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--5
 
@@ -1790,11 +1822,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 3--5
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[33]
+[35]
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[34]) (content/tabellen.tex
+[36]) (content/tabellen.tex
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
@@ -1802,32 +1834,32 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[35]
+[37]
 
-Package natbib Warning: Citation `importantpaper' on page 36 undefined on input
+Package natbib Warning: Citation `importantpaper' on page 38 undefined on input
  line 36.
 
 
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[36]) (content/schluss.tex
+[38]) (content/schluss.tex
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[37]
+[39]
 chapter 10.
 ) (preamble/acronyms.tex
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[38
+[40
 
 ])
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[39
+[41
 
 ]
 chapter 11.
@@ -1839,7 +1871,7 @@ chapter 11.
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[40
+[42
 
 ]
 chapter 12.
@@ -1866,7 +1898,7 @@ Class scrreprt Warning: \float@listhead detected!
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[41
+[43
 
 ]
 chapter 13.
@@ -1878,7 +1910,7 @@ chapter 13.
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[42
+[44
 
 ]
 chapter A.
@@ -1886,7 +1918,7 @@ chapter A.
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[43
+[45
 
 ]
 chapter B.
@@ -1898,7 +1930,7 @@ Package natbib Warning: There were undefined citations.
 Overfull \vbox (2.70238pt too high) has occurred while \output is active []
 
 
-[44
+[46
 
 ]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 164.
@@ -1906,21 +1938,14 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 164.
  (abschlussarbeit.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 164.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 164.
-
-
-Package rerunfilecheck Warning: File `abschlussarbeit.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `abschlussarbeit.out':
-(rerunfilecheck)             Before: 11C89B17C5288F1021EDA59EEDE91B1B;5806
-(rerunfilecheck)             After:  24C2FB557B91260A072A786A7C631A21;5876.
+Package rerunfilecheck Info: File `abschlussarbeit.out' has not changed.
+(rerunfilecheck)             Checksum: 7BDD333C27E86E1AC0A9C6C8BEB99CC0;5948.
  ) 
 Here is how much of TeX's memory you used:
- 31307 strings out of 493333
- 627742 string characters out of 3139188
- 915939 words of memory out of 3000000
- 33933 multiletter control sequences out of 15000+200000
+ 31328 strings out of 493333
+ 628203 string characters out of 3139188
+ 916190 words of memory out of 3000000
+ 33947 multiletter control sequences out of 15000+200000
  54304 words of font info for 67 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  67i,12n,76p,8828b,2052s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1937,9 +1962,9 @@ cmsy8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb
 iles/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvbo8a.pfb><C:/Program Files/MiKTeX 2
 .9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
 /urw/helvetic/uhvro8a.pfb>
-Output written on abschlussarbeit.pdf (44 pages, 330997 bytes).
+Output written on abschlussarbeit.pdf (46 pages, 1209975 bytes).
 PDF statistics:
- 802 PDF objects out of 1000 (max. 8388607)
- 176 named destinations out of 1000 (max. 500000)
- 783 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 830 PDF objects out of 1000 (max. 8388607)
+ 181 named destinations out of 1000 (max. 500000)
+ 809 words of extra memory for PDF output out of 10000 (max. 10000000)
 
