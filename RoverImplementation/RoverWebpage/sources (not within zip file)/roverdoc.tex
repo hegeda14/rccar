@@ -70,9 +70,9 @@ Within the editor, add the following to the end, save the file, and exit (depend
 www-data ALL=(ALL) NOPASSWD: ALL
 \end{lstlisting}
 \section{Setting up the webpage}
-After the RPI setup is complete, move the provided webpage zip file to the web server folder,extract it, and delete the zip via:
+After the RPI setup is complete, move the provided webpage zip file to the web server folder,extract it, and delete the zip via the following: (Change <path-to-directory> to where you downloaded the .zip file.)
 \begin{lstlisting}
-sudo mv /home/pi/Downloads/RoverWebpage_FHDO.zip /var/www/
+sudo mv /<path-to-directory>/RoverWebpage_FHDO.zip /var/www/
 cd /var/www/ 
 sudo unzip RoverWebpage_FHDO.zip
 sudo rm -rf RoverWebpage_FHDO.zip
