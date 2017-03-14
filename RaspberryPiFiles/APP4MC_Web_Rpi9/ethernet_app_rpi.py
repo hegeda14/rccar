@@ -14,7 +14,7 @@ connected = 0
 done = False
 
 #Timing Related ---start
-_DEADLINE = 0.002
+_DEADLINE = 0.2
 _START_TIME = 0
 _END_TIME = 0
 _EXECUTION_TIME = 0                  
@@ -27,9 +27,9 @@ def CreateTimingLog(filename):
 	global _DEADLINE
 	global _END_TIME
 	global _EXECUTION_TIME
-	global _PREV_SLACK_TIME
-	global _PERIOD
-	
+        global _PREV_SLACK_TIME
+        global _PERIOD
+        
 	try:
 		file_obj = open(str(filename), "w+r")
 	except Exception as inst:
@@ -41,6 +41,8 @@ def CreateTimingLog(filename):
 		file_obj.close()
 	except Exception as inst:
 		print inst
+
+
 
 def Thread_EthernetClient_ReceiveMessage():
 	global client_sock
@@ -113,25 +115,26 @@ while not done:
 
 	if (connected == 1):
 		while not done:
-
-			#Timing Related ---start
-			_START_TIME = time.time() 
-			_PREV_SLACK_TIME = _START_TIME - _END_TIME
-			#Timing Related ---end
-		
-			#---
+                        #Timing Related ---start
+                        _START_TIME = time.time()
+                        _PREV_SLACK_TIME = _START_TIME - _END_TIME
+                        #Timing Related --end
+                        
+                        #---
 			try:
 				filedata = ReadFromFile()
-					if (filedata != "NOCHANGE" and filedata != prevfiledata):
-						client_sock.sendall(filedata)
-						prevfiledata = filedata
+                        	if (filedata != "NOCHANGE" and filedata != prevfiledata):
+                                	client_sock.sendall(filedata)
+					prevfiledata = filedata
 			except Exception as inst:
 				done = True
-			#---
-			
-			#Timing Related ---start
-			CreateTimingLog("deadline_logger_ethernet_app_rpi.inc")
-			#Timing Related ---end
+                        #---
                         
-			time.sleep(_PERIOD - _EXECUTION_TIME)
+                        #Timing Related ---start
+                        CreateTimingLog("deadline_logger_ethernet_app_rpi.inc")
+                        #Timing Related ---end
+
+                        #print _EXECUTION_TIME
+                        if (_PERIOD>_EXECUTION_TIME):
+                                time.sleep(_PERIOD - _EXECUTION_TIME)
 
