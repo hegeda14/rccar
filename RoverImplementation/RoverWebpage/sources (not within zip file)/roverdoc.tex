@@ -18,7 +18,12 @@
 \end{tabularx} 
 \vspace{15pt}\\
 \begin{tabularx}{\textwidth}{cXc}
-	\includegraphics{rover.png} & &	\includegraphics{page.png}\\
+%	\begin{figure}
+		\includegraphics{rover.png}%\caption{Rover} \label{fig:rover}&&
+%	\end{figure}& &	
+	%\begin{figure}
+		\includegraphics{page.png}%\caption{Browser webpage}\label{fig:browser}\\
+%	\end{figure}\\
 \end{tabularx}
 \section{General structure}
 \begin{figure}[h!]
@@ -28,6 +33,8 @@
 \label{fig:struct}
 \end{figure}
 
+\section{Introduction}
+This documentation describes how to setup a Raspberry PI (RPI) in order to view its camera stream via your browser and further take control of the motors connected to the RPI in form of the rover %shown in Figure \ref{fig:rover}.
 
 \section{Apache2 and PHP5 Installation and Configuration}
 	In order to start driving the rover from a web page, one should install Apache2 and PHP5. To get the latest packages from the repository list go into shell and type (\textit{internet connectivity required}):
