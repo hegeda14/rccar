@@ -139,7 +139,7 @@ void *WebServer_MotorDrive_Task(void * arg)
 		fp = fopen("/var/www/html/ROVER_CMD.inc", "r");
 		ch = fgetc (fp);
 		//printf("Got command = %c\n", ch);
-		pthread_mutex_lock(&keycommand_lock);
+		pthread_mutex_lock(&keycommand_lock);	
 		keycommand_shared = tolower(ch);
 		pthread_mutex_unlock(&keycommand_lock);
 		fclose(fp);
