@@ -14,4 +14,9 @@ http://www.amalthea-project.org/.
 \bibitem{app4mcproposaleclipse}
 https://projects.eclipse.org/proposals/app4mc.
 
+\bibitem{springerparallel}
+Thomas Rauber and Gudula R{\"u}nger.
+\newblock {\em Parallel Programming}.
+\newblock Springer-Verlag Berlin Heidelberg, 2013.
+
 \end{thebibliography}
