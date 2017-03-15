@@ -14,7 +14,7 @@ connected = 0
 done = False
 
 #Timing Related ---start
-_DEADLINE = 0.01
+_DEADLINE = 0.2
 _START_TIME = 0
 _END_TIME = 0
 _EXECUTION_TIME = 0                  

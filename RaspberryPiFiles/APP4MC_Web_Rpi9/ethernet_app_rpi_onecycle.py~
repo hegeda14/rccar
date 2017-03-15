@@ -12,38 +12,6 @@ client_sock.setblocking(0)
 client_sock.settimeout(2)
 connected = 0
 done = False
-
-#Timing Related ---start
-_DEADLINE = 0.01
-_START_TIME = 0
-_END_TIME = 0
-_EXECUTION_TIME = 0                  
-_PREV_SLACK_TIME = 0
-_PERIOD = 0.01
-#Timing Related ---end
-
-def CreateTimingLog(filename):
-	global _START_TIME
-	global _DEADLINE
-	global _END_TIME
-	global _EXECUTION_TIME
-        global _PREV_SLACK_TIME
-        global _PERIOD
-        
-	try:
-		file_obj = open(str(filename), "w+r")
-	except Exception as inst:
-		print inst
-	_END_TIME = time.time()
-	_EXECUTION_TIME = _END_TIME - _START_TIME
-	try:
-		file_obj.write(str(_PREV_SLACK_TIME)+' '+str(_EXECUTION_TIME)+' '+str(_PERIOD)+' '+str(_DEADLINE))
-		file_obj.close()
-	except Exception as inst:
-		print inst
-
-
-
 def Thread_EthernetClient_ReceiveMessage():
 	global client_sock
 	global connected
@@ -58,7 +26,7 @@ def Thread_EthernetClient_ReceiveMessage():
                                         dat = client_sock.recv(1)
                                         if (dat != "E"):
                                                 data += dat
-                                #print data
+                                print data
 				WriteToFile(data)
                                 data = ""
 		time.sleep(0.5)
@@ -115,12 +83,6 @@ while not done:
 
 	if (connected == 1):
 		while not done:
-                        #Timing Related ---start
-                        _START_TIME = time.time()
-                        _PREV_SLACK_TIME = _START_TIME - _END_TIME
-                        #Timing Related --end
-                        
-                        #---
 			try:
 				filedata = ReadFromFile()
                         	if (filedata != "NOCHANGE" and filedata != prevfiledata):
@@ -128,13 +90,5 @@ while not done:
 					prevfiledata = filedata
 			except Exception as inst:
 				done = True
-                        #---
-                        
-                        #Timing Related ---start
-                        CreateTimingLog("deadline_logger_ethernet_app_rpi.inc")
-                        #Timing Related ---end
-
-                        #print _EXECUTION_TIME
-                        if (_PERIOD>_EXECUTION_TIME):
-                                time.sleep(_PERIOD - _EXECUTION_TIME)
+                        #time.sleep(0.1)
 

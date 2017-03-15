@@ -19,6 +19,7 @@ def CreateTimingLog(filename):
 	global _END_TIME
 	global _EXECUTION_TIME
         global _PREV_SLACK_TIME
+        global _PERIOD
 	
 	try:
 		file_obj = open(str(filename), "w+r")
@@ -48,4 +49,5 @@ while True:
         #Timing Related ---end
         
         #Sleep
-        time.sleep(_PERIOD - _EXECUTION_TIME)
+	if (_PERIOD > _EXECUTION_TIME):
+        	time.sleep(_PERIOD - _EXECUTION_TIME)

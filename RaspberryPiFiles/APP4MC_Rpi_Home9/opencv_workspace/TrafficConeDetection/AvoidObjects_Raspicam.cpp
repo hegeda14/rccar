@@ -30,6 +30,14 @@
 using namespace std;
 using namespace cv;
 
+clock_t _START_TIME;
+clock_t _END_TIME;
+double _EXECUTION_TIME;
+double _PREV_SLACK_TIME;
+double _PERIOD = 0.0;
+double _DEADLINE = 0.0;
+
+
 char key;
 char* output_window_name = "Camera Output";
 char* grayscale_window_name = "Grayscale Image";
@@ -128,8 +136,21 @@ void SafeShutdownCheckGpio(void)
 	}
 }
 
+
+void CreateTimingLog(char * filename)
+{
+  ofstream myfile;
+  myfile.open(filename);
+  _END_TIME = clock();
+_EXECUTION_TIME = ((double)(_END_TIME - _START_TIME)/CLOCKS_PER_SEC);
+ myfile << _PREV_SLACK_TIME << " " <<  _EXECUTION_TIME << " "<<  _PERIOD << " " << _DEADLINE;
+  myfile.close();
+}
+
 int main(int argc, char *argv[])
 {
+
+    
 
     //TCP Connection "sudo ./TrafficConeDetection connect"
     if(argc>1 ){
@@ -247,8 +268,12 @@ int counter_max = 1;
 
 
 while(1){
-        //SafeShutdownCheckGpio();
 
+         _START_TIME = clock();
+    _PREV_SLACK_TIME = ((double)(_START_TIME - _END_TIME)/CLOCKS_PER_SEC);
+    
+        //SafeShutdownCheckGpio();
+          
         //Capture image with Raspicam_CV
         Camera.grab();
         Camera.retrieve(frame);  //cap >> frame
@@ -543,6 +568,9 @@ while(1){
 		 myfile.close();
 	         send_flag = 0;
 	    }
+
+	    CreateTimingLog("deadline_logger_AvoidObjects_Raspicam.inc");
+	    
 	    
 	    counter++;
 	    //usleep(100*1000);

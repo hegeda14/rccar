@@ -1,16 +1,25 @@
 /*
- * Copyright (c) 2017 PIMES, Fachhochschule Dortmund
+ * Copyright (c) 2017 Eclipse Foundation, FH Dortmund and others
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
  * Description:
- *    Web Server Back-end communicator
+ *    Communicating with web server back-end via file access
  *
- * Supervision:
- *    Robert Hottger
+ *    In order to drive your rover via web page, please follow instructions from:
+ *       https://gitlab.pimes.fh-dortmund.de/RPublic/RoverWeb/raw/master/documentation/RoverWebpageDocumentation.pdf
  *
  * Authors:
- *    Mustafa Ozcelikors <mozcelikors@gmail.com>   02.02.2017 - compilation
+ *    M. Ozcelikors,            R.Hottger
+ *    <mozcelikors@gmail.com>   <robert.hoettger@fh-dortmund.de>
  *
  * Contributors:
+ *
+ * Update History:
+ *    02.02.2017   -    first compilation
+ *    15.03.2017   -    updated tasks for web-based driving
  *
  */
 

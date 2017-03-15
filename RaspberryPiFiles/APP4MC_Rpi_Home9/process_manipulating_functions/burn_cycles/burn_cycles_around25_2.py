@@ -5,7 +5,7 @@ import string
 import numpy
 
 #Timing Related ---start
-_DEADLINE = 0.50
+_DEADLINE = 1.40
 _START_TIME = 0
 _END_TIME = 0
 _EXECUTION_TIME = 0                  
@@ -49,4 +49,5 @@ while True:
         #Timing Related ---end
         
         #Sleep
-        time.sleep(_PERIOD - _EXECUTION_TIME)
+	if(_PERIOD>_EXECUTION_TIME):
+        	time.sleep(_PERIOD - _EXECUTION_TIME)

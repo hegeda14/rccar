@@ -5,12 +5,12 @@ import string
 import numpy
 
 #Timing Related ---start
-_DEADLINE = 0.42
+_DEADLINE = 0.50
 _START_TIME = 0
 _END_TIME = 0
 _EXECUTION_TIME = 0                  
 _PREV_SLACK_TIME = 0
-_PERIOD = 0.47
+_PERIOD = 0.50 #0.47
 #Timing Related ---end
 
 def CreateTimingLog(filename):
@@ -49,4 +49,5 @@ while True:
         #Timing Related ---end
         
         #Sleep
-        time.sleep(_PERIOD - _EXECUTION_TIME) #0.01
+	if (_PERIOD>_EXECUTION_TIME):
+        	time.sleep(_PERIOD - _EXECUTION_TIME) #0.01

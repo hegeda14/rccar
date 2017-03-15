@@ -60,8 +60,9 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 \section{Task Coordination and Agreement}
 \section{Optimization}
+\section{AUTOSAR}
 \section{Real-time Emphasis of Parallel Computing}
-\paragraph{Linux Kernel and Real-time Scheduling with Linux}
+\section{Linux Kernel and Real-time Scheduling with Linux}
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 %%% CHAPTER Multi-core Programming ------------------end----
@@ -205,6 +206,23 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 \section{Determining Efficiency} %in RCCAR
 %Quote:
 %The main benefit for having release, start, (preemption), end, and deadline values is deriving efficiency. For each task instance, you can calculate e.g. the slack time, that indicates how much time is left before its next execution. The higher the slack time is, the better was its execution. Different scenarios and different tasks have different profiling results (slack time is just one of them) and their investigation leads to a precise assessment of software distribution!
+%(Maybe also involve deadline misses..)
+
+%the period usually is the deadline. as soon as execution time exceeds this, you must indicate a “deadline miss” it can lead to system failure or even cause (in the automotive domain) person harm. Think of a break application that must react within e.g. 1ms to ensure accurate braking.
+%To answer your question: it is ok, but you must indicate the deadline miss
+%you should ‘design’ (since you do not have any timing requirements) the periods in a way that they should meet deadlines
+%f you want to show that unser a certain period definition, deadline misses definitely occure (e.g. sequential execution) than you can, for sure, design the periods in that way
+% you can measure different scenarios (periods) though (i recommend that)
+
+%Design of rpi apps and timing for real-time scheduling...
+%Formulas and how the display timing designed.
+%How deadlines designed with periods conforming to parallel distribution
+
+%Linux OS overheads + App Timing additions overhead..
+
+
+%Give scheduling image.. and explain..
+
 %Real-time Scheduling in Linux?????
 %time.time (real time) vs time.clock (processor time) (does not count cpu sleeps)
 
@@ -212,13 +230,23 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 % Core execution times should be same but Response times  (= GETs ) will slightly differ.
 %Why dont we have IPT? which causes Response times = GETs
 
-%Different measurements -> scenerios -> results evaluation using kernelshark, lttng and other tools.
+%Different measurements -> scenerios -> results evaluation using kernelshark, lttng and other tools. (also include image processing app in some scenerios)
 
 %Online efficiency calculation using rpi and offline distribution analysis.
 
 % Real-time EMPHASIS REALLY IMPORTANT. MAKE A CHAPTER ON THAT
 
 %Why real-time computing not supported in ARM architecture, especially Raspberry Pi ? (search this!!)
+
+% Thread analizini de yapalim
+%top -H -p <pid> or ps -T -p <pid>
+%Clock speed > Power
+
+%Problems measuring efficiency using slack time with Rpi:
+%There needs to be a dynamic sleep time(period-exectime)
+%time.timeshould be used instead of time.clock()
+
+%x DVFS Dynamic Voltage and Frequency Scaling
 
 
 %%% CHAPTER Effective Parallelism Evaluation --------end----

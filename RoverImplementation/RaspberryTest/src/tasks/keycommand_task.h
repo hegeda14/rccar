@@ -1,16 +1,22 @@
 /*
- * Copyright (c) 2017 PIMES, Fachhochschule Dortmund
+ * Copyright (c) 2017 Eclipse Foundation, FH Dortmund and others
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
  * Description:
  *    Key command obtainer function with pThreads
  *
- * Supervision:
- *    Robert Hottger
- *
  * Authors:
- *    Mustafa Ozcelikors <mozcelikors@gmail.com>   02.02.2017 - compilation
+ *    M. Ozcelikors,            R.Hottger
+ *    <mozcelikors@gmail.com>   <robert.hoettger@fh-dortmund.de>
  *
  * Contributors:
+ *
+ * Update History:
+ *    02.02.2017   -    first compilation
+ *    15.03.2017   -    updated tasks for web-based driving
  *
  */
 

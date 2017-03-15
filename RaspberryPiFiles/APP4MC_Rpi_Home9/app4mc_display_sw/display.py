@@ -438,22 +438,42 @@ def UpdateShowDistributionPage():
 
         
         #TASK CONTENT
-	font = pygame.font.SysFont("Roboto Condensed", 40)
-	text = font.render ("Deadline Miss:", True, (0, 0, 255))
-	screen.blit(text,(240,120))
-
 	screen.blit(get_image('images/display_r3_c1_s1.png'),(0,175))
-        
+
+
+        #Show CPU Frequencies and CPU Count
+        font = pygame.font.SysFont("Roboto Condensed", 20)
+        text = font.render ("Core Frequencies at:", True, (0,0,255))
+        screen.blit(text,(50,302))
+
+        text = font.render("Cores Running:", True, (0,0,255))
+        screen.blit(text,(400,302))
+
+        text = font.render (str(psutil.cpu_freq()).split(',')[0].split('=')[1]+" MHz", True, (0,0,0))
+        screen.blit(text, (220,302))
+
+        text = font.render (str(psutil.cpu_count()), True, (0,0,0))
+        screen.blit(text, (530,302))
+
+       # text = font.render (str(psutil.cpu_freq(2))[0:6], True, (0,0,0))
+       # screen.blit(text, (360,302))
+
+       # text = font.render (str(psutil.cpu_freq(3))[0:6], True, (0,0,0))
+       # screen.blit(text, (430,302))
         #---
         #deadline variables: missed count: missed total, count: total
         missed = 0
         total = 0
         slack_sum = 0.0
 
+        # Updates for display app
         total = total + 1
         slack_sum = slack_sum + _PREV_SLACK_TIME
+        #print _EXECUTION_TIME
+        if (_EXECUTION_TIME > _PERIOD):
+                missed = missed + 1
         
-        #---READ DEADLINE MISSES FROM OTHER APPS....
+        #---UPDATES FROM OTHER APPS....
         #File structure <deadline-missed-1-or-0> <by-how-much-percentage>
         
         files_list_len = len(files_list)
@@ -465,12 +485,20 @@ def UpdateShowDistributionPage():
                         file_obj = open(files_list[i],"r")
                         data_obj = file_obj.read()
                         int_objs = data_obj.split(' ')
+                        exectime_l = float(int_objs[1])
+                        period_l = float (int_objs[2])
+                        slack_l = float (int_objs[0])
+                        if (exectime_l>period_l):
+                                missed = missed + 1
+                        #the following is applied below: total = total + 1
+
+                        #All Apps Debug..
+                        #print str(files_list[i])+": "+"ExecTime="+str(exectime_l)+" Period="+str(period_l)+" Slack="+str(slack_l)
                         
-                        #if (int_objs[0]=="1"):
-                        #        missed = missed + 1
-                        #total = total + 1
-                        differences_list.append(float(int_objs[1])) #i.e. execution time list
-                        slack_sum = slack_sum + float(int_objs[0])
+                        #Continued..
+                        
+                        differences_list.append(float(exectime_l)) #i.e. execution time list
+                        slack_sum = slack_sum + slack_l
                         total = total + 1
                         #print int_objs
                         file_obj.close()
@@ -498,18 +526,17 @@ def UpdateShowDistributionPage():
         #print slack_sum
         #print total
         slack_avg = slack_sum / total
-
+        deadline_missed_percentage = int((missed*100)/total)
         
-	font = pygame.font.SysFont("Roboto Condensed", 100)
-	if (1==1):
-		 
-		text = font.render (str(slack_avg)+"s", True, (0, 0, 0))
-		screen.blit(text,(300,200))
-		pygame.display.flip()
-	else:
-		text = font.render ("0%", True, (0, 0, 0))
-		screen.blit(text,(300,200))
-		pygame.display.flip()
+	font = pygame.font.SysFont("Roboto Condensed", 60)
+			 
+        text = font.render (str(slack_avg)[0:8]+"s", True, (0, 0, 0))
+        screen.blit(text,(40,180))
+        pygame.display.flip()
+
+        text = font.render (str(deadline_missed_percentage)[0:5]+"%", True, (0, 0, 0))
+        screen.blit(text,(400,180))
+        pygame.display.flip()
 
 	if(distribution_type == 0):
 		font = pygame.font.SysFont("Roboto Condensed", 40)
@@ -823,6 +850,12 @@ def ShowDistributionPage():
 	text = font.render ("Show Timing Performance", True, (255, 255, 255))
 	screen.blit(text,(30,30))
 
+        font = pygame.font.SysFont("Roboto Condensed", 30)
+	text = font.render ("Slack Time Average:", True, (0, 0, 255))
+	screen.blit(text,(40,130))
+        text = font.render ("Deadline Misses:", True, (0, 0, 255))
+	screen.blit(text,(400,130))
+        
 	UpdateShowDistributionPage()
 
 	
@@ -2353,5 +2386,6 @@ while not done:
 
 	pygame.display.flip()
 
-	time.sleep(0.1)
+        if (_PERIOD > _EXECUTION_TIME):
+                time.sleep(_PERIOD - _EXECUTION_TIME)#(0.1)
 	clock.tick(60)
