@@ -258,10 +258,24 @@ $(document).ready(function(){
 	 	$('#keyboardInfo').fadeToggle(300);
 	 });
 
-
-	
-
-
+         $('#turnleft_btn').mousedown(function(){
+                $.ajax({url: 'pythonControl.php?process=S50A99FE'}); 
+         });
+         $('#turnright_btn').mousedown(function(){
+                $.ajax({url: 'pythonControl.php?process=S50A00FE'});
+         });
+         $('#steadystate_btn').mousedown(function(){
+                $.ajax({url: 'pythonControl.php?process=S50A50FE'}); 
+         });
+         $('#turnleft_btn').mouseup(function(){
+                $.ajax({url: 'pythonControl.php?process=S00A99FE'}); 
+         });
+         $('#turnright_btn').mouseup(function(){
+                $.ajax({url: 'pythonControl.php?process=S00A00FE'});
+         });
+         $('#steadystate_btn').mouseup(function(){
+                $.ajax({url: 'pythonControl.php?process=S00A50FE'});
+         });
 })
 
 
@@ -365,8 +379,7 @@ $(function(){
           <input type="button"  class="buton"  style="font-size:50px; width:100px;" id="steadystate_btn" value="^" />
           <input  type="button" class="buton" id="turnleft_btn" style="font-size:50px; width:100px;" value=">" />
           <br>
-          <input type="button" class="buton" style="width:155px; padding-top:10px; padding-bottom:10px;" id="lightson_btn" value="Lights ON" />
-          <input type="button" class="buton" style="width:155px; padding-top:10px; padding-bottom:10px;" id="lightsoff_btn" value="Lights OFF" /><br>
+          
           <input type="button" class="buton" style="width:318px; padding-top:10px; padding-bottom:10px;" id="sensorinfo_btn" value="Show/Hide Core Utilization" /><br>
         </p></td>
       </tr>

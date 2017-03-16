@@ -37,18 +37,27 @@ In this paper, the development and parallelism evaluation of the demonstrator A4
 %%% CHAPTER Introduction ------------------------------end----
 %%% CHAPTER Multi-core Programming ------------------begin----
 \chapter{Multi-core Programming}  %Chapter outline is work in progess..
-\section{About System Characteristics} %and Distributed systems
-\section{Introduction to Parallelization Terminology}
-\section{Multi-core Architectures}
-\section{Multi-core Hardware and Software Co-Design Stages}
-\subsection{Partitioning}
-\subsection{Task Generation}
-\subsection{Mapping}
-\subsection{Implementation}
-\section{Task Coordination and Agreement}
-\section{Optimization}
-\section{AUTOSAR}
-\section{Real-time Emphasis of Parallel Computing}
+\section{Distributed and Parallel Systems} %and Distributed systems
+\subsection{Introduction} %Definitions and intro
+\subsection{Memory Architectures} %characteristics + architectures
+\subsubsection{Computers with Shared Memory Organization}
+\subsubsection{Computers with Distributed Memory Organization}
+\subsubsection{Computers with Distributed and Shared Memory Organization}
+\subsection{Memory Communication} %Distributed + shared mem comm techniques
+\section{Introduction to Parallelism} 
+\subsection{Levels of Parallelism}
+\subsection{Characteristics, Challenges and Constraints of Parallel Systems} % involves co-design stages (parallelization of programs pp.108) partitioning mapping egc. + Also advantages and disadvantages
+
+\subsection{Coordination and Mutual Exclusion}
+\subsubsection{Parallelism Terminology}  %terminology: intro, process, task ,thread, runnable etc
+\subsubsection{Problems in Coordination} % race cond, deadlock, livelocketc. 
+\subsubsection{Mutual Exclusion} %mutex semaphore etc.
+\subsection{Optimization of Parallelization}
+\section{Multi-core Processor Architecture}
+\section{Scheduling} %and schedulers
+\section{Real-time Parallelization Trends in Practice: RTOS, MPI, OpenMP, Pthreads, Java Threads} %x Give example of FreeRTOS for RTOS.
+\section{Importance of Multi-core computing to automotive industry: AUTOSAR}
+
 %%% CHAPTER Multi-core Programming ------------------end----
 %%% CHAPTER APP4MC Development Environment ----------begin----
 \chapter{APP4MC Development Environment}

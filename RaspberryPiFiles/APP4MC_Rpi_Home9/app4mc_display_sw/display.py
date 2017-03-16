@@ -84,6 +84,8 @@ files_list.append("/home/pi/process_manipulating_functions/burn_cycles/deadline_
 files_list.append("/home/pi/process_manipulating_functions/burn_cycles/deadline_logger_burn_cycles_around25_4.inc")
 files_list.append("/home/pi/process_manipulating_functions/burn_cycles/deadline_logger_burn_cycles_around25_5.inc")
 files_list.append("/home/pi/process_manipulating_functions/burn_cycles/deadline_logger_burn_cycles_around100.inc")
+#Involving opencv app optionally
+#files_list.append("/home/pi/opencv_workspace/TrafficConeDetection/deadline_logger_AvoidObjects_Raspicam.inc")
 
 #Timing Related ---start
 _DEADLINE = 0.1
