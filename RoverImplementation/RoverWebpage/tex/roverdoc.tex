@@ -71,7 +71,7 @@ Within the editor, add the following to the end, save the file, and exit (depend
 www-data ALL=(ALL) NOPASSWD: ALL
 \end{lstlisting}
 \section{Setting up the webpage}
-Before we begin, we need some building tools and git in order to continue. Execute the following to make this work:
+Before we begin, we need some building tools and git in order to continue. Execute the following to make this work:\textit{}
 \begin{lstlisting}
 sudo apt-get install build-essential
 sudo apt-get install git
@@ -104,7 +104,12 @@ Firstly, install the Raspberry Pi camera via:
 \begin{lstlisting}
 sudo raspi-config
 \end{lstlisting}
-Select Advanced $\rightarrow$ Enable Camera (or '5 Interfacing Options' $\rightarrow$ 'P1 Camera' $\rightarrow$ '$<$Yes$>$' $\rightarrow$ '$<$Ok$>$'), and then save and reboot your Pi.Installation of the Streamer requires a .so specific file input\_raspicam.so if you are using Raspicam instead of a webcam. This is provided with the .zip file, but needs to be installed properly.\\
+Select Advanced $\rightarrow$ Enable Camera (or '5 Interfacing Options' $\rightarrow$ 'P1 Camera' $\rightarrow$ '$<$Yes$>$' $\rightarrow$ '$<$Ok$>$'), and then save and reboot your Pi.Installation of the Streamer requires a .so specific file input\_raspicam.so if you are using Raspicam instead of a webcam. This is provided with the files cloned from our git repository, but needs to be installed properly.\\
+Before this is done, we should make sure the required packages are installed and libraries are properly configured:
+\begin{lstlisting}
+sudo apt-get install libjpeg8-dev imagemagick libv4l-dev
+sudo ln -s /usr/include/linux/videodev2.h /usr/include/linux/videodev.h
+\end{lstlisting}
 Afterwards, the \texttt{mjpg-streamer} has to be installed via (\textbf{again, make sure there is no line break!}):
 \begin{lstlisting}
 cd /var/www/html/camerastuff/newmjpg-streamer/mjpg-streamer/mjpg-streamer-experimental
@@ -138,7 +143,11 @@ sudo /usr/local/bin/mjpg_streamer -i "/usr/local/lib/input_raspicam.so -x 640 -y
 \end{lstlisting}
 After starting this .bash file, the webpage at \url{http://192.168.168.1/jqueryControl.php} should show the camera stream.
 \section{Adjustments to the rover application}
-Since the rover does not yet consider the webpage commands,the rover control application code must be edited. To do so, find the newest version of the Eclipse application, which contains necessary adjustments and include the following task function:
+\textbf{AUTOMATIC WAY:} In order to update Eclipse application that is written with pThreads, one could clone the files from repository to their Eclipse workspace. To do that, download the files from the following webpage and then import it to your workspace.
+\begin{lstlisting}
+https://gitlab.pimes.fh-dortmund.de/RPublic/RoverEclipse.git
+\end{lstlisting}
+\textbf{MANUAL WAY:} Since the rover does not yet consider the webpage commands,the rover control application code must be edited. To do so, find the newest version of the Eclipse application, which contains necessary adjustments and include the following task function:
 \begin{lstlisting}
 void *WebServer_MotorDrive_Task(void * arg)
 {
@@ -156,6 +165,14 @@ void *WebServer_MotorDrive_Task(void * arg)
 		fclose(fp);
 		delayMicroseconds(50000);//50ms
 	}
+}
+\end{lstlisting}
+To let your compiler know that this thread should also be started, go to your RaspberryTest.cpp (inside main function where the thread initializations are contained) and add the following:
+\begin{lstlisting}
+pthread_t webserver_motordrive_thread;
+if(pthread_create(&webserver_motordrive_thread, NULL, WebServer_MotorDrive_Task, NULL)) {
+   fprintf(stderr, "Error creating thread\n");
+   return 1;
 }
 \end{lstlisting}
 \section{Completion}
