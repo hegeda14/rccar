@@ -36,16 +36,17 @@
 \section{Introduction}
 This documentation describes how to setup a Raspberry PI (RPI) in order to view its camera stream via your browser and further take control of the motors connected to the RPI in form of the rover %shown in Figure \ref{fig:rover}.
 
-\section{Apache2 and PHP5 Installation and Configuration}
+\section{Apache2, cmake, and PHP5 Installation and Configuration}
 	In order to start driving the rover from a web page, one should install Apache2 and PHP5. To get the latest packages from the repository list go into shell and type (\textit{internet connectivity required}):
 \begin{lstlisting}
 sudo apt-get update
 sudo apt-get upgrade
 \end{lstlisting}
-To install apache2 type:
+To install apache2 and cmake type:
 \begin{lstlisting}
 sudo apt-get install apache2 -y
 sudo apt-get install php5 libapache2-mod-php5 -y
+sudo apt-get install cmake
 \end{lstlisting}
 Afterwards, the webpage should be located at \texttt{/var/www/html} directory. In order to give certain permissions to the current user execute: 
 \begin{lstlisting}
@@ -103,20 +104,16 @@ Firstly, install the Raspberry Pi camera via:
 \begin{lstlisting}
 sudo raspi-config
 \end{lstlisting}
-Select Advanced $\rightarrow$ Enable Camera (or '5 Interfacing Options' $\rightarrow$ 'P1 Camera' $\rightarrow$ '$<$Yes$>$' $\rightarrow$ '$<$Ok$>$'), and then save and reboot your Pi.Installation of the Streamer requires a .so specific file input\_raspicam.so if you are using Raspicam instead of a webcam. This is provided with the .zip file, but needs to be installed properly. Now, we should first clean up the build and install cmake: (\textbf{again make sure there is no line break!})
+Select Advanced $\rightarrow$ Enable Camera (or '5 Interfacing Options' $\rightarrow$ 'P1 Camera' $\rightarrow$ '$<$Yes$>$' $\rightarrow$ '$<$Ok$>$'), and then save and reboot your Pi.Installation of the Streamer requires a .so specific file input\_raspicam.so if you are using Raspicam instead of a webcam. This is provided with the .zip file, but needs to be installed properly.\\
+Afterwards, the \texttt{mjpg-streamer} has to be installed via (\textbf{again, make sure there is no line break!}):
 \begin{lstlisting}
 cd /var/www/html/camerastuff/newmjpg-streamer/mjpg-streamer/mjpg-streamer-experimental
-sudo apt-get install cmake
 sudo make clean
-\end{lstlisting}
-Afterwards, clean up the CMAKE cache and install via:
-\begin{lstlisting}
-sudo rm -rf CMakeCache.txt
 sudo cmake .
 sudo make
 sudo make install
 \end{lstlisting}
-If problems occur (e.g. '\texttt{CMake Error: CMake can not determine linker language for target: input\_uvc}'), repeat with the first line, and swap lines 2 and 3 (start with \texttt{make} and then perform \texttt{cmake .}).\\
+%If problems occur (e.g. '\texttt{CMake Error: CMake can not determine linker language for target: input\_uvc}'), repeat with the first line, and swap lines 2 and 3 (start with \texttt{make} and then perform \texttt{cmake .}).\\
 Subsequently, copy the necessary libraries and executables in the respective folders:
 \begin{lstlisting}
 sudo cp mjpg_streamer /usr/local/bin
