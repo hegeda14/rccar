@@ -34,8 +34,10 @@
 \end{figure}
 
 \section{Introduction}
-This documentation describes how to setup a Raspberry PI (RPI) in order to view its camera stream via your browser and further take control of the motors connected to the RPI in form of the rover %shown in Figure \ref{fig:rover}.
+This documentation describes how to setup a Raspberry PI (RPI) in order to view its camera stream via a browser and further take control of the motors connected to the RPI in form of the rover. Please note that your RPI requires internet connection for some provided commands and that some of those take some time to execute.
 
+If you work with a plain jessie (lite) distribution, in order to gain ssh access, just add an empty file named ssh to the sd card.
+%shown in Figure \ref{fig:rover}.
 \section{Apache2, cmake, and PHP5 Installation and Configuration}
 	In order to start driving the rover from a web page, one should install Apache2 and PHP5. To get the latest packages from the repository list go into shell and type (\textit{internet connectivity required}):
 \begin{lstlisting}
