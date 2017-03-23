@@ -40,9 +40,9 @@ In this paper, the development and parallelism evaluation of the demonstrator A4
 \section{Distributed and Parallel Systems} %and Distributed systems
 \subsection{Introduction} %Definitions and intro
 \subsection{Memory Architectures} %characteristics + architectures
-\subsubsection{Computers with Shared Memory Organization}
-\subsubsection{Computers with Distributed Memory Organization}
-\subsubsection{Computers with Distributed and Shared Memory Organization}
+%\subsubsection{Computers with Shared Memory Organization}
+%\subsubsection{Computers with Distributed Memory Organization}
+%\subsubsection{Computers with Distributed and Shared Memory Organization}
 \subsection{Memory Communication} %Distributed + shared mem comm techniques
 \section{Introduction to Parallelism} 
 \subsection{Levels of Parallelism}
@@ -56,7 +56,14 @@ In this paper, the development and parallelism evaluation of the demonstrator A4
 \section{Multi-core Processor Architecture}
 \section{Scheduling} %and schedulers
 \section{Real-time Parallelization Trends in Practice: RTOS, MPI, OpenMP, Pthreads, Java Threads} %x Give example of FreeRTOS for RTOS.
-\section{Importance of Multi-core computing to automotive industry: AUTOSAR}
+\section{Importance of Multi-core computing to automotive industry: AUTOSAR} %add autosar architecture picture
+\begin{figure}[htb]
+	\includegraphics[scale=0.35]{content/images/autosararch.png}
+	\caption{AUTOSAR Architecture \cite{autosararch}}
+	\label{fig:autosararch}
+\end{figure}
+\section{Multi-core Programming with XMOS Multi-core Microcontrollers}
+\section{Multi-core Programming with Raspberry Pi 3}
 
 %%% CHAPTER Multi-core Programming ------------------end----
 %%% CHAPTER APP4MC Development Environment ----------begin----
@@ -69,15 +76,18 @@ In this paper, the development and parallelism evaluation of the demonstrator A4
 \chapter{Distributed Multi-core Demonstrator (A4MCAR) Design and Implementation}
 \section{System Overview}
 As introduced in the Introduction chapter, A4MCAR is a demonstrator RC-Car for the APP4MC development environment. A4MCAR provides a distributed multi-core architecture that allows the demonstration of embedded low-level and high-level applications. 
+\begin{figure}[htb]
+	\includegraphics[scale=0.4]{content/images/a4mcar.png}
+	\caption{A4MCAR}
+	\label{fig:a4mcar}
+\end{figure}
 \subsection{System Features}
 \begin{figure}[htb]
 	\includegraphics[scale=0.3]{content/images/tasksoverall.png}
 	\caption{Applications developed and/or maintained for A4MCAR}
 	\label{fig:tasksoverall}
 \end{figure}
-\subsection{Infrastructure}
-\subsubsection{XMOS XS-1 Infrastructure}
-\subsubsection{Raspberry Pi 3 Infrastructure}
+\subsection{Infrastructure}  %x XMOS and Rpi
 \subsection{Sensors}
 \subsection{Hardware Design and Interfaces}
 \begin{figure}[htb]
@@ -85,23 +95,28 @@ As introduced in the Introduction chapter, A4MCAR is a demonstrator RC-Car for t
 	\caption{Hardware overview of A4MCAR}
 	\label{fig:hwoverview}
 \end{figure}
+\begin{figure}[htb]
+	\includegraphics[scale=0.25]{content/images/RCCAR_Schematics.png}
+	\caption{Low-level module schematics of A4MCAR using XMOS xCore-200 eXplorerKIT}
+	\label{fig:RCCAR_Schematics}
+\end{figure}
 \subsection{Safety and Power}
 \subsection{Mechanical Design}
 \begin{figure}[htb]
 	\includegraphics[scale=0.25]{content/images/mechanicaloverview.png}
 	\caption{Mechanical overview of the A4MCAR}
-	\label{fig:sysmlxmostasks}
+	\label{fig:mechanicaloverview}
 \end{figure}
 \section{Low-Level Module Design and Implementation}
 \subsection{Overview}
 \begin{figure}[htb]
 	\includegraphics[scale=0.32]{content/images/sysmlxmostasksbrief.png}
-	\caption{Brief block diagram for the developed tasks and interfaces}
-	\label{fig:sysmlxmostasks}
+	\caption{Brief block diagram for the developed tasks and interfaces for low-level module}
+	\label{fig:sysmlxmostasksbrief}
 \end{figure}
 \begin{figure}[htb]
 	\includegraphics[scale=0.21]{content/images/sysmlxmostasks.png}
-	\caption{Block diagram for the developed tasks and interfaces}
+	\caption{Block diagram for the developed tasks and interfaces for low-level module}
 	\label{fig:sysmlxmostasks}
 \end{figure}
 \subsection{Actuation}
@@ -110,22 +125,44 @@ As introduced in the Introduction chapter, A4MCAR is a demonstrator RC-Car for t
 \subsection{Proximity Sensing}
 \subsection{Lighting System}
 \subsection{Bluetooth Communication}
-\subsection{Ethernet (TCP) Communication}
+\subsection{Ethernet (TCP) Server Implementation}
 \subsection{Core and Tile Monitoring}
 \section{High-Level Module Design and Implementation}
 \subsection{Overview}
 \subsection{Core Monitoring}
+\subsection{Ethernet (TCP) Client Implementation}
 \subsection{Web Server and its Applications}
 \subsubsection{Web Server}
-\subsubsection{Web Page Design and Implementation}  %Very briefly but include technologies and how it works, jquery-ajax, html,css and so on.
+\subsubsection{Web Page Design and Implementation}  
+\begin{figure}[htb]
+	\includegraphics[scale=0.42]{content/images/web.png}
+	\caption{Web interface of A4MCAR}
+	\label{fig:web}
+\end{figure}
+%Very briefly but include technologies and how it works, jquery-ajax, html,css and so on.
 \subsubsection{Controlling A4MCAR via Web Page}
 \subsubsection{Camera Streaming}
 \subsubsection{Core Utilization Display}
 \subsection{Dummy Loads}
 \subsection{Image Processing with OpenCV}
+\begin{figure}[htb]
+	\includegraphics[scale=0.15]{content/images/traffic_cone_detection.png}
+	\caption{Developed Image Processing Application}
+	\label{fig:traffic_cone_detection}
+\end{figure}
 \subsection{Touchscreen Display}
-\subsubsection{Touchscreen Display Implementation}
-\subsubsection{Touchscreen Display Functions}
+\subsubsection{Touchscreen Display Features}
+\begin{figure}[htb]
+	\includegraphics[scale=0.5]{content/images/displaybuttons.png}
+	\caption{Button functions of A4MCAR Touchscreen Display}
+	\label{fig:displaybuttons}
+\end{figure}
+\begin{figure}[htb]
+	\includegraphics[scale=0.43]{content/images/displays.png}
+	\caption{Display modes from A4MCAR Touchscreen Display}
+	\label{fig:displays}
+\end{figure}
+\subsubsection{Touchscreen Display Implementation} %explain used libraries pygame, psutil and touchscreen interfacing hdmi etc...
 %Linux tools and created .sh scripts will be in Section (5)
 \subsection{VNC Server}
 \subsection{Additional Bash Scripts}
@@ -149,7 +186,7 @@ As introduced in the Introduction chapter, A4MCAR is a demonstrator RC-Car for t
 \subsubsection{dis}
 \subsubsection{objdump}
 \subsubsection{Using perf to get scheduling information}
-\subsubsection{kernelshark}
+\subsubsection{trace-cmd and kernelshark}
 \subsubsection{lttng and TraceCompass}
 \subsubsection{proc folder}
 \subsubsection{psutil}
