@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<am:Amalthea xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:am="http://app4mc.eclipse.org/amalthea/0.8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <swModel>
+    <tasks name="Display_Sensor" priority="0" stimuli="500ms?type=Periodic" osekTaskGroup="0" multipleTaskActivationLimit="0">
+      <callGraph>
+        <graphEntries xsi:type="am:CallSequence">
+          <calls xsi:type="am:TaskRunnableCall" runnable="Display_Sensors?type=Runnable"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks name="InfraRed" priority="0" stimuli="500ms?type=Periodic" osekTaskGroup="0" multipleTaskActivationLimit="0">
+      <callGraph>
+        <graphEntries xsi:type="am:CallSequence">
+          <calls xsi:type="am:TaskRunnableCall" runnable="InfraRed?type=Runnable"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks name="MotorDriver" priority="0" stimuli="100ms?type=Periodic" osekTaskGroup="0" multipleTaskActivationLimit="0">
+      <callGraph>
+        <graphEntries xsi:type="am:CallSequence">
+          <calls xsi:type="am:TaskRunnableCall" runnable="MotorDriver?type=Runnable"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks name="Ultrasonic" priority="0" stimuli="500ms?type=Periodic" osekTaskGroup="0" multipleTaskActivationLimit="0">
+      <callGraph>
+        <graphEntries xsi:type="am:CallSequence">
+          <calls xsi:type="am:TaskRunnableCall" runnable="GrooveUS?type=Runnable"/>
+          <calls xsi:type="am:TaskRunnableCall" runnable="SR04US?type=Runnable"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks name="RecTiming" priority="0" stimuli="500ms?type=Periodic" osekTaskGroup="0" multipleTaskActivationLimit="0">
+      <callGraph>
+        <graphEntries xsi:type="am:CallSequence">
+          <calls xsi:type="am:TaskRunnableCall" runnable="RecTiming?type=Runnable"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks name="Web" priority="0" stimuli="50ms?type=Periodic" osekTaskGroup="0" multipleTaskActivationLimit="0">
+      <callGraph>
+        <graphEntries xsi:type="am:CallSequence">
+          <calls xsi:type="am:TaskRunnableCall" runnable="Web?type=Runnable"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks name="KeyCommand" priority="0" stimuli="500ms?type=Periodic" osekTaskGroup="0" multipleTaskActivationLimit="0">
+      <callGraph>
+        <graphEntries xsi:type="am:CallSequence">
+          <calls xsi:type="am:TaskRunnableCall" runnable="KeyCommand?type=Runnable"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks name="Compass" priority="0" stimuli="500ms?type=Periodic" osekTaskGroup="0" multipleTaskActivationLimit="0">
+      <callGraph>
+        <graphEntries xsi:type="am:CallSequence">
+          <calls xsi:type="am:TaskRunnableCall" runnable="Compass?type=Runnable"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <tasks name="Temperature" priority="0" stimuli="500ms?type=Periodic" osekTaskGroup="0" multipleTaskActivationLimit="0">
+      <callGraph>
+        <graphEntries xsi:type="am:CallSequence">
+          <calls xsi:type="am:TaskRunnableCall" runnable="Temperature?type=Runnable"/>
+        </graphEntries>
+      </callGraph>
+    </tasks>
+    <runnables name="Display_Sensors" activation="500ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="3173300"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="humidity?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="temperature?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="infrared?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="distance?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="bearing?type=Label" access="read"/>
+    </runnables>
+    <runnables name="InfraRed" activation="500ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="244100"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_ir?type=Semaphore" access="request"/>
+      <runnableItems xsi:type="am:LabelAccess" data="infrared?type=Label" access="write"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_ir?type=Semaphore" access="release"/>
+    </runnables>
+    <runnables name="MotorDriver" activation="100ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="122050"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_kc?type=Semaphore" access="request"/>
+      <runnableItems xsi:type="am:LabelAccess" data="keycommand_shared?type=Label" access="write"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_kc?type=Semaphore" access="release"/>
+    </runnables>
+    <runnables name="GrooveUS" activation="500ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="5858400"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_us?type=Semaphore" access="request"/>
+      <runnableItems xsi:type="am:LabelAccess" data="distance?type=Label" access="write"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_us?type=Semaphore" access="release"/>
+    </runnables>
+    <runnables name="SR04US" activation="500ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="4882000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_us?type=Semaphore" access="request"/>
+      <runnableItems xsi:type="am:LabelAccess" data="distance?type=Label" access="write"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_us?type=Semaphore" access="release"/>
+    </runnables>
+    <runnables name="RecTiming" activation="500ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="17087000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="Web" activation="50ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="488200"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_kc?type=Semaphore" access="request"/>
+      <runnableItems xsi:type="am:LabelAccess" data="keycommand_shared?type=Label" access="write"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_kc?type=Semaphore" access="release"/>
+    </runnables>
+    <runnables name="KeyCommand" activation="50ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="488200"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_kc?type=Semaphore" access="request"/>
+      <runnableItems xsi:type="am:LabelAccess" data="keycommand_shared?type=Label" access="write"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_kc?type=Semaphore" access="release"/>
+    </runnables>
+    <runnables name="Compass" activation="500ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="488200"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_bear?type=Semaphore" access="request"/>
+      <runnableItems xsi:type="am:LabelAccess" data="bearing?type=Label" access="write"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_bear?type=Semaphore" access="release"/>
+    </runnables>
+    <runnables name="Temperature" activation="500ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="488200"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_temp?type=Semaphore" access="request"/>
+      <runnableItems xsi:type="am:LabelAccess" data="temperature?type=Label" access="write"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_temp?type=Semaphore" access="release"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_hum?type=Semaphore" access="request"/>
+      <runnableItems xsi:type="am:LabelAccess" data="humidity?type=Label" access="write"/>
+      <runnableItems xsi:type="am:SemaphoreAccess" semaphore="sem_hum?type=Semaphore" access="release"/>
+    </runnables>
+    <labels name="keycommand_shared" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="infrared" constant="false" bVolatile="false">
+      <size value="4" unit="B"/>
+    </labels>
+    <labels name="distance" constant="false" bVolatile="false">
+      <size value="4" unit="B"/>
+    </labels>
+    <labels name="local_command" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="humidity" constant="false" bVolatile="false">
+      <size value="4" unit="B"/>
+    </labels>
+    <labels name="temperature" constant="false" bVolatile="false">
+      <size value="4" unit="B"/>
+    </labels>
+    <labels name="bearing" constant="false" bVolatile="false">
+      <size value="4" unit="B"/>
+    </labels>
+    <activations xsi:type="am:PeriodicActivation" name="50ms">
+      <min value="50" unit="ms"/>
+      <max value="50" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="100ms">
+      <min value="100" unit="ms"/>
+      <max value="100" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="500ms">
+      <min value="500" unit="ms"/>
+      <max value="500" unit="ms"/>
+    </activations>
+  </swModel>
+  <hwModel>
+    <coreTypes name="ARM Coretex-A53" bitWidth="64" instructionsPerCycle="1"/>
+    <system>
+      <ecus name="RPI3">
+        <microcontrollers name="ARM Coretex-A53">
+          <cores name="1" coreType="ARM+Coretex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="Q1">
+              <frequency value="1.2E9"/>
+            </quartzes>
+          </cores>
+          <cores name="2" coreType="ARM+Coretex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="Q2">
+              <frequency value="1.2E9"/>
+            </quartzes>
+          </cores>
+          <cores name="3" coreType="ARM+Coretex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="Q3">
+              <frequency value="1.2E9"/>
+            </quartzes>
+          </cores>
+          <cores name="4" coreType="ARM+Coretex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="Q4">
+              <frequency value="1.2E9"/>
+            </quartzes>
+          </cores>
+        </microcontrollers>
+      </ecus>
+    </system>
+  </hwModel>
+  <osModel>
+    <semaphores name="sem_ir" initialValue="0" maxValue="0" priorityCeilingProtocol="false"/>
+    <semaphores name="sem_us" initialValue="0" maxValue="0" priorityCeilingProtocol="false"/>
+    <semaphores name="sem_temp" initialValue="0" maxValue="0" priorityCeilingProtocol="false"/>
+    <semaphores name="sem_hum" initialValue="0" maxValue="0" priorityCeilingProtocol="false"/>
+    <semaphores name="sem_kc" initialValue="0" maxValue="0" priorityCeilingProtocol="false"/>
+    <semaphores name="sem_bear" initialValue="0" maxValue="0" priorityCeilingProtocol="false"/>
+  </osModel>
+  <stimuliModel>
+    <stimuli xsi:type="am:Periodic" name="50ms">
+      <recurrence value="50" unit="ms"/>
+    </stimuli>
+    <stimuli xsi:type="am:Periodic" name="100ms">
+      <offset value="100" unit="ms"/>
+    </stimuli>
+    <stimuli xsi:type="am:Periodic" name="500ms">
+      <offset value="500" unit="ms"/>
+    </stimuli>
+  </stimuliModel>
+  <constraintsModel/>
+</am:Amalthea>
