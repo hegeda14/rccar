@@ -2,8 +2,31 @@ This is BibTeX, Version 0.99dThe top-level auxiliary file: abschlussarbeit.aux
 The style file: unsrt.bst
 Database file #1: bib/bib.bib
 Warning--entry type for "amalthea4publicweb" isn't style-file defined
---line 17 of file bib/bib.bib
+--line 26 of file bib/bib.bib
 Warning--entry type for "app4mcproposaleclipse" isn't style-file defined
---line 22 of file bib/bib.bib
+--line 31 of file bib/bib.bib
+Warning--entry type for "autosararch" isn't style-file defined
+--line 44 of file bib/bib.bib
+Warning--entry type for "xmoskitweb" isn't style-file defined
+--line 49 of file bib/bib.bib
+Warning--entry type for "xmosdatasheet" isn't style-file defined
+--line 54 of file bib/bib.bib
+Warning--entry type for "xmosflyer" isn't style-file defined
+--line 59 of file bib/bib.bib
+Warning--entry type for "xmosprogrguide" isn't style-file defined
+--line 88 of file bib/bib.bib
+Warning--entry type for "raspberrypiinfo" isn't style-file defined
+--line 94 of file bib/bib.bib
+Warning--entry type for "raspbiandownload" isn't style-file defined
+--line 100 of file bib/bib.bib
+Warning--entry type for "ubuntumatedownload" isn't style-file defined
+--line 106 of file bib/bib.bib
+Warning--entry type for "pwm" isn't style-file defined
+--line 129 of file bib/bib.bib
+Warning--entry type for "uart" isn't style-file defined
+--line 134 of file bib/bib.bib
+Warning--entry type for "i2c" isn't style-file defined
+--line 140 of file bib/bib.bib
 Warning--I didn't find a database entry for "importantpaper"
-(There were 3 warnings)
+Warning--empty booktitle in tileref
+(There were 15 warnings)
