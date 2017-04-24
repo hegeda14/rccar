@@ -4,7 +4,6 @@
 \begin{document}
 \title{\rule{\textwidth}{1pt}\textbf{ Rover Documentation} \\ Browser-based Camera Stream \& Drive Control \rule{\textwidth}{1pt}\vspace{-20pt}}
 \date{}
-%\author{Dortmund University of Applied Sciences and Arts\\ IDiAL institute \\APP4MC Rover}
 \maketitle 
 \setlength{\headsep}{20pt}
 \vspace{-20pt}
@@ -18,12 +17,8 @@
 \end{tabularx} 
 \vspace{15pt}\\
 \begin{tabularx}{\textwidth}{cXc}
-%	\begin{figure}
-		\includegraphics{rover.png}&&%\caption{Rover} \label{fig:rover}&&
-%	\end{figure}& &	
-	%\begin{figure}
-		\includegraphics{page.png}%\caption{Browser webpage}\label{fig:browser}\\
-%	\end{figure}\\
+		\includegraphics{rover.png}&&
+		\includegraphics{page.png}
 \end{tabularx}
 \section{General structure}
 \begin{figure}[h!]
@@ -37,7 +32,6 @@
 This documentation describes how to setup a Raspberry PI (RPI) in order to view its camera stream via a browser and further take control of the motors connected to the RPI in form of the rover. Please note that your RPI requires internet connection for some provided commands and that some of those take some time to execute.
 
 If you work with a plain jessie (lite) distribution, in order to gain ssh access, just add an empty file named ssh to the sd card.
-%shown in Figure \ref{fig:rover}.
 \section{Apache2, cmake, and PHP5 Installation and Configuration}
 	In order to start driving the rover from a web page, one should install Apache2 and PHP5. To get the latest packages from the repository list go into shell and type (\textit{internet connectivity required}):
 \begin{lstlisting}
@@ -78,13 +72,18 @@ Before we begin, we need some building tools and git in order to continue. Execu
 sudo apt-get install build-essential
 sudo apt-get install git
 \end{lstlisting}
-After the RPI setup is complete, download the provided files from our repository, and make the following changes in order to merge it with you current /var/www/html/ folder. 
+After the RPI setup is complete, download the provided files from our repository, and make the following changes in order to merge it with you current \texttt{/var/www/html/} folder. \textbf{If you copy\&paste the command, make sure there is not line break!}
 \begin{lstlisting}
 cd /var/www/
-sudo git clone https://gitlab.pimes.fh-dortmund.de/RPublic/RoverWeb.git
-sudo cp -r /var/www/RoverWeb*@/@** /var/www/
-sudo rm -rf RoverWeb/
+sudo git init
+sudo git remote add -f origin https://git.eclipse.org/r/app4mc/org.eclipse.app4mc.examples
+git config core.sparseCheckout true
+echo "rover/web/" >> .git/info/sparse-checkout
+git pull origin master
 \end{lstlisting}
+%sudo git clone https://gitlab.pimes.fh-dortmund.de/RPublic/RoverWeb.git
+%sudo cp -r /var/www/RoverWeb*@/@** /var/www/
+%sudo rm -rf RoverWeb/
 \section{Installing psutil}
 In order to monitor core utilization, a python pip package called 'psutil' needs to be installed. First, we need to get the essential building and packaging tools for python. \textbf{If you copy\&paste the command, make sure there is not line break!}
 \begin{lstlisting}
@@ -120,7 +119,6 @@ sudo cmake .
 sudo make
 sudo make install
 \end{lstlisting}
-%If problems occur (e.g. '\texttt{CMake Error: CMake can not determine linker language for target: input\_uvc}'), repeat with the first line, and swap lines 2 and 3 (start with \texttt{make} and then perform \texttt{cmake .}).\\
 Subsequently, copy the necessary libraries and executables in the respective folders:
 \begin{lstlisting}
 sudo cp mjpg_streamer /usr/local/bin
@@ -145,38 +143,40 @@ sudo /usr/local/bin/mjpg_streamer -i "/usr/local/lib/input_raspicam.so -x 640 -y
 \end{lstlisting}
 After starting this .bash file, the webpage at \url{http://192.168.168.1/jqueryControl.php} should show the camera stream.
 \section{Adjustments to the rover application}
-\textbf{AUTOMATIC WAY:} In order to update Eclipse application that is written with pThreads, one could clone the files from repository to their Eclipse workspace. To do that, download the files from the following webpage and then import it to your workspace.
+%\subsection{AUTOMATIC WAY} 
+In order to update the Eclipse application that is written with pThreads, one could clone the files from the repository to their Eclipse workspace. To do that, download the files from the following Git repository and then import the sources located at \textbf{\underline{\texttt{rover/src/}}}  to your workspace.
 \begin{lstlisting}
-https://gitlab.pimes.fh-dortmund.de/RPublic/RoverEclipse.git
+https://git.eclipse.org/r/app4mc/org.eclipse.app4mc.examples
 \end{lstlisting}
-\textbf{MANUAL WAY:} Since the rover does not yet consider the webpage commands,the rover control application code must be edited. To do so, find the newest version of the Eclipse application, which contains necessary adjustments and include the following task function:
-\begin{lstlisting}
-void *WebServer_MotorDrive_Task(void * arg)
-{
-	FILE *fp;
-	char ch;
-
-	while(1)
-	{
-		fp = fopen("/var/www/html/ROVER_CMD.inc", "r");
-		ch = fgetc (fp);
-		//printf("Got command = %c\n", ch);
-		pthread_mutex_lock(&keycommand_lock);	
-		keycommand_shared = tolower(ch);
-		pthread_mutex_unlock(&keycommand_lock);
-		fclose(fp);
-		delayMicroseconds(50000);//50ms
-	}
-}
-\end{lstlisting}
-To let your compiler know that this thread should also be started, go to your RaspberryTest.cpp (inside main function where the thread initializations are contained) and add the following:
-\begin{lstlisting}
-pthread_t webserver_motordrive_thread;
-if(pthread_create(&webserver_motordrive_thread, NULL, WebServer_MotorDrive_Task, NULL)) {
-   fprintf(stderr, "Error creating thread\n");
-   return 1;
-}
-\end{lstlisting}
+%https://gitlab.pimes.fh-dortmund.de/RPublic/RoverEclipse.git
+%\subsection{MANUAL WAY} Since the rover does not yet consider the webpage commands,the rover control application code must be edited. To do so, find the newest version of the Eclipse application, which contains necessary adjustments and include the following task function:
+%\begin{lstlisting}
+%void *WebServer_MotorDrive_Task(void * arg)
+%{
+%	FILE *fp;
+%	char ch;
+%
+%	while(1)
+%	{
+%		fp = fopen("/var/www/html/ROVER_CMD.inc", "r");
+%		ch = fgetc (fp);
+%		//printf("Got command = %c\n", ch);
+%		pthread_mutex_lock(&keycommand_lock);	
+%		keycommand_shared = tolower(ch);
+%		pthread_mutex_unlock(&keycommand_lock);
+%		fclose(fp);
+%		delayMicroseconds(50000);//50ms
+%	}
+%}
+%\end{lstlisting}
+%To let your compiler know that this thread should also be started, go to your RaspberryTest.cpp (inside main function where the thread initializations are contained) and add the following:
+%\begin{lstlisting}
+%pthread_t webserver_motordrive_thread;
+%if(pthread_create(&webserver_motordrive_thread, NULL, WebServer_MotorDrive_Task, NULL)) {
+%   fprintf(stderr, "Error creating thread\n");
+%   return 1;
+%}
+%\end{lstlisting}
 \section{Completion}
 In order to be able to use the web-page with its all functions, the following commands have to be executed on the rover before connecting to the webpage after a reboot.
 \begin{lstlisting}
