@@ -215,6 +215,17 @@
 	backgroundcolor=\color{grey}
 }
 
+\lstdefinestyle{xc}
+{
+	language=C,
+	keywordstyle=\color{lila},  	% underlined bold black keywords 
+	keywords={void, unsigned, int, char, uint8_t, uint16_t, uint32_t, byte, while, for, foreach, if, else, return, switch, select, case, break, client, server, combinable, tile, on, core, par},
+	identifierstyle=\color{blue}, 
+	commentstyle=\color{kommentgreen}, % white comments 
+	stringstyle=\color{black},
+	basicstyle=\ttfamily\footnotesize,  %%% I ADDED THIS LINE, -Mustafa
+}
+
 \lstdefinestyle{java}
 {
 	language=Java,
@@ -222,6 +233,7 @@
 	identifierstyle=\color{blue}, 
 	commentstyle=\color{kommentgreen}, % white comments 
 	stringstyle=\color{black},
+	basicstyle=\ttfamily\footnotesize,  %%% I ADDED THIS LINE, -Mustafa
 }
 
 \lstdefinestyle{xml}

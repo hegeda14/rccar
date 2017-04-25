@@ -69,12 +69,47 @@ https://learn.sparkfun.com/tutorials/pulse-width-modulation.
 \bibitem{uart}
 http://students.iitk.ac.in/eclub/assets/lectures/summer12/uart.pdf.
 
+\bibitem{i2c}
+https://learn.sparkfun.com/tutorials/i2c/all.pdf.
+
+\bibitem{ethernet1}
+http://searchnetworking.techtarget.com/definition/ethernet.
+
+\bibitem{ethernet2}
+http://k-12.pisd.edu/currinst/network/if4\texttt{\_}1st.pdf.
+
+\bibitem{spi}
+https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all.pdf.
+
+\bibitem{srf02datasheet}
+http://www.pishrobot.com/files/products/datasheets/srf02.pdf.
+
+\bibitem{adafruitlevelconverter}
+https://www.adafruit.com/product/757.
+
+\bibitem{isolatedvoltageconverter}
+http://www.xppower.com/pdfs/sf\texttt{\_}jca04-06.pdf.
+
+\bibitem{tt01e}
+http://www.tamiya.com/english/rc/rcmanual/tt01\texttt{\_}type\texttt{\_}e.pdf.
+
+\bibitem{sysml}
+Sanford Friedenthal, Alan Moore, and Rick Steiner.
+\newblock Omg systems modeling language tutorial.
+\newblock 2006-2009.
+
+\bibitem{rn42datasheet}
+http://ww1.microchip.com/downloads/en/devicedoc/rn-4142-ek-ug-1.0.pdf.
+
+\bibitem{telnet}
+https://kb.iu.edu/d/aayd.
+
 \bibitem{springerparallel}
 Thomas Rauber and Gudula R{\"u}nger.
 \newblock {\em Parallel Programming}.
 \newblock Springer-Verlag Berlin Heidelberg, 2013.
 
-\bibitem{i2c}
-https://learn.sparkfun.com/tutorials/i2c/all.pdf.
+\bibitem{mii}
+https://en.wikipedia.org/wiki/media-independent\texttt{\_}interface.
 
 \end{thebibliography}

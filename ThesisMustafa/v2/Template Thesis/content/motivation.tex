@@ -36,6 +36,8 @@ The demonstrator, A4MCAR, is equipped with a distributed architecture that invol
 
 In this paper, the development and parallelism evaluation of the demonstrator A4MCAR as well as the studies on parallel computing and tracing options are discussed. Obtained results are used in APP4MC for better development. The remainder of this paper is organized as follows: Section 2 is dedicated to Multi-core programming while Section 3 is dedicated to explaining APP4MC environment. In Section 4, the demonstrator design and implementation will be explained. After Section 4, Section 5 and 6 will involve Information Tracing and System Modeling with APP4MC and Effective Parallelism Evaluation, respectively. The paper will be concluded with Section 7.
 
+\section{Related Work}
+
 %%% CHAPTER Introduction ------------------------------end----
 %%% CHAPTER Multi-core Programming ------------------begin----
 \chapter{Multi-core Programming}  %Chapter outline is work in progess..
@@ -267,52 +269,146 @@ The system uses various communication protocols, seen in Figure \ref{fig:hwoverv
 		\caption{I2C protocol frame\cite{i2c}}
 		\label{fig:i2cframe}
 	\end{figure}
-	\item \textbf{Ethernet/TCP}:
+	\item \textbf{Ethernet/TCP}: Ethernet communication using TCP (Transmission Control Protocol) is a very common method of communation that is applied within the Application, Presentation, and Session layers of the well-known OSI model. It is also a protocol that is used for high-speed data transmission to other network devices on the same network segment if used in Telnet mode. Ethernet defines two units of transmission, packet and frame. The frame includes not just the "payload" of data being transmitted but also addressing information identifying the physical "Media Access Control" (MAC) addresses of both sender and receiver, VLAN tagging and quality of service information, and error-correction information to detect problems in transmission \cite{ethernet1} \cite{ethernet2}. 
+	
+	In A4MCAR, a telnet server and client has been implemented using TCP protocol in order to send and receive data between high-level and low-level modules. The high-level module is configured as client, whereas low-level module is configured as the server. 
+	\item \textbf{SPI}: Just like I\textsuperscript{2}C, SPI (Serial Peripheral Interface) is a communication protocol that is used to send data between processors and small devices such as sensors and displays. In SPI, MOSI, MISO, and SCK lines are available that are two data lines for each direction and a clock line. Additionally, a line of SS (Slave Select) could be used in order to select which slave device in the network is being addressd at that moment. Since SPI does only work with clock unlike the conventional UART, SPI is a synchronous communication method \cite{spi}.
+	
+	In A4MCAR, SPI is used by touchscreen kernel drivers in order to get touchscreen controls working. HDMI interface is also used in order to transfer media from Raspberry Pi to the Touchscreen Display.
+	\item \textbf{CSI}: CSI (Camera Interface) is used by third-party applications and it is the interface that is used in order to get RaspiCam working.
 \end{itemize}
+
+In the Figure \ref{fig:RCCAR_Schematics}, the complete circuit schematics regarding A4MCAR low-level module is given. Interfacing sensors and devices should be done accordingly in order to program peripherals with xCORE-200 board properly. 
 \begin{figure}[!ht]
 	\includegraphics[scale=0.25]{content/images/RCCAR_Schematics.png}
 	\caption{Low-level module schematics of A4MCAR using XMOS xCore-200 eXplorerKIT}
 	\label{fig:RCCAR_Schematics}
 \end{figure}
 \subsection{Safety and Power}
-Some text will come here! \\
+It should be noticed in the Figure \ref{fig:RCCAR_Schematics} there are three units that are introduced in order to get rid of the problems that are related to safety and power. To start with, since it is stated in the XS-1 architecture datasheet \cite{xmosdatasheet} that XMOS works typically with 3.3V signals and SRF-02 sensors use 5V signals \cite{srf02datasheet}, a 4-channel I\textsuperscript{2}C-safe bi-directional 5V-3.3V Logic Level Converter from Adafruit with model number BSS138 \cite{adafruitlevelconverter} has been used to convert the SDA and SCL lines of the constructed I\textsuperscript{2}C network. 
+
+Second problem that has occurred due to low-level having multiple motors connected is the noise and excessive current drain into boards due to motors. Since that could lead to damaged development boards and chips, the solution of using two seperate power lines have been introduced. That is, using a 5V 10000mAh Powerbank to power the development boards xCORE-200 eXplorerKIT and Raspberry Pi 3 using micro-USB connectors, while using an external battery for the motors. That would reduce the noise that occurs in the signal lines since the ground lines of each battery would be isolated. In order to be on the safe side, a 5V 1A rated isolated voltage converter XP Power JCA0605S05 \cite{isolatedvoltageconverter} is also used in order to convert 7.2V battery voltage to power servo motor which is typically powered with 5V. Since datasheet of XP Power JCA0605S05 suggests that an emission circuit should be constructed, the circuit in Figure \ref{fig:emissionckt} has been constructed and printed along the isolated converter in order to meet the suggested emission level B \cite{isolatedvoltageconverter}.
+\begin{figure}[!ht]
+	\includegraphics[scale=1.5]{content/images/emissionckt.png}
+	\caption{XP Power JCA0605S05 Level B Emission Circuit \cite{isolatedvoltageconverter}}
+	\label{fig:emissionckt}
+\end{figure}
+
+Applying the mentioned solutions, problems faced due to power have been dealt with and the constructed system safety is ensured.
+
 \subsection{Mechanical Design}
-Some text will come here! \\
+In A4MCAR, the RC-Car chassis kit Tamiya TT01-E \cite{tt01e} have been used. The chassis kit consists of several parts and it is a kit that is used in professional RC-Car competitions. The Figure in \ref{fig:rccarparts} show the constructed Tamiya TT01-E chassis kit along with several other equipment that have been used in A4MCAR. Since the A4MCAR does not only have basic driving elements but also has many other equipments that are related to sensing, processing, and power, the space on the RC-Car would not be enough to hold the extra elements. Therefore, an extension to the existing chassis was needed. To solve this problem, an extension have been designed that is able to hold other elements used in the board with holders and screws. 
+\begin{figure}[!ht]
+	\includegraphics[scale=0.45]{content/images/rccarparts.png}
+	\caption{Tamiya TT01-E Chassis and other parts used in A4MCAR}
+	\label{fig:rccarparts}
+\end{figure}
+
+An illustration of the mechanical overview that shows the designed model is shown in \ref{fig:mechanicaloverview}. This mechanical layer has been designed using a 3D model software and have been produced using a 3D printer. Using appropriote 1mm to 2mm diameter screws, the constructed body is installed to the main chassis as an extension layer and the other elements are installed on top of this extension layer. 
+\newpage
 \begin{figure}[!ht]
 	\includegraphics[scale=0.25]{content/images/mechanicaloverview.png}
 	\caption{Mechanical overview of the A4MCAR}
 	\label{fig:mechanicaloverview}
 \end{figure}
+
 \section{Low-Level Module Design and Implementation}
-Some text will come here! \\
 \subsection{Overview}
-Some text will come here! \\
+As mentioned in the "Low-level Module Infrastructure" subsection, Low-level module software has been implemented on xCORE-200 eXplorerKIT using the development platform xTIMEcomposer 14.2.3. While developing with xC on xTIMEcomposer, task communication is handled by channels and interfaces. In A4MCAR, for the sake of structured development with defined variable types, interfaces are more commonly used for user-defined tasks. An software design analogy of equating provided interfaces to client interfaces in xC could be made. Similarly, required interfaces could be thought of server interfaces in xC. Using this analogy, the designed software components could be illustrated with a SysML \cite{sysml} diagram as shown in Figure \ref{fig:sysmlxmostasksbrief}.
 \begin{figure}[!ht]
-	\includegraphics[scale=0.32]{content/images/sysmlxmostasksbrief.png}
+	\includegraphics[scale=0.62]{content/images/sysmlxmostasksbrief.png}
 	\caption{Brief block diagram for the developed tasks and interfaces for low-level module}
 	\label{fig:sysmlxmostasksbrief}
 \end{figure}
+
+The complete component diagram of the software that is developed is shown in Figure \ref{fig:sysmlxmostasks}.
+
 \begin{figure}[!ht]
 	\includegraphics[scale=0.21]{content/images/sysmlxmostasks.png}
 	\caption{Block diagram for the developed tasks and interfaces for low-level module}
 	\label{fig:sysmlxmostasks}
 \end{figure}
+\newpage
+In xC, two essential concepts are worthy to explain in order to understand multi tasked development. First is how a task is created and the second is how tasks are connected. A task in xC is nothing but a function that has client and server ports with interfaces. Once all functions are connected using globally instantiated interface variables they start acting as tasks. An example of how a task function is declared and how functions are placed on cores and interconnected which is also some of what is implemented for A4MCAR are shown in Listing \ref{lst_exampletaskxc} and Listing \ref{lst_howtasksconnectxc}, respectively.
+
+\lstinputlisting[caption=An Example Task Decleration in xC, label=lst_exampletaskxc, style=xc]{content/listings/lst_exampletaskxc.txt}
+
+\lstinputlisting[caption=An Example of How Tasks are Placed and Interconnected in xC, label=lst_howtasksconnectxc, style=xc]{content/listings/lst_howtasksconnectxc.txt}
+
+All the source and header that are developed is shown in Figure \ref{fig:fullfiletree}.
+\begin{figure}[!ht]
+	\includegraphics[scale=0.8]{content/images/fullfiletree.png}
+	\caption{Full file tree for all the tasks developed for low-level module}
+	\label{fig:fullfiletree}
+\end{figure}
+\newpage
 \subsection{Actuation}
-Some text will come here! \\
 \subsubsection{Acceleration}
-Some text will come here! \\
+For acceleration and deceleration, a brushless DC motor is controlled by delivering PWM signals to the TBLE02-S Electronic Speed Controller. The task and how it is connected to other tasks can be seen in Figure \ref{fig:sysmlxmostasksbrief}. In order to deliver the desired PWM signal, a task that use timers have been created which is given in Listing \ref{lst_tble02task}. The created template of the task in Listing \ref{lst_tble02task} is not only used for the acceleration task, but also used for the other tasks that use PWM signaling to control other devices. In the task, it is seen that in order to generate the desired duty cycle, the amount of time for which the output signal must be on and off are calculated and the output port is toggled accordingly. The port toggling is done inside a timer event that is dynamically delayed given the calculated on and off times.
+\newpage
+\lstinputlisting[caption=Created PWM signaling template, label=lst_tble02task, style=xc]{content/listings/lst_tble02task.txt}
+The desired PWM pulse widths are taken from the TBLE02-S Electronic Speed Controller manual and the overall PWM period has been set to 20ms which is the standard period for most of the controllers. Since the motor speed is very high and it is not desired in our application, the pulse widths are manipulated in order to reach lower speeds in full force. The interface 'control\texttt{\_}if' is used that delivers a number between 0-100 in order to express speeding information while also delivering a direction value which is either FORWARD (0) or REVERSE (1). With this information, the developed task is able to control the acceleration of the A4MCAR. Additionaly, the acceleration task is modified in order to control acceleration using proximity sensor inputs for safety. Minimum safest front distance is set to 50 centimeters.
+
+Acceleration task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with acceleration task having the function name 'Task\texttt{\_}DriveTBLE02E'.
+
 \subsubsection{Steering}
-Some text will come here! \\
+Steering of the A4MCAR is done with the help of a Servo motor that is also controlled with PWM signaling. As mentioned in the Acceleration subsection, the tasks that are related to PWM use the template from Listing \ref{lst_tble02task}. For steering the interface 'steering\texttt{\_}if' is used which is set to 0 for very left and 100 for very right positions. Additionally, the two changes that are made to the acceleration task (from Listing \ref{lst_tble02task}) could be listed as follows:
+\begin{itemize}
+	\item The pulse widths are altered in order to conform a servo motor's behavior which is usually 1.5ms pulse for stationary position, 1-1.5ms for left steering and 1.5-2.0ms for right steering. For A4MCAR, these values are set to 1.3-1.5ms for left steering and 1.5-1.75ms for right steering in order to get rid of the issue of servo motor turning more than its holding platform could handle and damaging its gears.
+	\item On and off periods are calculated differently as compared to what is shown in the Listing \ref{lst_tble02task}. The Listing in \ref{lst_servotask} shows the calculation of the periods.
+	\lstinputlisting[caption=Calculation of on and off times for servo control, label=lst_servotask, style=xc]{content/listings/lst_servotask.txt}
+\end{itemize}
+
+Steering task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with steering task having the function name 'Task\texttt{\_}SteeringServo'.
+
+\subsubsection{Braking}
+%brushless motor needed, three connections (Orange connection), and mode setup. (source: tble02s manual)
 \subsection{Proximity Sensing}
-Some text will come here! \\
+As stated in the overview section, the proximity sensing is handled via four SRF-02 ultrasonic sensors connected to an I\textsuperscript{2}C network. In the software, 'lib\texttt{\_}i2c' from XMOS is used in order to handle communication with the peripheral. The proximity sensing task is a periodic task that polls individual ultrasonic sensors using their respective addresses in order to obtain what is the distance perceived by front, rear, left, and right sensors. In order to handle this in a modular manner, device addresses are placed in the header file. Furthermore, the task that maintains I\textsuperscript{2}C communication alongside proximity sensing task is seperated and the two tasks are connected using 'i2c\texttt{\_}master\texttt{\_}if' interface. The sensing is achieved every 0.2 seconds and when the sensing of each sensor completes, the value is sent by its respective interface 'distancesensor\texttt{\_}if' to the acceleration task. The proximity sensing task is given in Listing \ref{lst_proximitysensing}.
+
+\lstinputlisting[caption=Proximity sensing task, label=lst_proximitysensing, style=xc]{content/listings/lst_proximitysensing.txt}
+
+Proximity sensing task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with proximity sensing task having the function name 'Task\texttt{\_}ReadSonarSensors'.
+
 \subsection{Lighting System}
-Some text will come here! \\
+The light system of the A4MCAR is a light module from the RC-Car parts producer Modelcraft that is driven with PWM. The module uses two PWM channels: one for light adjustment due to steering input, one for light adjustment due to acceleration input. Similarly to all the other PWM control tasks, PWM signal generator template that is given in \ref{lst_tble02task} has been used in order to generate correct pulse widths for the light system. The task that is given in \ref{lst_tble02task} has been adjusted to have two timer events for each PWM channel as opposed to one timer event. Desired pulse widths for several modes are contained in the header file of the light system task and these modes have been selected given the steering, angle, and gear inputs from the Bluetooth communication task. The functions regarding pulse width time generation for different light system modes have also been created. 
+
+Light system task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with light system task having the function name 'Task\texttt{\_}ControlLightSystem'.
+
 \subsection{Bluetooth Communication}
-Some text will come here! \\
+In order to configure RN42 Bluetooth module \cite{rn42datasheet} as slave to communicate with the Android phone and receive data, UART communication have been implemented using 'lib\texttt{\_}uart' from XMOS. In order for the UART communication to be handled correctly, CTS and RTS pins of the RN42 module should be short circuited since a data flow protocol such as RS232 is not being used in our application. UART library has been configured to have a buffer size of 512 bytes and baudrate of 115200bps which is a high speed UART data rate standard that conforms many microcontrollers. Several tasks have been implemented such as uart\texttt{\_}rx, uart\texttt{\_}tx, and the Bluetooth communication task in order to implement bluetooth control feature into the A4MCAR. While uart\texttt{\_}rx and uart\texttt{\_}tx tasks handle port access and data transfer in respective directions using sporadic events, the Bluetooth communication task is responsible for configuring the Bluetooth module and receiving driving commands. For an easy communication, a string with a number of bytes is constructed and interpreted by the Bluetooth communication task. This string which we refer to as 'driving command' is given and explained in the Figure \ref{fig:bluetoothcommand}. 
+\begin{figure}[!ht]
+	\includegraphics[scale=0.6]{content/images/bluetoothcommand.png}
+	\caption{Driving command format generated to contain speed, angle, and gear information}
+	\label{fig:bluetoothcommand}
+\end{figure}
+The command parsing and how the received data is accumulated to other tasks is given in the Listing \ref{lst_bluetoothtask}. Other integrated features in the Bluetooth communication task involve the following:
+\begin{itemize}
+	\item Receiving driving command using uart receive event, integrity check for the command, and parsing in order to obtain speed, angle, and gear values.
+	\item Since driving command is not the only source of actuation data source for A4MCAR and it could have overriding commands over Ethernet from high-level module image processing task, ethernet override is handled with an integrated event in the Bluetooth communication task.
+	\item Reverse driving mode is not entered by the TBLE02-S Electronic Speed Controller unless the motor fully stops. To achieve this, normally user has to select reverse mode several times from the controller. In order to get rid of this issue, once the reverse command is received, software enters reverse mode a few times with very short delays, thus users can select it only once and enjoy driving without having to select the mode a few times by themselves.
+	\item A preprocessor macro has been defined which is RN42\texttt{\_}INITIAL\texttt{\_}CONFIG. This macro activates the configuration function which configures RN42 module with slave mode. It should be noted that the configuration should only be done once per bluetooth module.
+\end{itemize}
+\lstinputlisting[caption=Bluetooth communication task pseudocode, label=lst_bluetoothtask, style=xc]{content/listings/lst_bluetoothtask.txt}
+
+Bluetooth communication task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with bluetooth communication task having the function name 'Task\texttt{\_}GetRemoteCommands'.
+
 \subsection{Ethernet (TCP) Server Implementation}
-Some text will come here! \\
+TCP server of the A4MCAR low-level module acts as the only source of communication that is implemented between low-level module and high-level module. The TCP communication that is implemented for this basic data transmission and reception could be called as Telnet \cite{telnet}. As mentioned, while overriding driving command (Figure \ref{fig:bluetoothcommand}) is sent from high-level module (configured as the Telnet server) to low-level module (configured as the Telnet client), for the visualization purposes the core utilization information is sent from low-level module to high-level module. On the low-level side, library that is provided from XMOS 'lib\texttt{\_}xtcp' is used with the following adjustments:
+\begin{itemize}
+	\item The application notes from XMOS involves only UDP applications. This application has been manipulated in order to have TCP protocol based Telnet server
+	\item The TCP server has been configured with a static IP address and with a bind port.
+	\item Data receiving and transmitting event handlers as well as the interface that sends the driving command to the Bluetooth communication task have been created.
+	\item Since the media-independent interface (MII) of xCORE-200 eXplorerKIT supports up to 1000Mbps reduced gigabit media-independent interface (RGMII), the ethernet server task takes up to 3 to 4 cores in order to be parallelized. In order to reduce the excessive core usage, this interface have been reduced to a speed of 100Mbps by the software that takes about 2 cores in order to be parallelized efficiently. Furthermore, it is important to mention that since application in the A4MCAR does not require a gigabit ethernet connection, this decrease in the speed did not affect the performance of the communication.
+\end{itemize}
+
+TCP server task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with TCP server task having the function name 'Task\texttt{\_}EthernetServer'.
+
 \subsection{Core and Tile Monitoring}
 Some text will come here! \\
+
+Core monitoring tasks and how their data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with tasks having the function names 'Task\texttt{\_}MonitorCores'.
+
 \section{High-Level Module Design and Implementation}
 Some text will come here! \\
 \subsection{Overview}

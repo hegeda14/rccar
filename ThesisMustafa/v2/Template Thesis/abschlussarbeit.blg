@@ -27,6 +27,27 @@ Warning--entry type for "uart" isn't style-file defined
 --line 134 of file bib/bib.bib
 Warning--entry type for "i2c" isn't style-file defined
 --line 140 of file bib/bib.bib
+Warning--entry type for "ethernet1" isn't style-file defined
+--line 146 of file bib/bib.bib
+Warning--entry type for "ethernet2" isn't style-file defined
+--line 152 of file bib/bib.bib
+Warning--entry type for "spi" isn't style-file defined
+--line 158 of file bib/bib.bib
+Warning--entry type for "isolatedvoltageconverter" isn't style-file defined
+--line 165 of file bib/bib.bib
+Warning--entry type for "srf02datasheet" isn't style-file defined
+--line 172 of file bib/bib.bib
+Warning--entry type for "adafruitlevelconverter" isn't style-file defined
+--line 179 of file bib/bib.bib
+Warning--entry type for "tt01e" isn't style-file defined
+--line 186 of file bib/bib.bib
+Warning--entry type for "rn42datasheet" isn't style-file defined
+--line 201 of file bib/bib.bib
+Warning--entry type for "telnet" isn't style-file defined
+--line 208 of file bib/bib.bib
+Warning--entry type for "mii" isn't style-file defined
+--line 215 of file bib/bib.bib
 Warning--I didn't find a database entry for "importantpaper"
 Warning--empty booktitle in tileref
-(There were 15 warnings)
+Warning--empty note in sysml
+(There were 26 warnings)
