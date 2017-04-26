@@ -74,16 +74,16 @@ sudo apt-get install git
 \end{lstlisting}
 After the RPI setup is complete, download the provided files from our repository, and make the following changes in order to merge it with you current \texttt{/var/www/html/} folder. \textbf{If you copy\&paste the command, make sure there is not line break!}
 \begin{lstlisting}
-cd /var/www/
-sudo git init
-sudo git remote add -f origin https://git.eclipse.org/r/app4mc/org.eclipse.app4mc.examples
-git config core.sparseCheckout true
-echo "rover/web/" >> .git/info/sparse-checkout
-git pull origin master
+sudo git clone https://gitlab.pimes.fh-dortmund.de/RPublic/RoverWeb.git
+sudo cp -r /var/www/RoverWeb*@/@** /var/www/
+sudo rm -rf RoverWeb/
 \end{lstlisting}
-%sudo git clone https://gitlab.pimes.fh-dortmund.de/RPublic/RoverWeb.git
-%sudo cp -r /var/www/RoverWeb*@/@** /var/www/
-%sudo rm -rf RoverWeb/
+%cd /var/www/
+%sudo git init
+%sudo git remote add -f origin https://git.eclipse.org/r/app4mc/org.eclipse.app4mc.examples
+%git config core.sparseCheckout true
+%echo "rover/web/" >> .git/info/sparse-checkout
+%git pull origin master
 \section{Installing psutil}
 In order to monitor core utilization, a python pip package called 'psutil' needs to be installed. First, we need to get the essential building and packaging tools for python. \textbf{If you copy\&paste the command, make sure there is not line break!}
 \begin{lstlisting}
@@ -148,6 +148,7 @@ In order to update the Eclipse application that is written with pThreads, one co
 \begin{lstlisting}
 https://git.eclipse.org/r/app4mc/org.eclipse.app4mc.examples
 \end{lstlisting}
+Basics about setting up Eclipse is given at \url{goo.gl/vT5PF8}.
 %https://gitlab.pimes.fh-dortmund.de/RPublic/RoverEclipse.git
 %\subsection{MANUAL WAY} Since the rover does not yet consider the webpage commands,the rover control application code must be edited. To do so, find the newest version of the Eclipse application, which contains necessary adjustments and include the following task function:
 %\begin{lstlisting}
@@ -205,4 +206,6 @@ If your rover provides the hotspot from PolarSys, use
 \begin{lstlisting}[label={lst:partWrkflw}]
 http:*@//@*192.168.168.1/jqueryControl.php
 \end{lstlisting}
+\section{Reporting}
+If you have any problems, hints, bugs, or similar, please let the authors of this document know.
 \end{document}
