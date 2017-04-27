@@ -47,7 +47,25 @@ Warning--entry type for "telnet" isn't style-file defined
 --line 208 of file bib/bib.bib
 Warning--entry type for "mii" isn't style-file defined
 --line 215 of file bib/bib.bib
+Warning--entry type for "gcc" isn't style-file defined
+--line 222 of file bib/bib.bib
+Warning--entry type for "python27" isn't style-file defined
+--line 229 of file bib/bib.bib
+Warning--entry type for "bash" isn't style-file defined
+--line 236 of file bib/bib.bib
+Warning--entry type for "remotedebuggingeclipse" isn't style-file defined
+--line 243 of file bib/bib.bib
+Warning--entry type for "howajaxworks" isn't style-file defined
+--line 250 of file bib/bib.bib
+Warning--entry type for "jquery" isn't style-file defined
+--line 257 of file bib/bib.bib
+Warning--entry type for "timingposter" isn't style-file defined
+--line 263 of file bib/bib.bib
+Warning--entry type for "cpuandusertimes" isn't style-file defined
+--line 268 of file bib/bib.bib
+Warning--entry type for "cpuandusertimes2" isn't style-file defined
+--line 275 of file bib/bib.bib
 Warning--I didn't find a database entry for "importantpaper"
 Warning--empty booktitle in tileref
 Warning--empty note in sysml
-(There were 26 warnings)
+(There were 35 warnings)

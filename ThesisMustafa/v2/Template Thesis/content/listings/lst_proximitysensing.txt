@@ -1,0 +1,38 @@
+void Task_ReadSonarSensors(client i2c_master_if i2c_interface, client distancesensor_if sensors_interface)
+{
+    // .. Declaration of some variables..
+
+    while (1) {
+        select
+        {
+            case tmr when timerafter(time) :> void :
+                //Initialize messaging
+                InitializeMessaging(i2c_interface);
+
+                // For Left Sensor
+                // Read from high and low byte respectively
+                high_byte = i2c_interface.read_reg(getDistanceSensorAddr(LEFT_DISTANCE_SENSOR_ID), 0x02, result);
+                low_byte = i2c_interface.read_reg(getDistanceSensorAddr(LEFT_DISTANCE_SENSOR_ID),  0x03, result);
+                // Construct the distance information in centimeters
+                acc = (high_byte * 256) + low_byte;
+                if ((acc < 600)  && (acc > 0)) // Distance should be in between 600cm and 0cm
+                {
+                    left = acc;
+                }
+                else
+                {
+                    left = 0;
+                }
+
+                //...repeated for other sensors...
+
+                // Send sensor values all together
+                sensors_interface.ShareDistanceSensorValues (left, right, front, rear);
+
+                // Delay
+                time += delay;
+
+                break;
+        }
+    }
+}

@@ -14,6 +14,9 @@ http://www.amalthea-project.org/.
 \bibitem{app4mcproposaleclipse}
 https://projects.eclipse.org/proposals/app4mc.
 
+\bibitem{timingposter}
+https://www.gliwa.com/downloads/timing%20poster.pdf.
+
 \bibitem{autosararch}
 https://hpi.de/fileadmin/user\texttt{\_}upload/fachgebiete/giese/ausarbeitungen\texttt{\_}autosar0809/\\software\texttt{\_}architecture\texttt{\_}warschofsky.pdf.
 
@@ -103,6 +106,30 @@ http://ww1.microchip.com/downloads/en/devicedoc/rn-4142-ek-ug-1.0.pdf.
 
 \bibitem{telnet}
 https://kb.iu.edu/d/aayd.
+
+\bibitem{python27}
+https://docs.python.org/2/.
+
+\bibitem{gcc}
+https://gcc.gnu.org/onlinedocs/gcc-6.3.0/gcc/.
+
+\bibitem{remotedebuggingeclipse}
+http://www.gurucoding.com/en/raspberry\texttt{\_}pi\texttt{\_}eclipse/index.php.
+
+\bibitem{bash}
+http://tldp.org/ldp/abs/html/.
+
+\bibitem{howajaxworks}
+https://www.w3schools.com/xml/ajax\texttt{\_}intro.asp.
+
+\bibitem{jquery}
+https://jquery.com/.
+
+\bibitem{cpuandusertimes}
+https://cs.umd.edu/class/spring2015/cmsc411-0201/lectures/lecture04\texttt{\_}performance\texttt{\_}reliability.pdf.
+
+\bibitem{cpuandusertimes2}
+http://stackoverflow.com/questions/4310039/user-cpu-time-vs-system-cpu-time.
 
 \bibitem{springerparallel}
 Thomas Rauber and Gudula R{\"u}nger.

@@ -215,11 +215,23 @@
 	backgroundcolor=\color{grey}
 }
 
+\lstdefinestyle{python}
+{
+	language=Python,
+	keywordstyle=\color{lila},  	% underlined bold black keywords 
+	keywords={void, unsigned, int, char, byte, while, for, foreach, default, if, else, return, switch, select, case, break, def, try, except, catch, as, global, import},
+	identifierstyle=\color{blue}, 
+	commentstyle=\color{kommentgreen}, % white comments 
+	stringstyle=\color{black},
+	basicstyle=\ttfamily\footnotesize,  %%% I ADDED THIS LINE, -Mustafa
+}
+
+
 \lstdefinestyle{xc}
 {
 	language=C,
 	keywordstyle=\color{lila},  	% underlined bold black keywords 
-	keywords={void, unsigned, int, char, uint8_t, uint16_t, uint32_t, byte, while, for, foreach, if, else, return, switch, select, case, break, client, server, combinable, tile, on, core, par},
+	keywords={void, unsigned, int, char, uint8_t, uint16_t, uint32_t, byte, while, for, foreach, default, if, else, return, switch, select, case, break, client, server, combinable, tile, on, core, par},
 	identifierstyle=\color{blue}, 
 	commentstyle=\color{kommentgreen}, % white comments 
 	stringstyle=\color{black},

@@ -74,6 +74,11 @@ Some text will come here! \\
 Some text will come here! \\
 \section{Scheduling} %and schedulers
 Some text will come here! \\
+\begin{figure}[!ht]
+	\includegraphics[scale=0.6]{content/images/scheduling.png}
+	\caption{Timing properties for scheduling in multi-tasked systems \cite{timingposter}}
+	\label{fig:scheduling}
+\end{figure}
 \section{Real-time Parallelization Trends in Practice: RTOS, MPI, OpenMP, Pthreads, Java Threads} %x Give example of FreeRTOS for RTOS.
 Some text will come here! \\
 \section{Importance of Multi-core computing to automotive industry: AUTOSAR} %add autosar architecture picture
@@ -152,7 +157,7 @@ As the name of the development kit suggests, XEF216-512 uses XMOS' xCore-200 arc
 	\label{fig:XE216Architecture}
 \end{figure}
 
-In xCORE-200 architecture, each core uses the memory of the tile it belongs to and logical cores communicate using a high-speed network. Thus, channels which achieves task communication are linked to other cores via \textbf{xCONNECT Switch}. While this is the case for tasks that are distributed to seperate cores, for tasks that are placed in the same core \textbf{xTIME Scheduler} automatically schedules tasks by synchronizing events. The xTIME Scheduler works similar to RTOS in traditional microcontrollers and uses \textbf{Round-robin scheduling method} \cite{xmosdatasheet} \cite{roundrobin} which is a simple and starvation-free scheduling technique that gives each task equal time slices and disregards priorities in order to schedule processes or tasks. Round-robin scheduling is widely used in operating systems \cite{roundrobin}.
+In xCORE-200 architecture, each core uses the memory of the tile it belongs to and logical cores communicate using a high-speed network. Thus, channels which achieve task communication are linked to other cores via \textbf{xCONNECT Switch}. While this is the case for tasks that are distributed to seperate cores, for tasks that are placed in the same core \textbf{xTIME Scheduler} automatically schedules tasks by synchronizing events. The xTIME Scheduler works similar to RTOS in traditional microcontrollers and uses \textbf{Round-robin scheduling method} \cite{xmosdatasheet} \cite{roundrobin} which is a simple and starvation-free scheduling technique that gives each task equal time slices and disregards priorities in order to schedule processes or tasks. Round-robin scheduling is widely used in operating systems \cite{roundrobin}.
 
 In xCORE architecture, the synchronization of task communication is handled by events rather than ISRs (Interrupt Service Routines) as compared to a traditional microcontroller. Each xCORE tile is connected to hardware ports and thereby pins which can be driven high and low in order to drive electrical peripherals. xCORE tiles are also connected to an OTP (One Time Programmable Memory) and SRAM (Static Random Access Memory). While OTP is used for code locking features, SRAM serves as a memory where the instructions and variables are located \cite{xmosdatasheet}.
 
@@ -405,14 +410,77 @@ TCP server of the A4MCAR low-level module acts as the only source of communicati
 TCP server task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with TCP server task having the function name 'Task\texttt{\_}EthernetServer'.
 
 \subsection{Core and Tile Monitoring}
-Some text will come here! \\
+Core monitoring task that is responsible for finding core utilization percentage and sending it to the TCP server task is created for the two individual tiles of the xCORE-200 eXplorerKIT. By checking the status register 'XS1\texttt{\_}PSWITCH\texttt{\_}T0\texttt{\_}SR\texttt{\_}NUM' that is mentioned in the XMOS datasheet \cite{xmosdatasheet}, and polling this register with a maximum polling rate of 1250Hz, whether a core is busy or idle at a given time is detected. A code snippet that is responsible for this operation is given in Listing \ref{lst_coremonitoring}. 
+
+\lstinputlisting[caption=Finding busy and idle cycles in XS1 architecture, label=lst_coremonitoring, style=xc]{content/listings/lst_coremonitoring.txt}
+
+The obtained busy and idle cycles are then converted to a percentage value with the following Equation:
+\begin{equation}
+core\texttt{\_}usage\texttt{\_}percentage=\frac{busy\texttt{\_}cycles}{busy\texttt{\_}cycles + idle\texttt{\_}cycles} 100
+\end{equation}
+Further features introduced in core monitoring task could be listed as follows:
+\begin{itemize}
+	\item An interface is created, that is 'core\texttt{\_}stats\texttt{\_}if' in Figure \ref{fig:sysmlxmostasksbrief}, in order to send core utilization percentage to the TCP server task. 
+	\item A preprocessor macro FLOATING\texttt{\_}POINT\texttt{\_}SHOW is also created in order to find core utilization percentage in floating point format for better precision if desired.
+\end{itemize}
+
+Observing the results have showed that the user created applications for the low-level module in A4MCAR are not very time intensive and that is why some of the tasks resulted in a core utilization value that is lower than 0 percent.
 
 Core monitoring tasks and how their data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with tasks having the function names 'Task\texttt{\_}MonitorCores'.
 
 \section{High-Level Module Design and Implementation}
-Some text will come here! \\
 \subsection{Overview}
-Some text will come here! \\
+High-level module of the A4MCAR is composed of several processes running under Raspbian \cite{raspbiandownload} distribution of Linux Operating System that is designed for Raspberry Pi 3. In the section "High-level Infrastructure", the operation of Linux kernel is briefly introduced. During the compilation, debugging and execution of the developed processes, several development platforms such as Python 2.7 shell \cite{python27}, GNU C Compiler (GCC) \cite{gcc} have been used. Although it should be noted that remote development using Eclipse IDE \cite{remotedebuggingeclipse} is also possible, the development of A4MCAR has been done using the aforementioned development platforms by connecting into the Raspberry Pi 3 using SSH connection. While the main processes involve C, C++, Python, and Bash \cite{bash} languages, via the capability of the integrated web server to serve web pages, several other scripting and markup languages such as HTML, CSS, JavaScript (with AJAX \cite{howajaxworks} and jQuery \cite{jquery} frameworks) have also been used. The operation of the user developed processes along with third party utility processes that are integrated into the system are given in the Figure \ref{fig:rpicomponents}. 
+\begin{figure}[!ht]
+	\includegraphics[scale=0.62]{content/images/rpicomponents.png}
+	\caption{High-level module software component diagram including files and file accesses}
+	\label{fig:rpicomponents}
+\end{figure}
+
+Since cross development platforms using languages such as C, C++ and Python have been used in A4MCAR high-level module, the multi-tasking is handled in the process layer rather than in thread or task level. That means that each process are executables of their own using different libraries and compilers. 
+
+In the Figure \ref{fig:rpicomponents}, it is also seen that the communication between user developed processes are handled with file accesses. All file accesses are asynchronous and there is no event to wait for data or require data within some time as it is low-level module inter-process communication. This should indicate that the communication using read-write accesses does not constrain the processes as it is in a regular inter-process communication. Furthermore, it should be noticed from the Figure in \ref{fig:rpicomponents} that although a process is able to read from many files, there is no example of two or more processes trying to write to the same file. Reading from many files is not critical, while the latter (i.e. two or more processes trying to write to the same file) should be handled by cross-process mutexes or semaphores that would be able to lock and unlock the same physical memory space from cross-processes. Although not valid in our case, it should be known that by using the existing cross-process mutexes or creating a semaphore mechanism, one should be able to allow two or more processes to write to the same file \cite{linuxkernelbook}.
+
+The way multi-tasking is handled with this constructed software architecture (in the Figure \ref{fig:rpicomponents}) is that every process is run by an external script at the boot time (or via touchscreen interface, which is the main control interface in our case) and their scheduling is handled by the Linux kernel. While the scheduling is not manipulated, the mapping or pinning of processes to different cores and evaluating them are the focus of A4MCAR in order to find the most optimal parallelization solution.
+
+Regarding hardware, the high-level module is connected to two devices. The interfacing of these devices, a Raspberry Pi camera v1.3 and a Touchscreen display is illustrated in the Figure \ref{fig:hwoverview}. It is seen in the figure that interfaces such as HDMI, SPI, and CSI have been utilized. In the respective sections, hardware communication and the related software will be further explained.
+%%Full names as appendix  ??? MAYBE LATER
+\subsection{Implemented Online Timing Features}
+In order to seek an assessment technique to compare timing performance of different distributions, online timing features are implemented in the user-developed processes of the high-level module of A4MCAR. Thus, while applications are running, a performance evaluation could be done with the help of the those features. The code skeleton is developed for both Python and C,C++ applications and the applications are integrated on top of the skeleton with timing features. Therefore, it is important to understand how each application that will be discussed in the following sections are timed.
+
+Recall that in the Scheduling section the timing properties in a scheduled system is explained that is shown in Figure \ref{fig:scheduling}. By making use of the figure, limitations of implementations and the implemented timing features could be listed as follows:
+\begin{itemize}
+	\item Because the values such as IPT, CETs and RT (referred from the Figure \ref{fig:scheduling}) are out of our reach since they are hidden in the Linux kernel, in the online timing analysis features that are implemented, the aforementioned values have been neglected. With offline scheduling analysis, however, CET values could be easily obtained.
+	\item Recording the the start and end times of execution using an accurate clock. For that purpose, in computers there are two types of clocks: (1)- User CPU clock and (2)- System CPU clock. While user CPU clock is used for finding out how long it has passed since the program has started, the system CPU clock takes place in the kernel space and measures how long it has passed since 1st of January, 1970. The latter clock was found as the viable solution as user CPU clock would not allow comparison along the entire Linux kernel. In the code, functions time.time() for Python and clock\texttt{\_}t clock() have been used in order to record start and end times more accurately \cite{cpuandusertimes} \cite{cpuandusertimes2}.
+	\item Finding the execution time (ET) of one iteration using the following Equation, provided that start\texttt{\_}time is the time recorded before the iteration and end\texttt{\_}time is the time recorded after the iteration. The units are all seconds.
+	\begin{equation}
+	execution\texttt{\_}time=end\texttt{\_}time - start\texttt{\_}time
+	\end{equation}
+	In the version that is developed for C language, since clock\texttt{\_}t is able to measure clock cycles rather than seconds, the Equation is changed to the following:
+	\begin{equation}
+	execution\texttt{\_}time=\frac{end\texttt{\_}time - start\texttt{\_}time} {CLOCKS\texttt{\_}PER\texttt{\_}SEC}
+	\end{equation}
+	
+	\item Finding the slack time (ST) is one of the most important tasks that is within the scope of the online timing features because as a rule of thumb, we could assess the timing performance by saying that if a process has a higher slack time than before, it means that that task is better utilized compared to before as the idle time the CPU is doing some other task is more than what it used to be. The slack time of a previous iteration is measured by the following Equation, provided that the calculation takes place right after start time is recorded and IPT is neglected. It should also be noted that the C language version could be created by dividing the clock cycles with the clock cycles per second (CLOCKS\texttt{\_}PER\texttt{\_}SEC) in the same manner as execution time.
+	\begin{equation}
+	previous\texttt{\_}slack\texttt{\_}time=start\texttt{\_}time - end\texttt{\_}time
+	\end{equation}
+	
+	\item In order to keep a constant period while the process is being scheduled, the processes are delayed dynamically between each iteration. Thus, processes which have a constant period could be modeled easier. In order to achieve a constant period each process are delayed by the following:
+	\begin{equation}
+	delay\texttt{\_}time=period - execution\texttt{\_}time
+	\end{equation}
+	However, if the execution time of a process is bigger than its period, that process could be counted a process that missed its deadline, given that its period is equal to its deadline due to practicality. In addition, it should be known that the deadline miss percentage is another important criteria in order to assess parallelization quality as it is normally undesired to have missed deadlines. In case of a missed deadline in A4MCAR, the process is not delayed.
+	
+	\item As seen in \ref{fig:rpicomponents}, there are many timing log files that are created. Those timing log files are created within every user-defined process and later are used in the Touchscreen Display application.
+\end{itemize}
+
+While each processes are constructed in the manner that is explained, the overall online evaluation is handled within the Touchscreen Display process, the process that is able to show utilization results. In the Touchscreen Display section, the details about these will be given.
+
+An example of the timing skeleton for Python-running processes are given in the Listing \ref{lst_timingskeleton}. The user-defined Python-running applications have been created using this template, and the space that is left for task content is used for the actual features of that task.
+
+\lstinputlisting[caption=Online timing features implemented in Python language, label=lst_timingskeleton, style=python]{content/listings/lst_timingskeleton.txt}
+%Now explain Scheduling section bari!!!
 \subsection{Core Monitoring}
 Some text will come here! \\
 \subsection{Ethernet (TCP) Client Implementation}
@@ -446,6 +514,7 @@ Some text will come here! \\
 \end{figure}
 \subsection{Touchscreen Display}
 Some text will come here! \\
+%Including formulas for avg.slack time and so on...
 \subsubsection{Touchscreen Display Features}
 Some text will come here! \\
 \begin{figure}[!ht]
@@ -493,6 +562,7 @@ Some text will come here! \\
 \subsubsection{psutil}
 \subsection{Distribution of Processes using taskset in Linux}
 \subsection{Discovering Energy Consumption Features in Linux with cpufrequtils}
+\subsection{Online Timing Analysis Features Implemented in High-level Module}
 
 
 %%% CHAPTER Information Tracing and System Modeling --------end----

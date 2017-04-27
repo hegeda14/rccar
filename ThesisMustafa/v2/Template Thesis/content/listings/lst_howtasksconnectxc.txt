@@ -1,0 +1,14 @@
+par {
+     // I2C Task
+     on tile[0] : Task_MaintainI2CConnection(i2c_client_device_instances, 1, PortSCL, PortSDA, I2C_SPEED_KBITPERSEC);
+
+     // Motor Speed Controller (PWM) Tasks
+     on tile[0].core[4] :         Task_DriveTBLE02S_MotorController(PortMotorSpeedController, control_interface, sensors_interface);
+
+     // Steering Servo (PWM) Tasks
+     on tile[0].core[4] :         Task_SteeringServo_MotorController (PortSteeringServo, steering_interface);
+
+     // Core Monitoring Tasks
+     on tile[0]:                   Task_MonitorCoresInATile (core_stats_interface_tile0);
+     on tile[1]:                   Task_MonitorCoresInATile (core_stats_interface_tile1);
+  }

@@ -1,0 +1,55 @@
+[[combinable]]
+void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
+                                        client uart_rx_if uart_rx,
+                                        client control_if control_interface,
+                                        client steering_if steering_interface,
+                                        server ethernet_to_cmdparser_if cmd_from_ethernet_to_override,
+                                        client lightstate_if lightstate_interface)
+{
+    //... Decleration of some variables ...
+#ifdef RN42_INITIAL_CONFIG
+    InitializeRN42asSlave(uart_tx);
+#endif
+    while (1) {
+        select
+        {
+        case uart_rx.data_ready(): //Read when data is available
+            data = uart_rx.read();
+
+            // ... Read byte and fill the buffer ...
+            break;
+
+        case cmd_from_ethernet_to_override.SendCmd(char* override_command, int cmd_length):
+            // ... Fill the buffer with override command and raise
+            //     the flag to show override occured ...
+            break;
+        //Process the commands received above in a timer event
+        case tmr2 when timerafter(time2) :> void : // Timer event
+            time2 += delay2;
+            if ( command_line_ready )
+            {
+                // Check if incoming data is as expected..
+                if ( CheckIfCommandFormatIsValid(command) == 1 )
+                {
+                        {speed, steering, direction} = ParseRCCommandString (command);
+
+                        //...Send light system mode given our speed, steering, and direction...
+
+                        if (previous_direction == FORWARD && direction == REVERSE)
+                        {
+                                //Commands to cheat into REVERSE mode
+                                CheatIntoReverseMode();
+                        }
+
+                        steering_interface.ShareSteeringValue(steering);
+                        control_interface.ShareDirectionValue(direction);
+                        control_interface.ShareSpeedValue(speed);
+                        command_line_ready = 0;
+                        previous_direction = direction;
+                        previous_lightstate = lightstate;
+                }
+            }
+            break;
+        }
+    }
+}

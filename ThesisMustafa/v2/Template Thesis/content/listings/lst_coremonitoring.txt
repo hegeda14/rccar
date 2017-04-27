@@ -1,0 +1,21 @@
+default://Timer event with maximum possible polling rate
+	//For each core in the tile
+	for (t = 0; t <= 7; t++) {
+		// Read the processor state
+		int ps_value = getps(0x100*t+4);
+
+		// Read the status register
+		unsigned int sr_value;
+		read_pswitch_reg(tile_id, XS1_PSWITCH_T0_SR_NUM+t, sr_value);
+
+		const int in_use = (ps_value & 0x1);
+		const int waiting = (sr_value >> 6) & 0x1;
+		if (in_use) {
+			if (waiting) {
+				core_idle[t] += 1; //Count this cycle as idle
+			} else {
+				core_busy[t] += 1; //Count this cycle as busy
+			}
+		}
+	}
+	break;
