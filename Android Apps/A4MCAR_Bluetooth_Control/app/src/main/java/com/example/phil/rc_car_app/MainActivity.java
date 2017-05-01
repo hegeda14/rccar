@@ -107,14 +107,17 @@ public class MainActivity extends Activity {
                 //speedValueField.setText(progress + "");
                 //Log.d("ANGLE", String.valueOf(angle));
                 //Log.d("STR", String.valueOf(strength));
+
+                if (strength > 99)
+                    strength = 99;
+
                 speedValueField.setText(Integer.toString(strength));
                 angleValueField.setText(Integer.toString(angle));
 
 
 
 
-                if (strength > 99)
-                    strength = 99;
+
 
                 if(strength <= 9) {
                     if(strength == 0) {
@@ -131,8 +134,40 @@ public class MainActivity extends Activity {
                 }
 
 
+                if (anglex >= 0 && anglex <= 30)
+                {
+                    anglex = 99;
+                    //direction = 'F';
+                }
+                else if (anglex > 30 && anglex < 150)
+                {
+                    anglex = (int) ((1-((anglex - 30)/120.0))*100); //((150-anglex)/120)*100
+                    //direction = 'F';
+                }
+                else if (anglex >= 150 && anglex <= 180)
+                {
+                    anglex = 0;
+                    //direction = 'F';
+                }
+                else if (anglex>180 && anglex<=210)
+                {
+                    anglex = 0;
+                    //direction = 'R';
+                }
+                else if (anglex>210 && anglex<330)
+                {
+                    anglex = (int) (((anglex-210)/120.0) * 100);
+                    //direction = 'R';
+                }
+                else if (anglex>=330 && anglex<=360)
+                {
+                    anglex = 99;
+                    //direction = 'R';
+                }
+
+                //Without Deadzone
                 //anglex -> 0 to 360
-                if (anglex>=0 && anglex<=180)
+                /*if (anglex>=0 && anglex<=180)
                 {
                     //Log.d("anglexrecip",Double.toString(anglex/180.0));
                     anglex = (int) (100 * (1-(anglex/180.0)));
@@ -142,11 +177,14 @@ public class MainActivity extends Activity {
                 {
                     anglex = (int) (((anglex-180)/180.0)*100);
                     //direction = 'R';
-                }
+                }*/
 
 
                 if (anglex > 99)
                     anglex = 99;
+
+                if (strength > 99)
+                    strength = 99;
 
                 //STOPPING MOMENT---
                 if (strength == 0)
@@ -209,6 +247,7 @@ public class MainActivity extends Activity {
      * The forward Button have the Activity, to snd the RC-Car the signal to drive foreward('w')
      * the signal is represented in the connection View
      */
+    //BRAKE BUTTON!!!
     private void forwardButtonControl() {
         forwardButton = (Button) findViewById(R.id.fButton);
         forwardButton.setOnTouchListener(new View.OnTouchListener() {
@@ -237,6 +276,7 @@ public class MainActivity extends Activity {
      * The backward Button have the Activity, to snd the RC-Car the signal to drive backward('s')
      * the signal is represented in the connection View
      */
+
     private void backwardButtonControl() {
         backwardButton = (Button) findViewById(R.id.bButton);
         backwardButton.setOnTouchListener(new View.OnTouchListener() {

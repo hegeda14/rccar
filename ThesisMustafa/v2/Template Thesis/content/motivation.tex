@@ -309,7 +309,7 @@ In A4MCAR, the RC-Car chassis kit Tamiya TT01-E \cite{tt01e} have been used. The
 	\label{fig:rccarparts}
 \end{figure}
 
-An illustration of the mechanical overview that shows the designed model is shown in \ref{fig:mechanicaloverview}. This mechanical layer has been designed using a 3D model software and have been produced using a 3D printer. Using appropriote 1mm to 2mm diameter screws, the constructed body is installed to the main chassis as an extension layer and the other elements are installed on top of this extension layer. 
+An illustration of the mechanical overview that shows the designed model is shown in \ref{fig:mechanicaloverview}. This mechanical layer has been designed using a 3D model software and the software output with the .STL extension is used for the layer production using a 3D printer. Using appropriote 1mm to 2mm diameter screws, the constructed body is installed to the main chassis as an extension layer and the other elements are installed on top of this extension layer. 
 \newpage
 \begin{figure}[!ht]
 	\includegraphics[scale=0.25]{content/images/mechanicaloverview.png}
@@ -443,7 +443,7 @@ In the Figure \ref{fig:rpicomponents}, it is also seen that the communication be
 
 The way multi-tasking is handled with this constructed software architecture (in the Figure \ref{fig:rpicomponents}) is that every process is run by an external script at the boot time (or via touchscreen interface, which is the main control interface in our case) and their scheduling is handled by the Linux kernel. While the scheduling is not manipulated, the mapping or pinning of processes to different cores and evaluating them are the focus of A4MCAR in order to find the most optimal parallelization solution.
 
-Regarding hardware, the high-level module is connected to two devices. The interfacing of these devices, a Raspberry Pi camera v1.3 and a Touchscreen display is illustrated in the Figure \ref{fig:hwoverview}. It is seen in the figure that interfaces such as HDMI, SPI, and CSI have been utilized. In the respective sections, hardware communication and the related software will be further explained.
+Regarding hardware, the high-level module is connected to two devices. The interfacing of these devices, a Raspberry Pi camera v2.0 and a Touchscreen display is illustrated in the Figure \ref{fig:hwoverview}. It is seen in the figure that interfaces such as HDMI, SPI, and CSI have been utilized. In the respective sections, hardware communication and the related software will be further explained.
 %%Full names as appendix  ??? MAYBE LATER
 \subsection{Implemented Online Timing Features}
 In order to seek an assessment technique to compare timing performance of different distributions, online timing features are implemented in the user-developed processes of the high-level module of A4MCAR. Thus, while applications are running, a performance evaluation could be done with the help of the those features. The code skeleton is developed for both Python and C,C++ applications and the applications are integrated on top of the skeleton with timing features. Therefore, it is important to understand how each application that will be discussed in the following sections are timed.
@@ -475,36 +475,140 @@ Recall that in the Scheduling section the timing properties in a scheduled syste
 	\item As seen in \ref{fig:rpicomponents}, there are many timing log files that are created. Those timing log files are created within every user-defined process and later are used in the Touchscreen Display application.
 \end{itemize}
 
-While each processes are constructed in the manner that is explained, the overall online evaluation is handled within the Touchscreen Display process, the process that is able to show utilization results. In the Touchscreen Display section, the details about these will be given.
+While each processes are constructed in the manner that is explained, the overall online evaluation is handled within the Touchscreen Display process, the process that is able to show utilization results. In the "Information Tracing and System Management" section, the details about these will be given.
 
 An example of the timing skeleton for Python-running processes are given in the Listing \ref{lst_timingskeleton}. The user-defined Python-running applications have been created using this template, and the space that is left for task content is used for the actual features of that task.
 
 \lstinputlisting[caption=Online timing features implemented in Python language, label=lst_timingskeleton, style=python]{content/listings/lst_timingskeleton.txt}
 %Now explain Scheduling section bari!!!
-\subsection{Core Monitoring}
-Some text will come here! \\
+\subsection{Core Reader}
+To help with the utilization assessment and visualization purposes, a core reading process is developed that monitors cores every three seconds and writes the core usage information to a text file. For that purpose, the 'psutil' module \cite{psutil} from Python is used. The 'psutil' module allows to find information of Linux processes and cores. The core usage information for four cores of Raspberry Pi that is logged into a text file is then used for visualization in the web interface and the touchscreen interface. 
+
+With the help of a simple function the core usage information is easily retrieved. The function is given in the Listing \ref{lst_psutil}. It should be noted that 'd' in the listing is an array with 4 elements, each of which indicating core usage for individual cores.
+
+\lstinputlisting[caption=Psutil function to retrieve core utilization information , label=lst_psutil, style=python]{content/listings/lst_psutil.txt}
+
 \subsection{Ethernet (TCP) Client Implementation}
-Some text will come here! \\
+In the section "Low-level Module Implementation", TCP server implementation using the xCORE-200 eXplorerKIT has been discussed. In order to maintain a sound data communication between low-level module and high-level module, a TCP client process is implemented in the high-level module. Since Python language offers very stable and easy-to-use threading support and exception handling, the TCP client implementation is done using Python. The 'socket' library \cite{socketpython} in Python is capable of delivering several functions and objects that are used for this purpose. The TCP client has been configured to have non-blocking data reception with 0.5 second period and with a timeout of 2 seconds. While the data reception is handled by an additional thread, operations such as connecting to the server, binding to the server port, and sending data periodically is handled in the main thread. The overriding driving command which is send to the low-level module is read from file before data transmission. It should be also noted that after the data reception the content is written to the file which is responsible for holding low-level module core usage information. This communication between high-level module and low-level module is illustrated in the deployment diagram given by the Figure \ref{fig:ethernetdeployment}.
+
+\begin{figure}[!ht]
+	\includegraphics[scale=0.7]{content/images/ethernetdeployment.png}
+	\caption{Deployment diagram showing Ethernet communication}
+	\label{fig:ethernetdeployment}
+\end{figure}
+
 \subsection{Web Server and its Applications}
-Some text will come here! \\
 \subsubsection{Web Server}
-Some text will come here! \\
+In order to develop a web interface for the A4MCAR, a web server is installed and configured to the high-level module. Web servers are responsible for processing HTTP requests and delivering HTTP responses \cite{apacheguide}. The HTTP requests and responses are usually visualized using a web browser from clients in the form of web pages \cite{apacheguide}. In A4MCAR high-level module, Apache 2 web server is installed and configured as the web server since it is an open-source, robust, light-weight cross-platform that has a large user community. Additionally, another reason Apache 2 is selected is that it is capable of serving for script languages such as PHP and Python, which are used in A4MCAR applications.
+
+Just like a Telnet server, a web server is bind to a port in a wireless or wired network. Although for different communication channels one could use different ports, web servers usually use the port number 80. Another difference of a web server is that unlike a telnet server, the data that is sent and interpreted is in the HTTP (HyperText Transfer Protocol) \cite{webserver} format unlike the TCP (Transmission Control Protocol) format. How web servers and web browsers work in order to help us visualize web pages is illustrated with the Figure \ref{fig:webserver} \cite{webserver}. \\
+
+\begin{figure}[!ht]
+	\includegraphics[scale=0.5]{content/images/webserver.png}
+	\caption{How web servers and web browsers work illustrated \cite{webserver}}
+	\label{fig:webserver}
+\end{figure}
+
+%ajax Eventlere bagliyor http requestleri javascript kullanarak. jQuery de isleri kolaylastirmak icin
+The following technologies have been used in order to create dynamical webpage:
+\begin{itemize}
+	\item \textbf{HTML:} This markup language is used for defining how body elements are located in a web page and including scripts.
+	\item \textbf{CSS:} CSS is used for defining the style of body elements. Borders, background properties, colors, button styles, positioning of elements are defined with CSS language.
+	\item \textbf{JavaScript:} The JavaScript language is used for defining animations, as well as how events would behave.
+	\item \textbf{jQuery:} jQuery \cite{jquery} is a JavaScript framework that is written using JavaScript which helps to use define scripts easier than it is with the JavaScript. It is open-source and widely used in almost every web page.
+	\item \textbf{AJAX:} AJAX \cite{howajaxworks} is another framework for JavaScript which is used for handling dynamical HTTP requests without having to refresh the page. With the objects it delivers, events such as key press, mouse events, conditional events could be sent to server and processed. The returned data could be processed using JavaScript in order to dynamically update the page content \cite{howajaxworks}. This mentioned working principle is illustrated in the Figure \ref{fig:ajaxpng} \cite{howajaxworks}. 
+	\begin{figure}[!ht]
+		\includegraphics[scale=0.7]{content/images/ajax.png}
+		\caption{How AJAX works \cite{howajaxworks}}
+		\label{fig:ajaxpng}
+	\end{figure}
+\end{itemize}
+
 \subsubsection{Web Page Design and Implementation} 
-Some text will come here! \\ 
+The web page that has been designed for users is shown in the Figure \ref{fig:web}. In the web page, it is seen that a camera stream, control buttons and sliders, and an information graph that shows core utilization in both high-level and low-level module are embedded. For the static design of the web page HTML and CSS are used, while the dynamical behavior of the web page is supported with jQuery, AJAX, and Python. The dynamical behavior of the individual parts of the web page will be explained in the following sections.
 \begin{figure}[!ht]
 	\includegraphics[scale=0.42]{content/images/web.png}
 	\caption{Web interface of A4MCAR}
 	\label{fig:web}
 \end{figure}
-%Very briefly but include technologies and how it works, jquery-ajax, html,css and so on.
+
+The overall dynamical behavior of the web page is illustrated in component diagram that is seen in the Figure \ref{fig:weboverallbehavior}. In the diagram, it should be noticed that the server page jqueryControl.php is the main web interface. It has some server pages and files embedded to it in order to function as a whole to deliver the features of controlling A4MCAR, core utilization display, and camera streaming. In the following subsections, each of these tasks will be explained using the component diagram shown in the Figure \ref{fig:weboverallbehavior}.
+
+\begin{figure}[!ht]
+	\includegraphics[scale=0.64]{content/images/weboverallbehavior.png}
+	\caption{Component diagram showing how communication inside the created web-interface works}
+	\label{fig:weboverallbehavior}
+\end{figure}
+
 \subsubsection{Controlling A4MCAR via Web Page}
-Some text will come here! \\
+At the top right of the Figure \ref{fig:web}, the controls to drive the A4MCAR over web interface is shown. It is seen that there are gear selection buttons such as Forward (FWD) and Reverse (REV), along with two sliders. The sliders are created using the third party script library called 'jquery\texttt{\_}ui'. While the vertical slider is for speed adjustment, the horizontal slider is used for angle adjustment. Additionally, to select the very left, straight, and very right angles the arrow buttons could be used. 
+
+With the help of jQuery and AJAX' ability to create event handlers within server pages, on a button press or when slider position is changed, an event handler is run that collects the position and gear information and sends it using an HTTP "GET" request dynamically to another server page called pythonControl.php (shown in Figure \ref{fig:web}). With the idea of demonstrating a basic AJAX request, an example of this is given in the Listing \ref{lst_ajax}.
+
+\lstinputlisting[caption=Sending dynamic HTTP GET requests using jQuery , label=lst_ajax, style=jquery]{content/listings/lst_ajax.txt}
+
+As it is seen from the Listing \ref{lst_ajax} url field, the information that is sent is nothing other than the format defined for the bluetooth communication in the low-level module, which is given in \ref{fig:bluetoothcommand}. In the Figure \ref{fig:web}, it is seen that after the information is received by pythonControl.php, using the ability of PHP to run a shell script, a Python script is run using the Python shell automatically. The python script, whenever executed, writes the received driving command information into the text file that holds the driving command. This operation is done asynchronously. How the driving command is sent afterwards is explained in the section "Ethernet (TCP) Client Implementation".
 \subsubsection{Camera Streaming}
-Some text will come here! \\
+For the camera streaming, the third party module mjpg-streamer \cite{mjpgstreamergithub} has been used. This module is able to communicate over CSI interface in order to generate a stream on a network port, which then could be embedded to web pages. It is seen on the Figure \ref{fig:weboverallbehavior} how this module works along with the Apache2 Web Server. 
+
+For the stream, Raspberry Pi camera version 2.0 with CSI interface is used which is shown in the Figure \ref{fig:rpicam20}.
+
+\begin{figure}[!ht]
+	\includegraphics[scale=0.5]{content/images/rpicam20.jpg}
+	\caption{Raspberry Pi camera v2.0}
+	\label{fig:rpicam20}
+\end{figure}
+
+Based on the documentation of the mjpg-streamer, a script using Bash language is created which is used for generating a web stream with the correct parameters. These parameters involve resolution, frames per second, quality value, and port on which the stream will be generated. For the case of A4MCAR, the experimental version of mjpg-streamer has been used which is able to stream using the Raspberry Pi camera besides a webcam. By using the experimental version library, the following setup is found to give robust performance:
+\begin{itemize}
+	\item Resolution:        640x480
+	\item Frames per second: 30
+	\item Quality:           default
+	\item Port:              8081
+\end{itemize}
 \subsubsection{Core Utilization Display}
-Some text will come here! \\
+Core utilization display is shown at the bottom of the Figure \ref{fig:web}. It is responsible for gathering all the core usage information from the files, displaying a graph showing percentages, and calculating average core utilizations. These operations are handled within the server page core\texttt{\_}usage\texttt{\_}read\texttt{\_}rpi.php as shown in the Figure \ref{fig:weboverallbehavior}. This server page is embedded into the main web interface which is jqueryControl.php.
+
+For the efforts regarding creating a graph, a third party script library called 'jqPlot' \cite{jqplot} which runs within the jQuery framework is used.  The jqPlot offers various functions in order to create various plots such as bar graphs, line graphs, pie charts and 3D plots. In order to embed the plots into the web page, AJAX has been used.
+
 \subsection{Dummy Loads}
-Some text will come here! \\
+In order to fully utilize the developed parallel software on the high-level module under full load, several processes have been created which do dummy operations to use a certain percentage of the cores. To create dummy loads, two ideas are investigated:
+\begin{itemize}
+	\item \textbf{Basic load with very short periods:} While using this methodology achieves certain core percentage loads, having a very short delay is considered to be non model-safe and since periods of the processes are very short, timing logs resulted in deadline misses for further analysis. Therefore, a new method of using bigger load with bigger periods is analyzed.
+	
+	\item \textbf{Bigger load with bigger periods:} While using a bigger load with bigger period is also viable in achieving certain core percentages, the fluctuation in the core utilization values higher than the previous option. This fluctuation is trivial in our application as most of the processes behave this way.
+	
+	\lstinputlisting[caption=Dummy load created with Python , label=lst_dummyload, style=python]{content/listings/lst_dummyload.txt}
+	
+	In order to create the dummy loads in the code, matrix multiplication of random 1000 by 1000 matrices is processed. Python offers libraries to create those matrices as well as to multiply them. The basic load that is written in Python is given with the Listing \ref{lst_dummyload}.
+	
+	While various loads with the same matrix operation are created, it should be noted that they differ in their iteration periods which helps to achieve different core utilization percentages. The Table \ref{tbl_dummyloads} is a list of all dummy processes that are created in order to help with the utilization research:
+	
+	\begin{table}[h!]
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			Process Name & File Name & Period & Core Utilization \\
+			\hline
+			\hline
+			CycleWaster25\texttt{\_}1 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}1.py & 1.4 second & 25 percent \\
+			\hline
+			CycleWaster25\texttt{\_}2 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}2.py & 1.4 second &  25 percent \\
+			\hline
+			CycleWaster25\texttt{\_}3 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}3.py & 1.4 second &  25 percent \\
+			\hline
+			CycleWaster25\texttt{\_}4 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}4.py & 1.4 second &  25 percent \\
+			\hline
+			CycleWaster25\texttt{\_}5 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}5.py & 1.4 second &  25 percent \\
+			\hline
+			CycleWaster100 & burn\texttt{\_}cycles\texttt{\_}around100 & 0.50 second & 100 percent \\
+			\hline
+		\end{tabular}
+		\caption{Dummy load processes running in high-level module}
+		\label{tbl_dummyloads}
+	\end{table}
+	
+\end{itemize}
+
 \subsection{Image Processing with OpenCV}
 Some text will come here! \\
 \begin{figure}[!ht]
@@ -513,30 +617,55 @@ Some text will come here! \\
 	\label{fig:traffic_cone_detection}
 \end{figure}
 \subsection{Touchscreen Display}
-Some text will come here! \\
-%Including formulas for avg.slack time and so on...
+%Add state machine diagram for display modes
 \subsubsection{Touchscreen Display Features}
-Some text will come here! \\
+Touchscreen display that is embedded onto the Raspberry Pi 3 features several functions. It can not only show core utilization graph, average utilization percentages, timing performance, but also can be used to manage and allocate the processes of the high-level module. It also features connectivity settings in order to connect to an access point. Main interface and buttons are shown in the Figure \ref{fig:displaybuttons}. Using those buttons users can switch between display modes that are mentioned, as well as go to the Settings menu, exit the touchscreen application, and shutdown the Raspberry Pi. 
 \begin{figure}[!ht]
 	\includegraphics[scale=0.5]{content/images/displaybuttons.png}
 	\caption{Button functions of A4MCAR Touchscreen Display}
 	\label{fig:displaybuttons}
+\end{figure}
+
+\subsubsection{Touchscreen Display Implementation}
+ %explain used libraries pygame, psutil and touchscreen interfacing hdmi etc...
+%Linux tools and created .sh scripts will be in Section (5)
+As for the hardware, 5 inch HDMI touchscreen module from Waveshare has been used. This module can act as a primary monitor for Raspberry Pi. Addinitionally, the module features touchscreen controls using SPI pins of the Raspberry Pi GPIO. The module driver is installed and calibrated on Raspberry Pi in order to use the module as a primary monitor. 
+
+The touchscreen display process uses a third-party library from Python that is called Pygame. This library is exclusively developed for creating Python language based games but it is also useful for creating graphical interfaces. After the images for the interface have been designed, the main interface has been created using the functions from Pygame. 
+\begin{figure}[!ht]
+	\includegraphics[scale=0.6]{content/images/touschreen5inc.jpg}
+	\caption{5 inch Touchscreen module from Waveshare}
+	\label{fig:touschreen5inc}
+\end{figure}
+
+Pages that are developed for the touchscreen module is shown in the Figure \ref{fig:displays}. In order to understand the behavioral operation of the touchscreen process, the Figure in \ref{fig:TouchscreenProcessSM} should be observed in parallel with the Figure \ref{fig:displays}. 
+\begin{figure}[!ht]
+	\includegraphics[scale=0.6]{content/images/TouchscreenProcessSM.png}
+	\caption{State machine of touchscreen process for pages as modes}
+	\label{fig:TouchscreenProcessSM}
 \end{figure}
 \begin{figure}[!ht]
 	\includegraphics[scale=0.43]{content/images/displays.png}
 	\caption{Display modes from A4MCAR Touchscreen Display}
 	\label{fig:displays}
 \end{figure}
-\subsubsection{Touchscreen Display Implementation}
-Some text will come here! \\
- %explain used libraries pygame, psutil and touchscreen interfacing hdmi etc...
-%Linux tools and created .sh scripts will be in Section (5)
+
+The introduction page that is shown in Figure \ref{fig:displays} (a) is entered as the process is started. After displaying the logo for 3 seconds, other pages are entered. The pages (b) through (g) (shown in Figure \ref{fig:TouchscreenProcessSM}) is navigated with the help of the Next button in this state. Users can browse the settings page, shutdown or exit the touchscreen display process by clicking to the respective buttons.
+
+Since the touchscreen display process is responsible from displaying many information, libraries to gather up such information have been used. Furthermore, the data that is gathered in the timing logs and core usage logs have also been used in this application. Information that is gathered involve core usage percentages of both low-level and high-level modules, slack times of high-level processes, core frequency of high-level module, active cores count for the high-level module and core mapping list from the high-level module. The detailed information on how the information is extracted will be explained in the Section 5.
+
 \subsection{VNC Server}
-Some text will come here! \\
-\subsection{Additional Bash Scripts}
-Some text will come here! \\
+Virtual Network Computing (VNC) is a system that allows creating and managing virtual computers as well as connecting to them remotely \cite{vncmagazine}. While dealing with programming single board computers such as Raspberry Pi, it is used for viewing the single board computer desktop remotely. During the development of A4MCAR, a third-party application called XtightVNC is installed to both the Raspberry Pi and the development computer in order to connect to it without having to use external hardware.  The VNC server that is installed in Raspberry Pi, XtightVNC, is run at boot time and scheduled like any other process on the Raspberry Pi. While the server has not been manipulated during the development, in order to investigate the parallelism efficiency, this third party application should also be considered in order to get more accurate results. Further information regarding parallelism findings will be given in Section 5 and Section 6. 
+
 \section{Android Application Implementation}
 Some text will come here! \\
+\begin{figure}[!ht]
+	\includegraphics[scale=0.6]{content/images/androidapp.png}
+	\caption{Android Application Developed for Driving A4MCAR Remotely}
+	\label{fig:androidapp}
+\end{figure}
+
+
 %%% CHAPTER A4MCAR ------------------------------------end----
 %%% CHAPTER Information Tracing and System Modeling --------begin----
 \chapter{Information Tracing and System Management}
@@ -547,6 +676,7 @@ Some text will come here! \\
 \subsection{Distribution of Tasks to Cores}
 \subsection{Discovering Energy Consumption Features}
 \section{High-Level Module Information Tracing and System Management}
+%AppMonitor.sh CorePlacer.sh ProcessKill.sh
 \subsection{What kind of information needed?}
 \subsection{Information Tracing via Linux Kernel}
 \subsubsection{Linux Kernel Basics} %processes,threads, scheduling
@@ -557,12 +687,23 @@ Some text will come here! \\
 \subsubsection{objdump}
 \subsubsection{Using perf to get scheduling information}
 \subsubsection{trace-cmd and kernelshark}
-\subsubsection{lttng and TraceCompass}
+\begin{figure}[!ht]
+	\includegraphics[scale=0.55]{content/images/kernelshark.png}
+	\caption{Kernelshark running on Linux (Raspbian) OS}
+	\label{fig:kernelshark}
+\end{figure}
+\subsubsection{lttng, perf with babeltrace, and TraceCompass}
+\begin{figure}[!ht]
+	\includegraphics[scale=0.45]{content/images/tracecompass.png}
+	\caption{Eclipse TraceCompass running on Windows}
+	\label{fig:tracecompass}
+\end{figure}
 \subsubsection{proc folder}
 \subsubsection{psutil}
 \subsection{Distribution of Processes using taskset in Linux}
 \subsection{Discovering Energy Consumption Features in Linux with cpufrequtils}
 \subsection{Online Timing Analysis Features Implemented in High-level Module}
+%Including formulas for avg.slack time and so on...
 
 
 %%% CHAPTER Information Tracing and System Modeling --------end----
@@ -572,6 +713,21 @@ Some text will come here! \\
 \subsection{System Model}
 \subsection{Efficiency Model}
 \subsection{Evaluation of Different Distributions}
+%Give Everything in a table, which core mapped, period, execution time rougly, cpu core usage roughly.
+%Also use data from TraceCompass
+
+\begin{table}[h!]
+	\begin{tabular}{|l|l|l|}
+		\hline
+		Name & Title & Year \\
+		\hline
+		\hline
+		Philip K. Dick & Minority Report & 1956 \\
+		\hline
+	\end{tabular}
+	\caption{Einfache Tabelle}
+	\label{properties_coremonitoring}
+\end{table}
 \subsection{Results from APP4MC Distribution}
 \section{High-Level Module Parallelism}
 \subsection{System Model}

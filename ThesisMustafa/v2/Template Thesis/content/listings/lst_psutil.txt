@@ -1,0 +1,2 @@
+if (_PERIOD>_EXECUTION_TIME):
+		d = psutil.cpu_percent(interval=(_PERIOD - _EXECUTION_TIME), percpu=True)

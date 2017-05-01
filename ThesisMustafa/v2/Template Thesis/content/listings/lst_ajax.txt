@@ -1,0 +1,7 @@
+$.ajax({ 
+		url: "pythonControl.php?process=S0"+speed+"A0"+direction+gear+"E",
+		method: "GET",
+		data: {spd: speed, dr: direction, gr: gear} //This is not necessary in every request
+}).done(function( msg ) {
+		alert( "Data Saved: " + msg );
+});

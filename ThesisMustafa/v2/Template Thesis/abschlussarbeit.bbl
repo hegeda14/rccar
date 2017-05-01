@@ -131,6 +131,31 @@ https://cs.umd.edu/class/spring2015/cmsc411-0201/lectures/lecture04\texttt{\_}pe
 \bibitem{cpuandusertimes2}
 http://stackoverflow.com/questions/4310039/user-cpu-time-vs-system-cpu-time.
 
+\bibitem{psutil}
+https://pypi.python.org/pypi/psutil.
+
+\bibitem{socketpython}
+https://docs.python.org/2/library/socket.html.
+
+\bibitem{apacheguide}
+Igor Ljubuncic.
+\newblock Apache web server complete guide.
+\newblock 2011.
+
+\bibitem{webserver}
+http://www.clib.dauniv.ac.in/e-lecture/web%20server.pdf.
+
+\bibitem{mjpgstreamergithub}
+https://github.com/jacksonliam/mjpg-streamer.
+
+\bibitem{jqplot}
+
+
+\bibitem{vncmagazine}
+Tristan Richardson, Quentin Stafford-Fraser, Kenneth~R. Wood, and Andy Hopper.
+\newblock Virtual network computing.
+\newblock {\em IEEE Internet Computing}, 2(1), January/February 1998.
+
 \bibitem{springerparallel}
 Thomas Rauber and Gudula R{\"u}nger.
 \newblock {\em Parallel Programming}.

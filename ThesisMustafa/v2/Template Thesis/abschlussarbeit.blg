@@ -65,7 +65,24 @@ Warning--entry type for "cpuandusertimes" isn't style-file defined
 --line 268 of file bib/bib.bib
 Warning--entry type for "cpuandusertimes2" isn't style-file defined
 --line 275 of file bib/bib.bib
+Warning--entry type for "psutil" isn't style-file defined
+--line 282 of file bib/bib.bib
+Warning--entry type for "socketpython" isn't style-file defined
+--line 288 of file bib/bib.bib
+Warning--entry type for "webserver" isn't style-file defined
+--line 303 of file bib/bib.bib
+Warning--entry type for "mjpgstreamergithub" isn't style-file defined
+--line 310 of file bib/bib.bib
+Warning--entry type for "jqplot" isn't style-file defined
+--line 317 of file bib/bib.bib
+I was expecting a `,' or a `}'---line 318 of file bib/bib.bib
+ :  
+ :  title={http://www.jqplot.com/},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "importantpaper"
 Warning--empty booktitle in tileref
 Warning--empty note in sysml
-(There were 35 warnings)
+Warning--empty note in apacheguide
+Warning--all relevant fields are empty in jqplot
+(There was 1 error message)
