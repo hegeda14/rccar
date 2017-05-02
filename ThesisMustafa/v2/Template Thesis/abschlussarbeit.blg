@@ -81,8 +81,10 @@ Warning--entry type for "androidstudio" isn't style-file defined
 --line 342 of file bib/bib.bib
 Warning--entry type for "virtualjoystick" isn't style-file defined
 --line 349 of file bib/bib.bib
+Warning--entry type for "pygame" isn't style-file defined
+--line 356 of file bib/bib.bib
 Warning--I didn't find a database entry for "importantpaper"
 Warning--empty booktitle in tileref
 Warning--empty note in sysml
 Warning--empty note in apacheguide
-(There were 44 warnings)
+(There were 45 warnings)
