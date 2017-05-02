@@ -156,6 +156,15 @@ Tristan Richardson, Quentin Stafford-Fraser, Kenneth~R. Wood, and Andy Hopper.
 \newblock Virtual network computing.
 \newblock {\em IEEE Internet Computing}, 2(1), January/February 1998.
 
+\bibitem{androidwebsite}
+https://www.android.com/.
+
+\bibitem{androidstudio}
+https://developer.android.com/studio/index.html.
+
+\bibitem{virtualjoystick}
+https://github.com/controlwear/virtual-joystick-android.
+
 \bibitem{springerparallel}
 Thomas Rauber and Gudula R{\"u}nger.
 \newblock {\em Parallel Programming}.

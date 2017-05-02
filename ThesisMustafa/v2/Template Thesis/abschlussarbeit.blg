@@ -80,9 +80,19 @@ I was expecting a `,' or a `}'---line 318 of file bib/bib.bib
  :  title={http://www.jqplot.com/},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
+Warning--entry type for "androidwebsite" isn't style-file defined
+--line 335 of file bib/bib.bib
+Warning--entry type for "androidstudio" isn't style-file defined
+--line 342 of file bib/bib.bib
+"{" immediately follows a field part---line 344 of file bib/bib.bib
+ :  url=https://developer.android.com/studio/index.html
+ :                                                     {},
+I'm skipping whatever remains of this entry
+Warning--entry type for "virtualjoystick" isn't style-file defined
+--line 349 of file bib/bib.bib
 Warning--I didn't find a database entry for "importantpaper"
 Warning--empty booktitle in tileref
 Warning--empty note in sysml
 Warning--empty note in apacheguide
 Warning--all relevant fields are empty in jqplot
-(There was 1 error message)
+(There were 2 error messages)
