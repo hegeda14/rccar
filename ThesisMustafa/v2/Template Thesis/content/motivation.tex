@@ -74,8 +74,11 @@ Some text will come here! \\
 Some text will come here! \\
 \section{Scheduling} %and schedulers
 Some text will come here! \\
+
 \begin{figure}[!ht]
-	\includegraphics[scale=0.6]{content/images/scheduling.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/scheduling.pdf}
 	\caption{Timing properties for scheduling in multi-tasked systems \cite{timingposter}}
 	\label{fig:scheduling}
 \end{figure}
@@ -84,6 +87,8 @@ Some text will come here! \\
 \section{Importance of Multi-core computing to automotive industry: AUTOSAR} %add autosar architecture picture
 Some text will come here! \\
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.35]{content/images/autosararch.png}
 	\caption{AUTOSAR Architecture \cite{autosararch}}
 	\label{fig:autosararch}
@@ -104,6 +109,8 @@ Some text will come here! \\
 \section{System Overview}
 As introduced in the Introduction chapter, A4MCAR is a demonstrator RC-Car for the APP4MC development environment. A4MCAR provides a distributed multi-core architecture that allows the demonstration of embedded low-level and high-level applications. Pictures of the A4MCAR can be seen in Figure \ref{fig:a4mcar}.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.4]{content/images/a4mcar.png}
 	\caption{A4MCAR}
 	\label{fig:a4mcar}
@@ -111,6 +118,8 @@ As introduced in the Introduction chapter, A4MCAR is a demonstrator RC-Car for t
 \subsection{System Features}
 As A4MCAR targets automotive industry and parallelization studies done by APP4MC, it features not only sensing and actuation related features but also applications that would help with task to core distributions and parallelization performance evaluation. One could see the featured applications for the A4MCAR in Figure \ref{fig:tasksoverall}. 
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.3]{content/images/tasksoverall.png}
 	\caption{Applications developed and/or maintained for A4MCAR}
 	\label{fig:tasksoverall}
@@ -142,6 +151,8 @@ In order to investigate parallelization outcomes on Real-time Linux and make use
 \subsection{Infrastructure}  %x XMOS and Rpi: boards, (inkl. board pictures) processors, memory, languages, compilers, infrastructure
 Processing infrastructure of the A4MCAR is divided into two modules: Low-level module and high-level module. Low-level module uses a multi-core development kit XMOS xCore-200 eXplorerKIT, whereas high-level module uses a Raspberry Pi 3 which are both shown in Figure \ref{fig:boards}.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.6]{content/images/boards.jpg}
 	\caption{Development boards used in A4MCAR}
 	\label{fig:boards}
@@ -152,8 +163,10 @@ XMOS xCore-200 eXplorerKIT features XEF216-512, a powerful multi-core microcontr
 
 As the name of the development kit suggests, XEF216-512 uses XMOS' xCore-200 architecture. An illustration of xCore-200 architecture is given in Figure \ref{fig:XE216Architecture}.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.7]{content/images/XE216Architecture.png}
-	\caption{Illustration of XMOS' xCore-200 Architecture \ref{fig:XE216Architecture}}
+	\caption{Illustration of XMOS' xCore-200 Architecture \cite{xmosflyer}}
 	\label{fig:XE216Architecture}
 \end{figure}
 
@@ -163,13 +176,17 @@ In xCORE architecture, the synchronization of task communication is handled by e
 
 Since the xCORE features multiple cores unlike a traditional microcontroller, it should be clearly understood that the task interruption is not present in xCORE. This is illustrated delicately in the Figure \ref{fig:xmosvstraditional} \cite{xmosflyer}. If not stated otherwise in an xCORE application, all the tasks are placed to different logical cores. This means that all the tasks are executed completely parallel in hardware. When the tasks are shared in a core, then the multi-tasking features of the XMOS are invoked and parallelized just like in an RTOS from traditional microcontrollers \cite{xmosflyer}.
 \begin{figure}[!ht]
-	\includegraphics[scale=0.72]{content/images/xmosvstraditional.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/xmosvstraditional.png}
 	\caption{XMOS vs Traditional Microcontroller \cite{xmosflyer}}
 	\label{fig:xmosvstraditional}
 \end{figure}
 
 Most of the traditional microcontrollers including xCORE microcontrollers nowadays feature pipelining mechanism. The \textbf{instruction pipeline} is a set of data processing elements connected in series, where the output of one element is the input of the next one \cite{pipelinebook}. Via instruction pipelining, processors make use of the stages in order to use the clock to its full performance to reduce the time taken to execute instructions. This mechanism is also present in most of the XMOS processors with five stages. How instruction pipelining mechanism achieves faster instruction execution is illustrated in the Figure \ref{fig:pipeline} \cite{xmosflyer}.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.9]{content/images/pipeline.png}
 	\caption{Pipelining Explained on XMOS \cite{xmosflyer}}
 	\label{fig:pipeline}
@@ -177,6 +194,8 @@ Most of the traditional microcontrollers including xCORE microcontrollers nowada
 
 Traditionally, XMOS based microcontrollers are programmed via xTimeComposer, which is an Eclipse-based software development platform for XMOS based multi core microcontrollers with integrated features such as simulation, symbolic debugging, tracing, runtime instrumentation, and timing analysis with a static code timing analyzer called \textbf{XTA}\cite{xmosflyer}. As A4MCAR needs to make use of timing and performance values, some tracing tools and XTA has been widely used during the development. xTIMEComposer development environment windows are shown and illustrated in Figure \ref{fig:xtimecomposerwindows}.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.5]{content/images/xtimecomposerwindows.png}
 	\caption{xTIMEComposer 14.2.3 Development Environment Windows}
 	\label{fig:xtimecomposerwindows}
@@ -210,6 +229,8 @@ Raspberry Pi 3 can be booted with modern Linux-based operating system distributi
 
 A brief explanation of the architecture of Linux-based computers and as an extension the architecture of the Raspberry Pi 3 should be given in order to develop applications and understand how applications running on Linux work. With that idea in mind, high-level overview of the structure of  the \textbf{Linux kernel} and high-level layers in a Linux system which is given in Figure \ref{fig:linuxarchitecture} should be considered \cite{linuxkernelbook}.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.9]{content/images/linuxarchitecture.png}
 	\caption{High-level Linux system architecture \cite{linuxkernelbook}}
 	\label{fig:linuxarchitecture}
@@ -221,6 +242,8 @@ In the figure, it is seen that kernel space is not only responsible for accessin
 
 In A4MCAR high-level module, we mostly deal with processes and investigate ways to efficiently parallelize process-based system. In this regard, it is crucial to understand the process life cycle and how kernel schedules processes. This knowledge is described delicately by Mauerer \cite{linuxkernelbook} and Ward \cite{howlinuxworksbook}. Figure in \ref{fig:processlifecycle} depicts an illustration of how process life cycle works \cite{linuxkernelbook}.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=1]{content/images/processlifecycle.png}
 	\caption{Process Life Cycle in a Linux System \cite{linuxkernelbook}}
 	\label{fig:processlifecycle}
@@ -241,7 +264,9 @@ It is important to note that these states are traceable using Linux kernel acces
 % terminal, compilers, Nano, Vi, Emacs
 Raspberry Pi is conventionally programmed through Linux shell which is programmed and commanded with the help of Bash scripting language. There are several editors and compilers introduced for Linux shell in order to help developers write, compile, debug, and trace their applications. Most popular editors involve Nano, Vi, and Emacs which are editors that can run without GNU Graphical User Interface. An alternative way is to use open-source platforms such as Eclipse with correct extensions and plugins. The conventional and standart C compiler for the Unix platform GCC, and the standart Python shell can be accessed using all these compilers. For the sake of demonstration, the Linux shell which is running Emacs is shown in the Figure \ref{fig:linuxeditors}. It is important to note that in the development of A4MCAR, Nano and Emacs editors have been frequently used as Nano provides easiest way to interact with Linux shell and Emacs provides advanced features to compile and debug programs rapidly.
 \begin{figure}[!ht]
-	\includegraphics[scale=0.2]{content/images/linuxeditors.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[scale=0.26]{content/images/linuxeditors.png}
 	\caption{Linux Shell running Emacs}
 	\label{fig:linuxeditors}
 \end{figure}
@@ -249,7 +274,9 @@ Raspberry Pi is conventionally programmed through Linux shell which is programme
 \subsection{Hardware Design, Sensors and Protocols}
 One should care for a robust hardware design in order to avoid having software problem and safety related issues. In A4MCAR, a number of modules have been used alongside development kits in order to provide utility to the demonstrator. On the low-level module side, a light system, an RN-42 Bluetooth module, four SRF-02 ultrasonic sensors, a servo motor, a TBLE-02S electronic speed controller have been used. The high-level module side however only is connected to a touchscreen display and a Raspicam (Raspberry Pi camera). The overview of hardware connections, used protocols and device architectures are given in the Figure \ref{fig:hwoverview}.
 \begin{figure}[!ht]
-	\includegraphics[scale=0.37]{content/images/hwoverview.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/hwoverview.png}
 	\caption{Hardware overview of A4MCAR}
 	\label{fig:hwoverview}
 \end{figure}
@@ -258,18 +285,24 @@ The system uses various communication protocols, seen in Figure \ref{fig:hwoverv
 \begin{itemize}
 	\item \textbf{PWM:} In order to interact with servo motor, TBLE-02S electronic speed controller, and light system, Pulse Width Modulation (PWM) have been used. PWM is a type of modulated digital signal used mostly in control applications \cite{pwm}. By describing how much a signal is high and low with respect to time, duty cycle is measured which is given in percentage. One could observe the signal illustration given in \ref{fig:pwm} to see how commonly used duty cycles look like. In a control circuitry, by achieving various duty cycles, dimming a light or controlling the direction or speed of a motor is possible \cite{pwm}.
 	\begin{figure}[!ht]
+		\centering
+		\captionsetup{justification=centering}
 		\includegraphics[scale=0.5]{content/images/pwm.jpg}
 		\caption{Duty cycle example in pulse width modulation \cite{pwm}}
 		\label{fig:pwm}
 	\end{figure}
 	\item \textbf{UART:} The RN-42 is a master-slave configurable bluetooth module (shown in Figure \ref{fig:hwoverview}) that is programmed using AT commands via UART. In A4MCAR, a RN-42 bluetooth module is used in order to interact with the bluetooth of Android devices. UART (Universal Asynchronous Receiver and Transmitter) is a communication protocol that achieves simple communication of two equivalent nodes. UART is a half-duplex and asynchronous serial protocol that doesn't communicate using a clock. Half-duplex nature of UART makes it so that transmitting and receiving lines can not be achieved simultaneously. It became a universal format because it is being used in telephone lines and USB ports of computers for decades. Number of bits transmitted or received per second is referred to as baud rate and it is standardized to values such as 9600, 14400, 19200, 38400, 57600, and 115200. Basic UART data packet is given in Figure \ref{fig:uartpacket}. The figure should depict that the basic format usually contains 6 to 8 data bits and start and stop bits to mark start and stop of the data packet. It should be noted that there are various formats with different sizes \cite{uart}.
 	\begin{figure}[!ht]
+		\centering
+		\captionsetup{justification=centering}
 		\includegraphics[scale=0.5]{content/images/uartpacket.png}
 		\caption{Simple UART data packet \cite{uart}}
 		\label{fig:uartpacket}
 	\end{figure}
 	\item \textbf{I\textsuperscript{2}C:} The proximity sensor network of A4MCAR that consists of four SRF-02 sonar sensors uses I\textsuperscript{2}C communication protocol in order to address devices in the network and obtain distance information in centimeters. I\textsuperscript{2}C (Inter integrated circuit) is a communication protocol that is intended for short distance that handles the communication of multiple slave units with one or multiple master units. Its advantage is that it uses only two wires in order to handle communication between many devices. Compared to the very similar serial communication protocol SPI, I\textsuperscript{2}C can support a multi-master system with up to 1008 slave devices. I\textsuperscript{2}C chips consist of two signals: clock signal SCL and data signal SDA. Since signals are open drain, each signal must have a pull-up resistor. The communication is handled by sending the address of the register and the data to be sent in order to write into the registers of the I\textsuperscript{2}C chips. A basic frame with 7 address bits and 8 data bits is given in \ref{fig:i2cframe} \cite{i2c}.
 	\begin{figure}[!ht]
+		\centering
+		\captionsetup{justification=centering}
 		\includegraphics[scale=0.4]{content/images/i2cframe.png}
 		\caption{I2C protocol frame\cite{i2c}}
 		\label{fig:i2cframe}
@@ -285,7 +318,9 @@ The system uses various communication protocols, seen in Figure \ref{fig:hwoverv
 
 In the Figure \ref{fig:RCCAR_Schematics}, the complete circuit schematics regarding A4MCAR low-level module is given. Interfacing sensors and devices should be done accordingly in order to program peripherals with xCORE-200 board properly. 
 \begin{figure}[!ht]
-	\includegraphics[scale=0.25]{content/images/RCCAR_Schematics.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/RCCAR_Schematics.png}
 	\caption{Low-level module schematics of A4MCAR using XMOS xCore-200 eXplorerKIT}
 	\label{fig:RCCAR_Schematics}
 \end{figure}
@@ -294,6 +329,8 @@ It should be noticed in the Figure \ref{fig:RCCAR_Schematics} there are three un
 
 Second problem that has occurred due to low-level having multiple motors connected is the noise and excessive current drain into boards due to motors. Since that could lead to damaged development boards and chips, the solution of using two seperate power lines have been introduced. That is, using a 5V 10000mAh Powerbank to power the development boards xCORE-200 eXplorerKIT and Raspberry Pi 3 using micro-USB connectors, while using an external battery for the motors. That would reduce the noise that occurs in the signal lines since the ground lines of each battery would be isolated. In order to be on the safe side, a 5V 1A rated isolated voltage converter XP Power JCA0605S05 \cite{isolatedvoltageconverter} is also used in order to convert 7.2V battery voltage to power servo motor which is typically powered with 5V. Since datasheet of XP Power JCA0605S05 suggests that an emission circuit should be constructed, the circuit in Figure \ref{fig:emissionckt} has been constructed and printed along the isolated converter in order to meet the suggested emission level B \cite{isolatedvoltageconverter}.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=1.5]{content/images/emissionckt.png}
 	\caption{XP Power JCA0605S05 Level B Emission Circuit \cite{isolatedvoltageconverter}}
 	\label{fig:emissionckt}
@@ -304,7 +341,9 @@ Applying the mentioned solutions, problems faced due to power have been dealt wi
 \subsection{Mechanical Design}
 In A4MCAR, the RC-Car chassis kit Tamiya TT01-E \cite{tt01e} have been used. The chassis kit consists of several parts and it is a kit that is used in professional RC-Car competitions. The Figure in \ref{fig:rccarparts} show the constructed Tamiya TT01-E chassis kit along with several other equipment that have been used in A4MCAR. Since the A4MCAR does not only have basic driving elements but also has many other equipments that are related to sensing, processing, and power, the space on the RC-Car would not be enough to hold the extra elements. Therefore, an extension to the existing chassis was needed. To solve this problem, an extension have been designed that is able to hold other elements used in the board with holders and screws. 
 \begin{figure}[!ht]
-	\includegraphics[scale=0.45]{content/images/rccarparts.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/rccarparts.png}
 	\caption{Tamiya TT01-E Chassis and other parts used in A4MCAR}
 	\label{fig:rccarparts}
 \end{figure}
@@ -312,6 +351,8 @@ In A4MCAR, the RC-Car chassis kit Tamiya TT01-E \cite{tt01e} have been used. The
 An illustration of the mechanical overview that shows the designed model is shown in \ref{fig:mechanicaloverview}. This mechanical layer has been designed using a 3D model software and the software output with the .STL extension is used for the layer production using a 3D printer. Using appropriote 1mm to 2mm diameter screws, the constructed body is installed to the main chassis as an extension layer and the other elements are installed on top of this extension layer. 
 \newpage
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.25]{content/images/mechanicaloverview.png}
 	\caption{Mechanical overview of the A4MCAR}
 	\label{fig:mechanicaloverview}
@@ -321,7 +362,9 @@ An illustration of the mechanical overview that shows the designed model is show
 \subsection{Overview}
 As mentioned in the "Low-level Module Infrastructure" subsection, Low-level module software has been implemented on xCORE-200 eXplorerKIT using the development platform xTIMEcomposer 14.2.3. While developing with xC on xTIMEcomposer, task communication is handled by channels and interfaces. In A4MCAR, for the sake of structured development with defined variable types, interfaces are more commonly used for user-defined tasks. An software design analogy of equating provided interfaces to client interfaces in xC could be made. Similarly, required interfaces could be thought of server interfaces in xC. Using this analogy, the designed software components could be illustrated with a SysML \cite{sysml} diagram as shown in Figure \ref{fig:sysmlxmostasksbrief}.
 \begin{figure}[!ht]
-	\includegraphics[scale=0.62]{content/images/sysmlxmostasksbrief.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/sysmlxmostasksbrief.png}
 	\caption{Brief block diagram for the developed tasks and interfaces for low-level module}
 	\label{fig:sysmlxmostasksbrief}
 \end{figure}
@@ -329,6 +372,8 @@ As mentioned in the "Low-level Module Infrastructure" subsection, Low-level modu
 The complete component diagram of the software that is developed is shown in Figure \ref{fig:sysmlxmostasks}.
 
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.21]{content/images/sysmlxmostasks.png}
 	\caption{Block diagram for the developed tasks and interfaces for low-level module}
 	\label{fig:sysmlxmostasks}
@@ -338,10 +383,16 @@ In xC, two essential concepts are worthy to explain in order to understand multi
 
 \lstinputlisting[caption=An Example Task Decleration in xC, label=lst_exampletaskxc, style=xc]{content/listings/lst_exampletaskxc.txt}
 
+In the code given with the Listing \ref{lst_exampletaskxc}, it is seen that the function prototype has several arguments as client and server interfaces. Those interfaces indicate the role of the data communication using the respective interface. When a task function takes client interface as an argument, it means that the task function sends data to that interface, whereas when a task function receives a message using event handles it is given by the server keyword.
+
 \lstinputlisting[caption=An Example of How Tasks are Placed and Interconnected in xC, label=lst_howtasksconnectxc, style=xc]{content/listings/lst_howtasksconnectxc.txt}
 
-All the source and header that are developed is shown in Figure \ref{fig:fullfiletree}.
+The Listing in \ref{lst_howtasksconnectxc} shows in which tile and at which core a task will be places. Using the par keyword (given in Line 1), every line of code in that particular code block will be paralellized using the scheduler of xCORE. 
+
+All the source and header files that contain task functions and that are developed in this fashion are shown in Figure \ref{fig:fullfiletree}.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.8]{content/images/fullfiletree.png}
 	\caption{Full file tree for all the tasks developed for low-level module}
 	\label{fig:fullfiletree}
@@ -349,10 +400,10 @@ All the source and header that are developed is shown in Figure \ref{fig:fullfil
 \newpage
 \subsection{Actuation}
 \subsubsection{Acceleration}
-For acceleration and deceleration, a brushless DC motor is controlled by delivering PWM signals to the TBLE02-S Electronic Speed Controller. The task and how it is connected to other tasks can be seen in Figure \ref{fig:sysmlxmostasksbrief}. In order to deliver the desired PWM signal, a task that use timers have been created which is given in Listing \ref{lst_tble02task}. The created template of the task in Listing \ref{lst_tble02task} is not only used for the acceleration task, but also used for the other tasks that use PWM signaling to control other devices. In the task, it is seen that in order to generate the desired duty cycle, the amount of time for which the output signal must be on and off are calculated and the output port is toggled accordingly. The port toggling is done inside a timer event that is dynamically delayed given the calculated on and off times.
+For acceleration and deceleration, a brushless DC motor is controlled by delivering PWM signals to the TBLE02-S Electronic Speed Controller. The task and how it is connected to other tasks can be seen in Figure \ref{fig:sysmlxmostasksbrief}. In order to deliver the desired PWM signal, a task that use timers have been created which is given in Listing \ref{lst_tble02task}. The created template of the task in Listing \ref{lst_tble02task} is not only used for the acceleration task, but also used for the other tasks that use PWM signaling to control other devices. In the task, it is seen that in order to generate the desired duty cycle, the amount of time for which the output signal must be on and off are calculated (Lines 19 through 38) and the output port is toggled (Lines 39 through 48) accordingly. The port toggling is done inside a timer event (shown in Line 17) that is dynamically delayed given the calculated on and off times.
 \newpage
 \lstinputlisting[caption=Created PWM signaling template, label=lst_tble02task, style=xc]{content/listings/lst_tble02task.txt}
-The desired PWM pulse widths are taken from the TBLE02-S Electronic Speed Controller manual and the overall PWM period has been set to 20ms which is the standard period for most of the controllers. Since the motor speed is very high and it is not desired in our application, the pulse widths are manipulated in order to reach lower speeds in full force. The interface 'control\texttt{\_}if' is used that delivers a number between 0-100 in order to express speeding information while also delivering a direction value which is either FORWARD (0) or REVERSE (1). With this information, the developed task is able to control the acceleration of the A4MCAR. Additionaly, the acceleration task is modified in order to control acceleration using proximity sensor inputs for safety. Minimum safest front distance is set to 50 centimeters.
+The desired PWM pulse widths are taken from the TBLE02-S Electronic Speed Controller manual and the overall PWM period has been set to 20ms which is the standard period for most of the controllers. Since the motor speed is very high and it is not desired in our application, the pulse widths are manipulated in order to reach lower speeds in full force. The interface 'control\texttt{\_}if' (Line 9 and Line 13) is used that delivers a number between 0-100 in order to express speeding information while also delivering a direction value which is either FORWARD (0) or REVERSE (1). With this information, the developed task is able to control the acceleration of the A4MCAR. Additionaly, the acceleration task is modified in order to control acceleration using proximity sensor inputs for safety. Minimum safest front distance is set to 50 centimeters.
 
 Acceleration task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with acceleration task having the function name 'Task\texttt{\_}DriveTBLE02E'.
 
@@ -360,7 +411,7 @@ Acceleration task and how it data is transferred between other tasks can be seen
 Steering of the A4MCAR is done with the help of a Servo motor that is also controlled with PWM signaling. As mentioned in the Acceleration subsection, the tasks that are related to PWM use the template from Listing \ref{lst_tble02task}. For steering the interface 'steering\texttt{\_}if' is used which is set to 0 for very left and 100 for very right positions. Additionally, the two changes that are made to the acceleration task (from Listing \ref{lst_tble02task}) could be listed as follows:
 \begin{itemize}
 	\item The pulse widths are altered in order to conform a servo motor's behavior which is usually 1.5ms pulse for stationary position, 1-1.5ms for left steering and 1.5-2.0ms for right steering. For A4MCAR, these values are set to 1.3-1.5ms for left steering and 1.5-1.75ms for right steering in order to get rid of the issue of servo motor turning more than its holding platform could handle and damaging its gears.
-	\item On and off periods are calculated differently as compared to what is shown in the Listing \ref{lst_tble02task}. The Listing in \ref{lst_servotask} shows the calculation of the periods.
+	\item On and off periods are calculated differently as compared to what is shown in the Listing \ref{lst_tble02task}. The Listing in \ref{lst_servotask} shows the calculation of the periods using the pulse width values.
 	\lstinputlisting[caption=Calculation of on and off times for servo control, label=lst_servotask, style=xc]{content/listings/lst_servotask.txt}
 \end{itemize}
 
@@ -369,7 +420,9 @@ Steering task and how it data is transferred between other tasks can be seen in 
 \subsubsection{Braking}
 %brushless motor needed, three connections (Orange connection), and mode setup. (source: tble02s manual)
 \subsection{Proximity Sensing}
-As stated in the overview section, the proximity sensing is handled via four SRF-02 ultrasonic sensors connected to an I\textsuperscript{2}C network. In the software, 'lib\texttt{\_}i2c' from XMOS is used in order to handle communication with the peripheral. The proximity sensing task is a periodic task that polls individual ultrasonic sensors using their respective addresses in order to obtain what is the distance perceived by front, rear, left, and right sensors. In order to handle this in a modular manner, device addresses are placed in the header file. Furthermore, the task that maintains I\textsuperscript{2}C communication alongside proximity sensing task is seperated and the two tasks are connected using 'i2c\texttt{\_}master\texttt{\_}if' interface. The sensing is achieved every 0.2 seconds and when the sensing of each sensor completes, the value is sent by its respective interface 'distancesensor\texttt{\_}if' to the acceleration task. The proximity sensing task is given in Listing \ref{lst_proximitysensing}.
+As stated in the overview section, the proximity sensing is handled via four SRF-02 ultrasonic sensors connected to an I\textsuperscript{2}C network. In the software, 'lib\texttt{\_}i2c' from XMOS is used in order to handle communication with the peripheral. 
+
+The pseudo version of the proximity sensing task is given in Listing \ref{lst_proximitysensing}. The proximity sensing task is a periodic task that polls individual ultrasonic sensors using their respective addresses (Line 12 and Line 13) in order to obtain what is the distance perceived by front, rear, left, and right sensors. In order to handle this in a modular manner, device addresses are placed in the header file. Furthermore, the task that maintains I\textsuperscript{2}C communication alongside proximity sensing task is seperated and the two tasks are connected using 'i2c\texttt{\_}master\texttt{\_}if' interface (shown in Line 1). The sensing is achieved every 0.2 seconds within a timer event (shown in Line 7) and when the sensing of each sensor complete, the value is sent by its respective interface 'distancesensor\texttt{\_}if' to the acceleration task (Line 22). 
 
 \lstinputlisting[caption=Proximity sensing task, label=lst_proximitysensing, style=xc]{content/listings/lst_proximitysensing.txt}
 
@@ -383,16 +436,21 @@ Light system task and how it data is transferred between other tasks can be seen
 \subsection{Bluetooth Communication}
 In order to configure RN42 Bluetooth module \cite{rn42datasheet} as slave to communicate with the Android phone and receive data, UART communication have been implemented using 'lib\texttt{\_}uart' from XMOS. In order for the UART communication to be handled correctly, CTS and RTS pins of the RN42 module should be short circuited since a data flow protocol such as RS232 is not being used in our application. UART library has been configured to have a buffer size of 512 bytes and baudrate of 115200bps which is a high speed UART data rate standard that conforms many microcontrollers. Several tasks have been implemented such as uart\texttt{\_}rx, uart\texttt{\_}tx, and the Bluetooth communication task in order to implement bluetooth control feature into the A4MCAR. While uart\texttt{\_}rx and uart\texttt{\_}tx tasks handle port access and data transfer in respective directions using sporadic events, the Bluetooth communication task is responsible for configuring the Bluetooth module and receiving driving commands. For an easy communication, a string with a number of bytes is constructed and interpreted by the Bluetooth communication task. This string which we refer to as 'driving command' is given and explained in the Figure \ref{fig:bluetoothcommand}. 
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.6]{content/images/bluetoothcommand.png}
 	\caption{Driving command format generated to contain speed, angle, and gear information}
 	\label{fig:bluetoothcommand}
 \end{figure}
-The command parsing and how the received data is accumulated to other tasks is given in the Listing \ref{lst_bluetoothtask}. Other integrated features in the Bluetooth communication task involve the following:
+The command parsing and how the received data is accumulated to other tasks is given in the Listing \ref{lst_bluetoothtask}. 
+
+The operation of this portion of the task could be explained as follows:
 \begin{itemize}
-	\item Receiving driving command using uart receive event, integrity check for the command, and parsing in order to obtain speed, angle, and gear values.
-	\item Since driving command is not the only source of actuation data source for A4MCAR and it could have overriding commands over Ethernet from high-level module image processing task, ethernet override is handled with an integrated event in the Bluetooth communication task.
-	\item Reverse driving mode is not entered by the TBLE02-S Electronic Speed Controller unless the motor fully stops. To achieve this, normally user has to select reverse mode several times from the controller. In order to get rid of this issue, once the reverse command is received, software enters reverse mode a few times with very short delays, thus users can select it only once and enjoy driving without having to select the mode a few times by themselves.
-	\item A preprocessor macro has been defined which is RN42\texttt{\_}INITIAL\texttt{\_}CONFIG. This macro activates the configuration function which configures RN42 module with slave mode. It should be noted that the configuration should only be done once per bluetooth module.
+	\item A preprocessor macro has been defined which is RN42\texttt{\_}INITIAL\texttt{\_}CONFIG. This macro activates the configuration function which configures RN42 module with slave mode. This configuration is shown in the Line 2 of the Listing \ref{lst_bluetoothtask}. It should be noted that the configuration should only be done once per bluetooth module.
+	\item Receiving driving command using uart receive event (Line 7), integrity check for the command (Line 20), and parsing in order to obtain speed, angle, and gear values (Line 21) has been implemented.
+	\item Since driving command is not the only source of actuation data source for A4MCAR and it could have overriding commands over Ethernet from high-level module image processing task, ethernet override is handled with an integrated event in the Bluetooth communication task (shown in Line 11).
+	\item Reverse driving mode is not entered by the TBLE02-S Electronic Speed Controller unless the motor fully stops. To achieve this, normally user has to select reverse mode several times from the controller. In order to get rid of this issue, once the reverse command is received, software enters reverse mode a few times with very short delays, thus users can select it only once and enjoy driving without having to select the mode a few times by themselves. This implementation is shown in Line 23 in the Listing \ref{lst_bluetoothtask}.
+	\item The obtained control and steering values are sent to the associated task functions in order to handle the actuation (Lines 27 through 29).
 \end{itemize}
 \lstinputlisting[caption=Bluetooth communication task pseudocode, label=lst_bluetoothtask, style=xc]{content/listings/lst_bluetoothtask.txt}
 
@@ -414,6 +472,8 @@ Core monitoring task that is responsible for finding core utilization percentage
 
 \lstinputlisting[caption=Finding busy and idle cycles in XS1 architecture, label=lst_coremonitoring, style=xc]{content/listings/lst_coremonitoring.txt}
 
+In the given listing, the status register 'XS1\texttt{\_}PSWITCH\texttt{\_}T0\texttt{\_}SR\texttt{\_}NUM' and the processor state has been read (Line 5 and Line 9, respectively) for every core in order to find which core is idle and which core is busy at that moment. 
+
 The obtained busy and idle cycles are then converted to a percentage value with the following Equation:
 \begin{equation}
 core\texttt{\_}usage\texttt{\_}percentage=\frac{busy\texttt{\_}cycles}{busy\texttt{\_}cycles + idle\texttt{\_}cycles} 100
@@ -432,7 +492,9 @@ Core monitoring tasks and how their data is transferred between other tasks can 
 \subsection{Overview}
 High-level module of the A4MCAR is composed of several processes running under Raspbian \cite{raspbiandownload} distribution of Linux Operating System that is designed for Raspberry Pi 3. In the section "High-level Infrastructure", the operation of Linux kernel is briefly introduced. During the compilation, debugging and execution of the developed processes, several development platforms such as Python 2.7 shell \cite{python27}, GNU C Compiler (GCC) \cite{gcc} have been used. Although it should be noted that remote development using Eclipse IDE \cite{remotedebuggingeclipse} is also possible, the development of A4MCAR has been done using the aforementioned development platforms by connecting into the Raspberry Pi 3 using SSH connection. While the main processes involve C, C++, Python, and Bash \cite{bash} languages, via the capability of the integrated web server to serve web pages, several other scripting and markup languages such as HTML, CSS, JavaScript (with AJAX \cite{howajaxworks} and jQuery \cite{jquery} frameworks) have also been used. The operation of the user developed processes along with third party utility processes that are integrated into the system are given in the Figure \ref{fig:rpicomponents}. 
 \begin{figure}[!ht]
-	\includegraphics[scale=0.62]{content/images/rpicomponents.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/rpicomponents.png}
 	\caption{High-level module software component diagram including files and file accesses}
 	\label{fig:rpicomponents}
 \end{figure}
@@ -480,7 +542,16 @@ While each processes are constructed in the manner that is explained, the overal
 An example of the timing skeleton for Python-running processes are given in the Listing \ref{lst_timingskeleton}. The user-defined Python-running applications have been created using this template, and the space that is left for task content is used for the actual features of that task.
 
 \lstinputlisting[caption=Online timing features implemented in Python language, label=lst_timingskeleton, style=python]{content/listings/lst_timingskeleton.txt}
-%Now explain Scheduling section bari!!!
+
+In the given code by the Listing \ref{lst_timingskeleton}, following remarks should be made:
+
+\begin{itemize}
+	\item Lines 2 through 5 indicate which libraries are used.
+	\item Between the Lines 8 and 13, global variables to hold the time values are initialized.
+	\item A timing data logging function is created (Lines 15 through 33). In this function, timing log file is opened (Lines 23 through 26), execution time is calculated after end time is recorded (Line 27 and Line 28) and then all the timing values at that instant is written into the opened text file (Lines 29 through 33). After the write operation the file is closed (Line 33).
+	\item In the loop section of the process start time and previous slack time are recorded (Lines 37 through 38) before the actual task content (Lines 40 through 42) is executed. After the task content is executed, timing log is created by using the timing data logging function (Line 45) and then the task is delayed according to its period by finding the delay\texttt{\_}time that was given in (4.5). This delay operation is also given in the Listing \ref{lst_timingskeleton} at the Lines 48 through 49.  
+\end{itemize}
+
 \subsection{Core Reader}
 To help with the utilization assessment and visualization purposes, a core reading process is developed that monitors cores every three seconds and writes the core usage information to a text file. For that purpose, the 'psutil' module \cite{psutil} from Python is used. The 'psutil' module allows to find information of Linux processes and cores. The core usage information for four cores of Raspberry Pi that is logged into a text file is then used for visualization in the web interface and the touchscreen interface. 
 
@@ -492,6 +563,8 @@ With the help of a simple function the core usage information is easily retrieve
 In the section "Low-level Module Implementation", TCP server implementation using the xCORE-200 eXplorerKIT has been discussed. In order to maintain a sound data communication between low-level module and high-level module, a TCP client process is implemented in the high-level module. Since Python language offers very stable and easy-to-use threading support and exception handling, the TCP client implementation is done using Python. The 'socket' library \cite{socketpython} in Python is capable of delivering several functions and objects that are used for this purpose. The TCP client has been configured to have non-blocking data reception with 0.5 second period and with a timeout of 2 seconds. While the data reception is handled by an additional thread, operations such as connecting to the server, binding to the server port, and sending data periodically is handled in the main thread. The overriding driving command which is send to the low-level module is read from file before data transmission. It should be also noted that after the data reception the content is written to the file which is responsible for holding low-level module core usage information. This communication between high-level module and low-level module is illustrated in the deployment diagram given by the Figure \ref{fig:ethernetdeployment}.
 
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.7]{content/images/ethernetdeployment.png}
 	\caption{Deployment diagram showing Ethernet communication}
 	\label{fig:ethernetdeployment}
@@ -504,6 +577,8 @@ In order to develop a web interface for the A4MCAR, a web server is installed an
 Just like a Telnet server, a web server is bind to a port in a wireless or wired network. Although for different communication channels one could use different ports, web servers usually use the port number 80. Another difference of a web server is that unlike a telnet server, the data that is sent and interpreted is in the HTTP (HyperText Transfer Protocol) \cite{webserver} format unlike the TCP (Transmission Control Protocol) format. How web servers and web browsers work in order to help us visualize web pages is illustrated with the Figure \ref{fig:webserver} \cite{webserver}. \\
 
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.5]{content/images/webserver.png}
 	\caption{How web servers and web browsers work illustrated \cite{webserver}}
 	\label{fig:webserver}
@@ -518,6 +593,8 @@ The following technologies have been used in order to create dynamical webpage:
 	\item \textbf{jQuery:} jQuery \cite{jquery} is a JavaScript framework that is written using JavaScript which helps to use define scripts easier than it is with the JavaScript. It is open-source and widely used in almost every web page.
 	\item \textbf{AJAX:} AJAX \cite{howajaxworks} is another framework for JavaScript which is used for handling dynamical HTTP requests without having to refresh the page. With the objects it delivers, events such as key press, mouse events, conditional events could be sent to server and processed. The returned data could be processed using JavaScript in order to dynamically update the page content \cite{howajaxworks}. This mentioned working principle is illustrated in the Figure \ref{fig:ajaxpng} \cite{howajaxworks}. 
 	\begin{figure}[!ht]
+		\centering
+		\captionsetup{justification=centering}
 		\includegraphics[scale=0.7]{content/images/ajax.png}
 		\caption{How AJAX works \cite{howajaxworks}}
 		\label{fig:ajaxpng}
@@ -527,7 +604,9 @@ The following technologies have been used in order to create dynamical webpage:
 \subsubsection{Web Page Design and Implementation} 
 The web page that has been designed for users is shown in the Figure \ref{fig:web}. In the web page, it is seen that a camera stream, control buttons and sliders, and an information graph that shows core utilization in both high-level and low-level module are embedded. For the static design of the web page HTML and CSS are used, while the dynamical behavior of the web page is supported with jQuery, AJAX, and Python. The dynamical behavior of the individual parts of the web page will be explained in the following sections.
 \begin{figure}[!ht]
-	\includegraphics[scale=0.42]{content/images/web.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/web.png}
 	\caption{Web interface of A4MCAR}
 	\label{fig:web}
 \end{figure}
@@ -535,7 +614,9 @@ The web page that has been designed for users is shown in the Figure \ref{fig:we
 The overall dynamical behavior of the web page is illustrated in component diagram that is seen in the Figure \ref{fig:weboverallbehavior}. In the diagram, it should be noticed that the server page jqueryControl.php is the main web interface. It has some server pages and files embedded to it in order to function as a whole to deliver the features of controlling A4MCAR, core utilization display, and camera streaming. In the following subsections, each of these tasks will be explained using the component diagram shown in the Figure \ref{fig:weboverallbehavior}.
 
 \begin{figure}[!ht]
-	\includegraphics[scale=0.64]{content/images/weboverallbehavior.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/weboverallbehavior.png}
 	\caption{Component diagram showing how communication inside the created web-interface works}
 	\label{fig:weboverallbehavior}
 \end{figure}
@@ -554,6 +635,8 @@ For the camera streaming, the third party module mjpg-streamer \cite{mjpgstreame
 For the stream, Raspberry Pi camera version 2.0 with CSI interface is used which is shown in the Figure \ref{fig:rpicam20}.
 
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.5]{content/images/rpicam20.jpg}
 	\caption{Raspberry Pi camera v2.0}
 	\label{fig:rpicam20}
@@ -612,6 +695,8 @@ In order to fully utilize the developed parallel software on the high-level modu
 \subsection{Image Processing with OpenCV}
 Some text will come here! \\
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.15]{content/images/traffic_cone_detection.png}
 	\caption{Developed Image Processing Application}
 	\label{fig:traffic_cone_detection}
@@ -621,6 +706,8 @@ Some text will come here! \\
 \subsubsection{Touchscreen Display Features}
 Touchscreen display that is embedded onto the Raspberry Pi 3 features several functions. It can not only show core utilization graph, average utilization percentages, timing performance, but also can be used to manage and allocate the processes of the high-level module. It also features connectivity settings in order to connect to an access point. Main interface and buttons are shown in the Figure \ref{fig:displaybuttons}. Using those buttons users can switch between display modes that are mentioned, as well as go to the Settings menu, exit the touchscreen application, and shutdown the Raspberry Pi. 
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.5]{content/images/displaybuttons.png}
 	\caption{Button functions of A4MCAR Touchscreen Display}
 	\label{fig:displaybuttons}
@@ -629,10 +716,13 @@ Touchscreen display that is embedded onto the Raspberry Pi 3 features several fu
 \subsubsection{Touchscreen Display Implementation}
  %explain used libraries pygame, psutil and touchscreen interfacing hdmi etc...
 %Linux tools and created .sh scripts will be in Section (5)
+%Maybe add how graph is made...
 As for the hardware, 5 inch HDMI touchscreen module from Waveshare has been used. This module can act as a primary monitor for Raspberry Pi. Addinitionally, the module features touchscreen controls using SPI pins of the Raspberry Pi GPIO. The module driver is installed and calibrated on Raspberry Pi in order to use the module as a primary monitor. 
 
 The touchscreen display process uses a third-party library from Python that is called Pygame \cite{pygame}. This library is exclusively developed for creating Python language based games but it is also useful for creating graphical interfaces. After the images for the interface have been designed, the main interface has been created using the functions from Pygame. 
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.6]{content/images/touschreen5inc.jpg}
 	\caption{5 inch Touchscreen module from Waveshare}
 	\label{fig:touschreen5inc}
@@ -640,12 +730,16 @@ The touchscreen display process uses a third-party library from Python that is c
 
 Pages that are developed for the touchscreen module is shown in the Figure \ref{fig:displays}. In order to understand the behavioral operation of the touchscreen process, the Figure in \ref{fig:TouchscreenProcessSM} should be observed in parallel with the Figure \ref{fig:displays}. 
 \begin{figure}[!ht]
-	\includegraphics[scale=0.6]{content/images/TouchscreenProcessSM.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/TouchscreenProcessSM.png}
 	\caption{State machine of touchscreen process for pages as modes}
 	\label{fig:TouchscreenProcessSM}
 \end{figure}
 \begin{figure}[!ht]
-	\includegraphics[scale=0.43]{content/images/displays.png}
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/displays.png}
 	\caption{Display modes from A4MCAR Touchscreen Display}
 	\label{fig:displays}
 \end{figure}
@@ -666,11 +760,15 @@ The developed Android application interface is given in Figure \ref{fig:androida
 
 For the joystick controls, a third-party Android library that is called virtual-joystick \cite{virtualjoystick} is used. Using this library, one can import the joystick mechanism into their applications. In order to handle the data created from the joystick, an on move event handler has been created which is a callback function which acts every time the joystick is moved. Using this callback function, the angle and strength information that results from the joystick has been transformed to conform to the driving command (Figure \ref{fig:bluetoothcommand}). With the help of the Figure \ref{fig:joystickpie}, this data transformation can be explained easily.
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.6]{content/images/androidapp.png}
 	\caption{Android Application Developed for Driving A4MCAR Remotely}
 	\label{fig:androidapp}
 \end{figure}
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.6]{content/images/joystickpie.png}
 	\caption{Joystick angle transformation to construct driving command}
 	\label{fig:joystickpie}
@@ -690,72 +788,92 @@ As it is clearly shown in the Figure \ref{fig:joystickpie}, there are certain de
 	\end{equation} 
 \end{itemize}
 After the calculations, with the current gear setup the data is sent to the low-level module using the bluetooth functionality of the Android application.
-
-
-
 %%% CHAPTER A4MCAR ------------------------------------end----
-%%% CHAPTER Information Tracing and System Modeling --------begin----
+
+
+%%% CHAPTER Information Tracing and System Management --------begin----
 \chapter{Information Tracing and System Management}
-Some text \\
+\section{Introduction}
+After the distributed multi-core system is developed and defined, the evaluations regarding different software distributions are needed in order to parallelize the system efficiently. For that purpose, one should know how to manage the multi-core system. While managing the system is quite important to maintain and properly optimize the system to its full capabilities, one requires information regarding the system itself in order to achieve this optimization. As an example, the textbook methodology of extracting useful information from a software is to analyze online and offline trace of the system. 
+
+In order to obtain information regarding a software such as number of instructions, how tasks are scheduled, timing details regarding tasks, core frequencies, energy consumption rates, the following techniques are mostly used:
+\begin{itemize}
+	\item \textbf{Static Binary Analysis:} Static binary analysis is a reverse engineering methodology that helps in finding errors in code such as the errors that involve non-determinism \cite{staticanalysisPRE}. It is essentially analyzing the binaries that are created from C and C++ programs to have another approach to traditional error finding methodologies such as testing and code inspection \cite{staticanalysisPRE}. It is important to keep in mind that in the static binary analysis, the program is not executed \cite{dynamicanalysisphd}. Therefore, the information regarding execution and timing are not provided while the instruction information could be extracted. However, it should be noted that some processor or platform specific tools can estimate the timing based on the number of instructions and the processor information. With the static binary analysis, the disassembly information which is the list of all the instructions could be observed. With the help of the binary analyzer tools, detailed information on number of function calls, nesting, and cyclic complexity could be observed \cite{staticvsdynamicanalysis}. %cyclomatic complexity.
+	%this is simply observing disassembly
+	\item \textbf{Profiling (Dynamic Analysis):}
+	Dynamic analysis, also called profiling, is the methodology of analyzing the program by considering its execution in contrast to the static binary analysis \cite{dynamicanalysisphd}. Dynamic analysis is often done by using tools and it is done in order to get information of how a program is executed on a real or virtual processor \cite{staticvsdynamicanalysis}. While dynamic analysis is quite useful for identifying vulnerabilities in a runtime environment and obtaining information such as timing of execution, it can not guarantee the full test coverage of the source code \cite{staticvsdynamicanalysis}. Using dynamic binary instrumentation (DBI) tools for Linux platform this way, one can obtain information such as CPU time, execution times, memory and I/O of a program \cite{dynamicanalysisphd}. 
+	\item \textbf{Tracing:} Tracing is a methodology which is often mixed with profiling. According to IPM \cite{IPM}, a trace records the chronological information of the execution of a program or a system via logging the the execution with timestamps, whereas a profile is the collection of performance events and timings for a program's execution as a whole. Therefore, it can be said that the scheduling of an Operating system could be analyzed with the help of tracing. 
+	
+	The A4MCAR involves tracing features that are not only supplied by Linux tools but are also developed within the project. It can be generalized that online tracing is a type of tracing that is done while the program is being executed using buffered logs while offline tracing is done after the program has executed using the entire logs. Regarding this information, it can be said that the developed tracing features are created for online tracing in A4MCAR while the existing tooling is used for offline tracing. The following sections consist of the information regarding tracing developments as well as the tooling support regarding tracing a Linux system.
+	\item \textbf{System Monitoring:} Unlike static binary analysis and profiling, system monitoring \cite{systemmonitoring} is done within the entire system and it is used for obtaining useful information regarding the system performance as a whole. Operating systems (especially Linux platform) usually have system logs which could be observed via system monitoring in order to extract useful information regarding the system performance. Speaking for A4MCAR, the performance values such as core frequency and core utilization information are extracted using system monitoring.
+	%We did this with psutil, also proc folder
+\end{itemize}
+
+%Here comes our motivations
+%What kind of information needed?
+%Why?
+%In APP4MC
+%Why do we do this?
+%In both low and hight level modules
+%This chapter will involve....
+Low-level and high-level modules of A4MCAR requires several information. To start with, in order to model the software system of both modules with A4MCAR, the number of instructions, task iteration periods, and if exists event occurrance types are needed. This could be achieved by using static binary analysis method in the low-level module due to the fact that XTA tool can estimate instructions, timing, and path from the static binary analysis. The information of number of instructions and periods are obtained from the high-level module Linux platform by using tools that perform profiling. Although using a static binary analysis tool is possible, using a profiler tool was selected as the option for easement of the process. Secondly, system monitoring is needed in both of the modules. While the system monitoring is done using registers in the memory for the low-level module, it is achieved by using Linux kernel tools in high-level module. System monitoring in A4MCAR is essentially needed in order to obtain core utilization percentages, live CPU frequency and active core count. Finally, the profiling and tracing of the programs of the high-level module is needed in order to evaluate parallelization performance and visualize how processes are scheduled. The data that are obtained from profiling and tracing involve slack time, execution times, start and end times.
+
+In this chapter, the aforementioned techniques for system analysis will be discussed with the emphasis of their applicability on a real distributed multi-core system that involves elements from a low-level multi-core micro-controller and a high-level single board computer that is running on x86/Linux platform in order to elaborate  modeling, managing, profiling, tracing of systems and evaluation of various software distributions.
+
 \section{Low-Level Module Information Tracing and System Management}
-Some text \\
-\subsection{What kind of information needed?}
-Some text \\
-\subsection{Information Tracing via xTimeScheduler}
+\subsection{Binary Analysis via XTA}
 Some text \\
 \subsection{Information Tracing via APP4MC}
 Some text \\
 \subsection{Distribution of Tasks to Cores}
 Some text \\
+\subsection{System Monitoring in xCORE}
+Some text \\
 \subsection{Discovering Energy Consumption Features}
 Some text \\
 \section{High-Level Module Information Tracing and System Management}
+
+\subsection{Obtaining Information}
+\subsubsection{Binary Analysis of Instructions}
+% perf stat, objdump, dis
 Some text \\
-%AppMonitor.sh CorePlacer.sh ProcessKill.sh
-\subsection{What kind of information needed?}
+\subsubsection{Process Management, Monitoring, and Profiling}
+% top (incl threads), ps,getting pid, getting killing processes using ps, proc folder, psutil
+%valgrind etc. profiling
+% starting, killing a process, ProcessKill.sh ProcessStart.sh, AppMonitor.sh
 Some text \\
-\subsection{Information Tracing via Linux Kernel}
+\subsubsection{System Monitoring for Linux Platform}
+%proc folder, psutil, top, ps
 Some text \\
-\subsubsection{Linux Kernel Basics} %processes,threads, scheduling
-Some text \\
-\subsubsection{top} %including threads
-Some text \\
-\subsubsection{Process Management using ps Command} % getting pid, getting killing processes
-Some text \\
-\subsubsection{Using perf to get number of instructions}
-Some text \\
-\subsubsection{dis}
-Some text \\
-\subsubsection{objdump}
-Some text \\
-\subsubsection{Using perf to get scheduling information}
-Some text \\
-\subsubsection{trace-cmd and kernelshark}
+\subsubsection{Tracing the System to Obtain Scheduling Information}
+% perf record, trace-cmd, kernelshark, perf w/babeltrace, CTF, lttng, TraceCompass
 Some text \\
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.55]{content/images/kernelshark.png}
 	\caption{Kernelshark running on Linux (Raspbian) OS}
 	\label{fig:kernelshark}
 \end{figure}
-\subsubsection{lttng, perf with babeltrace, and TraceCompass}
-Some text \\
+
 \begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
 	\includegraphics[scale=0.45]{content/images/tracecompass.png}
 	\caption{Eclipse TraceCompass running on Windows}
 	\label{fig:tracecompass}
 \end{figure}
-\subsubsection{proc folder}
-Some text \\
-\subsubsection{psutil}
-Some text \\
-\subsection{Distribution of Processes using taskset in Linux}
-Some text \\
-\subsection{Discovering Energy Consumption Features in Linux with cpufrequtils}
-Some text \\
-\subsection{Online Timing Analysis Features Implemented in High-level Module}
-Some text \\
-%Including formulas for avg.slack time and so on...
 
+\subsection{Process Mapping}
+% taskset, CorePlacer.sh
+Some text \\
+\subsection{Discovering Energy Consumption Features}
+%cpufrequtils
+Some text \\
+\subsection{Online Timing Analysis Features in A4MCAR}
+%whats implemented before in every app, and whats implemented in the touchscreen display (main process)
+%Including formulas for avg.slack time and so on...
+Some text \\
 
 %%% CHAPTER Information Tracing and System Modeling --------end----
 %%% CHAPTER Effective Parallelism Evaluation --------begin----

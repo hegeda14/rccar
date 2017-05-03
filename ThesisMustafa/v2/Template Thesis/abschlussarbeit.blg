@@ -83,8 +83,17 @@ Warning--entry type for "virtualjoystick" isn't style-file defined
 --line 349 of file bib/bib.bib
 Warning--entry type for "pygame" isn't style-file defined
 --line 356 of file bib/bib.bib
+Warning--entry type for "staticvsdynamicanalysis" isn't style-file defined
+--line 362 of file bib/bib.bib
+Warning--entry type for "staticanalysisPRE" isn't style-file defined
+--line 369 of file bib/bib.bib
+Warning--entry type for "IPM" isn't style-file defined
+--line 385 of file bib/bib.bib
+Warning--entry type for "systemmonitoring" isn't style-file defined
+--line 392 of file bib/bib.bib
 Warning--I didn't find a database entry for "importantpaper"
 Warning--empty booktitle in tileref
 Warning--empty note in sysml
 Warning--empty note in apacheguide
-(There were 45 warnings)
+Warning--empty note in dynamicanalysisphd
+(There were 50 warnings)

@@ -28,6 +28,9 @@ David Wentzlaff, Patrick Griffin, and Henry~Hoffmann et~al.
 \newblock {On-chip Interconnection Architecture of the Tile Processor}.
 \newblock pages 15--31. IEEE Computer Society, 2017.
 
+\bibitem{xmosflyer}
+http://www.xmos.com/download/private/xcore-architecture-flyer%281.1%29.pdf.
+
 \bibitem{xmosdatasheet}
 http://www.xmos.com/download/private/xe216-512-tq128-datasheet%281.12%29.pdf.
 
@@ -35,9 +38,6 @@ http://www.xmos.com/download/private/xe216-512-tq128-datasheet%281.12%29.pdf.
 Leonard Kleinrock.
 \newblock Analysis of a time-shared processor.
 \newblock {\em Naval Research Logistics Quarterly}, 11(1):59--73, 1964.
-
-\bibitem{xmosflyer}
-http://www.xmos.com/download/private/xcore-architecture-flyer%281.1%29.pdf.
 
 \bibitem{pipelinebook}
 Carl Hamacher.
@@ -167,6 +167,23 @@ https://developer.android.com/studio/index.html.
 
 \bibitem{virtualjoystick}
 https://github.com/controlwear/virtual-joystick-android.
+
+\bibitem{staticanalysisPRE}
+https://www.cs.ru.nl/e.poll/ufrj/5\texttt{\_}staticanalysisprefast.pdf.
+
+\bibitem{dynamicanalysisphd}
+Nicholas Nethercote.
+\newblock Dynamic binary analysis and instrumentation.
+\newblock 2004.
+
+\bibitem{staticvsdynamicanalysis}
+http://www.testingexcellence.com/static-analysis-vs-dynamic-analysis-software-testing/.
+
+\bibitem{IPM}
+http://ipm-hpc.sourceforge.net/profilingvstracing.html.
+
+\bibitem{systemmonitoring}
+http://www.tldp.org/ldp/sag/html/system-monitoring.html.
 
 \bibitem{springerparallel}
 Thomas Rauber and Gudula R{\"u}nger.
