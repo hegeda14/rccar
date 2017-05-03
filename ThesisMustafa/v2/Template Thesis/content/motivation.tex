@@ -418,7 +418,30 @@ Steering of the A4MCAR is done with the help of a Servo motor that is also contr
 Steering task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with steering task having the function name 'Task\texttt{\_}SteeringServo'.
 
 \subsubsection{Braking}
+Since the motor that is used in A4MCAR is a brushed motor, it does not come with braking features. Therefore, a braking mechanism was needed to be implemented. For this purpose, a 2-channel relay board from Sainsmart (shown in Figure \ref{fig:relayboard}) has been used to short circuit the terminals of the motor when braking is required. In the Figure \ref{fig:brake}, the circuit portion that is controlling the operation of the brake is given.
 %brushless motor needed, three connections (Orange connection), and mode setup. (source: tble02s manual)
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[scale=0.4]{content/images/relayboard.jpg}
+	\caption{Two-channel relay board that is used for braking}
+	\label{fig:relayboard}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[scale=0.5]{content/images/brake.png}
+	\caption{Relay circuit to control braking}
+	\label{fig:brake}
+\end{figure}
+
+Normally, the terminals of the motor and the motor driver (Electronic Speed Controller TBLE-02) are connected together. Using the switching mechanism that is provided by the relays, motor terminals are short circuited when the relays are activated. 
+
+Relays have three essential input or output signals that are used in operation. Those signals involve IN, NO, NC, and COM. With simple switching in mind, the operation of the relay can be described. When IN signal is low, COM is short circuited with NO whereas when IN signal is high, COM signal is short circuited to NC signal. 
+
+By using this mechanism and using the COM signal output, motor is supplied by motor driver normally and motor terminals are short circuited when the braking is required. The control has been done by giving the same input to IN1 and IN2 signals, IN signals for each relay, from the xCORE-200 eXplorerKIT. The integration of the braking mechanism to the system is done at the acceleration task, in which when the received speed is zero, brake is activated. Since the relay works with only 5V input signal for the IN terminal, BRAKEctrl signal, given in Figure \ref{fig:brake} is connected to the xCORE-200 eXplorerKIT through a 5V to 3.3V converter, which is also shown in the schematics given in the Figure \ref{fig:RCCAR_Schematics}.
+
 \subsection{Proximity Sensing}
 As stated in the overview section, the proximity sensing is handled via four SRF-02 ultrasonic sensors connected to an I\textsuperscript{2}C network. In the software, 'lib\texttt{\_}i2c' from XMOS is used in order to handle communication with the peripheral. 
 
@@ -780,11 +803,11 @@ As it is clearly shown in the Figure \ref{fig:joystickpie}, there are certain de
 \begin{itemize}
 	\item If the angle is between 30 degrees and 150 degrees, the transformed new angle is calculated using the following:
 	\begin{equation}
-	\theta\textsubscript{new}=(1 - \frac{\theta - 30}{120}) 100
+	\theta\textsubscript{new}=\left(1 - \frac{\theta - 30}{120}\right) 100
 	\end{equation}
 	\item If the angle is between 210 degrees and 330 degrees, the transformed new angle is calculated using the following:
 	\begin{equation}
-	\theta\textsubscript{new}=(\frac{\theta - 210}{120}) 100
+	\theta\textsubscript{new}=\left(\frac{\theta - 210}{120}\right) 100
 	\end{equation} 
 \end{itemize}
 After the calculations, with the current gear setup the data is sent to the low-level module using the bluetooth functionality of the Android application.
