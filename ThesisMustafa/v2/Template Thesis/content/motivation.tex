@@ -163,7 +163,7 @@ In xCORE architecture, the synchronization of task communication is handled by e
 
 Since the xCORE features multiple cores unlike a traditional microcontroller, it should be clearly understood that the task interruption is not present in xCORE. This is illustrated delicately in the Figure \ref{fig:xmosvstraditional} \cite{xmosflyer}. If not stated otherwise in an xCORE application, all the tasks are placed to different logical cores. This means that all the tasks are executed completely parallel in hardware. When the tasks are shared in a core, then the multi-tasking features of the XMOS are invoked and parallelized just like in an RTOS from traditional microcontrollers \cite{xmosflyer}.
 \begin{figure}[!ht]
-	\includegraphics[scale=0.72]{content/images/xmosvstraditional.png}
+	\includegraphics[width=\textwidth]{content/images/xmosvstraditional.png}
 	\caption{XMOS vs Traditional Microcontroller \cite{xmosflyer}}
 	\label{fig:xmosvstraditional}
 \end{figure}
@@ -177,7 +177,7 @@ Most of the traditional microcontrollers including xCORE microcontrollers nowada
 
 Traditionally, XMOS based microcontrollers are programmed via xTimeComposer, which is an Eclipse-based software development platform for XMOS based multi core microcontrollers with integrated features such as simulation, symbolic debugging, tracing, runtime instrumentation, and timing analysis with a static code timing analyzer called \textbf{XTA}\cite{xmosflyer}. As A4MCAR needs to make use of timing and performance values, some tracing tools and XTA has been widely used during the development. xTIMEComposer development environment windows are shown and illustrated in Figure \ref{fig:xtimecomposerwindows}.
 \begin{figure}[!ht]
-	\includegraphics[scale=0.5]{content/images/xtimecomposerwindows.png}
+	\includegraphics[width=\textwidth]{content/images/xtimecomposerwindows.png}
 	\caption{xTIMEComposer 14.2.3 Development Environment Windows}
 	\label{fig:xtimecomposerwindows}
 \end{figure} \\
@@ -210,7 +210,7 @@ Raspberry Pi 3 can be booted with modern Linux-based operating system distributi
 
 A brief explanation of the architecture of Linux-based computers and as an extension the architecture of the Raspberry Pi 3 should be given in order to develop applications and understand how applications running on Linux work. With that idea in mind, high-level overview of the structure of  the \textbf{Linux kernel} and high-level layers in a Linux system which is given in Figure \ref{fig:linuxarchitecture} should be considered \cite{linuxkernelbook}.
 \begin{figure}[!ht]
-	\includegraphics[scale=0.9]{content/images/linuxarchitecture.png}
+	\includegraphics[width=\textwidth]{content/images/plka.pdf}
 	\caption{High-level Linux system architecture \cite{linuxkernelbook}}
 	\label{fig:linuxarchitecture}
 \end{figure}
@@ -682,11 +682,11 @@ As it is clearly shown in the Figure \ref{fig:joystickpie}, there are certain de
 \begin{itemize}
 	\item If the angle is between 30 degrees and 150 degrees, the transformed new angle is calculated using the following:
 	\begin{equation}
-	\theta\textsubscript{new}=(1 - \frac{\theta - 30}{120}) 100
+	\theta\textsubscript{new}=\left(1 - \frac{\theta - 30}{120}\right) 100
 	\end{equation}
 	\item If the angle is between 210 degrees and 330 degrees, the transformed new angle is calculated using the following:
 	\begin{equation}
-	\theta\textsubscript{new}=(\frac{\theta - 210}{120}) 100
+	\theta\textsubscript{new}=\left(\frac{\theta - 210}{120}\right) 100
 	\end{equation} 
 \end{itemize}
 After the calculations, with the current gear setup the data is sent to the low-level module using the bluetooth functionality of the Android application.
