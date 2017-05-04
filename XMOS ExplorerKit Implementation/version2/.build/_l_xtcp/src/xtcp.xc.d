@@ -16,6 +16,7 @@
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_uip/clock-arch.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_server_impl.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_uip/uip_xtcp.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xassert/lib_xassert/api/xassert.h
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xassert/lib_xassert/api/xassert.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/core_debug.h
 
 

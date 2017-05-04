@@ -1,0 +1,113 @@
+<taskgraph>
+<task>
+  <name>delay_seconds</name>
+  <inFunction>delay_seconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>delay_milliseconds</name>
+  <inFunction>delay_milliseconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>delay_microseconds</name>
+  <inFunction>delay_microseconds</inFunction>
+  <calledFunction>delay_ticks_longlong</calledFunction>
+</task>
+<task>
+  <name>_safe_memcmp</name>
+  <inFunction>_safe_memcmp</inFunction>
+</task>
+<task>
+  <name>_safe_memmove</name>
+  <inFunction>_safe_memmove</inFunction>
+</task>
+<task>
+  <name>_safe_memset</name>
+  <inFunction>_safe_memset</inFunction>
+</task>
+<task>
+  <name>wait_for_data_and_read</name>
+  <inFunction>wait_for_data_and_read</inFunction>
+</task>
+<task>
+  <name>multi_uart_data_ready</name>
+  <inFunction>multi_uart_data_ready</inFunction>
+</task>
+<task>
+  <name>read_reg</name>
+  <inFunction>read_reg</inFunction>
+</task>
+<task>
+  <name>write_reg</name>
+  <inFunction>write_reg</inFunction>
+</task>
+<task>
+  <name>read_reg8_addr16</name>
+  <inFunction>read_reg8_addr16</inFunction>
+</task>
+<task>
+  <name>write_reg8_addr16</name>
+  <inFunction>write_reg8_addr16</inFunction>
+</task>
+<task>
+  <name>read_reg16</name>
+  <inFunction>read_reg16</inFunction>
+</task>
+<task>
+  <name>write_reg16</name>
+  <inFunction>write_reg16</inFunction>
+</task>
+<task>
+  <name>read_reg16_addr8</name>
+  <inFunction>read_reg16_addr8</inFunction>
+</task>
+<task>
+  <name>write_reg16_addr8</name>
+  <inFunction>write_reg16_addr8</inFunction>
+</task>
+<task>
+  <name>mii_get_notification_chanend</name>
+  <inFunction>mii_get_notification_chanend</inFunction>
+</task>
+<task>
+  <name>mii_incoming_packet_</name>
+  <inFunction>mii_incoming_packet_</inFunction>
+</task>
+<task>
+  <name>mii_get_out_chanend</name>
+  <inFunction>mii_get_out_chanend</inFunction>
+</task>
+<task>
+  <name>mii_packet_sent_</name>
+  <inFunction>mii_packet_sent_</inFunction>
+  <calledFunction>__builtin_chkct</calledFunction>
+</task>
+<task>
+  <name>send_packet</name>
+  <inFunction>send_packet</inFunction>
+  <endOfSeqCalledFunction>_complete_send_packet</endOfSeqCalledFunction>
+</task>
+<task>
+  <name>send_timed_packet</name>
+  <inFunction>send_timed_packet</inFunction>
+</task>
+<task>
+  <name>ethernet_receive_hp_packet</name>
+  <inFunction>ethernet_receive_hp_packet</inFunction>
+</task>
+<task>
+  <name>ethernet_send_hp_packet</name>
+  <inFunction>ethernet_send_hp_packet</inFunction>
+  <endOfSeqCalledFunction>sout_char_array</endOfSeqCalledFunction>
+</task>
+<task>
+  <name>xtcp_complete_send</name>
+  <inFunction>xtcp_complete_send</inFunction>
+  <calledFunction>xtcp_send</calledFunction>
+</task>
+<task>
+  <name>Task_MonitorCoresInATile</name>
+  <inFunction>Task_MonitorCoresInATile</inFunction>
+</task>
+</taskgraph>

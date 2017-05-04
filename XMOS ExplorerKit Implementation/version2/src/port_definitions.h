@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -24,6 +24,9 @@
 
 // Motor Speed Controller Defines
     on tile[0] : port PortMotorSpeedController = XS1_PORT_1G; //J8
+
+// Relay to brake the motor is controlled through:
+    on tile[0] : port PortBRAKEctrl = XS1_PORT_1O; //GPIO J1 connector (Tile0), Signal X0D38
 
 // I2C Related Ports
     on tile[0] : port PortSCL = XS1_PORT_1E; // D12

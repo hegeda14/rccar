@@ -1,8 +1,7 @@
 ethernet_app.o: ../src/ethernet_app.xc \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/ethernet_app.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/defines.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/ethernet_app.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/defines.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_gpio/lib_gpio/api/gpio.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_logging/lib_logging/api/debug_print.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_uart/api/uart.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_uart/src/multi_uart_impl.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_i2c/api/i2c.h \
@@ -15,5 +14,7 @@ ethernet_app.o: ../src/ethernet_app.xc \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_otpinfo/api/otp_board_info.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_conf_derived.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_impl.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProject/src/string_itoa.h
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_logging/lib_logging/api/debug_print.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/string_itoa.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/core_debug.h
 

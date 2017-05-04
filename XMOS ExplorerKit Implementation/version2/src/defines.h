@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -14,7 +14,7 @@
 #include <xs1.h>
 #include <platform.h>
 #include <gpio.h>
-#include "debug_print.h"
+
 #include <print.h>
 #include <string.h>
 #include <stdio.h>
@@ -23,6 +23,8 @@
 #include <uart.h>
 #include <i2c.h>
 #include <xtcp.h>
+#include <debug_print.h>
+
 
 // Defines ---------------------------------------------------------------------
 
@@ -63,7 +65,7 @@ typedef interface ethernet_to_cmdparser_if
 
 typedef interface core_stats_if
 {
-    void ShareCoreUsage (short int core0, short int core1, short int core2, short int core3, short int core4, short int core5, short int core6, short int core7);
+    void ShareCoreUsage (unsigned int core0, unsigned int core1, unsigned int core2, unsigned int core3, unsigned int core4, unsigned int core5, unsigned int core6, unsigned int core7);
 } core_stats_if;
 
 typedef interface lightstate_if

@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -9,8 +9,12 @@
  ************************************************************************************/
 
 #include "core_monitoring.h"
+#include <debug_print.h>
+#include "core_debug.h"
 
-[[combinable]]
+
+
+//[[combinable]]
 void Task_MonitorCoresInATile(client core_stats_if core_stats_interface)
 {
       short int t;
@@ -20,9 +24,10 @@ void Task_MonitorCoresInATile(client core_stats_if core_stats_interface)
 
       print_time = poll_time + PRINT_MS;
 
-      short int core_busy[8];
-      short int core_idle[8];
-      short int core_usage[8];
+      unsigned int core_busy[8];
+      unsigned int core_idle[8];
+      unsigned int core_usage[8];
+      float core_usage_f[8];
 
       for (t = 0; t <= 7; t++) {
             core_busy[t] = 0;
@@ -30,6 +35,9 @@ void Task_MonitorCoresInATile(client core_stats_if core_stats_interface)
       }
 
       int tile_id = get_local_tile_id();
+      int cntr = 0;
+
+      PrintCoreAndTileInformation("Task_MonitorCoresInATile");
 
       while(1)
       {
@@ -46,28 +54,76 @@ void Task_MonitorCoresInATile(client core_stats_if core_stats_interface)
                             core_busy[6], core_idle[6],
                             core_busy[7], core_idle[7]);*/
                           for (t = 0; t <= 7; t++) {
-                                  if (core_idle[t] + core_busy[t] > 0) {
-                                      core_usage[t] = (100 * core_busy[t]) / (core_busy[t] + core_idle[t]);
+                                  int numerator = (core_busy[t] * 100);
+                                  int denominator = (core_idle[t] + core_busy[t]);
+
+                                  if (denominator) {
+                                      core_usage[t] = core_usage[t] + numerator / denominator;
                                   } else {
-                                      core_usage[t] = 0;
+                                      core_usage[t] = core_usage[t] + 0;
                                   }
+
+#ifdef FLOATING_POINT_SHOW
+                                  float numerator_f = (core_busy[t] * 100.0f);
+                                  float denominator_f = (core_idle[t] + core_busy[t]);
+                                  if (denominator_f) {
+                                      core_usage_f[t] = core_usage_f[t] + numerator_f / denominator_f;
+
+                                  } else {
+                                      core_usage_f[t] = core_usage_f[t] + 0;
+                                  }
+#endif
+
                           }
-                          core_stats_interface.ShareCoreUsage (core_usage[0],
-                                                             core_usage[1],
-                                                             core_usage[2],
-                                                             core_usage[3],
-                                                             core_usage[4],
-                                                             core_usage[5],
-                                                             core_usage[6],
-                                                             core_usage[7]);
-                        /*printf("tile[%x]: %d %d %d %d %d %d %d %d\n",tile_id, core_usage[0],
-                                                        core_usage[1],
-                                                        core_usage[2],
-                                                        core_usage[3],
-                                                        core_usage[4],
-                                                        core_usage[5],
-                                                        core_usage[6],
-                                                        core_usage[7]);*/
+
+                          cntr = cntr + 1;
+                          if (cntr == 5)
+                          {
+                                  if (core_usage[0]>=0 && core_usage[0]<=500)
+                                  {
+                                      core_stats_interface.ShareCoreUsage (core_usage[0] /5,
+                                                                         core_usage[1] /5,
+                                                                         core_usage[2] /5,
+                                                                         core_usage[3] /5,
+                                                                         core_usage[4] /5,
+                                                                         core_usage[5] /5,
+                                                                         core_usage[6] /5,
+                                                                         core_usage[7] /5);
+                                      debug_printf("tile[%x]: %d %d %d %d %d %d %d %d\n\n",tile_id, core_usage[0] /5,
+                                                                        core_usage[1] /5,
+                                                                        core_usage[2] /5,
+                                                                        core_usage[3] /5,
+                                                                        core_usage[4] /5,
+                                                                        core_usage[5] /5,
+                                                                        core_usage[6] /5,
+                                                                        core_usage[7] /5);
+#ifdef FLOATING_POINT_SHOW
+                                      for (int i = 0; i < 8; ++i) core_usage_f[i] /= 5.0f;
+                                      printf("tile[%x]: %4.3f %4.3f %4.3f %4.3f %4.3f %4.3f %4.3f %4.3\n\n",tile_id, core_usage_f[0],
+                                                              core_usage_f[1],
+                                                              core_usage_f[2],
+                                                              core_usage_f[3],
+                                                              core_usage_f[4],
+                                                              core_usage_f[5],
+                                                              core_usage_f[6],
+                                                              core_usage_f[7]);
+#endif
+
+                                      for (t = 0; t <= 7; t++) {
+                                          core_usage[t] = 0;
+                                          core_usage_f[t] = 0;
+                                      }
+                                      cntr = 0;
+                                  }
+                                  else
+                                  {
+                                        for (t = 0; t <= 7; t++) {
+                                            core_usage[t] = 0;
+                                            core_usage_f[t] = 0;
+                                        }
+                                        cntr = 0;
+                                  }
+                        }
 
                         for (t = 0; t <= 7; t++) {
                             core_busy[t] = 0;
@@ -76,7 +132,9 @@ void Task_MonitorCoresInATile(client core_stats_if core_stats_interface)
                         print_time += PRINT_MS;
                         break;
 
-                  case poll_tmr when timerafter(poll_time) :> void:
+
+                  //For maximum possible polling rate..
+                  default://case poll_tmr when timerafter(poll_time) :> void:
                         for (t = 0; t <= 7; t++) {
                               // Read the processor state
                               int ps_value = getps(0x100*t+4);
@@ -93,10 +151,35 @@ void Task_MonitorCoresInATile(client core_stats_if core_stats_interface)
                                       } else {
                                           core_busy[t] += 1;
                                       }
-                                   }
+                              }
+
+                        }
+                        break;
+
+                  //For a custom polling rate, specified in core_monitoring.h, please use following instead of default: statement
+                  //that is defined above.
+                  /*case poll_tmr when timerafter(poll_time) :> void:
+                        for (t = 0; t <= 7; t++) {
+                              // Read the processor state
+                              int ps_value = getps(0x100*t+4);
+
+                              // Read the status register
+                              unsigned int sr_value;
+                              read_pswitch_reg(tile_id, XS1_PSWITCH_T0_SR_NUM+t, sr_value);
+
+                              const int in_use = (ps_value & 0x1);
+                              const int waiting = (sr_value >> 6) & 0x1;
+                              if (in_use) {
+                                      if (waiting) {
+                                          core_idle[t] += 1;
+                                      } else {
+                                          core_busy[t] += 1;
+                                      }
+                              }
+
                         }
                         poll_time += POLLING_MS;
-                        break;
+                        break;*/
             }
       }
 }

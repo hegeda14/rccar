@@ -698,6 +698,13 @@
     </values>
   </arg>
 </fCall>
+<fCall name="PrintCoreAndTileInformation" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="delay_milliseconds" global="true" numArgs="1">
   <arg num="0">
     <values>
@@ -959,7 +966,7 @@
     </values>
   </arg>
 </fCall>
-<fCall name="Task_DriveTBLE02S_MotorController" global="true" numArgs="3" impId="5">
+<fCall name="Task_DriveTBLE02S_MotorController" global="true" numArgs="4" impId="5">
   <arg num="0">
     <values>
       <value type="unknown"/>
@@ -967,10 +974,15 @@
   </arg>
   <arg num="1">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="2">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
+  <arg num="3">
     <values>
       <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>

@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -14,20 +14,9 @@
 #include <stdio.h>
 #include <string.h>
 #include "string_itoa.h"
+#include "core_debug.h"
 
 
-
-/** Simple TCP reflection thread.
- *
- * This thread does two things:
- *
- *   - Reponds to incoming packets on port INCOMING_PORT and
- *     with a packet with the same content back to the sender.
- *   - If "stream" is received, thread responds a continuous
- *     stream of data with characteres counting up until another
- *     value is received. In this case, the connection isn't closed.
- *
- */
 
 void Task_EthernetAppTCPServer(chanend c_xtcp, client ethernet_to_cmdparser_if cmd_from_ethernet_to_override, server core_stats_if core_stats_interface_tile0,
                                                                                                               server core_stats_if core_stats_interface_tile1)
@@ -60,13 +49,15 @@ void Task_EthernetAppTCPServer(chanend c_xtcp, client ethernet_to_cmdparser_if c
       int connected = 0; //Connection flag
       //Timer to delay send operation --added by us
       timer tmr2;
-      unsigned int time2, delay2 = 2000 * MILLISECOND;
+      unsigned int time2, delay2 = 5000 * MILLISECOND;
       tmr2 :> time2;
 
       char *core_usage0_tile0_str;
       int string_ptr = 0;
       int string_ptr2 = 0;
       char str_buffer[4];
+
+      PrintCoreAndTileInformation("Task_EthernetAppTCPServer");
 
       while (1)
       {
@@ -131,7 +122,7 @@ void Task_EthernetAppTCPServer(chanend c_xtcp, client ethernet_to_cmdparser_if c
                   //printf("h\n");
                   break;
 
-          case core_stats_interface_tile0.ShareCoreUsage (short int core0, short int core1, short int core2, short int core3, short int core4, short int core5, short int core6, short int core7):
+          case core_stats_interface_tile0.ShareCoreUsage (unsigned int core0, unsigned int core1, unsigned int core2, unsigned int core3, unsigned int core4, unsigned int core5, unsigned int core6, unsigned int core7):
                   core_usage_tile0[0]=core0;
                   core_usage_tile0[1]=core1;
                   core_usage_tile0[2]=core2;
@@ -142,7 +133,7 @@ void Task_EthernetAppTCPServer(chanend c_xtcp, client ethernet_to_cmdparser_if c
                   core_usage_tile0[7]=core7;
                   break;
 
-          case core_stats_interface_tile1.ShareCoreUsage (short int core0, short int core1, short int core2, short int core3, short int core4, short int core5, short int core6, short int core7):
+          case core_stats_interface_tile1.ShareCoreUsage (unsigned int core0, unsigned int core1, unsigned int core2, unsigned int core3, unsigned int core4, unsigned int core5, unsigned int core6, unsigned int core7):
                   core_usage_tile1[0]=core0;
                   core_usage_tile1[1]=core1;
                   core_usage_tile1[2]=core2;

@@ -1116,6 +1116,13 @@
     </values>
   </arg>
 </fCall>
+<fCall name="PrintCoreAndTileInformation" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="__builtin_set_thread_fast" global="true" numArgs="0">
 </fCall>
 <fCall name="__builtin_memcpy_xc" global="true" numArgs="3">

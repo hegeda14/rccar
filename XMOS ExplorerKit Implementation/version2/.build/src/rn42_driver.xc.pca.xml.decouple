@@ -919,6 +919,13 @@
     </values>
   </arg>
 </fCall>
+<fCall name="PrintCoreAndTileInformation" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
 <fCall name="WriteData" global="true" numArgs="2">
   <arg num="0">
     <passThroughArg param="0" caller="Task_GetRemoteCommandsViaBluetooth" global="true"/>
@@ -960,30 +967,6 @@
   </arg>
 </fCall>
 <fCall name="ParseRCCommandString" global="true" numArgs="1">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="GetLightStateFromCommands" global="true" numArgs="3">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="2">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
-<fCall name="ShareLightSystemState" global="true" interface="lightstate_if" numArgs="1">
   <arg num="0">
     <values>
       <value type="unknown"/>

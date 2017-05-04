@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -20,26 +20,26 @@
 // p_ST- steering light pwm pin
 
 //Defines
-#define LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD       (1.7 * MILLISECOND)
-#define LIGHTSYSTEM_BRAKELIGHTS_ST_PERIOD       (1.5 * MILLISECOND)
+#define LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD       (1.7 * MILLISECOND)//(1.7 * MILLISECOND)//1.7 idi//1.3
+#define LIGHTSYSTEM_BRAKELIGHTS_ST_PERIOD       (1.5 * MILLISECOND)//(1.5 * MILLISECOND)
 
-#define LIGHTSYSTEM_RIGHTBLINK_TH_PERIOD        (1.3 * MILLISECOND)
-#define LIGHTSYSTEM_RIGHTBLINK_ST_PERIOD        (1 * MILLISECOND)
+#define LIGHTSYSTEM_RIGHTBLINK_TH_PERIOD        (1.7 * MILLISECOND)//1.3 idi
+#define LIGHTSYSTEM_RIGHTBLINK_ST_PERIOD        (1.5 * MILLISECOND)
 
-#define LIGHTSYSTEM_LEFTBLINK_TH_PERIOD         (1.3 * MILLISECOND)
-#define LIGHTSYSTEM_LEFTBLINK_ST_PERIOD         (1 * MILLISECOND)
+#define LIGHTSYSTEM_LEFTBLINK_TH_PERIOD         (1.7 * MILLISECOND)//1.3 idi
+#define LIGHTSYSTEM_LEFTBLINK_ST_PERIOD         (1.5 * MILLISECOND)
 
 #define LIGHTSYSTEM_FRONTBLINK_TH_PERIOD        (1 * MILLISECOND)
 #define LIGHTSYSTEM_FRONTBLINK_ST_PERIOD        (1.5 * MILLISECOND)
 
-#define LIGHTSYSTEM_FRONTANDBACKON_TH_PERIOD    (1.3 * MILLISECOND)
+#define LIGHTSYSTEM_FRONTANDBACKON_TH_PERIOD    (1.2 * MILLISECOND)//1.3 idi
 #define LIGHTSYSTEM_FRONTANDBACKON_ST_PERIOD    (1.5 * MILLISECOND)
 
 #define LIGHTSYSTEM_WARN_TH_PERIOD              (1.5 * MILLISECOND)
 #define LIGHTSYSTEM_WARN_ST_PERIOD              (1.5 * MILLISECOND)
 
-#define LIGHTSYSTEM_PIEZO_TH_PERIOD             (2 * MILLISECOND)
-#define LIGHTSYSTEM_PIEZO_ST_PERIOD             (1.5 * MILLISECOND)
+#define LIGHTSYSTEM_PIEZO_TH_PERIOD             (1.3 * MILLISECOND) //2.2 idi
+#define LIGHTSYSTEM_PIEZO_ST_PERIOD             (2 * MILLISECOND)
 
 
 //Prototypes

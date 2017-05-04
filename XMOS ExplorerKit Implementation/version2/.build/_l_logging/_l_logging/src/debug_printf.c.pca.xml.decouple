@@ -2,8 +2,9 @@
   <fCall global="true" name="debug_printf"/>
   <fCall global="true" name="debug_printf.nstackwords"/>
   <fCall global="true" name="strlen.nstackwords"/>
-  <fCall global="true" name="memcpy.nstackwords"/>
   <fCall global="true" name="_write.nstackwords"/>
+  <fCall global="true" name="memcpy.nstackwords"/>
+  <fCall global="true" name="memset.nstackwords"/>
   <fCall global="true" name="debug_printf.maxcores"/>
   <fCall global="true" name="_write.maxcores"/>
   <fCall global="true" name="strlen.maxcores"/>
@@ -15,5 +16,7 @@
   <fCall global="true" name="strlen.maxchanends"/>
   <fCall global="true" name="_write"/>
   <fCall global="true" name="strlen"/>
+  <fCall global="true" name="__ctype_ptr__"/>
+  <fCall global="true" name="memset"/>
   <fCall global="true" name="memcpy"/>
 </preCompilationAnalysis>

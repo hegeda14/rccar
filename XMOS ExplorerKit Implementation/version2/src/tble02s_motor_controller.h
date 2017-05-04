@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -22,11 +22,13 @@
 #define TBLE02S_REV_MAXSPEED_PULSE_WIDTH    (1.67 * MILLISECOND)//for max speed set to:(1.87 * MILLISECOND)
 #define TBLE02S_PWM_PERIOD                  (20 * MILLISECOND)
 
-#define MIN_SAFE_DISTANCE               70  //cm
+
+
+#define MIN_SAFE_DISTANCE               50  //cm
 
 // Prototypes
 [[combinable]]
- void Task_DriveTBLE02S_MotorController (port p, server control_if control_interface, server distancesensor_if sensors_interface);
+ void Task_DriveTBLE02S_MotorController (port p, port brake_port, server control_if control_interface, server distancesensor_if sensors_interface);
 
 
 #endif /* TBLE02S_MOTOR_CONTROLLER_H_ */

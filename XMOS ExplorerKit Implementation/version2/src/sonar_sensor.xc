@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -9,7 +9,7 @@
  ************************************************************************************/
 
 #include "sonar_sensor.h"
-
+#include "core_debug.h"
 
 uint8_t getDistanceSensorAddr (int sensor_id)
 {
@@ -86,6 +86,8 @@ void Task_ReadSonarSensors(client i2c_master_if i2c_interface, client distancese
 
     timer tmr3;
     uint32_t time3, delay3 = SENSOR_READ_PERIOD; //.8sec
+
+    PrintCoreAndTileInformation("Task_ReadSonarSensors");
 
     // Timing measurement/debugging related definitions
     timer debug_timer;

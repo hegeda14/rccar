@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -9,6 +9,7 @@
  ************************************************************************************/
 
 #include "tble02s_motor_controller.h"
+#include "core_debug.h"
 
 /***
  *  Function Name:              Task_DriveTBLE02S_MotorController
@@ -21,7 +22,7 @@
  *  speed          int            0-100
  */
 [[combinable]]
-void Task_DriveTBLE02S_MotorController (port p, server control_if control_interface, server distancesensor_if sensors_interface)
+void Task_DriveTBLE02S_MotorController (port p, port brake_port, server control_if control_interface, server distancesensor_if sensors_interface)
 {
     uint32_t overall_pwm_period = TBLE02S_PWM_PERIOD ; //20ms
     uint32_t on_period ;
@@ -29,6 +30,7 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
 
     uint8_t left, right, front, rear;
     uint8_t front_old_old, front_old, front_avg;
+    uint8_t rear_old_old, rear_old, rear_avg;
 
     uint32_t    time;
     int         port_state = 0;
@@ -36,6 +38,8 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
 
     int direction_val = FORWARD;
     int speed_val = 0;
+
+    PrintCoreAndTileInformation("Task_DriveTBLE02S_MotorController");
 
     // Timing measurement/debugging related definitions
     timer debug_timer;
@@ -52,12 +56,27 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
                                                               uint8_t rear_sensor_value):
                 front_old_old = front_old;
                 front_old = front;
+                rear_old_old = rear_old;
+                rear_old = rear;
                 left = left_sensor_value;
                 right = right_sensor_value;
                 front = front_sensor_value;
                 rear = rear_sensor_value;
 
                 front_avg = (front_old_old + front_old + front) / 3;
+                rear_avg = (rear_old_old + rear_old + rear) / 3;
+
+                //Brake if any object is seen by the front sensor
+                if ( direction_val == FORWARD && front_avg >= 0 && front_avg < MIN_SAFE_DISTANCE)
+                {
+                    brake_port <: 0;
+                }
+
+                //Brake if any object is seen by the rear sensor
+                if ( direction_val == REVERSE && rear_avg >= 0 && rear_avg < MIN_SAFE_DISTANCE)
+                {
+                    brake_port <: 0;
+                }
 
                 //printf("%d %d %d %d\n", left, right, front, rear);
                 break;
@@ -69,6 +88,16 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
             //Wait for the speed value
             case control_interface.ShareSpeedValue (int speed):
                 speed_val = speed;
+
+                //BRAKING PORT (with relays) Control Here
+                if (speed_val < 5)
+                {
+                    brake_port <: 0;
+                }
+                else
+                {
+                    brake_port <: 1;
+                }
                 break;
 
             //Calculate PWM periods and apply period within the timer
@@ -82,12 +111,12 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
                 if (direction_val == FORWARD) //Forward speed 0-100 mapping to on period
                 {
                    //Sonar sensor interference
-                   if ( front_avg >= 0 && front_avg < MIN_SAFE_DISTANCE)
+                   /*if ( front_avg >= 0 && front_avg < MIN_SAFE_DISTANCE)
                    {
                        on_period = TBLE02S_FWD_MINSPEED_PULSE_WIDTH;
                    }
                    else
-                   {
+                   {*/
                        if (speed_val == 0)
                        {
                            on_period = TBLE02S_FWD_MINSPEED_PULSE_WIDTH;
@@ -101,7 +130,7 @@ void Task_DriveTBLE02S_MotorController (port p, server control_if control_interf
                            on_period = (TBLE02S_FWD_MINSPEED_PULSE_WIDTH - ((TBLE02S_FWD_MINSPEED_PULSE_WIDTH - TBLE02S_FWD_MAXSPEED_PULSE_WIDTH) * (speed_val/100.0)));
                            //printf("on_period : %d", on_period);
                        }
-                   }
+                   /*}*/
                    off_period = overall_pwm_period - on_period;
                 }
                 else if (direction_val == REVERSE) //Reverse speed 0-100 mapping to on period

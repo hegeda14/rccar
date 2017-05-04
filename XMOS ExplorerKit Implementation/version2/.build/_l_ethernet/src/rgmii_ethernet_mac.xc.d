@@ -18,6 +18,7 @@
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_ethernet/src/macaddr_filter.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_ethernet/src/macaddr_filter_hash.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_ethernet/src/rgmii_consts.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_logging/lib_logging/api/debug_print.h
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_logging/lib_logging/api/debug_print.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/core_debug.h
 
 

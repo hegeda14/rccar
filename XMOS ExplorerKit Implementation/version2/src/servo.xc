@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -10,7 +10,7 @@
 
 
 #include "servo.h"
-
+#include "core_debug.h"
 
 /***
  *  Function Name:              Task_ApplyPWMTo1BitPort
@@ -36,6 +36,7 @@ void Task_ApplyPWMTo1BitPort (port p, int duty_cycle) // int duty_cycle later to
     timer       tmr;
 
     tmr :> time;
+
 
     while(1)
     {
@@ -81,6 +82,8 @@ void Task_SteeringServo_MotorController (out port p, server steering_if steering
     timer tmr;
 
     int steering;
+
+    PrintCoreAndTileInformation("Task_SteeringServo_MotorController");
 
     // Timing measurement/debugging related definitions
     timer debug_timer;

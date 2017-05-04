@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -10,48 +10,42 @@
 
 
 #include "rn42_driver.h"
-
+#include "core_debug.h"
 
 short int GetLightStateFromCommands (int speed, int steering, int direction)
 {
     short int lightstate;
 
-    if ( speed > 10) // Moving
+
+    if (steering >= 40 && steering <= 60)
     {
-        if (steering >= 40 && steering <= 60)
+        // Not steering
+        if (direction == FORWARD)
         {
-            // Not steering
-            if (direction == FORWARD)
-            {
-                // Going forward
-                lightstate = 2;
-            }
-            else if (direction == REVERSE)
-            {
-                // Going back
-                lightstate = 6;
-            }
+            // Going forward
+            lightstate = 1;
         }
-        else
+        else if (direction == REVERSE)
         {
-            // Steering
-            if (steering < 40)
-            {
-                // Going left
-                lightstate = 4;
-            }
-            else if (steering > 60)
-            {
-                // Going right
-                lightstate = 5;
-            }
+            // Going back
+            lightstate = 1; //6 idi
         }
     }
     else
     {
-        // Not moving
-        lightstate = 2;
+        // Steering
+        if (steering < 40)
+        {
+            // Going left
+            lightstate = 4;
+        }
+        else if (steering > 60)
+        {
+            // Going right
+            lightstate = 5;
+        }
     }
+
 
     return lightstate;
 }
@@ -261,6 +255,8 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
 
     char data, data1;
 
+    PrintCoreAndTileInformation("Task_GetRemoteCommandsViaBluetooth");
+
     // Timing measurement/debugging related definitions
     timer debug_timer;
     uint32_t start_time, end_time;
@@ -343,11 +339,11 @@ void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
                 {
                         {speed, steering, direction} = ParseRCCommandString (command);
 
-                        lightstate = GetLightStateFromCommands (speed, steering, direction);
+                        /*lightstate = GetLightStateFromCommands (speed, steering, direction);
                         if (lightstate != previous_lightstate)
                         {
                                 lightstate_interface.ShareLightSystemState  (lightstate);
-                        }
+                        }*/
 
                         if (previous_direction == FORWARD && direction == REVERSE)
                         {

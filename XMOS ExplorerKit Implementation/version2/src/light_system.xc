@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -9,6 +9,7 @@
  ************************************************************************************/
 
 #include "light_system.h"
+#include "core_debug.h"
 
 /***
  *  Function Name:              GetLightSystemPeriodsFromLightState
@@ -25,14 +26,11 @@
 
     switch (lightstate)
     {
-        case 1:     //Brake lights
-            on_period_TH = LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD;
-            on_period_ST = LIGHTSYSTEM_BRAKELIGHTS_ST_PERIOD;
-            break;
+
 
         case 2:     //Front and back lights ON
-            on_period_TH = LIGHTSYSTEM_FRONTANDBACKON_TH_PERIOD;
-            on_period_ST = LIGHTSYSTEM_FRONTANDBACKON_ST_PERIOD;
+            on_period_TH = LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD;
+            on_period_ST = LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD;
             break;
 
         case 3:     //Front lights Blink
@@ -51,13 +49,18 @@
             break;
 
         case 6:     //Back-lit lights and piezo beeps
-            on_period_TH = LIGHTSYSTEM_PIEZO_TH_PERIOD;
-            on_period_ST = LIGHTSYSTEM_PIEZO_ST_PERIOD;
+            on_period_TH = LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD;
+            on_period_ST = LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD;
             break;
 
-        case 0: default:  //Warning blink
+        case 0:   //Warning blink
             on_period_TH = LIGHTSYSTEM_WARN_TH_PERIOD;
             on_period_ST = LIGHTSYSTEM_WARN_ST_PERIOD;
+            break;
+
+        default: case 1:     //Front and back on  //Brake lights
+            on_period_TH = LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD;
+            on_period_ST = LIGHTSYSTEM_BRAKELIGHTS_ST_PERIOD;
             break;
     }
 
@@ -79,24 +82,70 @@ void Task_ControlLightSystem (port p_TH, port p_ST, server lightstate_if lightst
     uint32_t    time_TH, time_ST;
     int         port_state_TH = 0;
     int         port_state_ST  = 0;
+    int         toggle_port_TH = 0;
+    int         toggle_port_ST = 0;
     timer       tmr_TH, tmr_ST;
 
     short int lightstate_val;
 
-    //Initialization for some variables
-    on_period_TH = LIGHTSYSTEM_FRONTANDBACKON_TH_PERIOD;
-    on_period_ST = LIGHTSYSTEM_FRONTANDBACKON_ST_PERIOD;
-    lightstate_val = 2;
+    PrintCoreAndTileInformation("Task_ControlLightSystem");
 
+    //Initialization for some variables
+    lightstate_val = 1;
+    {on_period_TH, on_period_ST} = GetLightSystemPeriodsFromLightState (lightstate_val);
+    off_period_ST = overall_pwm_period - on_period_ST;
+    off_period_TH = overall_pwm_period - on_period_TH;
+
+    //printf("%d %d %d %d", on_period_TH, on_period_ST, off_period_TH, off_period_ST);
+
+    //1-front and back on
+    //2-error/warning
+    //3- front blink
+    //4- left blink
+    //5- right blink duzelt
+    //6- break lights - going rear
     while(1)
     {
         select
         {
             //Wait for the lightstate value (Event)
-            case lightstate_interface.ShareLightSystemState (short int state):
+            /*case lightstate_interface.ShareLightSystemState (short int state):
                 lightstate_val = state;
+                //printf("lst = %d\n",lightstate_val);
+
                 {on_period_TH, on_period_ST} = GetLightSystemPeriodsFromLightState (lightstate_val);
+                //calculations
+                off_period_TH = overall_pwm_period - on_period_TH;
+                off_period_ST = overall_pwm_period - on_period_ST;
+                break;*/
+
+
+            //Port p_ST PWM Timer Event
+            case tmr_ST when timerafter(time_ST) :> void :
+
+                tmr_ST :> time_ST;
+
+                //calculations
+
+
+
+
+                //PWM Port Toggling
+                if(port_state_ST == 0)
+                {
+                    p_ST <: 1;
+                    port_state_ST = 1;
+                    time_ST += on_period_ST; //Extend timer deadline
+                }
+                else if(port_state_ST == 1)
+                {
+                    p_ST <: 0;
+                    port_state_ST = 0;
+                    time_ST += off_period_ST; //Extend timer deadline
+                }
+
                 break;
+
 
             //Port p_TH PWM Timer Event
             case tmr_TH when timerafter(time_TH) :> void :
@@ -105,7 +154,7 @@ void Task_ControlLightSystem (port p_TH, port p_ST, server lightstate_if lightst
 
                 //calculations
 
-                off_period_TH = overall_pwm_period - on_period_TH;
+                //off_period_TH = overall_pwm_period - on_period_TH;
 
 
 
@@ -126,32 +175,7 @@ void Task_ControlLightSystem (port p_TH, port p_ST, server lightstate_if lightst
                 break;
 
 
-            //Port p_ST PWM Timer Event
-            case tmr_ST when timerafter(time_ST) :> void :
 
-                tmr_ST :> time_ST;
-
-                //calculations
-
-                off_period_ST = overall_pwm_period - on_period_ST;
-
-
-
-                //PWM Port Toggling
-                if(port_state_ST == 0)
-                {
-                    p_ST <: 1;
-                    port_state_ST = 1;
-                    time_ST += on_period_ST; //Extend timer deadline
-                }
-                else if(port_state_ST == 1)
-                {
-                    p_ST <: 0;
-                    port_state_ST = 0;
-                    time_ST += off_period_ST; //Extend timer deadline
-                }
-
-                break;
         }
     }
 }

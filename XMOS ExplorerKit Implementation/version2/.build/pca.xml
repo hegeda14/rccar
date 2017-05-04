@@ -1555,17 +1555,14 @@
 <fInfo name="GetLightStateFromCommands" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="3">
   <arg num="0" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="1" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
   <arg num="2" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
 </fInfo>
@@ -1595,6 +1592,13 @@
   </arg>
 </fInfo>
 <fInfo name="ParseRCCommandString" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
+  <arg num="0" specialize="false">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fInfo>
+<fInfo name="PrintCoreAndTileInformation" global="true" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
   <arg num="0" specialize="false">
     <values>
       <value type="unknown"/>
@@ -1694,7 +1698,6 @@
 <fInfo name="ShareLightSystemState" global="true" interface="lightstate_if" specialize="false" noreturn="false" doNotSpecialize="false" numParams="1">
   <arg num="0" specialize="false">
     <values>
-      <value type="unknown"/>
     </values>
   </arg>
 </fInfo>
@@ -1768,15 +1771,15 @@
     </values>
   </arg>
 </fInfo>
-<fInfo name="Task_DriveTBLE02S_MotorController" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="3">
+<fInfo name="Task_DriveTBLE02S_MotorController" global="true" specialize="true" noreturn="true" doNotSpecialize="false" numParams="4">
   <arg num="0" specialize="false">
     <values>
       <value type="unknown"/>
     </values>
   </arg>
-  <arg num="1" specialize="true">
+  <arg num="1" specialize="false">
     <values>
-      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+      <value type="unknown"/>
     </values>
   </arg>
   <arg num="2" specialize="true">
@@ -1784,11 +1787,17 @@
       <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
     </values>
   </arg>
+  <arg num="3" specialize="true">
+    <values>
+      <value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value>
+    </values>
+  </arg>
  <specializations>
    <specialization id="0">
     <arg num="0"><values><value type="unknown"/></values></arg>
-    <arg num="1"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+    <arg num="1"><values><value type="unknown"/></values></arg>
     <arg num="2"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
+    <arg num="3"><values><value type="interface"><interfaceInfo index="0" type="chan" isYielding="false"/></value></values></arg>
    </specialization>
  </specializations>
 </fInfo>
@@ -5799,7 +5808,7 @@
 </fCall>
 <fCall name="i2c_master" global="true" callerUnit="../src/main.xc" numArgs="5" impId="4" specializationId="0">
 </fCall>
-<fCall name="Task_DriveTBLE02S_MotorController" global="true" callerUnit="../src/main.xc" numArgs="3" impId="5" specializationId="0">
+<fCall name="Task_DriveTBLE02S_MotorController" global="true" callerUnit="../src/main.xc" numArgs="4" impId="5" specializationId="0">
 </fCall>
 <fCall name="Task_SteeringServo_MotorController" global="true" callerUnit="../src/main.xc" numArgs="2" impId="6" specializationId="0">
 </fCall>

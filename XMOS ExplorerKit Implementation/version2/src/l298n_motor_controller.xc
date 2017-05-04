@@ -1,5 +1,5 @@
 /************************************************************************************
- * "Bluetooth Controlled RC-Car with Parking Feature using Multicore Technology"
+ * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
  * Low Level Software
  * For xCORE-200 / XE-216 Devices
  * All rights belong to PIMES, FH Dortmund
@@ -7,7 +7,9 @@
  * @author Mustafa Ozcelikors
  * @contact mozcelikors@gmail.com
  ************************************************************************************/
+
 #include "l298n_motor_controller.h"
+#include "core_debug.h"
 
 /***
  *  Function Name:              Task_DriveL298N_MotorController1Channel
