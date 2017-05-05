@@ -91,9 +91,11 @@ Warning--entry type for "IPM" isn't style-file defined
 --line 385 of file bib/bib.bib
 Warning--entry type for "systemmonitoring" isn't style-file defined
 --line 392 of file bib/bib.bib
+Warning--entry type for "xtamanual" isn't style-file defined
+--line 399 of file bib/bib.bib
 Warning--I didn't find a database entry for "importantpaper"
 Warning--empty booktitle in tileref
 Warning--empty note in sysml
 Warning--empty note in apacheguide
 Warning--empty note in dynamicanalysisphd
-(There were 50 warnings)
+(There were 51 warnings)

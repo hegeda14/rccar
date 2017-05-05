@@ -844,14 +844,117 @@ Low-level and high-level modules of A4MCAR requires several information. To star
 In this chapter, the aforementioned techniques for system analysis will be discussed with the emphasis of their applicability on a real distributed multi-core system that involves elements from a low-level multi-core micro-controller and a high-level single board computer that is running on x86/Linux platform in order to elaborate  modeling, managing, profiling, tracing of systems and evaluation of various software distributions.
 
 \section{Low-Level Module Information Tracing and System Management}
-\subsection{Binary Analysis via XTA}
-Some text \\
+\subsection{Static Binary Analysis via XTA}
+XMOS Timing Analyzer (XTA) \cite{xtamanual} is a tool that comes with xTIMEcomposer platform which is used for analyzing the timing and the execution details of the multi-tasked software that are developed using XMOS boards and processors \cite{xtamanual}. The tool is able to measure shortest and longest time required to execute a section of code by analyzing the binary file. Thus, the code is not executed in order to be analyzed. Furthermore, it is also able to check the minimum and maximum number of instructions required to execute a section of the code.  A screenshot from the XTA tool is given in the Figure \ref{fig:xtass}.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/xtass.png}
+	\caption{XMOS Timing Analyzer (XTA) screenshot}
+	\label{fig:xtass}
+\end{figure}
+
+Once the code is written and built in xTIMEcomposer platform, a binary file is generated with the extension .XE. By loading this binary file using XTA, the timing analysis could be performed. In order to load the binary to XTA, "Load Binary" button (shown as 1 in the Figure \ref{fig:xtass}) should be pressed. Once the binary is loaded, the Disassembly window (shown as 4) appears which shows all the runnables that are automatically detected from the binary. Using the disassembly window, the instructions that are used in runnables could be seen. 
+
+XTA tool is also able to work with specific commands by using the XTA console (shown as 5). Using the specific commands taken from XTA manual \cite{xtamanual}, timing analysis could be done easily. In order to start timing analysis, an execution path should be defined. The execution path could be determined analyzed using the following possible ways \cite{xtamanual}:
+\newpage
+\begin{itemize}
+	\item Via placing end points into the code using compiler directive \texttt{\#}pragma as shown in the Listing \ref{lst_xtaendpoints}.
+	\lstinputlisting[caption=Placing end points in xC code to define execution path , label=lst_xtaendpoints, style=xc]{content/listings/lst_xtaendpoints.txt}
+	The timing analysis between two endpoints could be started by entering the following command to the XTA console:
+	\begin{lstlisting}[style=xc]
+	analyze endpoints start_endpoint1 stop_endpoint1
+	\end{lstlisting}
+	\item A function or a runnable with the name "Function\texttt{\_}Name" could be analyzed from its starting point to its return point by using the following command:
+	\begin{lstlisting}[style=xc]
+	analyze function Function_Name
+	\end{lstlisting}
+	\item Finally, loops can be analyzed using XTA. The way a loop is defined is either setting a loop point from the editor or defining an endpoint inside loop. A loop point having and end point "looppoint" can be analyzed using the following command in the XTA console:
+	\begin{lstlisting}[style=xc]
+		analyze loop looppoint
+	\end{lstlisting}
+\end{itemize}
+
+The entire code could be modified in the aforementioned fashion in order to do a timing analysis to all of the runnables of the software system. One can set up timing constraints to make sure every dead line is matched \cite{xtamanual}. Once the timing analysis starts, the selected route, i.e. a function, a loop, or a route between two endpoints are shown in the Routes window (shown as 2 in the Figure \ref{fig:xtass}). The selected route is shown in blocks in another window which is shown as 3 in the figure. Here, it is seen that the best case execution time and the worst case execution time of each block is estimated. As an example, for the WriteData function, the best case execution time is estimated to be 3.584 microseconds, whereas the worst case execution time is 432 nanoseconds. Further information that is provided by XTA regarding timing analysis is given in the Figure \ref{fig:xtafurther}. As it is seen in the figure, what kind of timing paths could have been taken for the function can be visualized using the Visualizations window. Furthermore, information such as thread cycles, number of instructions, number of Fnops, and number of paths are also shown.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/xtafurther.png}
+	\caption{XTA Visualizations window with further information}
+	\label{fig:xtafurther}
+\end{figure}
+
+For the software that is developed for the low-level module of the A4MCAR, for modeling purposes in APP4MC  the number of instructions are obtained for almost every runnable and event by using aforementioned techniques. For the events, the technique of defining endpoints is used, whereas for the runnables the function analysis is used. However, due to the non-determisim in the some of the branch instructions and code sections that are related to hardware communication, some sections in many runnables were not able to be analyzed properly and returned the "Unresolved" error. In order to get rid of this error, following techniques are used:
+
+\begin{itemize}
+	\item The "Unresolved" error occurs usually when XTA can not resolve a branch instruction whose branch target is unknown \cite{xtamanual}. In order to get rid of this issue, trace of the system should be printed and branch instruction target should be pointed manually. The details of how this is done is given in the XTA manual \cite{xtamanual}. By using this technique, some of the "Unresolved" errors were resolved and number of instructions of those runnables were found.
+
+	\item When the technique above failed to work because of memory instructions such as memset and infinite loops, the number of instructions are gathered by counting the instructions from Disassembly window. Although this technique is time consuming and error-prone, it is assumed that the gathered information is close to the real number of instructions. Additionally, APP4MC partitioning and mapping accuracy would not change drastically if the gathered information is not exact. 
+\end{itemize}
+
+In the Section 6, gathered information along with its implications will be discussed.
 \subsection{Information Tracing via APP4MC}
 Some text \\
 \subsection{Distribution of Tasks to Cores}
-Some text \\
+In a properly utilized parallel system, gathered information are used in order to find which software distribution is the most efficient. Here, the software distribution refers to the mapping stage, which is the distribution of the tasks that result from partitioning to the cores.
+
+In xTIMEcomposer platform, task mapping is done easily with the capabilities of the xC programming language. Since xCORE provides a multi-core platform, using the cores for different tasks can be achieved by using simple statements. Although this is introduced in Section 4, some of the information will be summarized for completeness sake. In XMOS, placement of a function into a core is done by using "par" statement. In the main block of a software, "par" statement can be used in order to create several tasks in parallel. Additionaly, using global interface variables, one can handle the inter-task communication between two parellel tasks.
+
+As opposed to the Listing \ref{lst_howtasksconnectxc}, a simple example would help one better understand how this works using xC:
+
+\begin{lstlisting}[style=xc]
+int main(void)
+{
+	interface my_interface i1;
+	par
+	{
+		on tile[0].core[2] :  Task1 (i1);
+		on tile[1].core[3] :  Task2 (i2);
+	}
+}
+\end{lstlisting}
+
+The given code is a basic example of using xC functionality to do a task mapping. The parallel block in the code could be given as the Lines 4 through 8. It is seen that the "Task1" is pinned to the core 2 of tile 0, whereas the "Task2" is pinned to the core 3 of the tile 1. Furthermore, a global interface of type "my\texttt{\_}interface" having the name i1 is declared in the Line 3. This interface handles the communication between the tasks "Task1" and "Task2". As mentioned, the hardware realizes the interface by using the xCONNECT switches to construct a bridge between tiles and cores. Additionally, it should be noted that unlike Raspberry Pi, the tasks are distributed to cores during the reconfiguration in a xC program, i.e where a Task is located can not be changed during run-time due to the nature of xCORE and due to the fact that hardware availability differs from tile to tile \cite{xmosprogrguide}.
+
+By using the aforementioned technique, all the low-level module tasks are distributed to cores at the build-time. 
+
 \subsection{System Monitoring in xCORE}
-Some text \\
+How cores of the system is monitored in xCORE is discussed in the Section 4. For the sake of completeness, this subsection is dedicated to reminding what is discussed in the Section 4, "Core and Tile Monitoring" subsection. System monitoring is done by polling a system register and finding out if that core is busy or idle at that moment. Referring back to the Listing  \ref{lst_coremonitoring}, how this is achieved could be better understood.
+
+Besides the implemented core monitoring task, XMOS features several more means to monitor the system. First, system could be monitored at build-time using the XTA tool Binary window, Resource Usage tab. In the Figure given in \ref{fig:binaryresourceusage}, it is seen that the information regarding stack memory, program memory, free memory, cores, timers, and channels could be observed in one window using XTA Binary. Another mean to monitor the system is provided by a function called "debug\texttt{\_}printf". As the name of the function suggests, it is essentially a "printf" function to observe your variables. However, "debug\texttt{\_}printf" is a function that does not interrupt inter-process communication and that does not block cores while printing so that developers can monitor without having to worry about so much overhead \cite{xmosprogrguide}.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/binaryresourceusage.png}
+	\caption{XTA Binary Resource Usage}
+	\label{fig:binaryresourceusage}
+\end{figure}
+
+Using the "debug\texttt{\_}printf" function, xC-specific tools, a function has been created that helps to find out which function refers to which core. The reason this information is important is because the core ids that are referred with the "par" statements are not the same ids of the core usage implemention. The same issue holds true for the tile ids, as well. By using the following listing, this information could be monitored at run-time:
+
+\begin{lstlisting}[style=xc]
+	int PrintCoreAndTileInformation(char * Function_Name)
+	{
+		debug_printf("Starting %s task on core ID %d on tile %x\n", Function_Name, 	get_logical_core_id(), get_local_tile_id());
+		return 1;
+	}
+\end{lstlisting}
+
+Here, the get\texttt{\_}logical\texttt{\_}core\texttt{\_}id() is the function to get the real core id from system registers, whereas the get\texttt{\_}local\texttt{\_}tile\texttt{\_}id() function returns the real tile id. This way, we make sure which task uses how many percentage of the core. Once every task is manipulated so that they use this function while the core monitoring is running, system monitoring could be done easily by observing the Console. An example output of the Console from final version of the low-level module software is given with the Figure \ref{fig:finalmonitoring}. It is seen that the core IDs for every task is given and then the core utilization percentages are listed for cores 0 through 7 for each tile.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/finalmonitoring.png}
+	\caption{System monitoring implemented on xCORE}
+	\label{fig:finalmonitoring}
+\end{figure}
+
+%%Onceki sectiona ek olarak
+%% core_monitoring.xc den bahset
 \subsection{Discovering Energy Consumption Features}
 Some text \\
 \section{High-Level Module Information Tracing and System Management}
