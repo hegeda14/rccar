@@ -1,0 +1,5 @@
+#!/bin/bash
+args=("$@")
+process_name=${args[0]}
+pid=$(pgrep -f $process_name -n ) #Newest result
+sudo perf stat -p $pid

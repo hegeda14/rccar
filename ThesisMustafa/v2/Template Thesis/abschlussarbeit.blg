@@ -93,9 +93,33 @@ Warning--entry type for "systemmonitoring" isn't style-file defined
 --line 392 of file bib/bib.bib
 Warning--entry type for "xtamanual" isn't style-file defined
 --line 399 of file bib/bib.bib
+Warning--entry type for "xs1energymanual" isn't style-file defined
+--line 406 of file bib/bib.bib
+Warning--entry type for "objdump" isn't style-file defined
+--line 424 of file bib/bib.bib
+Warning--entry type for "dis" isn't style-file defined
+--line 431 of file bib/bib.bib
+Warning--entry type for "perf1" isn't style-file defined
+--line 438 of file bib/bib.bib
+Warning--entry type for "perf2" isn't style-file defined
+--line 445 of file bib/bib.bib
+Warning--entry type for "topexamples" isn't style-file defined
+--line 452 of file bib/bib.bib
+Warning--entry type for "linuxproc" isn't style-file defined
+--line 459 of file bib/bib.bib
+Warning--entry type for "tracecmd" isn't style-file defined
+--line 466 of file bib/bib.bib
+Warning--entry type for "lttng" isn't style-file defined
+--line 473 of file bib/bib.bib
+Warning--entry type for "jolsa" isn't style-file defined
+--line 480 of file bib/bib.bib
+Warning--entry type for "perfbabeltrace" isn't style-file defined
+--line 487 of file bib/bib.bib
+Warning--entry type for "tracecompass" isn't style-file defined
+--line 494 of file bib/bib.bib
 Warning--I didn't find a database entry for "importantpaper"
 Warning--empty booktitle in tileref
 Warning--empty note in sysml
 Warning--empty note in apacheguide
 Warning--empty note in dynamicanalysisphd
-(There were 51 warnings)
+(There were 63 warnings)

@@ -185,6 +185,51 @@ http://ipm-hpc.sourceforge.net/profilingvstracing.html.
 \bibitem{systemmonitoring}
 http://www.tldp.org/ldp/sag/html/system-monitoring.html.
 
+\bibitem{xtamanual}
+https://www.xmos.com/download/private/xmos-timing-analyzer-manual%281.2%29.pdf.
+
+\bibitem{xs1energymanual}
+https://www.xmos.com/download/private/an01005%3a-estimating-power-consumption-for-xs1-l-devices%281.0.2rc1%29.pdf.
+
+\bibitem{dvfsieee}
+Shi-Hao Chen and Jiing-Yuan Lin.
+\newblock Implementation and verification practices of dvfs and power gating.
+\newblock In {\em 2009 International Symposium on VLSI Design, Automation and
+  Test}, pages 19--22, April 2009.
+
+\bibitem{objdump}
+https://sourceware.org/binutils/docs/binutils/objdump.html.
+
+\bibitem{dis}
+https://docs.python.org/2/library/dis.html.
+
+\bibitem{perf1}
+https://perf.wiki.kernel.org/index.php/main\texttt{\_}page.
+
+\bibitem{perf2}
+http://www.brendangregg.com/perf.html.
+
+\bibitem{topexamples}
+https://www.tecmint.com/12-top-command-examples-in-linux/.
+
+\bibitem{linuxproc}
+http://www.tldp.org/ldp/linux-filesystem-hierarchy/html/proc.html.
+
+\bibitem{tracecmd}
+https://lwn.net/articles/410200/.
+
+\bibitem{tracecompass}
+http://tracecompass.org/.
+
+\bibitem{lttng}
+http://lttng.org/.
+
+\bibitem{jolsa}
+git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git.
+
+\bibitem{perfbabeltrace}
+http://stackoverflow.com/questions/43576997/building-perf-with-babeltrace-for-perf-to-ctf-conversion.
+
 \bibitem{springerparallel}
 Thomas Rauber and Gudula R{\"u}nger.
 \newblock {\em Parallel Programming}.
@@ -192,8 +237,5 @@ Thomas Rauber and Gudula R{\"u}nger.
 
 \bibitem{mii}
 https://en.wikipedia.org/wiki/media-independent\texttt{\_}interface.
-
-\bibitem{xtamanual}
-https://www.xmos.com/download/private/xmos-timing-analyzer-manual%281.2%29.pdf.
 
 \end{thebibliography}

@@ -845,7 +845,7 @@ In this chapter, the aforementioned techniques for system analysis will be discu
 
 \section{Low-Level Module Information Tracing and System Management}
 \subsection{Static Binary Analysis via XTA}
-XMOS Timing Analyzer (XTA) \cite{xtamanual} is a tool that comes with xTIMEcomposer platform which is used for analyzing the timing and the execution details of the multi-tasked software that are developed using XMOS boards and processors \cite{xtamanual}. The tool is able to measure shortest and longest time required to execute a section of code by analyzing the binary file. Thus, the code is not executed in order to be analyzed. Furthermore, it is also able to check the minimum and maximum number of instructions required to execute a section of the code.  A screenshot from the XTA tool is given in the Figure \ref{fig:xtass}.
+XMOS Timing Analyzer (XTA) \cite{xtamanual} is an Eclipse-based tool that comes with xTIMEcomposer platform which is used for analyzing the timing and the execution details of the multi-tasked software that are developed using XMOS boards and processors \cite{xtamanual}. The tool is able to measure shortest and longest time required to execute a section of code by analyzing the binary file. Thus, the code is not executed in order to be analyzed. Furthermore, it is also able to check the minimum and maximum number of instructions required to execute a section of the code.  A screenshot from the XTA tool is given in the Figure \ref{fig:xtass}.
 
 \begin{figure}[!ht]
 	\centering
@@ -956,39 +956,191 @@ Here, the get\texttt{\_}logical\texttt{\_}core\texttt{\_}id() is the function to
 %%Onceki sectiona ek olarak
 %% core_monitoring.xc den bahset
 \subsection{Discovering Energy Consumption Features}
-Some text \\
+One of the most important optimization goals include reducing the energy consumption. To reduce the energy consumption one should have a properly utilized software which is achieved through balancing the CPU load through all the cores of the system. In order to understand this, Power Consumption Application Manual for XS1-L devices \cite{xs1energymanual} should be studied well. Since CPU hardware related energy consumption is out of reach for this research, we focus on resource related power consumption. A good illustration of how energy consumption changes is shown in the Figure \ref{fig:xs1energy} \cite{xs1energymanual}.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[scale=0.5]{content/images/xs1energy.png}
+	\caption{XS-1 Energy Graph Related to Base Current for an xCORE Core}
+	\label{fig:xs1energy}
+\end{figure}
+
+In the figure, we see that the base power consumption of one xCORE running an instruction sequence is given with respect to the clock frequency. By looking at the figure, we can see that the internal base current that is related to the operation of xCORE is directly proportional to the clock frequency of the xCORE core. Since the current is directly proportional to the power, i.e. $P = {I\textsubscript{DD}}  {V}$, we can conclude that load balancing is one of the most important things to take core of to get a lower current in the core, thus reducing the power consumption. Using provided internal registers, xCORE core and tile frequencies can be reduced.
+
+It is important to keep in mind that reducing the clock speed is not the only way to reduce the power consumption. If the dynamic switching power is considered rather than the base power consumption, the factors such as operating freuqency, amount of communication, and the data itself are all big causes of the energy consumption \cite{xs1energymanual}.  
+
+An important energy related feature that comes with XS-1 devices is the AEC (Active Energy Consumption) mode \cite{xs1energymanual}. When this mode is turned on and AEC mode clock frequency is set to a desired value, xCORE device lowers the clock frequency of the AEC-enabled cores to the desired AEC mode clock frequency when the core is paused or waiting for an input \cite{xs1energymanual}. This could be slightly related to DVFS (Dynamic Voltage and Freuqency Scaling) \cite{dvfsieee} which is a processors ability to dynamically scale its freuqency and operating voltage depending on the load. DVFS is common for Linux OS running computers and it will be discussed in the next section.
+
 \section{High-Level Module Information Tracing and System Management}
 
 \subsection{Obtaining Information}
 \subsubsection{Binary Analysis of Instructions}
 % perf stat, objdump, dis
-Some text \\
-\subsubsection{Process Management, Monitoring, and Profiling}
+In order to obtain number of instructions of the created processes on the high-level side for modeling purposes, a couple of options are investigated. Most of the techniques are used in A4MCAR in order to model the system using APP4MC.
+
+As a static binary analysis solution, "objdump" \cite{objdump} module of Linux provides disassembly information of C-based libraries and executables. After the compilation of a C/C++ program, GNU C Compiler (GCC) provides an object file which contains the binary data for the program. Using the "objdump" module, C/C++ programs, functions, libraries could be analyzed easily. Objdump provides not only the disassembled instruction list but also can provide information such as symbol tables and debug information. In order to record the instructions of a C/C++ application, one of the following Linux shell commands are used:
+\begin{lstlisting}[style=bash]
+	objdump MyObject.o -D > MyObjectDump.txt
+	objdump MyObject.o -S > MyObjectDump.txt
+\end{lstlisting}
+These commands provide disassembled instructions from MyObject.o and records them into a file called MyObjectDump.txt. The command with the -D option provides the complete disassembly information for each function whereas the command with the -S option provides source code along with instructions. 
+
+Although using "objdump" is useful for C/C++ applications, it does not provide any means to investigate Python-based processes. To get the instruction information for Python-based processes Python library "dis" \cite{dis} provides a couple of functions. These functions must be used in the Python program itself in order to print out or record the instruction information. A simple example of using "dis" in a Linux shell is given below:
+\begin{lstlisting}[style=bash]
+python -m dis PythonApp.py
+\end{lstlisting}
+This command will give bytecodes of each code line, hence giving instructions for every line of code. One can also disassemble functions by using the following in a Python code:
+\begin{lstlisting}[style=bash]
+import dis
+dis.dis(FunctionName)
+\end{lstlisting}
+ 
+Perf \cite{perf1} \cite{perf2} is a well-known lightweight system performance counter and profiler tool for Linux. Using perf, one can obtain event and instruction counts, record events, run benchmarks, and analyze processes \cite{perf1}. In A4MCAR, Perf profiler tool has been used for many purposes that include process instruction analysis, system-wide scheduling trace, and trace data conversion. Perf can perform dynamic analysis (profiling) in order to obtain the number of instructions for processes and runnables using Linux shell command shown in the following listing. It should be noted that the number of instructions are obtained dynamically so the process should either be exited or should have a finite number of iterations for the result to be accurate. It should also be made sure that since the command is used for counting the number of instructions of a running process, the command should be executed right after the process starts. In the listing, command counts the instructions only in user mode to avoid including any system overhead and the <pid> is the Process ID of the process according to the Linux kernel. How process ID of a process is obtained and what it means is discussed in the next section.
+\begin{lstlisting}[style=bash]
+sudo perf stat -e instructions:u -p <pid>
+\end{lstlisting}
+
+\subsubsection{Process Management and Monitoring}
+Managing and monitoring processes and threads of a Linux system are crucial preliminaries that should be discussed in order to work with A4MCAR's high-level module using Linux platform. One can list the process management and monitoring issues as follows:
+\begin{itemize}
+	\item \textbf{Listing Processes and Threads:}
+	By using the "top" command, processes and threads that are running can be listed. A couple of example commands and their outputs are explained below \cite{topexamples}. By using the following, processes of the entire system could be monitored.
+	\begin{lstlisting}[style=bash]
+		top
+	\end{lstlisting}
+	\begin{figure}[!ht]
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{content/images/topexample1.png}
+		\caption{Top command output}
+		\label{fig:topexample1}
+	\end{figure}
+	It is seen in the Figure \ref{fig:topexample1} that each process are listed in descending order according to their CPU usages. Processes could be identified by looking at their commands. Information such as owned user (USER), process ID (PID), how much virtual memory are accessed (VIRT), physical memory usage (RES and MEM), how much virtual memory is shared (SHR), cpu usage (CPU) could be monitored in this window. By using the following command, one could also see the threads of a process given its process ID:
+	\begin{lstlisting}[style=bash]
+	top -H -p <pid>
+	\end{lstlisting}
+	
+	Another way to manage processes is done by using "ps" command. This command not only allows to list processes or threads but also is used to kill processes. Similarly to "top" command, "ps" command could be used like the Listing given below in order to list processes and threads:
+	\begin{lstlisting}[style=bash]
+	ps -aux             #All processes
+	ps -T -p <pid>      #Threads of a process
+	\end{lstlisting}
+	
+	\item \textbf{Obtaining Process ID of a Process:} Identifying the process ID or a process is crucial in order to work with processes in Linux. By using the following command, the PID of a process can be obtained by the process name:
+	\begin{lstlisting}[style=bash]
+		pgrep -f <process_name> -n 
+	\end{lstlisting}
+	Using this knowledge, a Linux bash script has been created that monitors a process by finding the process ID from the process name and then using perf profiler. The script is given in the Listing \ref{lst_AppMonitor}
+	\lstinputlisting[caption=Created Bash script to dynamically profile applications (AppMonitor.sh), label=lst_AppMonitor, style=bash]{content/listings/lst_AppMonitor.txt}
+	
+	By calling bash AppMonitor.sh <process\texttt{\_}name> from Linux shell, this script could be used to monitor applications using perf. In the script, it should be noted that command argument is retrieved (Line 2 and Line 3), process ID is obtained (Line 4) and then perf stat is used (Line 5). 
+	\lstinputlisting[caption=Function to obtain process ID from Python environment, label=lst_CheckIfProcessRunning, style=python]{content/listings/lst_CheckIfProcessRunning.txt}
+	
+	Since touchscreen display process is responsible of doing all the online timing calculations, a function has been written which returns the PID of a process if the process is running (Listing \ref{lst_CheckIfProcessRunning}). In the following, it is seen that using subprocess module of Python, one can check the output of a Linux shell command from Python environment (Line 4 of Listing \ref{lst_CheckIfProcessRunning}).
+	
+	\item \textbf{Killing a Process:} Killing a process is handled through a simple Linux shell command that is given below:
+	\begin{lstlisting}[style=bash]
+		sudo kill -9 <pid>
+	\end{lstlisting}
+	Using the same manner that is explained by the Listing \ref{lst_AppMonitor}, a Linux shell script that is called KillProcess.sh has been created which is able to kill running process by their names.
+	\item \textbf{Monitoring Process Details using Linux kernel folders:} Linux kernel provides a virtual filesystem that are located under /proc directory that contain runtime system information for system, device, connectivity and process monitoring \cite{linuxproc}. Regarding process monitoring, using the process ID as the folder name and simply viewing the files that are located under /proc/<pid>/ many information such as process status (observed in Figure \ref{fig:processlifecycle}), memory maps, libraries and executables, executed cpu, scheduling information can be monitored. A few examples are given in the Listing \ref{lst_procexamples} with their explanations \cite{linuxproc}.
+	\lstinputlisting[caption=Kernel virtual filesystem /proc information retrieval examples \cite{linuxproc}, label=lst_procexamples, style=python]{content/listings/lst_procexamples.txt}
+	
+\end{itemize} 
 % top (incl threads), ps,getting pid, getting killing processes using ps, proc folder, psutil
 %valgrind etc. profiling
 % starting, killing a process, ProcessKill.sh ProcessStart.sh, AppMonitor.sh
-Some text \\
 \subsubsection{System Monitoring for Linux Platform}
 %proc folder, psutil, top, ps
-Some text \\
+As mentioned, for system monitoring /proc folder is also widely used. The information that are stored in the virtual filesystem involve the following information \cite{linuxproc}:
+\begin{itemize}
+	\item Advanced power management info
+	\item Information about the processor, such as its type, make, model, and performance
+ 	\item  List of device drivers configured into the currently running kernel
+ 	\item Filesystems configured/supported into/by the kernel
+ 	\item Which interrupts are in use, and how many of each there have been
+ 	\item Memory map
+ 	\item Masks for irq (interrupt request line) to cpu affinity
+ 	\item Kernel locks
+ 	\item Information about memory usage, both physical and swap
+ 	\item Mounted filesystems
+ 	\item Status information about network protocols
+\end{itemize}
+
+Although with the issues of Linux system administration those information are useful, a more easy way to obtain certain information could be done through using third party modules. In A4MCAR, 'psutil' Python module has been used in order to monitor system information such as number of active cores running, core frequencies and CPU utilization of each core. 
+Using the following function, the core frequencies are extracted in MHz:
+\begin{lstlisting}[style=python]
+	str(psutil.cpu_freq()).split(',')[0].split('=')[1]
+\end{lstlisting}
+Similarly, psutil.cpu\texttt{\_}count() function can be used to extract the number of active cores and psutil.cpu\texttt{\_}percent() function can be used to extract the core utilization percentages in a given time period \cite{psutil}. 
+
 \subsubsection{Tracing the System to Obtain Scheduling Information}
 % perf record, trace-cmd, kernelshark, perf w/babeltrace, CTF, lttng, TraceCompass
-Some text \\
-\begin{figure}[!ht]
-	\centering
-	\captionsetup{justification=centering}
-	\includegraphics[scale=0.55]{content/images/kernelshark.png}
-	\caption{Kernelshark running on Linux (Raspbian) OS}
-	\label{fig:kernelshark}
-\end{figure}
+To evaluate performance indicators and observe load balance, tracing the high-level module processes is crucial in A4MCAR. By recording a system trace and using scheduling visualization tools in Linux, one can see how processes and threads are distributed amongst the existing cores. For that purpose, tracing and visualization options should be investigated as follows:
+\begin{itemize}
+	\item \textbf{Tracing via perf and viewing the trace:}
+	In order to trace the system using perf profiler, perf's record command is used \cite{perf2}. As an example, the system trace could be obtained for 15 seconds by entering the following command into the Linux shell:
+	\begin{lstlisting}[style=bash]
+		sudo perf sched record -- sleep 15
+	\end{lstlisting}
+	Once the tracing is done, system trace is recorded to a file called "perf.data". This trace file uses perf tracing format which is not a common format. Therefore, it is not recognized by many of the trace visualization software. In order to visualize a basic system trace using perf.data file, the following command could be used which saves the full trace in a text file called fulldump.txt:
+	\begin{lstlisting}[style=bash]
+		sudo perf sched script > fulldump.txt
+	\end{lstlisting}
+	A few first lines of the fulldump.txt should be analyzed in order to understand what information can be inferred from the trace. Referring to the code given in the Listing \ref{lst_perfschedscriptdump}, each line represents a kernel event. If a task is being started to execute on a core that event is referred to as sched\texttt{\_}switch event, whereas if a task that was in the sleeping state is being executed again this is referred to as the sched\texttt{\_}wakeup event. Another information regarding trace events involve process name (comm), process ID (pid), target core (target\texttt{\_}cpu) and time at which the event occurred. 
+	\lstinputlisting[caption=Perf sched script command output \cite{perf2}, label=lst_perfschedscriptdump, style=python]{content/listings/lst_perfschedscriptdump.txt}
+	
+	\lstinputlisting[caption=Perf sched map command output \cite{perf2}, label=lst_perfschedmapdump, style=python]{content/listings/lst_perfschedmapdump.txt}
+	
+	Since perf sched script output might be messy for a system trace, one could be more interested in seeing a system trace in a more abstract form. In that regards, obtaining a cpu mapping view of the trace could help. In order to obtain a cpu mapping view, the following command could be used in Linux shell:
+	\begin{lstlisting}[style=bash]
+		sudo perf sched map
+	\end{lstlisting}
+	The output of this command can be seen in the Listing \ref{lst_perfschedmapdump}. In the code, it is seen that each column represents a core whereas vertical axis can be thought of the time axis. In other words, each time an event occurs, a new line is added and the task is placed to a column depending on which core it is running. It should be noted that asterisk symbol near a task is used to indicate sched\texttt{\_}switch events. The timing information, the process name and process ID are also given in this view. 
+	
+	Speaking for the example in Listing \ref{lst_perfschedmapdump}, if the cores were to have names 0 through 3 depending on their column index, it should be seen that the core 0 (first column) is not doing anything whereas most of the load is located on on cores 2 and 3. It should be also seen that the process A0 (hence, perf) had switched from core 2 to core 3 at some point in time.
+	
+	\item \textbf{Trace-Cmd trace and visualization via kernelshark:}
+	Trace-cmd \cite{tracecmd} is yet another tool that records system trace. Trace-cmd trace could be generated into a file trace.dat by using the following command:
+	\begin{lstlisting}[style=bash]
+		sudo trace-cmd record -e sched
+	\end{lstlisting}
+	The trace that is generated from trace-cmd tool could be observed via a visualization tool called kernelshark. By simplying calling "kernelshark" from the directory that trace.dat is located, one can launch kernelshark to observe the system trace. An example of kernelshark is shown in the Figure \ref{fig:kernelshark}.
+	\begin{figure}[!ht]
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[scale=0.55]{content/images/kernelshark.png}
+		\caption{Kernelshark running on Linux (Raspbian) OS}
+		\label{fig:kernelshark}
+	\end{figure}
+	Although kernelshark along with trace-cmd are useful tools that show a CPU graph along with processes, the visualization does not provide information regarding CPU utilization details and communication. For that purpose, TraceCompass tool will be used which will explained in the following paragraph. 
+	\item \textbf{Perf and Babeltrace CTF tracing and visualization via TraceCompass:} 	Eclipse TraceCompass \cite{tracecompass} is an Eclipse-based open-source platform that is used for providing views, graphs and metrics for many type of logs and traces \cite{tracecompass} The graphical user interface of the Eclipse TraceCompass is shown in Figure \ref{fig:tracecompass}. Since the information that is provided by Eclipse TraceCompass is more user-friendly and more detailed than the other visualization options that are discussed, in A4MCAR Eclipse TraceCompass has been used for watching the high-level module system trace.
+	
+	LTTng \cite{lttng} is an open-source tracing framework that is provided for Linux platform which is quite often used with Eclipse TraceCompass due to its format compatibility, i.e. both LTTng and TraceCompass can handle the standard tracing format, CTF (Common Trace Format) well. However, since LTTng requires system tracepoints to be designed in the software development stage, in A4MCAR due to its ease of implementation Perf is used for tracing. Although TraceCompass accepts many trace formats, it can not read directly from perf format (perf.data). Therefore, the perf trace format should be converted to CTF in order to be watched using the Eclipse TraceCompass.
+	
+	In order to convert the perf format, one has to build a new version of perf from a Linux kernel module \cite{jolsa} with tracing options enabled and also with a tracing library that is called LibBabelTrace. The detailed information regarding this building process could be seen in \cite{perfbabeltrace}. Once the perf is built and installed with babeltrace, one can use the following commands to record a trace and then convert it to CTF data format. 
+	\begin{lstlisting}[style=bash]
+		sudo perf sched record -e 'sched:*,raw_syscalls:*' -- sleep 15
+		sudo LD_LIBRARY_PATH=/opt/libbabeltrace/lib perf data convert --to-ctf=./ctf
+	\end{lstlisting}
+	
+	Once the trace which is in CTF format is generated, it can be imported into the Eclipse TraceCompass. An example trace imported into Eclipse TraceCompass platform is given in the Figure \ref{fig:tracecompass}. Using the figure, the main windows in the Eclipse TraceCompass can be discussed. TraceCompass enables users to look at their system using several views such as call graphs, threads, context switches, cpu usage, critical path, I/O, control flow, and resources which can be seen as (1) in the figure. Control flow window (2) shows each process state with respect to time including the transitions along all the processes. System-wide CPU usage and individual processes' CPU usages are shown in the CPU Usage window which is shown as (3) in the figure. Therefore, if the system has 4 cores, the CPU usage of up to 400 percent could be observed. Resources window (shown as (4)) depicts how processes are distributed amongst the existing cores with respect to time. Therefore, the load balancing could be roughly observed from this view by simply looking at each of the cores. Moreover, using the Resources window, one can measure and estime the timing properties of the schedule of the system. Finally, the trace event list (shown as (5)) can be used to see exact events that occurred in a specific time by selecting a timeframe from other windows.
+	\begin{figure}[!ht]
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[scale=0.45]{content/images/tracecompass.png}
+		\caption{Eclipse TraceCompass running on Windows}
+		\label{fig:tracecompass}
+	\end{figure}
+	
+	%Explain tracecompass windows, add bubbles to the gui figure...
+	
+	
+\end{itemize}
 
-\begin{figure}[!ht]
-	\centering
-	\captionsetup{justification=centering}
-	\includegraphics[scale=0.45]{content/images/tracecompass.png}
-	\caption{Eclipse TraceCompass running on Windows}
-	\label{fig:tracecompass}
-\end{figure}
+
+
 
 \subsection{Process Mapping}
 % taskset, CorePlacer.sh
@@ -1093,5 +1245,6 @@ Some text \\
 %%% CHAPTER Conclusion ----------------------------begin----
 \chapter{About APPSTACLE Project}
 \chapter{Conclusion}
+%Contributions overall
 
 %%% CHAPTER Conclusion ------------------------------end----
