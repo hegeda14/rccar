@@ -191,6 +191,12 @@ https://www.xmos.com/download/private/xmos-timing-analyzer-manual%281.2%29.pdf.
 \bibitem{xs1energymanual}
 https://www.xmos.com/download/private/an01005%3a-estimating-power-consumption-for-xs1-l-devices%281.0.2rc1%29.pdf.
 
+\bibitem{dvfspaper}
+Diary~R. Suleiman, Muhammad~A. Ibrahim, and Ibrahim~I. Hamarash.
+\newblock {Dynamic Voltage Frequency Scalin (DVFS) for Microprocessors Power
+  and Energy Reduction}.
+\newblock 2005.
+
 \bibitem{dvfsieee}
 Shi-Hao Chen and Jiing-Yuan Lin.
 \newblock Implementation and verification practices of dvfs and power gating.
@@ -229,6 +235,23 @@ git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git.
 
 \bibitem{perfbabeltrace}
 http://stackoverflow.com/questions/43576997/building-perf-with-babeltrace-for-perf-to-ctf-conversion.
+
+\bibitem{taskset}
+https://linux.die.net/man/1/taskset.
+
+\bibitem{dvfspaper2}
+Etienne Le~Sueur and Gernot Heiser.
+\newblock Dynamic voltage and frequency scaling: The laws of diminishing
+  returns.
+\newblock In {\em Proceedings of the 2010 International Conference on Power
+  Aware Computing and Systems}, HotPower'10, pages 1--8, Berkeley, CA, USA,
+  2010. USENIX Association.
+
+\bibitem{cpufrequencyscaling}
+https://wiki.debian.org/howto/cpufrequencyscaling.
+
+\bibitem{gateworks}
+http://trac.gateworks.com/wiki/dvfs.
 
 \bibitem{springerparallel}
 Thomas Rauber and Gudula R{\"u}nger.

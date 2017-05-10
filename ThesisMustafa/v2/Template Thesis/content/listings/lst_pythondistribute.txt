@@ -1,0 +1,12 @@
+def APP4MCDistributionActions():
+        try:
+                with open('coredef_list.a4p','rb') as coredef_list:
+                        for line in coredef_list:
+                                words = line.strip('\n').split(' ')
+                                if (len(words)>3):
+                                        try:
+                                                AllocateProcessWithCore(words[2], words[5])
+                                        except Exception as inst:
+                                                print inst
+        except Exception as inst:
+                print inst

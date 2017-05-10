@@ -742,7 +742,7 @@ Touchscreen display that is embedded onto the Raspberry Pi 3 features several fu
 %Maybe add how graph is made...
 As for the hardware, 5 inch HDMI touchscreen module from Waveshare has been used. This module can act as a primary monitor for Raspberry Pi. Addinitionally, the module features touchscreen controls using SPI pins of the Raspberry Pi GPIO. The module driver is installed and calibrated on Raspberry Pi in order to use the module as a primary monitor. 
 
-The touchscreen display process uses a third-party library from Python that is called Pygame \cite{pygame}. This library is exclusively developed for creating Python language based games but it is also useful for creating graphical interfaces. After the images for the interface have been designed, the main interface has been created using the functions from Pygame. 
+The touchscreen display process uses a third-party library from Python that is called Pygame \cite{pygame}. This library is exclusively developed for creating Python language based games but it is also useful for creating graphical interfaces. After the images for the interface have been designed, the main interface has been created using the functions from Pygame. As an example, one page is designed to show the system core utilization. In that page, visualization is handled by creating rectangles that scale from 0 percent to 100 percent to show the core utilization in each core that are obtained by reading the files that are responsible for holding the core usage information for both low and high level modules.
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -751,7 +751,7 @@ The touchscreen display process uses a third-party library from Python that is c
 	\label{fig:touschreen5inc}
 \end{figure}
 
-Pages that are developed for the touchscreen module is shown in the Figure \ref{fig:displays}. In order to understand the behavioral operation of the touchscreen process, the Figure in \ref{fig:TouchscreenProcessSM} should be observed in parallel with the Figure \ref{fig:displays}. 
+Pages that are developed for the touchscreen module are shown in the Figure \ref{fig:displays}. In order to understand the behavioral operation of the touchscreen process, the Figure in \ref{fig:TouchscreenProcessSM} should be observed in parallel with the Figure \ref{fig:displays}. 
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -956,21 +956,21 @@ Here, the get\texttt{\_}logical\texttt{\_}core\texttt{\_}id() is the function to
 %%Onceki sectiona ek olarak
 %% core_monitoring.xc den bahset
 \subsection{Discovering Energy Consumption Features}
-One of the most important optimization goals include reducing the energy consumption. To reduce the energy consumption one should have a properly utilized software which is achieved through balancing the CPU load through all the cores of the system. In order to understand this, Power Consumption Application Manual for XS1-L devices \cite{xs1energymanual} should be studied well. Since CPU hardware related energy consumption is out of reach for this research, we focus on resource related power consumption. A good illustration of how energy consumption changes is shown in the Figure \ref{fig:xs1energy} \cite{xs1energymanual}.
+One of the most important optimization goals include reducing the energy consumption. To reduce the energy consumption one should have a properly utilized software which is achieved through balancing the CPU load through all the cores of the system. In order to understand this, Power Consumption Application Manual for XS1-L devices \cite{xs1energymanual} should be studied well. Since CPU hardware related power consumption is out of reach for this research, we focus on resource related power consumption. A good illustration of how power consumption changes is shown in the Figure \ref{fig:xs1energy} \cite{xs1energymanual}.
 
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
 	\includegraphics[scale=0.5]{content/images/xs1energy.png}
-	\caption{XS-1 Energy Graph Related to Base Current for an xCORE Core}
+	\caption{XS-1 Power Graph Related to Base Current for an xCORE Core}
 	\label{fig:xs1energy}
 \end{figure}
 
-In the figure, we see that the base power consumption of one xCORE running an instruction sequence is given with respect to the clock frequency. By looking at the figure, we can see that the internal base current that is related to the operation of xCORE is directly proportional to the clock frequency of the xCORE core. Since the current is directly proportional to the power, i.e. $P = {I\textsubscript{DD}}  {V}$, we can conclude that load balancing is one of the most important things to take core of to get a lower current in the core, thus reducing the power consumption. Using provided internal registers, xCORE core and tile frequencies can be reduced.
+In the figure, we see that the base power consumption of one xCORE running an instruction sequence is given with respect to the clock frequency. By looking at the figure, we can see that the internal base current that is related to the operation of xCORE is directly proportional to the clock frequency of the xCORE core. Since the current is directly proportional to the power, as seen by the equation i.e. $P = {I\textsubscript{DD}}  {V\textsubscript{DD}}$, we can conclude that load balancing is one of the most important things to take core of to get a lower current in the core, thus reducing the power consumption. It is important to add at this point that power consumption and energy consumption are directly proportional if system is not fully loaded. In other words, decreasing the clock frequency is useful to achieve reduced energy consumption in a system in which the load is balanced and there are no deadline misses\cite{dvfspaper}. Using provided internal registers, xCORE core and tile frequencies can be reduced. 
 
-It is important to keep in mind that reducing the clock speed is not the only way to reduce the power consumption. If the dynamic switching power is considered rather than the base power consumption, the factors such as operating freuqency, amount of communication, and the data itself are all big causes of the energy consumption \cite{xs1energymanual}.  
+It is important to keep in mind that reducing the clock speed is not the only way to reduce the power consumption. If the dynamic switching power is considered rather than the base power consumption, the factors such as operating frequency, amount of communication, and the data itself are all big causes of the power consumption \cite{xs1energymanual}.  
 
-An important energy related feature that comes with XS-1 devices is the AEC (Active Energy Consumption) mode \cite{xs1energymanual}. When this mode is turned on and AEC mode clock frequency is set to a desired value, xCORE device lowers the clock frequency of the AEC-enabled cores to the desired AEC mode clock frequency when the core is paused or waiting for an input \cite{xs1energymanual}. This could be slightly related to DVFS (Dynamic Voltage and Freuqency Scaling) \cite{dvfsieee} which is a processors ability to dynamically scale its freuqency and operating voltage depending on the load. DVFS is common for Linux OS running computers and it will be discussed in the next section.
+An important energy related feature that comes with XS-1 devices is the AEC (Active Energy Consumption) mode \cite{xs1energymanual}. When this mode is turned on and AEC mode clock frequency is set to a desired value, xCORE device lowers the clock frequency of the AEC-enabled cores to the desired AEC mode clock frequency when the core is paused or waiting for an input \cite{xs1energymanual}. This could be slightly related to DVFS (Dynamic Voltage and Frequency Scaling) \cite{dvfsieee} which is a processors ability to dynamically scale its frequency and operating voltage depending on the load. DVFS is common for Linux OS running computers and it will be discussed in the next section.
 
 \section{High-Level Module Information Tracing and System Management}
 
@@ -1133,21 +1133,72 @@ To evaluate performance indicators and observe load balance, tracing the high-le
 		\caption{Eclipse TraceCompass running on Windows}
 		\label{fig:tracecompass}
 	\end{figure}
-	
-	%Explain tracecompass windows, add bubbles to the gui figure...
-	
-	
+	%Explain tracecompass windows, add bubbles to the gui figure...	
 \end{itemize}
 
-
-
-
 \subsection{Process Mapping}
-% taskset, CorePlacer.sh
-Some text \\
+% taskset, CorePlacer.sh, coredeflist.a4p isleri touchscreende
+After software evaluation, processes and threads should be pinned to cores properly. To place the processes and threads to cores, tasks taskset module of Linux platform is used. Taskset module \cite{taskset} is used to set or retrieve the CPU affinity of a running process given its process ID. CPU affinity is a scheduler property that pins a process to a given set of CPUs on the system. Therefore, the process will not run on any other CPUs after an affinity is set to that process \cite{taskset}. As mentioned in the \cite{taskset}, Linux scheduler also supports natural CPU affinity: the scheduler attempts to keep processes on the same CPU as long as practical for performance reasons \cite{taskset}. Therefore, in A4MCAR, by forcing a specific CPU affinity, we investigate if a better distribution could be accomplished than the one Linux schedules. To place a process to a core given its process ID, following command is used:
+
+\begin{lstlisting}[style=bash]
+	#Place the process on a specific core.
+	sudo taskset -pc <coreaffinity> <pid>
+\end{lstlisting}
+
+As an example, for a 4-core system such as Raspberry Pi 3, core affinity can be values such as 0, 1, 2, 3, 0-1, 0-2, 0-3, 2-3. It can be understood from this example that core affinity not necessarily has to be selected as only one core and it can be selected as a range of cores for a process to be distributed. The Listing \ref{lst_CorePlacer} depicts how a process is pinned to a core using its name.
+\lstinputlisting[caption=CorePlacer.sh script to pin a process to a core using its name, label=lst_CorePlacer, style=bash]{content/listings/lst_CorePlacer.txt}
+
+In A4MCAR or any other equally or more complex applications, to manage the distribution process for every process might be time consuming. In order to overcome this issue, a file format has been designed which is then read by the main processing task (Touchscreen display process). Touchscreen process, when the distribution is selected, reads from this file format coredef\texttt{\_}list.a4p and makes core placements accordingly. An example coredef\texttt{\_}list.a4p is shown by the Listing \ref{lst_coredeflista4p}. It can be seen in the listing that task names and cores are listed by each line.
+\lstinputlisting[caption=File format that contains overall
+ process pinning information, label=lst_coredeflista4p, style=bash]{content/listings/lst_coredeflista4p.txt}
+
+Reading the file and making the changes required is done by using the function given with the Listing \ref{lst_pythondistribute}. In this listing, file is opened (Line 3), each line is parsed (Lines 4 through 6), then the allocation is done by using a function called AllocateProcessWithCore (Line 8) that executes a taskset command with arguments as name of the process and core. Remembering back the Figure \ref{fig:rpicomponents}, one can better understand how this procedure is located amongst other processes in the high-level module.
+\lstinputlisting[caption=Reading coredef\texttt{\_}list.a4p and pinning tasks with Python, label=lst_pythondistribute, style=python]{content/listings/lst_pythondistribute.txt}
+%CorePlacer.sh & Pythnoda napmisiz + coredef.a4p (onun pitonu)
+
 \subsection{Discovering Energy Consumption Features}
 %cpufrequtils
-Some text \\
+One of the biggest advantages of achieving a better core utilization is to invoke energy saving features of processors by running CPU at lower clock speeds and lower voltages. As mentioned before, computers that run on Linux platform provide a feature that is called DVFS (Dynamic Voltage and Freuqency Scaling) \cite{dvfsieee} which is a processors' ability to dynamically scale its frequency and operating voltage depending on the load. DVFS can affect hardware peripheral chips apart from the processor. Here, Figure \ref{fig:dvfsexplanation} \cite{dvfspaper} depicts how using DVFS can improve the energy consumption in a system.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[scale=0.40]{content/images/dvfsexplanation.png}
+	\caption{How DVFS reduces energy consumption explained \cite{dvfspaper}}
+	\label{fig:dvfsexplanation}
+\end{figure}
+
+Consider the following dynamic power equation \cite{dvfspaper}: 
+\begin{equation}
+P\textsubscript{dynamic} = {\alpha} {C\textsubscript{L}} {V\textsubscript{DD}\textsuperscript{2}} {f\textsubscript{clk}}
+\end{equation}
+
+We can see from the equation that the power depends on chip voltage ${V\textsubscript{DD}}$, clock frequency ${f\textsubscript{clk}}$ and collective switching capacitance ${C\textsubscript{L}}$. Considering a fixed chip operating voltage ${V\textsubscript{DD}}$, it can be easily seen from the figure that the power is directly proportional to the operation frequency of the CPU. For example, a processor that is running on 500MHz will be drawing less current than the same one that is running on 200MHz. However, using a lesser frequency is not the only way to get a lesser power consumption. One can also reduce the operating voltage ${V\textsubscript{DD}}$ of a chip to reduce power, provided that the ${V\textsubscript{DD}}$ is greater or equal to the minimum working voltage of that particular chip \cite{dvfspaper}. It should be noted that that clock frequency should also be reduced in a system with a reduced operating voltage ${V\textsubscript{DD}}$ for the system to function correctly \cite{dvfspaper2}. The figure depicts that by decreasing frequency and operating voltage at the same time (DVFS), power consumption is reduced a lot more than it is in the frequency scaling.
+
+In Linux, CPUFreq \cite{cpufrequencyscaling} is provided which is a module that is responsible for handling dynamic frequency scaling. CPUFreq governors which are responsible for deciding, what frequency should be used in a system, manipulate the CPUFreq driver to switch the policy of the CPU depending on the system load \cite{cpufrequencyscaling}. In A4MCAR, CPUFreq governor of the high-level module is changed in order to achieve less power consumption. Raspberry Pi 3 supports two frequencies that can be used within CPUFreq governors: 600MHz and 1.2GHz. The available governors and their functions are listed below \cite{gateworks}:
+
+\begin{itemize}
+	\item \textbf{performance} - sets the frequency statically to the highest available CPU frequency (in Raspberry Pi 3, this is 1.2GHz)
+	\item \textbf{powersave} - sets the frequency statically to the lowest available CPU frequency (in Raspberry Pi 3, this is 600MHz)
+	\item \textbf{userspace} - set the frequency from a userspace program. A userspace program can determine customized policies and frequencies to be used. For detailed information on userspace governor, \cite{gateworks} can be read.
+	\item \textbf{ondemand} - adjust based on utilization
+	\item \textbf{conservative} - adjust based on utilization but be a bit more conservative by adjusting gradually
+\end{itemize}
+
+CPUFreq governor of a Linux system can be changed at any given moment by using the cpufreq-utils command. The following Linux shell commands shows installation of cpufreq-utils (Line 1), listing information (Line 2), and current governor selection (Line 3), respectively.
+\begin{lstlisting}[style=bash]
+	sudo apt-get install cpufrequtils
+	cpufreq-info
+	cpufreq-set -g <governor>  #<governor> could be either of the governors that are listed.
+\end{lstlisting}
+
+% x DSVF feature of Raspberry Pi allows two frequencies 600MHz-1.2GHz
+
+%%%WHATT??
+%Lowering only the operating
+%frequency fclk can reduce the power consumption but the
+%energy consumption remains the same because the
+%computation needs more time to finish.  
 \subsection{Online Timing Analysis Features in A4MCAR}
 %whats implemented before in every app, and whats implemented in the touchscreen display (main process)
 %Including formulas for avg.slack time and so on...
