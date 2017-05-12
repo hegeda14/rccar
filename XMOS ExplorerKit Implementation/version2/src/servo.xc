@@ -1,13 +1,19 @@
-/************************************************************************************
- * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
- * Low Level Software
- * For xCORE-200 / XE-216 Devices
- * All rights belong to PIMES, FH Dortmund
- * Supervisor: Robert Hottger
- * @author Mustafa Ozcelikors
- * @contact mozcelikors@gmail.com
- ************************************************************************************/
-
+/*
+ * Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Description:
+ *    A4MCAR Project - Low-level Module Servo Motor driver task for steering
+ *
+ * Authors:
+ *    M. Ozcelikors <mozcelikors@gmail.com>
+ *
+ * Update History:
+ *
+ */
 
 #include "servo.h"
 #include "core_debug.h"
@@ -15,21 +21,23 @@
 /***
  *  Function Name:              Task_ApplyPWMTo1BitPort
  *  Function Description :      This function can be used to apply PWM signal to a 1-bit port.
- *                              The default period can be changed by the varialbe overall_pwm_period,
- *                              keeping in mind that 100MHz clock results that 100000 timer ticks mean
- *                              1 millisecond.
+ *                              The default period can be changed by the variable overall_pwm_period,
+ *                              keeping in mind that 100MHz clock results that 100000 timer ticks,
+ *                              which means 1 millisecond.
  *
  *  Argument       Type           Description
  *  p              port           1-bit port to have pwm output
  *  duty_cycle     int            duty cycle percentage (0-100)
  */
 // The following function is not used in our application, but is created as a pwm reference
-void Task_ApplyPWMTo1BitPort (port p, int duty_cycle) // int duty_cycle later to be declared as server
+void Task_ApplyPWMTo1BitPort (port p, int duty_cycle)
 {
-    uint32_t overall_pwm_period = 2 * MILLISECOND; //2ms
+    uint32_t overall_pwm_period = 20 * MILLISECOND;
     uint32_t on_period  =   (duty_cycle * overall_pwm_period * (1.0/100));
     uint32_t off_period =   overall_pwm_period - on_period;
-    printf("%d %d", on_period, off_period);
+
+    //Uncomment to following to debug calculated periods
+    //debug_printf("%d %d", on_period, off_period);
 
     uint32_t    time;
     int         port_state = 0;
@@ -37,13 +45,12 @@ void Task_ApplyPWMTo1BitPort (port p, int duty_cycle) // int duty_cycle later to
 
     tmr :> time;
 
-
     while(1)
     {
         select
         {
             case tmr when timerafter(time) :> void :
-                //Toggle
+                //Port toggling to create PWM output
                 if(port_state == 0)
                 {
                     p <: 1;
@@ -67,8 +74,8 @@ void Task_ApplyPWMTo1BitPort (port p, int duty_cycle) // int duty_cycle later to
  *  Function Description :      Generates the appropriote PWM to the servo to drive it.
  *
  *  Argument            Type           Description
- *  p                   port           1-bit port to have pwm output
- *  steering_interface  steering_if    0-> MOST RIGHT  100-> MOST LEFT
+ *  p                   out port       1-bit port to have pwm output
+ *  steering_interface  steering_if    Steering of the A4MCAR: 0-> MOST RIGHT  50-> MIDDLE  99-> MOST LEFT
  */
 [[combinable]]
 void Task_SteeringServo_MotorController (out port p, server steering_if steering_interface)
@@ -120,7 +127,7 @@ void Task_SteeringServo_MotorController (out port p, server steering_if steering
 
                 off_period = overall_pwm_period - on_period;
 
-                //PWM Port Toggling
+                //Port Toggling for PWM output
                 if(port_state == 0)
                 {
                     p <: 1;

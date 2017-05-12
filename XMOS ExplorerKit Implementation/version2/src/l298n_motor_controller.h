@@ -1,18 +1,24 @@
-/************************************************************************************
- * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
- * Low Level Software
- * For xCORE-200 / XE-216 Devices
- * All rights belong to PIMES, FH Dortmund
- * Supervisor: Robert Hottger
- * @author Mustafa Ozcelikors
- * @contact mozcelikors@gmail.com
- ************************************************************************************/
+/*
+ * Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Description:
+ *    A4MCAR Project - Low-level Module Alternative Motor Driver Task for L298N-based Motor controllers - Header file
+ *
+ * Authors:
+ *    M. Ozcelikors <mozcelikors@gmail.com>
+ *
+ * Update History:
+ *
+ */
 
 #ifndef L298N_MOTOR_CONTROLLER_H_
 #define L298N_MOTOR_CONTROLLER_H_
 
 #include "defines.h"
-
 
 #define L298N_OVERALL_PWM_PERIOD (20*MILLISECOND)
 

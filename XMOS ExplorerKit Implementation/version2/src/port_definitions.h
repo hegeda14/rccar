@@ -1,17 +1,22 @@
-/************************************************************************************
- * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
- * Low Level Software
- * For xCORE-200 / XE-216 Devices
- * All rights belong to PIMES, FH Dortmund
- * Supervisor: Robert Hottger
- * @author Mustafa Ozcelikors
- * @contact mozcelikors@gmail.com
- ************************************************************************************/
+/*
+ * Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Description:
+ *    A4MCAR Project - Low-level Module Port, Clock and File Definitions for XMOS xCORE-200 eXplorerKIT
+ *
+ * Authors:
+ *    M. Ozcelikors <mozcelikors@gmail.com>
+ *
+ * Update History:
+ *
+ */
 
 #ifndef PORT_DEFINITIONS_H_
 #define PORT_DEFINITIONS_H_
-
-//This file includes ports, clocks, and main file definitions.
 
 #include "defines.h"
 
@@ -25,11 +30,11 @@
 // Motor Speed Controller Defines
     on tile[0] : port PortMotorSpeedController = XS1_PORT_1G; //J8
 
-// Relay to brake the motor is controlled through:
+// Relay Module Port for Braking
     on tile[0] : port PortBRAKEctrl = XS1_PORT_1O; //GPIO J1 connector (Tile0), Signal X0D38
 
 // I2C Related Ports
-    on tile[0] : port PortSCL = XS1_PORT_1E; // D12
+    on tile[0] : port PortSCL = XS1_PORT_1E; //D12
     on tile[0] : port PortSDA = XS1_PORT_1F; //D13
 
 // Light system PWM ports

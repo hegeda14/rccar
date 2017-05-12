@@ -1,12 +1,19 @@
-/************************************************************************************
- * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
- * Low Level Software
- * For xCORE-200 / XE-216 Devices
- * All rights belong to PIMES, FH Dortmund
- * Supervisor: Robert Hottger
- * @author Mustafa Ozcelikors
- * @contact mozcelikors@gmail.com
- ************************************************************************************/
+/*
+ * Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Description:
+ *    A4MCAR Project - Low-level Module Main Processing Task that processes driving commands over Bluetooth (UART) and Ethernet interface - Header file
+ *
+ * Authors:
+ *    M. Ozcelikors <mozcelikors@gmail.com>
+ *
+ * Update History:
+ *
+ */
 
 #ifndef RN42_DRIVER_H_
 #define RN42_DRIVER_H_
@@ -16,6 +23,8 @@
 // Command line buffer size
 #define COMMANDLINE_BUFSIZE 8
 
+// Update rate for the main processing task (Task_GetRemoteCommandsViaBluetooth)
+#define RCCAR_STATUS_UPDATE_RATE    (50 * MILLISECOND)
 
 // UART Related Defines
 #define BAUD_RATE       115200
@@ -26,12 +35,12 @@
 
 // Prototypes
 [[combinable]]
-void Task_GetRemoteCommandsViaBluetooth(client uart_tx_if uart_tx,
-                                        client uart_rx_if uart_rx,
-                                        client control_if control_interface,
-                                        client steering_if steering_interface,
-                                        server ethernet_to_cmdparser_if cmd_from_ethernet_to_override,
-                                        client lightstate_if lightstate_interface);
+void Task_MainProcessingAndBluetoothControl(client uart_tx_if uart_tx,
+                                            client uart_rx_if uart_rx,
+                                            client control_if control_interface,
+                                            client steering_if steering_interface,
+                                            server ethernet_to_cmdparser_if cmd_from_ethernet_to_override,
+                                            client lightstate_if lightstate_interface);
 
 void WriteData (client uart_tx_if uart_tx, char data[]);
 void InitializeRN42asSlave(client uart_tx_if uart_tx);

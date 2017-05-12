@@ -11,8 +11,7 @@
 <fDef name="ShareLightSystemState" global="true" interface="lightstate_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSteeringValue" global="true" interface="steering_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
-<fDef name="Task_GetRemoteCommandsViaBluetooth" global="true" noreturn="true" doNotSpecialize="false" numParams="6"/>
-<fDef name="Task_GetRemoteCommandsViaBluetooth2" global="true" noreturn="false" doNotSpecialize="false" numParams="4"/>
+<fDef name="Task_MainProcessingAndBluetoothControl" global="true" noreturn="true" doNotSpecialize="false" numParams="6"/>
 <fDef name="WriteData" global="true" noreturn="false" doNotSpecialize="false" numParams="2"/>
 <fDef name="_complete_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="_get_outgoing_timestamp" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="0"/>
@@ -907,18 +906,6 @@
     </values>
   </arg>
 </fCall>
-<fCall name="WriteData" global="true" numArgs="2">
-  <arg num="0">
-    <passThroughArg param="0" caller="Task_GetRemoteCommandsViaBluetooth2" global="true"/>
-    <values>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
 <fCall name="PrintCoreAndTileInformation" global="true" numArgs="1">
   <arg num="0">
     <values>
@@ -928,7 +915,7 @@
 </fCall>
 <fCall name="WriteData" global="true" numArgs="2">
   <arg num="0">
-    <passThroughArg param="0" caller="Task_GetRemoteCommandsViaBluetooth" global="true"/>
+    <passThroughArg param="0" caller="Task_MainProcessingAndBluetoothControl" global="true"/>
     <values>
     </values>
   </arg>

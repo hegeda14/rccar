@@ -1,12 +1,19 @@
-/************************************************************************************
- * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
- * Low Level Software
- * For xCORE-200 / XE-216 Devices
- * All rights belong to PIMES, FH Dortmund
- * Supervisor: Robert Hottger
- * @author Mustafa Ozcelikors
- * @contact mozcelikors@gmail.com
- ************************************************************************************/
+/*
+ * Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Description:
+ *    A4MCAR Project - Low-level Module Alternative Motor Driver Task for L298N-based Motor controllers
+ *
+ * Authors:
+ *    M. Ozcelikors <mozcelikors@gmail.com>
+ *
+ * Update History:
+ *
+ */
 
 #include "l298n_motor_controller.h"
 #include "core_debug.h"
@@ -24,7 +31,7 @@
  */
 void Task_DriveL298N_MotorController1Channel (port ENA, port IN1, port IN2, server control_if control_interface)
 {
-    uint32_t overall_pwm_period = L298N_OVERALL_PWM_PERIOD ; //20ms
+    uint32_t overall_pwm_period = L298N_OVERALL_PWM_PERIOD ;
     uint32_t on_period ;
     uint32_t off_period ;
 
@@ -36,9 +43,8 @@ void Task_DriveL298N_MotorController1Channel (port ENA, port IN1, port IN2, serv
     int speed_val = 0;
 
     // Timing measurement/debugging related definitions
-    timer debug_timer;
-    uint32_t start_time, end_time;
-
+    //timer debug_timer;
+    //uint32_t start_time, end_time;
 
     while(1)
     {
@@ -62,12 +68,12 @@ void Task_DriveL298N_MotorController1Channel (port ENA, port IN1, port IN2, serv
                 tmr :> time;
 
                 //Configure direction
-                if (direction_val == FORWARD) //Forward speed 0-100 mapping to on period
+                if (direction_val == FORWARD) //Forward case
                 {
                     IN1 <: 1;
                     IN2 <: 0;
                 }
-                else if (direction_val == REVERSE) //Reverse speed 0-100 mapping to on period
+                else if (direction_val == REVERSE) //Reverse case
                 {
                     IN1 <: 0;
                     IN2 <: 1;

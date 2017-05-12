@@ -1,19 +1,36 @@
-/************************************************************************************
- * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
- * Low Level Software
- * For xCORE-200 / XE-216 Devices
- * All rights belong to PIMES, FH Dortmund
- * Supervisor: Robert Hottger
- * @author Mustafa Ozcelikors
- * @contact mozcelikors@gmail.com
- ************************************************************************************/
+/*
+ * Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Description:
+ *    A4MCAR Project - Low-level module task which is responsible for monitoring xCORE-200 eXplorerKIT cores in a tile by polling registers
+ *
+ * Authors:
+ *    M. Ozcelikors <mozcelikors@gmail.com>
+ *
+ * Contributors:
+ *    Suggestions from the following XCORE thread are applied:
+ *      https://www.xcore.com/viewtopic.php?f=26&t=5017
+ *
+ * Update History:
+ *
+ */
 
 #include "core_monitoring.h"
 #include <debug_print.h>
 #include "core_debug.h"
 
-
-
+/***
+ *  Function Name:                Task_MonitorCoresInATile
+ *  Function Description :        Low-level module task which is responsible for monitoring xCORE-200 eXplorerKIT cores in a tile by polling registers
+ *                                This function monitors the tile at which it is placed on
+ *
+ *  Argument                        Type                            Description
+ *  core_stats_interface            client core_stats_if            A client interface that is used for sending core usage information for cores 0 through 7 of the respective tile
+ */
 //[[combinable]]
 void Task_MonitorCoresInATile(client core_stats_if core_stats_interface)
 {
@@ -43,6 +60,7 @@ void Task_MonitorCoresInATile(client core_stats_if core_stats_interface)
       {
             select {
                   case print_tmr when timerafter(print_time) :> void:
+                        // To debug;
                         /*printf("tile[%x]: %d/%d %d/%d %d/%d %d/%d %d/%d %d/%d %d/%d %d/%d\n",
                             tile_id,
                             core_busy[0], core_idle[0],
@@ -134,7 +152,7 @@ void Task_MonitorCoresInATile(client core_stats_if core_stats_interface)
 
 
                   //For maximum possible polling rate..
-                  default://case poll_tmr when timerafter(poll_time) :> void:
+                  default: //case poll_tmr when timerafter(poll_time) :> void:
                         for (t = 0; t <= 7; t++) {
                               // Read the processor state
                               int ps_value = getps(0x100*t+4);

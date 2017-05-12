@@ -1,4 +1,3 @@
-// Author mozcelikors
 #ifndef STRING_ITOA_H_
 #define STRING_ITOA_H_
 

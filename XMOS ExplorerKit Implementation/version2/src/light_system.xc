@@ -1,12 +1,19 @@
-/************************************************************************************
- * "Multi-functional Multi-core RCCAR for APP4MC-platform Demonstration"
- * Low Level Software
- * For xCORE-200 / XE-216 Devices
- * All rights belong to PIMES, FH Dortmund
- * Supervisor: Robert Hottger
- * @author Mustafa Ozcelikors
- * @contact mozcelikors@gmail.com
- ************************************************************************************/
+/*
+ * Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Description:
+ *    A4MCAR Project - Low-level Module Light System Task
+ *
+ * Authors:
+ *    M. Ozcelikors <mozcelikors@gmail.com>
+ *
+ * Update History:
+ *
+ */
 
 #include "light_system.h"
 #include "core_debug.h"
@@ -26,8 +33,6 @@
 
     switch (lightstate)
     {
-
-
         case 2:     //Front and back lights ON
             on_period_TH = LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD;
             on_period_ST = LIGHTSYSTEM_BRAKELIGHTS_TH_PERIOD;
@@ -71,6 +76,11 @@
  *  Function Name:              Task_ControlLightSystem
  *  Function Description :      Task that manages two channel-pwm for ports p_TH and p_ST using the state info from
  *                              lightstate_interface
+ *
+ *  Argument                Type                                      Description
+ *  p_TH                    port                                      TH port (related to driving) for light system
+ *  p_ST                    port                                      ST port (related to steering) for light system
+ *  lightstate_inteface     server lightstate_if                      Lightstate server interface to receive light state information
  */
 [[combinable]]
 void Task_ControlLightSystem (port p_TH, port p_ST, server lightstate_if lightstate_interface)
@@ -98,16 +108,11 @@ void Task_ControlLightSystem (port p_TH, port p_ST, server lightstate_if lightst
 
     //printf("%d %d %d %d", on_period_TH, on_period_ST, off_period_TH, off_period_ST);
 
-    //1-front and back on
-    //2-error/warning
-    //3- front blink
-    //4- left blink
-    //5- right blink duzelt
-    //6- break lights - going rear
     while(1)
     {
         select
         {
+            //Uncomment the following to enable Light System
             //Wait for the lightstate value (Event)
             /*case lightstate_interface.ShareLightSystemState (short int state):
                 lightstate_val = state;
@@ -124,11 +129,6 @@ void Task_ControlLightSystem (port p_TH, port p_ST, server lightstate_if lightst
             case tmr_ST when timerafter(time_ST) :> void :
 
                 tmr_ST :> time_ST;
-
-                //calculations
-
-
-
 
                 //PWM Port Toggling
                 if(port_state_ST == 0)
@@ -151,12 +151,6 @@ void Task_ControlLightSystem (port p_TH, port p_ST, server lightstate_if lightst
             case tmr_TH when timerafter(time_TH) :> void :
 
                 tmr_TH :> time_TH;
-
-                //calculations
-
-                //off_period_TH = overall_pwm_period - on_period_TH;
-
-
 
                 //PWM Port Toggling
                 if(port_state_TH == 0)

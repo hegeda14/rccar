@@ -1,4 +1,4 @@
-<preCompilationAnalysis file="../src/servo.xc">
+<preCompilationAnalysis file="../src/ar8035_phy_driver.xc">
 <fDef name="SendCmd" global="true" interface="ethernet_to_cmdparser_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
 <fDef name="ShareCoreUsage" global="true" interface="core_stats_if" noreturn="false" doNotSpecialize="false" numParams="8"/>
 <fDef name="ShareDirectionValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
@@ -6,8 +6,7 @@
 <fDef name="ShareLightSystemState" global="true" interface="lightstate_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSpeedValue" global="true" interface="control_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
 <fDef name="ShareSteeringValue" global="true" interface="steering_if" noreturn="false" doNotSpecialize="false" numParams="1"/>
-<fDef name="Task_ApplyPWMTo1BitPort" global="true" noreturn="true" doNotSpecialize="false" numParams="2"/>
-<fDef name="Task_SteeringServo_MotorController" global="true" noreturn="true" doNotSpecialize="false" numParams="2"/>
+<fDef name="Task_Ar8035_Phy_Driver" global="true" noreturn="true" doNotSpecialize="false" numParams="3"/>
 <fDef name="_complete_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="4"/>
 <fDef name="_get_outgoing_timestamp" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="0"/>
 <fDef name="_init_send_packet" global="true" interface="ethernet_tx_if" noreturn="false" doNotSpecialize="false" numParams="2"/>
@@ -697,18 +696,6 @@
     </values>
   </arg>
 </fCall>
-<fCall name="__builtin_timer_after" global="true" numArgs="2">
-  <arg num="0">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-  <arg num="1">
-    <values>
-      <value type="unknown"/>
-    </values>
-  </arg>
-</fCall>
 <fCall name="PrintCoreAndTileInformation" global="true" numArgs="1">
   <arg num="0">
     <values>
@@ -716,6 +703,47 @@
     </values>
   </arg>
 </fCall>
+<fCall name="delay_milliseconds" global="true" numArgs="1">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="smi_phy_is_powered_down" global="true" numArgs="2">
+  <arg num="0">
+    <passThroughArg param="1" caller="Task_Ar8035_Phy_Driver" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="4"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="smi_configure" global="true" numArgs="4">
+  <arg num="0">
+    <passThroughArg param="1" caller="Task_Ar8035_Phy_Driver" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="4"/></value>
+    </values>
+  </arg>
+  <arg num="2">
+    <values>
+      <value type="intval"><intval isSigned="true" val="1"/></value>
+    </values>
+  </arg>
+  <arg num="3">
+    <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+    </values>
+  </arg>
+</fCall>
 <fCall name="__builtin_timer_after" global="true" numArgs="2">
   <arg num="0">
     <values>
@@ -723,6 +751,47 @@
     </values>
   </arg>
   <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+</fCall>
+<fCall name="smi_get_link_state" global="true" numArgs="2">
+  <arg num="0">
+    <passThroughArg param="1" caller="Task_Ar8035_Phy_Driver" global="true"/>
+    <values>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="4"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="read_reg" global="true" interface="smi_if" numArgs="2">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="4"/></value>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="intval"><intval isSigned="true" val="17"/></value>
+    </values>
+  </arg>
+</fCall>
+<fCall name="set_link_state" global="true" interface="ethernet_cfg_if" numArgs="3">
+  <arg num="0">
+    <values>
+      <value type="intval"><intval isSigned="true" val="0"/></value>
+    </values>
+  </arg>
+  <arg num="1">
+    <values>
+      <value type="unknown"/>
+    </values>
+  </arg>
+  <arg num="2">
     <values>
       <value type="unknown"/>
     </values>

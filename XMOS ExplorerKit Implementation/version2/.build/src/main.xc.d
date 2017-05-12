@@ -23,6 +23,7 @@
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/ethernet_config.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/light_system.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/core_monitoring.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/core_debug.h
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/core_debug.h \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/ar8035_phy_driver.h
 
 

@@ -1,4 +1,5 @@
-main.o: ../src/main.xc \
+.build/src/ar8035_phy_driver.xc.d .build/src/ar8035_phy_driver.xc.o .build/src/ar8035_phy_driver.xc.pca.xml: ././src/ar8035_phy_driver.xc \
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/ar8035_phy_driver.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/defines.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_gpio/lib_gpio/api/gpio.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_uart/api/uart.h \
@@ -14,15 +15,6 @@ main.o: ../src/main.xc \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_conf_derived.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_xtcp/src/xtcp_impl.h \
   C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/lib_logging/lib_logging/api/debug_print.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/rn42_driver.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/servo.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/sonar_sensor.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/tble02s_motor_controller.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/port_definitions.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/ethernet_app.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/ethernet_config.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/light_system.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/core_monitoring.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/core_debug.h \
-  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/ar8035_phy_driver.h
+  C:/Users/Mustafa/Documents/XTimeComposerStudio_Workspace3/RCCarProjectNew/src/core_debug.h
+
 

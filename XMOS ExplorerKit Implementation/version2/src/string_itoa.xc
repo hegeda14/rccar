@@ -1,4 +1,3 @@
-// Author mozcelikors
 #include "string_itoa.h"
 
 void reverse(char s[])
