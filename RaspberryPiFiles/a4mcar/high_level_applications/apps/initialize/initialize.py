@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+import psutil
+import time
+import string
+
+text_file = open("../../logs/driving/driving_command.inc","w")
+text_file.write("NOCHANGE")
+text_file.close()
+text_file = open("../../logs/driving/driving_command_history.inc","w")
+text_file.write("NOCHANGE")
+text_file.close()
+text_file = open("/var/wwW/html/core_usage_xmos.inc","w")
+text_file.write("0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
+text_file.close()
+text_file = open("../../logs/timing/ethernet_client_timing.inc","w")
+text_file.write("0 0 0 0")
+text_file.close()
+text_file = open("../../logs/timing/core_recorder_timing.inc","w")
+text_file.write("0 0 0 0")
+text_file.close()
+text_file = open("../../logs/timing/dummy_load25_1_timing.inc","w")
+text_file.write("0 0 0 0")
+text_file.close()
+text_file = open("../../logs/timing/dummy_load25_2_timing.inc","w")
+text_file.write("0 0 0 0")
+text_file.close()
+text_file = open("../../logs/timing/dummy_load25_3_timing.inc","w")
+text_file.write("0 0 0 0")
+text_file.close()
+text_file = open("../../logs/timing/dummy_load25_4_timing.inc","w")
+text_file.write("0 0 0 0")
+text_file.close()
+text_file = open("../../logs/timing/dummy_load25_5_timing.inc","w")
+text_file.write("0 0 0 0")
+text_file.close()
+text_file = open("../../logs/timing/dummy_load100_timing.inc","w")
+text_file.write("0 0 0 0")
+text_file.close()
+text_file = open("../../logs/timing/image_processing_timing.inc","w")
+text_file.write("0 0 0 0")
+text_file.close()
+
+

@@ -1,1 +1,0 @@
-/usr/bin/c++       CMakeFiles/EmergencyStopRpi.dir/EmergencyStopRpi.cpp.o  -o EmergencyStopRpi  -L/usr/local/lib -rdynamic libpigpio.a libcommand.a -lpthread -Wl,-rpath,/usr/local/lib 

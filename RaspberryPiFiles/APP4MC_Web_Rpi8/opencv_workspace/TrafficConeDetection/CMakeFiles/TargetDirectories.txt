@@ -1,8 +1,0 @@
-/home/pi/opencv_workspace/TrafficConeDetection/CMakeFiles/AvoidObjects.dir
-/home/pi/opencv_workspace/TrafficConeDetection/CMakeFiles/AvoidObjects_Raspicam.dir
-/home/pi/opencv_workspace/TrafficConeDetection/CMakeFiles/AvoidObjects_Raspicam_CleanVersion.dir
-/home/pi/opencv_workspace/TrafficConeDetection/CMakeFiles/EmergencyStopRpi.dir
-/home/pi/opencv_workspace/TrafficConeDetection/CMakeFiles/TrafficConeDetection.dir
-/home/pi/opencv_workspace/TrafficConeDetection/CMakeFiles/command.dir
-/home/pi/opencv_workspace/TrafficConeDetection/CMakeFiles/pigpio.dir
-/home/pi/opencv_workspace/TrafficConeDetection/CMakeFiles/simpletest_raspicam.dir

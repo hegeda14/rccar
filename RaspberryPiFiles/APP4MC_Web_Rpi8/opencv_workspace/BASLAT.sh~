@@ -1,2 +1,0 @@
-#!/bin/sh
-export OpenCV_DIR=/home/pi/opencv_workspace/opencv/build/
