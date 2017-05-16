@@ -1,4 +1,17 @@
 #!/usr/bin/env python
+
+# Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+#
+# Description:
+#    A4MCAR Project - High-level Module Ethernet Client Application
+#
+# Author:
+#    M. Ozcelikors <mozcelikors@gmail.com>
+
 import psutil
 import time
 import string
@@ -27,8 +40,8 @@ def CreateTimingLog(filename):
 	global _DEADLINE
 	global _END_TIME
 	global _EXECUTION_TIME
-        global _PREV_SLACK_TIME
-        global _PERIOD
+	global _PREV_SLACK_TIME
+	global _PERIOD
         
 	try:
 		file_obj = open(str(filename), "w+r")
@@ -51,24 +64,23 @@ def Thread_EthernetClient_ReceiveMessage():
 	data = ""
 	while not done:
 		if (connected == 1):
-                        ready = select.select([client_sock], [], [], 1)
-                        if ready [0]:
-                                dat = ""
-                                while (dat != "E"):
-                                        dat = client_sock.recv(1)
-                                        if (dat != "E"):
-                                                data += dat
-                                #print data
+			ready = select.select([client_sock], [], [], 1)
+			if ready [0]:
+				dat = ""
+				while (dat != "E"):
+					dat = client_sock.recv(1)
+					if (dat != "E"):
+						data += dat
+				#print data
 				WriteToFile(data)
-                                data = ""
+				data = ""
 		time.sleep(0.5)
-
 
 def Thread_EthernetClient_SendMessage():
 	global client_sock
 	global connected
 	global done
-        prevfiledata = "NOCHANGE"
+	prevfiledata = "NOCHANGE"
 	while not done:
 		if (connected == 1):
 			filedata = ReadFromFile()
@@ -115,26 +127,22 @@ while not done:
 
 	if (connected == 1):
 		while not done:
-                        #Timing Related ---start
-                        _START_TIME = time.time()
-                        _PREV_SLACK_TIME = _START_TIME - _END_TIME
-                        #Timing Related --end
-                        
-                        #---
+			#Timing Related ---start
+			_START_TIME = time.time()
+			_PREV_SLACK_TIME = _START_TIME - _END_TIME
+			#Timing Related --end
+
 			try:
 				filedata = ReadFromFile()
-                        	if (filedata != "NOCHANGE" and filedata != prevfiledata):
-                                	client_sock.sendall(filedata)
+				if (filedata != "NOCHANGE" and filedata != prevfiledata):
+					client_sock.sendall(filedata)
 					prevfiledata = filedata
 			except Exception as inst:
 				done = True
-                        #---
                         
-                        #Timing Related ---start
-                        CreateTimingLog("../../logs/timing/ethernet_client_timing.inc")
-                        #Timing Related ---end
+			#Timing Related ---start
+			CreateTimingLog("../../logs/timing/ethernet_client_timing.inc")
+			#Timing Related ---end
 
-                        #print _EXECUTION_TIME
-                        if (_PERIOD>_EXECUTION_TIME):
-                                time.sleep(_PERIOD - _EXECUTION_TIME)
-
+			if (_PERIOD>_EXECUTION_TIME):
+				time.sleep(_PERIOD - _EXECUTION_TIME)

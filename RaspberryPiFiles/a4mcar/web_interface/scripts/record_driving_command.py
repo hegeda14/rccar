@@ -1,9 +1,22 @@
 #!/usr/bin/env python
+
+# Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+#
+# Description:
+#    A4MCAR Project - This Python script is used for writing driving command log, given its argument.
+#
+# Author:
+#    M. Ozcelikors <mozcelikors@gmail.com>
+
 import psutil
 import time
 import string
 import sys
-#import os 
+
 arguments = sys.argv
 
 if (arguments[1]):

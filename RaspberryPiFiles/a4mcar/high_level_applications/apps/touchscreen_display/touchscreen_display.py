@@ -1,8 +1,20 @@
 #!/usr/bin/env python
 
-# Author: mozcelikors
+# Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+#
+# Description:
+#    A4MCAR Project - Touchscreen display process utilizes the touchscreen display of the A4MCAR high-level module
+#					  and includes necessary operations to make use of A4MCAR's online timing features
+#
+# Author:
+#    M. Ozcelikors <mozcelikors@gmail.com>
 
 import pygame
+import aprocess
 from pygame.locals import * #for backspace key
 import sys
 import os
@@ -26,9 +38,11 @@ import netinfo     #How Pynetinfo package imported. To install run pip install X
 import re #regex for ssid, psk retrieval
 import psutil
 
+#Virtual Keyboard related definitions
 mykeys = virtkeyboard.VirtualKeyboard()
 mykeyboard_inputtext=""
 
+#Network settings related definitions
 current_static_ip = ""
 current_gateway = ""
 current_ssid = ""
@@ -37,55 +51,39 @@ prev_psk = ""
 prev_ssid = ""
 previous_gateway = ""
 previous_static_ip = ""
+
+#Core usage variables
 core_usage_tile0 = [0,0,0,0,0,0,0,0]
 core_usage_tile1 = [0,0,0,0,0,0,0,0]
-core_usage_rpi= [0,0,0,0]
+core_usage_rpi = [0,0,0,0]
 
-xtightvnc_pid = 0
-mjpg_streamer_pid = 0
-touchscreen_display_pid =0
-ethernet_client_pid = 0
-core_recorder_pid = 0
-dummy_load25_1_pid = 0
-dummy_load25_2_pid = 0
-dummy_load25_3_pid = 0
-dummy_load25_4_pid =0
-dummy_load25_5_pid =0
-dummy_load100_pid =0
-apache2_pid =0
-image_processing_pid = 0
+#Coordinates for text elements
+coord_x = [30,  30,  30,  30,  30,  30,  30, 380, 380, 380, 380, 380, 380, 380]
+coord_y = [120,170, 220, 270, 320, 370, 420, 120, 170, 220, 270, 320, 370, 420]
 
-xtightvnc_core="0-3"
-mjpg_streamer_core="0-3"
-touchscreen_display_core="0-3"
-ethernet_client_core="0-3"
-core_recorder_core="0-3"
-dummy_load25_1_core="0-3"
-dummy_load25_2_core="0-3"
-dummy_load25_3_core="0-3"
-dummy_load25_4_core="0-3"
-dummy_load25_5_core="0-3"
-dummy_load100_core="0-3"
-apache2_core="0-3"
-image_processing_core = "0-3"
+#Process definitions
+aprocess_list = []
+aprocess_list.append(aprocess("Xtightvnc", 0, 1, "VNC Server", "cd ../../scripts/tightvnc/  && sudo bash tightvnc_start.sh &"))
+aprocess_list.append(aprocess("mjpg_streamer", 0, 1, "Camera Stream", "cd ../../scripts/camera_start/  && sudo bash raspberrypi_camera_start.sh &"))
+aprocess_list.append(aprocess("touchscreen_display", 1, "../../logs/timing/touchscreen_display_timing.inc", 1, "Display", ""))
+aprocess_list.append(aprocess("ethernet_client", 1, "../../logs/timing/ethernet_client_timing.inc", 1, "Ethernet App", "cd ../ethernet_client/ && sudo python ethernet_client.py &"))
+aprocess_list.append(aprocess("core_recorder", 1, "../../logs/timing/core_recorder_timing.inc", 1, "Core Recorder", "cd ../core_recorder/ && sudo python core_recorder.py &"))
+aprocess_list.append(aprocess("dummy_load25_1", 1, "../../logs/timing/dummy_load25_1_timing.inc", 1, "Cycler25_1", "cd ../dummy_loads/ && sudo python dummy_load25_1.py &"))
+aprocess_list.append(aprocess("dummy_load25_2", 1, "../../logs/timing/dummy_load25_2_timing.inc", 1, "Cycler25_2", "cd ../dummy_loads/ && sudo python dummy_load25_2.py &"))
+aprocess_list.append(aprocess("dummy_load25_3", 1, "../../logs/timing/dummy_load25_3_timing.inc", 1, "Cycler25_3", "cd ../dummy_loads/ && sudo python dummy_load25_3.py &"))
+aprocess_list.append(aprocess("dummy_load25_4", 1, "../../logs/timing/dummy_load25_4_timing.inc", 1, "Cycler25_4", "cd ../dummy_loads/ && sudo python dummy_load25_4.py &"))
+aprocess_list.append(aprocess("dummy_load25_5", 1, "../../logs/timing/dummy_load25_5_timing.inc", 1, "Cycler25_5", "cd ../dummy_loads/ && sudo python dummy_load25_5.py &"))
+aprocess_list.append(aprocess("dummy_load100", 1, "../../logs/timing/dummy_load100_timing.inc", 1, "Cycler100", "cd ../dummy_loads/ && sudo python dummy_load100.py &"))
+aprocess_list.append(aprocess("apache2", 0, 1, "Apache Server", "sudo service apache2 start"))
+#aprocess_list.append(aprocess("image_processing", 1, "../../logs/timing/image_processing_timing.inc", 1, "ImageProcess", "cd ../image_processing/ && sudo -E ./image_processing &"))
+aprocess_list_len = len(aprocess_list)
 
-distribution_type=2
-current_thyme = 0
-previous_thyme = 0
 
-#File list for deadline-miss calculation
-
-files_list=[]
-files_list.append("../../logs/timing/ethernet_client_timing.inc")
-files_list.append("../../logs/timing/core_recorder_timing.inc")
-files_list.append("../../logs/timing/dummy_load25_1_timing.inc")
-files_list.append("../../logs/timing/dummy_load25_2_timing.inc")
-files_list.append("../../logs/timing/dummy_load25_3_timing.inc")
-files_list.append("../../logs/timing/dummy_load25_4_timing.inc")
-files_list.append("../../logs/timing/dummy_load25_5_timing.inc")
-files_list.append("../../logs/timing/dummy_load100_timing.inc")
-#Involving opencv app optionally
-#files_list.append("../../logs/timing/image_processing_timing.inc")
+#Software Distribution Type
+#1- APP4MC Distribution (Uses coredef_list.a4p)
+#2- Automatic (OS) Distribution
+#3- Sequential Distribution (Every process on core 3)
+distribution_type = 2
 
 #Timing Related ---start
 _DEADLINE = 0.1
@@ -96,6 +94,7 @@ _PREV_SLACK_TIME = 0
 _PERIOD = 0.2
 #Timing Related ---end
 
+#For timing calculations, missed deadlines, total processes, and slack time sum
 missed=0
 total=0
 slack_sum=0.0
@@ -105,8 +104,8 @@ def CreateTimingLog(filename):
 	global _DEADLINE
 	global _END_TIME
 	global _EXECUTION_TIME
-        global _PREV_SLACK_TIME
-        global _PERIOD
+	global _PREV_SLACK_TIME
+	global _PERIOD
         
 	try:
 		file_obj = open(str(filename), "w+r")
@@ -185,18 +184,12 @@ def Settings_IsValidIPv4Address(address):
 
 	return True
 
-
-
 def Clear_Variables():
 	global mykeyboard_inputtext
 	global current_static_ip
 	global current_gateway
 	global current_ssid
 	global current_psk
-	global prev_psk
-	global prev_ssid
-	global previous_gateway
-	global previous_static_ip
 
 	print "Cleared variables"
 	mykeyboard_inputtext=""
@@ -204,7 +197,6 @@ def Clear_Variables():
 	current_gateway = GetMyGateway()
 	current_ssid = GetMySSID()
 	current_psk = GetMyPSK()
-
 	return 1
 
 def HomePage():
@@ -235,8 +227,6 @@ def DeadlineMissPage():
 	font = pygame.font.SysFont("Roboto Condensed", 30)
 	text = font.render ("Core Utilization", True, (255, 255, 255))
 	screen.blit(text,(30,30))
-
-	
 	return 1
 
 def UpdateSettingsPageValues():
@@ -318,46 +308,16 @@ def GetProcessCoreAffinityList(pid):
 	except Exception as inst:
 		#print inst
 		affinity_list = "NaN"
-	#try:
-	#	processpid = int(str(pid).strip('\n'))
-	#	p = psutil.Process(processpid)
-	#	x = p.cpu_affinity()
-	#except Exception as inst:
-	#	print inst
-	#	x = "NaN"
+
 	return affinity_list
 
 def UpdateProcessInfo():
-	global xtightvnc_pid
-	global mjpg_streamer_pid
-	global touchscreen_display_pid
-	global ethernet_client_pid
-	global core_recorder_pid
-	global dummy_load25_1_pid
-	global dummy_load25_2_pid
-	global dummy_load25_3_pid
-	global dummy_load25_4_pid
-	global dummy_load25_5_pid
-	global dummy_load100_pid
-	global apache2_pid
-        global image_processing_pid
-	try:
-		xtightvnc_pid = CheckIfProcessRunning("Xtightvnc")	
-		mjpg_streamer_pid = CheckIfProcessRunning("mjpg_streamer")
-		touchscreen_display_pid = CheckIfProcessRunning("touchscreen_display")
-		ethernet_client_pid = CheckIfProcessRunning("ethernet_client")
-		core_recorder_pid = CheckIfProcessRunning("core_recorder")
-		dummy_load25_1_pid = CheckIfProcessRunning("dummy_load25_1")
-		dummy_load25_2_pid = CheckIfProcessRunning("dummy_load25_2")
-		dummy_load25_3_pid = CheckIfProcessRunning("dummy_load25_3")
-		dummy_load25_4_pid = CheckIfProcessRunning("dummy_load25_4")
-		dummy_load25_5_pid = CheckIfProcessRunning("dummy_load25_5")
-		dummy_load100_pid = CheckIfProcessRunning("dummy_load100")
-		apache2_pid = CheckIfProcessRunning("apache2")
-                image_processing_pid = CheckIfProcessRunning("image_processing")
-	except Exception as inst:
-		print inst
+	global aprocess_list
+	global aprocess_list_len
 
+	for i in range(0,aprocess_list_len):
+		aprocess_list[i].UpdateProcessIDAndRunning()
+	
 def ChangeDistributionPage():
 	Clear_Variables()
 	
@@ -384,8 +344,6 @@ def ChangeDistributionPage():
 	AddPromptBox_Passive(220, 220, 350, 40)
 	text = font.render (" Sequential Distribution", True, (0, 0, 0))
 	screen.blit(text,(220,220))
-	
-
 	return 1
 
 def UpdateChangeDistributionPage():
@@ -422,126 +380,91 @@ def UpdateChangeDistributionPage():
 
 
 def UpdateShowDistributionPage():
+	global aprocess_list
+	global aprocess_list_len
+	
 	global distribution_type
-	global previous_thyme
-	global current_thyme
 
-        global total
-        global missed
-        global slack_sum
+	global total
+	global missed
+	global slack_sum
         
-        global _PERIOD
-        global _PREV_SLACK_TIME
-        global _EXECUTION_TIME
-        global _START_TIME
-        global _END_TIME
-        global _DEADLINE
+	global _PERIOD
+	global _PREV_SLACK_TIME
+	global _EXECUTION_TIME
+	global _START_TIME
+	global _END_TIME
+	global _DEADLINE
 
-        #Timing Related --start
-        _START_TIME = time.time()
-        _PREV_SLACK_TIME = _START_TIME - _END_TIME
-
-        
-        #TASK CONTENT
+	#Timing Related --start
+	_START_TIME = time.time()
+	_PREV_SLACK_TIME = _START_TIME - _END_TIME
+	
+	#TASK CONTENT
 	screen.blit(get_image('images/display_r3_c1_s1.png'),(0,175))
 
+	#Show CPU Frequencies and CPU Count
+	font = pygame.font.SysFont("Roboto Condensed", 20)
+	text = font.render ("Core Frequencies at:", True, (0,0,255))
+	screen.blit(text,(50,302))
 
-        #Show CPU Frequencies and CPU Count
-        font = pygame.font.SysFont("Roboto Condensed", 20)
-        text = font.render ("Core Frequencies at:", True, (0,0,255))
-        screen.blit(text,(50,302))
+	text = font.render("Cores Running:", True, (0,0,255))
+	screen.blit(text,(400,302))
 
-        text = font.render("Cores Running:", True, (0,0,255))
-        screen.blit(text,(400,302))
+	text = font.render (str(psutil.cpu_freq()).split(',')[0].split('=')[1]+" MHz", True, (0,0,0))
+	screen.blit(text, (220,302))
 
-        text = font.render (str(psutil.cpu_freq()).split(',')[0].split('=')[1]+" MHz", True, (0,0,0))
-        screen.blit(text, (220,302))
+	text = font.render (str(psutil.cpu_count()), True, (0,0,0))
+	screen.blit(text, (530,302))
 
-        text = font.render (str(psutil.cpu_count()), True, (0,0,0))
-        screen.blit(text, (530,302))
+	#deadline variables: missed count: missed total, count: total
+	missed = 0
+	total = 0
+	slack_sum = 0.0
 
-       # text = font.render (str(psutil.cpu_freq(2))[0:6], True, (0,0,0))
-       # screen.blit(text, (360,302))
+	# Updates for display app
+	total = total + 1
+	slack_sum = slack_sum + _PREV_SLACK_TIME
 
-       # text = font.render (str(psutil.cpu_freq(3))[0:6], True, (0,0,0))
-       # screen.blit(text, (430,302))
-        #---
-        #deadline variables: missed count: missed total, count: total
-        missed = 0
-        total = 0
-        slack_sum = 0.0
-
-        # Updates for display app
-        total = total + 1
-        slack_sum = slack_sum + _PREV_SLACK_TIME
-        #print _EXECUTION_TIME
-        if (_EXECUTION_TIME > _PERIOD):
-                missed = missed + 1
+	if (_EXECUTION_TIME > _PERIOD):
+		missed = missed + 1
         
-        #---UPDATES FROM OTHER APPS....
-        #File structure <deadline-missed-1-or-0> <by-how-much-percentage>
-        
-        files_list_len = len(files_list)
-        differences_list = []
-        
-        for i in range(0,files_list_len):
-                #print files_list[i]
-                try:
-                        file_obj = open(files_list[i],"r")
-                        data_obj = file_obj.read()
-                        int_objs = data_obj.split(' ')
-                        exectime_l = float(int_objs[1])
-                        period_l = float (int_objs[2])
-                        slack_l = float (int_objs[0])
-                        if (exectime_l>period_l):
-                                missed = missed + 1
-                        #the following is applied below: total = total + 1
+	# Updates from other apps
+	differences_list = []
 
-                        #All Apps Debug..
-                        #print str(files_list[i])+": "+"ExecTime="+str(exectime_l)+" Period="+str(period_l)+" Slack="+str(slack_l)
-                        
-                        #Continued..
-                        
-                        differences_list.append(float(exectime_l)) #i.e. execution time list
-                        slack_sum = slack_sum + slack_l
-                        total = total + 1
-                        #print int_objs
-                        file_obj.close()
-                except Exception as inst:
-                        print inst
-        #
-        #differences_list_len = len(differences_list)
-        #for k in range(0,differences_list_len):
-        #        font = pygame.font.SysFont("Roboto Condensed", 20)
-        #        if (k==0):
-        #                proses = "e :"
-        #        elif (k==1):
-        #                proses = "r :"
-        #        else:
-        #                proses = "b :"
-        #        text = font.render (proses+str(differences_list[k])+"%", True, (0,0,0))
-        #        screen.blit(text,(500,190+(k+1)*40))
-                        
-        #Calculation goes here..
-        #deadline_missed_percentage = int((missed*100)/total)
-        #print deadline_missed_percentage
-        #print total
-        #print missed
-        #---
-        #print slack_sum
-        #print total
-        slack_avg = slack_sum / total
-        deadline_missed_percentage = int((missed*100)/total)
+	for i in range(0,aprocess_list_len):
+		aprocess_list[i].UpdateProcessIDAndRunning()
+		if (aprocess_list[i].apname != "touchscreen_display"):
+			try:
+				file_obj = open(aprocess_list[i].aplogfilepath,"r")
+				data_obj = file_obj.read()
+				int_objs = data_obj.split(' ')
+				exectime_l = float(int_objs[1])
+				period_l = float (int_objs[2])
+				slack_l = float (int_objs[0])
+				if (exectime_l>period_l):
+					missed = missed + 1
+				
+				differences_list.append(float(exectime_l)) #i.e. execution time list
+				slack_sum = slack_sum + slack_l
+				total = total + 1
+				#print int_objs
+				file_obj.close()
+			except Exception as inst:
+				print inst
+
+	slack_avg = slack_sum / total
+	deadline_missed_percentage = int((missed*100)/total)
         
 	font = pygame.font.SysFont("Roboto Condensed", 60)
 			 
-        text = font.render (str(slack_avg)[0:8]+"s", True, (0, 0, 0))
-        screen.blit(text,(40,180))
-        pygame.display.flip()
+	text = font.render (str(slack_avg)[0:8]+"s", True, (0, 0, 0))
+	screen.blit(text,(40,180))
+	pygame.display.flip()
 
-        text = font.render (str(deadline_missed_percentage)[0:5]+"%", True, (0, 0, 0))
-        screen.blit(text,(400,180))
-        pygame.display.flip()
+	text = font.render (str(deadline_missed_percentage)[0:5]+"%", True, (0, 0, 0))
+	screen.blit(text,(400,180))
+	pygame.display.flip()
 
 	if(distribution_type == 0):
 		font = pygame.font.SysFont("Roboto Condensed", 40)
@@ -560,231 +483,59 @@ def UpdateShowDistributionPage():
 		text = font.render ("Distribution: Sequential Distribution", True, (0, 0, 0))
 		screen.blit(text,(50,350))
 
-
-        #TimingRelated --start
-        CreateTimingLog("../../logs/timing/touchscreen_display_timing.inc")
+	#TimingRelated --start
+	CreateTimingLog("../../logs/timing/touchscreen_display_timing.inc")
 	#TimingRelated --end
 
 def AutomaticDistributionActions():
-	global xtightvnc_pid
-	global mjpg_streamer_pid
-	global touchscreen_display_pid
-	global ethernet_client_pid
-	global core_recorder_pid
-	global dummy_load25_1_pid
-	global dummy_load25_2_pid
-	global dummy_load25_3_pid
-	global dummy_load25_4_pid
-	global dummy_load25_5_pid
-	global dummy_load100_pid
-	global apache2_pid
-        global image_processing_pid
-
+	global aprocess_list
+	global aprocess_list_len
+	
 	UpdateProcessInfo()
-	
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+xtightvnc_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+mjpg_streamer_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+touchscreen_display_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+ethernet_client_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+core_recorder_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+dummy_load25_1_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+dummy_load25_2_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+dummy_load25_3_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+dummy_load25_4_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+dummy_load25_5_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+dummy_load100_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"0-3"+" "+apache2_pid)
-	except:
-		a=1
-        try:
-                os.system("sudo taskset -pc "+"0-3"+" "+image_processing_pid)
-        except:
-                a=1
-	
 
-
+	for i in range(0,aprocess_list_len):
+		aprocess_list[i].SetCoreAffinity("0-3")
+		
+def GetProcessIDFromProcessName(process_name):
+	# Returns process id, or 0 if process not running
+	try:
+		x = subprocess.check_output(['pgrep','-f',process_name,'-n']) #,'-u','root'
+	except Exception as inst:
+		x = 0
+	return x
+	
 def AllocateProcessWithCore(process_name, core):
-        global xtightvnc_pid
-	global mjpg_streamer_pid
-	global touchscreen_display_pid
-	global ethernet_client_pid
-	global core_recorder_pid
-	global dummy_load25_1_pid
-	global dummy_load25_2_pid
-	global dummy_load25_3_pid
-	global dummy_load25_4_pid
-	global dummy_load25_5_pid
-	global dummy_load100_pid
-	global apache2_pid
-        global image_processing_pid
-
-        UpdateProcessInfo()
-
-        if (process_name == "mjpg_streamer"):
-		pid = mjpg_streamer_pid
-	elif(process_name == "Xtightvnc"):
-		pid = xtightvnc_pid
-	elif (process_name == "ethernet_client"):
-		pid = ethernet_client_pid
-	elif (process_name == "touchscreen_display"):
-		pid = touchscreen_display_pid
-	elif (process_name =="core_recorder"):
-		pid = core_recorder_pid
-	elif (process_name == "dummy_load25_1"):
-		pid = dummy_load25_1_pid
-	elif (process_name == "dummy_load25_2"):
-		pid = dummy_load25_2_pid
-	elif (process_name == "dummy_load25_3"):
-		pid = dummy_load25_3_pid
-	elif (process_name == "dummy_load25_4"):
-		pid = dummy_load25_4_pid
-	elif (process_name == "dummy_load25_5"):
-		pid = dummy_load25_5_pid
-	elif (process_name == "dummy_load100"):
-		pid = dummy_load100_pid
-	elif (process_name == "apache2"):
-		pid = apache2_pid
-        elif (process_name == "image_processing"):
-                pid = image_processing_pid
-	else:
-		pid=""
+	pid = GetProcessIDFromProcessName(process_name)
 
 	if (pid != ""):
-	        try:
+		try:
 			os.system("sudo taskset -pc "+core+" "+pid)
-	                #print "%s %s" % process_name, core
 		except Exception as inst:
 			print inst
-
-        
-                
+     
 def APP4MCDistributionActions():
-        
-	
-        try:
-                with open('../../logs/core_mapping/coredef_list.a4p','rb') as coredef_list:
-                        for line in coredef_list:
-                                words = line.strip('\n').split(' ')
-                                if (len(words)>3):
-                                        #print words
-                                        try:
-                                                AllocateProcessWithCore(words[2], words[5])
-                                                #print str(words[2])
-                                                #print str(words[5])
-                                        except Exception as inst:
-                                                print inst
-        except Exception as inst:
-                print inst
-
-        
+	try:
+		with open('../../logs/core_mapping/coredef_list.a4p','rb') as coredef_list:
+			for line in coredef_list:
+				words = line.strip('\n').split(' ')
+				if (len(words)>3):
+					try:
+						AllocateProcessWithCore(words[2], words[5])
+					except Exception as inst:
+						print inst
+	except Exception as inst:
+		print inst
 
 def SequentialDistributionActions():
-	global xtightvnc_pid
-	global mjpg_streamer_pid
-	global touchscreen_display_pid
-	global ethernet_client_pid
-	global core_recorder_pid
-	global dummy_load25_1_pid
-	global dummy_load25_2_pid
-	global dummy_load25_3_pid
-	global dummy_load25_4_pid
-	global dummy_load25_5_pid
-	global dummy_load100_pid
-	global apache2_pid
-        global image_processing_pid
-        
-	UpdateProcessInfo()
+	global aprocess_list
+	global aprocess_list_len
 	
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+xtightvnc_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+mjpg_streamer_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+touchscreen_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+ethernet_client_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+core_recorder_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+dummy_load25_1_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+dummy_load25_2_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+dummy_load25_3_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+dummy_load25_4_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+dummy_load25_5_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+dummy_load100_pid)
-	except:
-		a=1
-	try:
-		os.system("sudo taskset -pc "+"3"+" "+apache2_pid)
-	except:
-		a=1
-        try:
-                os.system("sudo taskset -pc "+"3"+" "+image_processing_pid)
-        except:
-                a=1
+	UpdateProcessInfo()
 
+	for i in range(0,aprocess_list_len):
+		aprocess_list[i].SetCoreAffinity("3")
 
 def ShowDistributionPage():
-	
 	Clear_Variables()
 	
 	print "ShowDistributionPage"
@@ -799,174 +550,41 @@ def ShowDistributionPage():
 	text = font.render ("Show Timing Performance", True, (255, 255, 255))
 	screen.blit(text,(30,30))
 
-        font = pygame.font.SysFont("Roboto Condensed", 30)
+	font = pygame.font.SysFont("Roboto Condensed", 30)
 	text = font.render ("Slack Time Average:", True, (0, 0, 255))
 	screen.blit(text,(40,130))
-        text = font.render ("Deadline Misses:", True, (0, 0, 255))
+	text = font.render ("Deadline Misses:", True, (0, 0, 255))
 	screen.blit(text,(400,130))
         
 	UpdateShowDistributionPage()
-
-	
-	
-
 	return 1
 
 def UpdateAllocationPage():
-	global xtightvnc_pid
-	global mjpg_streamer_pid
-	global touchscreen_display_pid
-	global ethernet_client_pid
-	global core_recorder_pid
-	global dummy_load25_1_pid
-	global dummy_load25_2_pid
-	global dummy_load25_3_pid
-	global dummy_load25_4_pid
-	global dummy_load25_5_pid
-	global dummy_load100_pid
-	global apache2_pid
-        global image_processing_pid
-
-	UpdateProcessInfo()
-
-	x=100
-	if (mjpg_streamer_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
+	global aprocess_list
+	global aprocess_list_len
+	global coord_x
+	global coord_y
+	
+	#Red and green color
+	color_red = ((255,0,0))
+	color_green = ((34,139,34))
+	
+	#Font definition
 	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Camera Stream", True, colorc)
-	screen.blit(text,(30,120))
-	y=50
-	if (xtightvnc_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("VNC Server", True, colorc)
-	screen.blit(text,(30,120+y))
-	y=100
-	if (core_recorder_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Ethernet App", True, colorc)
-	screen.blit(text,(30,120+y))
-	y=150
-	if (apache2_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Apache Server", True, colorc)
-	screen.blit(text,(30,120+y))
-	y=200
-	if (core_recorder_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Core Recorder", True, colorc)
-	screen.blit(text,(30,120+y))
-	y=250
-	if (touchscreen_display_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Display", True, colorc)
-	screen.blit(text,(30,120+y))
-	y=300
-	if (dummy_load25_1_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Cycler25_1", True, colorc)
-	screen.blit(text,(30,120+y))
-	xx=350
-	if (dummy_load25_2_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Cycler25_2", True, colorc)
-	screen.blit(text,(30+xx,120))
-	y=50
-	if (dummy_load25_3_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Cycler25_3", True, colorc)
-	screen.blit(text,(30+xx,120+y))
-	y=100
-	if (dummy_load100_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Cycler100", True, colorc)
-	screen.blit(text,(30+xx,120+y))
-	y=150
-	if (dummy_load25_4_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Cycler25_4", True, colorc)
-	screen.blit(text,(30+xx,120+y))
-	y=200
-	if (dummy_load25_5_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("Cycler25_5", True, colorc)
-	screen.blit(text,(30+xx,120+y))
-        y=250
-	if (image_processing_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	text = font.render ("ImageProcess", True, colorc)
-	screen.blit(text,(30+xx,120+y))
+	
+	UpdateProcessInfo()
+	
+	for i in range(0,aprocess_list_len):
+		if (aprocess_list[i].aprunning == 1):
+			colorc = color_green
+		else:
+			colorc = color_red
+		text = font.render (str(aprocess_list.display_name), True, colorc)
+		screen.blit(text,(coord_x[i],coord_y[i]))
 
 
 def KillProcess(process_name):
-	global xtightvnc_pid
-	global mjpg_streamer_pid
-	global touchscreen_display_pid
-	global ethernet_client_pid
-	global core_recorder_pid
-	global dummy_load25_1_pid
-	global dummy_load25_2_pid
-	global dummy_load25_3_pid
-	global dummy_load25_4_pid
-	global dummy_load25_5_pid
-	global dummy_load100_pid
-	global apache2_pid
-        global image_processing_pid
-
-	if (process_name == "mjpg_streamer"):
-		pid = mjpg_streamer_pid
-	elif(process_name == "Xtightvnc"):
-		pid = xtightvnc_pid
-	elif (process_name == "ethernet_client"):
-		pid = ethernet_client_pid
-	elif (process_name == "touchscreen_display"):
-		pid = touchscreen_display_pid
-	elif (process_name =="core_recorder"):
-		pid = core_recorder_pid
-	elif (process_name == "dummy_load25_1"):
-		pid = dummy_load25_1_pid
-	elif (process_name == "dummy_load25_2"):
-		pid = dummy_load25_2_pid
-	elif (process_name == "dummy_load25_3"):
-		pid = dummy_load25_3_pid
-	elif (process_name == "dummy_load25_4"):
-		pid = dummy_load25_4_pid
-	elif (process_name == "dummy_load25_5"):
-		pid = dummy_load25_5_pid
-	elif (process_name == "dummy_load100"):
-		pid = dummy_load100_pid
-	elif (process_name == "apache2"):
-		pid = apache2_pid
-        elif (process_name == "image_processing"):
-                pid = image_processing_pid
-	else:
-		pid=""
-
+	pid = GetProcessIDFromProcessName(process_name)
 	if (process_name == "apache2"):
 		try:
 			os.system("sudo service apache2 stop &")
@@ -977,115 +595,31 @@ def KillProcess(process_name):
 			os.system("sudo kill -9 "+pid)
 		except Exception as inst:
 			print inst
-
           
 def AllocateProcess(process_name):
-	global xtightvnc_pid
-	global mjpg_streamer_pid
-	global touchscreen_display_pid
-	global ethernet_client_pid
-	global core_recorder_pid
-	global dummy_load25_1_pid
-	global dummy_load25_2_pid
-	global dummy_load25_3_pid
-	global dummy_load25_4_pid
-	global dummy_load25_5_pid
-	global dummy_load100_pid
-	global apache2_pid
-        global image_processing_pid
-
-	global xtightvnc_core
-	global mjpg_streamer_core
-	global touchscreen_display_core
-	global ethernet_client_core
-	global core_recorder_core
-	global dummy_load25_1_core
-	global dummy_load25_2_core
-	global dummy_load25_3_core
-	global dummy_load25_4_core
-	global dummy_load25_5_core
-	global dummy_load100_core
-	global apache2_core
-        global image_processing_core
-
-	if (process_name == "mjpg_streamer"):
-		pid = mjpg_streamer_pid
-		core = mykeys.run(screen, mjpg_streamer_core)
-	elif(process_name == "Xtightvnc"):
-		pid = xtightvnc_pid
-		core = mykeys.run(screen, xtightvnc_core)
-	elif (process_name == "ethernet_client"):
-		pid = ethernet_client_pid
-		core = mykeys.run(screen, ethernet_client_core)
-	elif (process_name == "touchscreen_display"):
-		pid = touchscreen_display_pid
-		core = mykeys.run(screen, touchscreen_display_core)
-	elif (process_name =="core_recorder"):
-		pid = core_recorder_pid
-		core = mykeys.run(screen, core_recorder_core)
-	elif (process_name == "dummy_load25_1"):
-		pid = dummy_load25_1_pid
-		core = mykeys.run(screen, dummy_load25_1_core)
-	elif (process_name == "dummy_load25_2"):
-		pid = dummy_load25_2_pid
-		core = mykeys.run(screen, dummy_load25_2_core)
-	elif (process_name == "dummy_load25_3"):
-		pid = dummy_load25_3_pid
-		core = mykeys.run(screen, dummy_load25_3_core)
-	elif (process_name == "dummy_load25_4"):
-		pid = dummy_load25_4_pid
-		core = mykeys.run(screen, dummy_load25_4_core)
-	elif (process_name == "dummy_load25_5"):
-		pid = dummy_load25_5_pid
-		core = mykeys.run(screen, dummy_load25_5_core)
-	elif (process_name == "dummy_load100"):
-		pid = dummy_load100_pid
-		core = mykeys.run(screen, dummy_load100_core)
-	elif (process_name == "apache2"):
-		pid = apache2_pid
-		core = mykeys.run(screen, apache2_core)
-        elif (process_name == "image_processing"):
-                pid = image_processing_pid
-                core = mykeys.run (screen, image_processing_core)
-	else:
-		pid=""
-		core=""
+	pid = GetProcessIDFromProcessName(process_name)
+	core = mykeys.run(screen, mjpg_streamer_core)
 
 	try:
 		os.system("sudo taskset -pc "+core+" "+pid)
-	except Exception as inst:
-		#print inst
-		a=1
 
 
 def StartProcess(process_name):
-	if (process_name == "apache2"):
-		os.system("sudo service apache2 start")
-	elif (process_name == "core_recorder"):
-		os.system("cd ../core_recorder/ && sudo python core_recorder.py &")
-	elif (process_name == "ethernet_client"):
-		os.system("cd ../ethernet_client/ && sudo python ethernet_client.py &")
-	elif (process_name == "mjpg_streamer"):
-		os.system("cd ../../scripts/camera_start/  && sudo bash raspberrypi_camera_start.sh &")
-	elif (process_name == "dummy_load25_1"):
-		os.system("cd ../dummy_loads/ && sudo python dummy_load25_1.py &")
-	elif (process_name == "dummy_load25_2"):
-		os.system("cd ../dummy_loads/ && sudo python dummy_load25_2.py &")
-	elif (process_name == "dummy_load25_3"):
-		os.system("cd ../dummy_loads/ && sudo python dummy_load25_3.py &")
-	elif (process_name == "dummy_load25_4"):
-		os.system("cd ../dummy_loads/ && sudo python dummy_load25_4.py &")
-	elif (process_name == "dummy_load25_5"):
-		os.system("cd ../dummy_loads/ && sudo python dummy_load25_5.py &")
-	elif (process_name == "dummy_load100"):
-		os.system("cd ../dummy_loads/ && sudo python dummy_load100.py &")
-        elif (process_name == "image_processing"):
-                os.system("cd ../image_processing/ && sudo -E ./image_processing &")
-
-        # & at the end in commands is important to run the app in the background
+	global aprocess_list
+	global aprocess_list_len
 	
-
+	for i in range(0,aprocess_list_len):
+		if (process_name == aprocess_list[i].apname):
+			try:
+				os.system(str(aprocess_list[i].apstartcommand))
+	# & at the end in commands is important to run the app in the background
+	
 def AllocationPage():
+	global aprocess_list
+	global aprocess_list_len
+	global coord_x
+	global coord_y
+	
 	Clear_Variables()
 	
 	print "AllocationPage"
@@ -1099,417 +633,62 @@ def AllocationPage():
 	font = pygame.font.SysFont("Roboto Condensed", 30)
 	text = font.render ("Start/Kill Rpi Processes", True, (255, 255, 255))
 	screen.blit(text,(30,30))
-
-	x=100
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Camera Stream", True, (0, 0, 0))
-	screen.blit(text,(30,120))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(320-x,130))
-	AddPromptBox_Passive(380-x, 120, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(390-x,130))
 	
-	y=50
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("VNC Server", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=100
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Ethernet App", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=150
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Apache Server", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=200
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Core Recorder", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=250
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Display", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=300
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_1", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
+	UpdateProcessInfo()
 	
-	xx=350
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_2", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(xx+320-x,130))
-	AddPromptBox_Passive(xx+380-x, 120, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130))
-
-	y=50
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_3", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
-	y=100
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler100", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
-	y=150
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_4", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
-	y=200
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_5", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
-        y=250
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("ImageProcess", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("Start", True, (255, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 50, 40)
-	text = font.render ("Kill", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
-
+	for i in range(0,aprocess_list_len):
+		font = pygame.font.SysFont("Roboto Condensed", 30)
+		text = font.render (str(aprocess_list.display_name), True, (0, 0, 0))
+		screen.blit(text,(coord_x[i],coord_y[i]))
+		font = pygame.font.SysFont("Roboto Condensed", 20)
+		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
+		text = font.render ("Start", True, (255, 0, 0))
+		screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
+		AddPromptBox_Passive(coord_x[i]+250, coord_y[i], 50, 40)
+		text = font.render ("Kill", True, (255, 0, 0))
+		screen.blit(text,(coord_x[i]+260,coord_y[i]+10))	
+	
 	return 1
 
 def GetCoreInfoRpi():
-	global xtightvnc_pid
-	global mjpg_streamer_pid
-	global touchscreen_display_pid
-	global ethernet_client_pid
-	global core_recorder_pid
-	global dummy_load25_1_pid
-	global dummy_load25_2_pid
-	global dummy_load25_3_pid
-	global dummy_load25_4_pid
-	global dummy_load25_5_pid
-	global dummy_load100_pid
-	global apache2_pid
-        global image_processing_pid
-
-	global xtightvnc_core
-	global mjpg_streamer_core
-	global touchscreen_display_core
-	global ethernet_client_core
-	global core_recorder_core
-	global dummy_load25_1_core
-	global dummy_load25_2_core
-	global dummy_load25_3_core
-	global dummy_load25_4_core
-	global dummy_load25_5_core
-	global dummy_load100_core
-	global apache2_core
-        global image_processing_core
-
-	core_recorder_core = GetProcessCoreAffinityList(core_recorder_pid)
-	touchscreen_display_core = GetProcessCoreAffinityList(touchscreen_display_pid)
-	mjpg_streamer_core = GetProcessCoreAffinityList(mjpg_streamer_pid)
-	xtightvnc_core = GetProcessCoreAffinityList(xtightvnc_pid)
-	ethernet_client_core = GetProcessCoreAffinityList(ethernet_client_pid)
-	apache2_core = GetProcessCoreAffinityList(apache2_pid)
-	dummy_load100_core = GetProcessCoreAffinityList(dummy_load100_pid)
-	dummy_load25_1_core = GetProcessCoreAffinityList(dummy_load25_1_pid)
-	dummy_load25_2_core = GetProcessCoreAffinityList(dummy_load25_2_pid)
-	dummy_load25_3_core = GetProcessCoreAffinityList(dummy_load25_3_pid)
-	dummy_load25_4_core = GetProcessCoreAffinityList(dummy_load25_4_pid)
-	dummy_load25_5_core = GetProcessCoreAffinityList(dummy_load25_5_pid)
-        image_processing_core = GetProcessCoreAffinityList(image_processing_pid)
+	global aprocess_list
+	global aprocess_list_len
+	
+	for i in range(0,aprocess_list_len):
+		aprocess_list[i].UpdateProcessCoreAffinity()
 
 def UpdateCoreAllocationPage():
-	global xtightvnc_pid
-	global mjpg_streamer_pid
-	global touchscreen_display_pid
-	global ethernet_client_pid
-	global core_recorder_pid
-	global dummy_load25_1_pid
-	global dummy_load25_2_pid
-	global dummy_load25_3_pid
-	global dummy_load25_4_pid
-	global dummy_load25_5_pid
-	global dummy_load100_pid
-	global apache2_pid
-        global image_processing_pid
-
-	global xtightvnc_core
-	global mjpg_streamer_core
-	global touchscreen_display_core
-	global ethernet_client_core
-	global core_recorder_core
-	global dummy_load25_1_core
-	global dummy_load25_2_core
-	global dummy_load25_3_core
-	global dummy_load25_4_core
-	global dummy_load25_5_core
-	global dummy_load100_core
-	global apache2_core
-        global image_processing_core
-
+	global aprocess_list
+	global aprocess_list_len
+	global coord_x
+	global coord_y
+	
 	UpdateProcessInfo()
 	GetCoreInfoRpi()
-
-	#Colored names of processes and core numbers
-	x=100
-	if (mjpg_streamer_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Camera Stream", True, colorc)
-	screen.blit(text,(30,120))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120, 60, 40)
-	text = font.render (str(mjpg_streamer_core), True, (0, 0, 0))
-	screen.blit(text,(320-x,130))
-
-	y=50
-	if (xtightvnc_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("VNC Server", True, colorc)
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render (str(xtightvnc_core), True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-
-	y=100
-	if (ethernet_client_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Ethernet App", True, colorc)
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render (str(ethernet_client_core), True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-
-	y=150
-	if (apache2_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Apache Server", True, colorc)
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render (str(apache2_core), True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-
-	y=200
-	if (core_recorder_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Core Recorder", True, colorc)
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render (str(core_recorder_core), True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-
-	y=250
-	if (touchscreen_display_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Display", True, colorc)
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render (str(touchscreen_display_core), True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-
-	y=300
-	if (dummy_load25_1_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_1", True, colorc)
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render (str(dummy_load25_1_core), True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-
-	xx=350
-	if (dummy_load25_2_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_2", True, colorc)
-	screen.blit(text,(30+xx,120))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120, 60, 40)
-	text = font.render (str(dummy_load25_2_core), True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130))
-
-	y=50
-	if (dummy_load25_3_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_3", True, colorc)
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render (str(dummy_load25_3_core), True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-
-	y=100
-	if (dummy_load100_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler100", True, colorc)
-	screen.blit(text,(30+xx,120+y))
 	
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render (str(dummy_load100_core), True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-
-	y=150
-	if (dummy_load25_4_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_4", True, colorc)
-	screen.blit(text,(30+xx,120+y))
+	#Red and green color
+	color_red = ((255,0,0))
+	color_green = ((34,139,34))
 	
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render (str(dummy_load25_4_core), True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-
-	y=200
-	if (dummy_load25_5_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_5", True, colorc)
-	screen.blit(text,(30+xx,120+y))
-	
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render (str(dummy_load25_5_core), True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-
-        y=250
-	if (image_processing_pid!=0):
-		colorc = (34,139,34)
-	else:
-		colorc = (255,0,0)
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("ImageProcess", True, colorc)
-	screen.blit(text,(30+xx,120+y))
-	
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render (str(image_processing_core), True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-
+	for i in range(0,aprocess_list_len):
+		if (aprocess_list[i].aprunning == 1):
+			colorc = color_green
+		else:
+			colorc = color_red
+		font = pygame.font.SysFont("Roboto Condensed", 30)
+		text = font.render (str(aprocess_list.display_name), True, colorc)
+		screen.blit(text,(coord_x[i], coord_y[i]))
+		font = pygame.font.SysFont("Roboto Condensed", 20)
+		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
+		text = font.render (str(aprocess_list.aaffinity), True, (0, 0, 0))
+		screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
 
 def CoreAllocationPage():
+	global aprocess_list
+	global aprocess_list_len
+	global coord_x
+	global coord_y
+	
 	Clear_Variables()
 	
 	print "CoreAllocationPage"
@@ -1523,163 +702,18 @@ def CoreAllocationPage():
 	font = pygame.font.SysFont("Roboto Condensed", 30)
 	text = font.render ("Allocate Rpi Processes", True, (255, 255, 255))
 	screen.blit(text,(30,30))
-
-	x=100
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Camera Stream", True, (0, 0, 0))
-	screen.blit(text,(30,120))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(320-x,130))
-	AddPromptBox_Passive(380-x, 120, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(390-x,130))
 	
-	y=50
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("VNC Server", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=100
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Ethernet App", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=150
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Apache Server", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=200
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Core Recorder", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=250
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Display", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-
-	y=300
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_1", True, (0, 0, 0))
-	screen.blit(text,(30,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(320-x,130+y))
-	AddPromptBox_Passive(380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(390-x,130+y))
-	
-	xx=350
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_2", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130))
-	AddPromptBox_Passive(xx+380-x, 120, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130))
-
-	y=50
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_3", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
-	y=100
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler100", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
-	y=150
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_4", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
-	y=200
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("Cycler25_5", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
-        y=250
-	font = pygame.font.SysFont("Roboto Condensed", 30)
-	text = font.render ("ImageProcess", True, (0, 0, 0))
-	screen.blit(text,(30+xx,120+y))
-	font = pygame.font.SysFont("Roboto Condensed", 20)
-	AddPromptBox_Passive(xx+310-x, 120+y, 60, 40)
-	text = font.render ("", True, (0, 0, 0))
-	screen.blit(text,(xx+320-x,130+y))
-	AddPromptBox_Passive(xx+380-x, 120+y, 80, 40)
-	text = font.render ("Allocate", True, (255, 0, 0))
-	screen.blit(text,(xx+390-x,130+y))
-
+	for i in range(0,aprocess_list_len):
+		font = pygame.font.SysFont("Roboto Condensed", 30)
+		text = font.render (str(aprocess_list.display_name), True, (0, 0, 0))
+		screen.blit(text,(coord_x[i],coord_y[i]))
+		font = pygame.font.SysFont("Roboto Condensed", 20)
+		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
+		text = font.render ("", True, (0, 0, 0))
+		screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
+		AddPromptBox_Passive(coord_x[i]+250, coord_y[i], 80, 40)
+		text = font.render ("Allocate", True, (255, 0, 0))
+		screen.blit(text,(coord_x[i]+260,coord_y[i]+10))
 
 	return 1
 
@@ -1736,8 +770,8 @@ def Settings_NetworkSettingsOfDevice():
 	global prev_psk
 	global prev_ssid
 	global current_ssid
-	# First, create a file of newnetworkinterfaces.ucomm, copied from /etc/network/interfaces/
-	# Then copy it to /etc/network/interfaces
+	# First, creates a file of \high_level_applications\logs\settings\new_interfaces.inc, copied from /etc/network/interfaces/
+	# Then copies it to /etc/network/interfaces
 	restart = 0
 	if((current_static_ip!=previous_static_ip or current_gateway!=previous_gateway) and Settings_IsValidIPv4Address(current_static_ip) and Settings_IsValidIPv4Address(current_gateway)):
 		try:
@@ -1816,7 +850,6 @@ def Settings_NetworkSettingsOfDevice():
 		
 		try:
 			target = open ('../../logs/settings/new_wpasupplicant.inc','w')
-			########
 			target.write("country=GB")
 			target.write("\n")
 			target.write("ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev")
@@ -1940,7 +973,6 @@ def FilesystemReset():
 	text_file3.write("0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
 	text_file3.close()
 
-	
 def UpdateHomePage():
 	global core_usage_rpi
 	global core_usage_tile0
@@ -1987,6 +1019,8 @@ def UpdateHomePage():
 	text = font.render ("Avg : "+str(int(avg_tile1))+"%", True, (100, 100, 100))
 	screen.blit(text,(520,180))
 	
+	
+#Main
 
 cmdargs = len ( sys.argv )
 
@@ -2037,10 +1071,6 @@ screen.blit(get_image('images/displayintro.png'),(0,0))
 pygame.display.flip()
 time.sleep(2)
 
-
-
-
-
 Current_Page = 1
 New_Current_Page = 1
 HomePage()
@@ -2049,6 +1079,7 @@ HomePage()
 threading.Thread(target=Thread_UpdateCoreUsageInfo).start()
 
 while not done:
+	#Events
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			done = True
@@ -2058,7 +1089,7 @@ while not done:
 			s.close()
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			(mouseX, mouseY) = pygame.mouse.get_pos()
-			#Control screen state with clicked part
+			#Control screen state using mouseclick coordinates
 			if ((mouseX>710 and mouseX<710+90) and (mouseY>0 and mouseY < 0+94)):
 				New_Current_Page = 2
 			elif ((mouseX>710 and mouseX<710+90) and (mouseY>94 and mouseY < 94+93)):
@@ -2124,146 +1155,22 @@ while not done:
 				start_w = 60
 				kill_w = 50
 				h=40
-				if ((mouseX>210 and mouseX<210+start_w) and (mouseY>120 and mouseY < 120+h)):
-					#Cam stream start
-					StartProcess("mjpg_streamer")
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>120 and mouseY < 120+h)):
-					#Cam stream kill
-					KillProcess("mjpg_streamer")
-				if ((mouseX>210 and mouseX<210+start_w) and (mouseY>170 and mouseY < 170+h)):
-					#vnc start
-					StartProcess("Xtightvnc")
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>170 and mouseY < 170+h)):
-					#vnc kill
-					KillProcess("Xtightvnc")
-				if ((mouseX>210 and mouseX<210+start_w) and (mouseY>220 and mouseY < 220+h)):
-					#eth start
-					StartProcess("ethernet_client")
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>220 and mouseY < 220+h)):
-					#eth kill
-					KillProcess("ethernet_client")
-				if ((mouseX>210 and mouseX<210+start_w) and (mouseY>270 and mouseY < 270+h)):
-					#apache start
-					StartProcess("apache2")
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>270 and mouseY < 270+h)):
-					#apache kill
-					KillProcess("apache2")
-				if ((mouseX>210 and mouseX<210+start_w) and (mouseY>320 and mouseY < 320+h)):
-					#rec start
-					StartProcess("core_recorder")
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>320 and mouseY < 320+h)):
-					#rec kill
-					KillProcess("core_recorder")
-				if ((mouseX>210 and mouseX<210+start_w) and (mouseY>370 and mouseY < 370+h)):
-					#disp start
-					StartProcess("touchscreen_display")
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>370 and mouseY < 370+h)):
-					#disp kill
-					KillProcess("touchscreen_display")
-				if ((mouseX>210 and mouseX<210+start_w) and (mouseY>420 and mouseY < 420+h)):
-					#25 1 start
-					StartProcess("dummy_load25_1")
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>420 and mouseY < 420+h)):
-					#25 1 kill
-					KillProcess("dummy_load25_1")
-				if ((mouseX>560 and mouseX<560+start_w) and (mouseY>120 and mouseY < 120+h)):
-					#25 2 start
-					StartProcess("dummy_load25_2")
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>120 and mouseY < 120+h)):
-					#25 2 kill
-					KillProcess("dummy_load25_2")
-				if ((mouseX>560 and mouseX<560+start_w) and (mouseY>170 and mouseY < 170+h)):
-					#25 3 start
-					StartProcess("dummy_load25_3")
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>170 and mouseY < 170+h)):
-					#25 3 kill
-					KillProcess("dummy_load25_3")
-				if ((mouseX>560 and mouseX<560+start_w) and (mouseY>220 and mouseY < 220+h)):
-					#100 start
-					StartProcess("dummy_load100")
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>220 and mouseY < 220+h)):
-					#100 kill
-					KillProcess("dummy_load100")
-				if ((mouseX>560 and mouseX<560+start_w) and (mouseY>270 and mouseY < 270+h)):
-					#25_4 start
-					StartProcess("dummy_load25_4")
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>270 and mouseY < 270+h)):
-					#25_4 kill
-					KillProcess("dummy_load25_4")
-				if ((mouseX>560 and mouseX<560+start_w) and (mouseY>320 and mouseY < 320+h)):
-					#25_5 start
-					StartProcess("dummy_load25_5")
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>320 and mouseY < 320+h)):
-					#25_5 kill
-					KillProcess("dummy_load25_5")
-                                
-                                if ((mouseX>560 and mouseX<560+start_w) and (mouseY>370 and mouseY < 370+h)):
-					#image_processing start
-					StartProcess("image_processing")
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>370 and mouseY < 370+h)):
-					#image_processing kill
-					KillProcess("image_processing")
-                                
+				
+				for i in range(0,aprocess_list_len):
+					if ((mouseX>180+coord_x[i] and mouseX<180+coord_x[i]+start_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
+						StartProcess(aprocess_list[i].apname)
+					if ((mouseX>250+coord_x[i] and mouseX<250+coord_x[i]+kill_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
+						KillProcess(aprocess_list[i].apname)
+
 			if (Current_Page == 5 ):
 				#CoreAllocationPage
 				start_w = 60
 				kill_w = 80
 				h=40
 
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>120 and mouseY < 120+h)):
-					#Cam stream allocate
-					AllocateProcess("mjpg_streamer")
-
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>170 and mouseY < 170+h)):
-					#vnc allocate
-					AllocateProcess("Xtightvnc")
-
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>220 and mouseY < 220+h)):
-					#eth allocate
-					AllocateProcess("ethernet_client")
-
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>270 and mouseY < 270+h)):
-					#apache allocate
-					AllocateProcess("apache2")
-
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>320 and mouseY < 320+h)):
-					#rec allocate
-					AllocateProcess("core_recorder")
-
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>370 and mouseY < 370+h)):
-					#disp allocate
-					AllocateProcess("touchscreen_display")
-
-				if ((mouseX>280 and mouseX<280+kill_w) and (mouseY>420 and mouseY < 420+h)):
-					#25 1 allocate
-					AllocateProcess("dummy_load25_1")
-
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>120 and mouseY < 120+h)):
-					#25 2 allocate
-					AllocateProcess("dummy_load25_2")
-
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>170 and mouseY < 170+h)):
-					#25 3 allocate
-					AllocateProcess("dummy_load25_3")
-
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>220 and mouseY < 220+h)):
-					#100 allocate
-					AllocateProcess("dummy_load100")
-
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>270 and mouseY < 270+h)):
-					#25_4 allocate
-					AllocateProcess("dummy_load25_4")
-
-				if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>320 and mouseY < 320+h)):
-					#25_5 allocate
-					AllocateProcess("dummy_load25_5")
-
-                                if ((mouseX>630 and mouseX<630+kill_w) and (mouseY>370 and mouseY < 370+h)):
-					#image_processing allocate
-					AllocateProcess("image_processing")
-
-                               
-                                        
+				for i in range(0,aprocess_list_len):
+					if ((mouseX>250+coord_x[i] and mouseX<250+coord_x[i]+kill_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
+						AllocateProcess(aprocess_list[i].apname)
 
 			if (New_Current_Page == 7): #ChangeDistributionPage
 				if ((mouseX>220 and mouseX<220+350) and (mouseY>280 and mouseY<280+40)):
@@ -2278,11 +1185,6 @@ while not done:
 					#sequential distro
 					distribution_type=3
 					SequentialDistributionActions()
-				
-
-				
-				
-
 
 	if (Current_Page == 3):
 		UpdatePercentagePage()
@@ -2313,12 +1215,8 @@ while not done:
 			UpdateShowDistributionPage()
 		except Exception as inst:
 			print inst
-		
-	
 
-
-
-	#While kismi
+	#Page Updates
 	if (New_Current_Page != Current_Page):
 		if (New_Current_Page == 1):
 			HomePage()
@@ -2344,13 +1242,10 @@ while not done:
 		elif (New_Current_Page == 8):
 			ShowDistributionPage()
 			
-		
-
-
 		Current_Page = New_Current_Page
 
 	pygame.display.flip()
 
-        if (_PERIOD > _EXECUTION_TIME):
-                time.sleep(_PERIOD - _EXECUTION_TIME)#(0.1)
+	if (_PERIOD > _EXECUTION_TIME):
+		time.sleep(_PERIOD - _EXECUTION_TIME)#(0.1)
 	clock.tick(60)

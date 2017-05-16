@@ -1,11 +1,9 @@
 #!/bin/bash
 
-#
-# Author: mozcelikors
-# Usage:  Check out processes using  "top" command.
+# Usage:  bash kill_processes.sh
 #         This script kills the processes listed below
 #
-# ATTENTION: DO NOT RUN THIS SCRIPT AS ROOT.. NO SUDO
+# ATTENTION: DO NOT RUN THIS SCRIPT AS ROOT
 
 cd /home/pi/a4mcar/high_level_applications/scripts/process_manipulation
 

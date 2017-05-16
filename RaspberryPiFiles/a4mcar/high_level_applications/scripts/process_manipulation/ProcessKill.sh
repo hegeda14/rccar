@@ -1,18 +1,13 @@
 #!/bin/bash
 
-# Author: mozcelikors
+# Kills a process given its name
 # Usage: bash ProcessKill.sh <process_name> 
-# ATTENTION! Do not call sudo
+# ATTENTION! Do not run as root
 
 args=("$@")
 process_name=${args[0]}
 
 pid=$(pgrep -u root -f $process_name -n ) #Newest result
-pid2=$(pgrep -f display -n) 
-
-
-echo "Pid  $pid"
-echo "Pid2 $pid2"
 
 #Place the task on a specific core.
 sudo kill -9 $pid &&

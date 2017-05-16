@@ -1,10 +1,10 @@
 <!DOCTYPE html>
+<!-- A4MCAR Web Interface, Control page -->
+<!-- Author: M.Ozcelikors, Fachhochschule Dortmund <mozcelikors@gmail.com> -->
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo "A4MCAR: Distributed Multi-core APP4MC Demonstrator Web Interface"; ?></title>
-
-
 <style type="text/css">
 <!--
 body{
@@ -178,16 +178,13 @@ body{
     margin-left: -350px;
     width: 700px;
     height: 500px;
-
-
 }
 -->
 
 </style>
 <link href="jquery_ui/jquery-ui.css" rel="stylesheet" type="text/css"/>
-      <script src="jquery_ui/jquery.min.js"></script>
-      <script src="jquery_ui/jquery-ui.min.js"></script>
-<!--<script src="jq.js" type="text/javascript" ></script>-->
+<script src="jquery_ui/jquery.min.js"></script>
+<script src="jquery_ui/jquery-ui.min.js"></script>
 <script type="text/javascript">
 $(document).keypress(function(event){
 	var keycode = (event.keyCode ? event.keyCode : event.which);
@@ -221,7 +218,6 @@ $(document).keypress(function(event){
 	if(keycode == 53){ //5
 		$.ajax({url: 'pythonControl.php?process=9'});
 	}
-	
 });
 
 $(document).keyup(function(event){
@@ -258,39 +254,34 @@ $(document).ready(function(){
 	 	$('#keyboardInfo').fadeToggle(300);
 	 });
 
-         $('#turnleft_btn').mousedown(function(){
-                $.ajax({url: 'pythonControl.php?process=S50A99FE'}); 
-         });
-         $('#turnright_btn').mousedown(function(){
-                $.ajax({url: 'pythonControl.php?process=S50A00FE'});
-         });
-         $('#steadystate_btn').mousedown(function(){
-                $.ajax({url: 'pythonControl.php?process=S50A50FE'}); 
-         });
-         $('#turnleft_btn').mouseup(function(){
-                $.ajax({url: 'pythonControl.php?process=S00A99FE'}); 
-         });
-         $('#turnright_btn').mouseup(function(){
-                $.ajax({url: 'pythonControl.php?process=S00A00FE'});
-         });
-         $('#steadystate_btn').mouseup(function(){
-                $.ajax({url: 'pythonControl.php?process=S00A50FE'});
-         });
+	$('#turnleft_btn').mousedown(function(){
+		$.ajax({url: 'pythonControl.php?process=S50A99FE'}); 
+	});
+	$('#turnright_btn').mousedown(function(){
+		$.ajax({url: 'pythonControl.php?process=S50A00FE'});
+	});
+	$('#steadystate_btn').mousedown(function(){
+		$.ajax({url: 'pythonControl.php?process=S50A50FE'}); 
+	});
+	$('#turnleft_btn').mouseup(function(){
+		$.ajax({url: 'pythonControl.php?process=S00A99FE'}); 
+	});
+	$('#turnright_btn').mouseup(function(){
+		$.ajax({url: 'pythonControl.php?process=S00A00FE'});
+	});
+	$('#steadystate_btn').mouseup(function(){
+		$.ajax({url: 'pythonControl.php?process=S00A50FE'});
+	});
 })
-
 
 </script>
 <script type="text/javascript">
 var prevspeed = 0;
 var prevdirection = 50;
 function refreshSwatch() {
-  var speed = $( "#sliderSpeed" ).slider( "value" );
-  var direction = $( "#sliderDirection" ).slider( "value" );
-  //if (prevspeed != speed || direction != prevdirection){
+	var speed = $( "#sliderSpeed" ).slider( "value" );
+	var direction = $( "#sliderDirection" ).slider( "value" );
 	$(document).ready(function(){
-	  	//$.ajax({url: 'pythonControl.php?process=S'+speed+'A'+direction+gear+'E'});
- 
-		//$( "body" ).append("S"+speed+"A"+direction+gear);
 		if (speed<=9 && direction <=9){
 			$.ajax({ 
 				url: "pythonControl.php?process=S0"+speed+"A0"+direction+gear+"E"
@@ -298,29 +289,26 @@ function refreshSwatch() {
 		}
 
 		if (speed>9 && direction <=9){
-                        $.ajax({ 
-                                url: "pythonControl.php?process=S"+speed+"A0"+direction+gear+"E"
-                        });
-                }
+			$.ajax({ 
+				url: "pythonControl.php?process=S"+speed+"A0"+direction+gear+"E"
+			});
+		}
 
 		if (speed<=9 && direction > 9){
-                        $.ajax({ 
-                                url: "pythonControl.php?process=S0"+speed+"A"+direction+gear+"E"
-                        });
-                }
+			$.ajax({ 
+				url: "pythonControl.php?process=S0"+speed+"A"+direction+gear+"E"
+			});
+		}
 
 		if (speed>9 && direction > 9){
-                        $.ajax({ 
-                                url: "pythonControl.php?process=S"+speed+"A"+direction+gear+"E"
-                        });
-                }
-
-
-
+			$.ajax({ 
+				url: "pythonControl.php?process=S"+speed+"A"+direction+gear+"E"
+			});
+		}
 	});
-  //}
-  prevspeed = speed;
-  prevdirection = direction;
+
+	prevspeed = speed;
+	prevdirection = direction;
 }
 
 $(function(){
@@ -343,8 +331,8 @@ $(function(){
 		change: refreshSwatch
   });
 
-  $('#sliderSpeed').slider();
-  $('#sliderDirection').slider();
+	$('#sliderSpeed').slider();
+	$('#sliderDirection').slider();
 });
 </script>
 </head>

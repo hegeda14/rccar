@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# This bash script sets the CPUFreq governer and
+# initializes some of the essential processes of A4MCAR. 
+# The touchscreen display is initialized from another process.
+
 sudo cpufreq-set -g performance
 cd /home/pi/a4mcar/high_level_applications/scripts/camera_start  && sudo bash raspberrypi_camera_start.sh &
 
