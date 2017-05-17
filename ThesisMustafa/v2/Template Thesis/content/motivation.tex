@@ -767,7 +767,14 @@ Pages that are developed for the touchscreen module are shown in the Figure \ref
 	\label{fig:displays}
 \end{figure}
 
-The introduction page that is shown in Figure \ref{fig:displays} (a) is entered as the process is started. After displaying the logo for 3 seconds, other pages are entered. The pages (b) through (g) (shown in Figure \ref{fig:TouchscreenProcessSM}) is navigated with the help of the Next button in this state. Users can browse the settings page, shutdown or exit the touchscreen display process by clicking to the respective buttons.
+The introduction page that is shown in Figure \ref{fig:displays} (a) is entered as the process is started. After displaying the logo for 3 seconds, other pages are entered. The pages (b) through (g) (shown in Figure \ref{fig:TouchscreenProcessSM}) is navigated with the help of the Next and Previous button in this state. Users can browse the settings page, shutdown or exit the touchscreen display process by clicking to the respective buttons.
+
+In order to make the the touchscreen display software modular, a class that is called 'aprocess' has been created. By instantiating 'aprocess' objects and appending them to the object list 'aprocess\texttt{\_}list', one can define the processes that will be displayed and traced. The touchscreen display software is designed in the modular fashion that it automatically generates all the pages using the aprocess object list. 'aprocess' class have the following attributes and functions to make process handling easier in Python-based software:
+
+\begin{itemize}
+	\item \textbf{Attributes:} Process Name (\texttt{apname}), Process ID (\texttt{apid}), Running flag (\texttt{aprunning}), Core Affinity (\texttt{aaffinity}), Command to start the process (\texttt{apstartcommand}), Traceable flag (\texttt{traceable}), Online tracing log file (\texttt{aplogfilepath}), Displayed flag (\texttt{displayed}), Display name (\texttt{display\_name})
+	\item \textbf{Functions:} \texttt{UpdateProcessIDAndRunning()} function is used to update the object process ID and whether the process is running. \texttt{UpdateProcessCoreAffinity()} function is used to retrieve the process core affinity while the  \texttt{SetCoreAffinity(core\_affinity)} function is used for setting the core affinity.
+\end{itemize}
 
 Since the touchscreen display process is responsible from displaying many information, libraries to gather up such information have been used. Furthermore, the data that is gathered in the timing logs and core usage logs have also been used in this application. Information that is gathered involve core usage percentages of both low-level and high-level modules, slack times of high-level processes, core frequency of high-level module, active cores count for the high-level module and core mapping list from the high-level module. The detailed information on how the information is extracted will be explained in the Section \ref{informationchapter}.
 
@@ -895,8 +902,7 @@ For the software that is developed for the low-level module of the A4MCAR, for m
 \end{itemize}
 
 In the Section \ref{evaluationchapter}, gathered information along with its implications will be discussed.
-\subsection{Information Tracing via APP4MC}
-Some text \\
+
 \subsection{Distribution of Tasks to Cores}
 In a properly utilized parallel system, gathered information are used in order to find which software distribution is the most efficient. Here, the software distribution refers to the mapping stage, which is the distribution of the tasks that result from partitioning to the cores.
 
@@ -1202,7 +1208,7 @@ CPUFreq governor of a Linux system can be changed at any given moment by using t
 \subsection{Online Timing Analysis Features in A4MCAR}
 %whats implemented before in every app, and whats implemented in the touchscreen display (main process)
 %Including formulas for avg.slack time and so on...
-As explained in the Section \ref{onlinetiming} in detail, every created application in A4MCAR's high-level module are built on a template that is able to log timing information. The timing logs are read in the Touchscreen display process, which we refer to as the main processing task in the high level module. The role of main processing task in the online timing analysis is depicted in the Figure \ref{fig:a4mcartiming}. As seen, main processing task is responsible to calculate performance indicators such as average slack time ${ST\textsubscript{avg}}$ and overall deadline misses percentage ${DLM}$ using the timing values from other processes in seconds such as execution time ${ET}$, slack time ${ST}$, deadline ${DL}$ and period ${PER}$ (Recall from Section \ref{schedulingsection}). Main processing task can also read from core usage logs and inform users about the low-level module core utilization percentages ${LU\textsubscript{0-15}}$ and high-level module core utilization percentages ${HU\textsubscript{0-3}}$. Furthermore, number of active cores ${N\textsubscript{cores}}$ and clock frequency ${f\textsubscript{CPU}}$ are also shown by reading the respective logs.
+As explained in the Section \ref{onlinetiming} in detail, every created application in A4MCAR's high-level module are built on a template that is able to log timing information. The timing logs are read in the Touchscreen display process, which we refer to as the main processing task in the high level module. The role of main processing task in the online timing analysis is depicted in the Figure \ref{fig:a4mcartiming}. As seen, main processing task is responsible to calculate performance indicators such as average slack time ${ST\textsubscript{avg}}$ and overall deadline misses percentage ${DLM}$ using the timing values from other processes in seconds such as execution time ${ET}$, slack time ${ST}$, deadline ${DL}$ and period ${PER}$ (Recall from Section \ref{schedulingsection}). Main processing task can also read from core usage logs and inform users about the low-level module core utilization percentages ${LU\textsubscript{0-15}}$ and high-level module core utilization percentages ${HU\textsubscript{0-3}}$. Furthermore, number of active cores ${N\textsubscript{cores}}$, number of active and traceable processes ${N\textsubscript{process}}$, number of missed deadlines ${N\textsubscript{missed}}$ and clock frequency ${f\textsubscript{CPU}}$ are also shown by reading the respective logs.
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -1214,7 +1220,7 @@ As explained in the Section \ref{onlinetiming} in detail, every created applicat
 Subsection \ref{onlinetiming} explains the calculation of ${ET}$, ${ST}$, and determination of ${DL}$ and ${PER}$. Users are able to observe ${ST\textsubscript{avg}}$ and ${DLM}$ on the touchscreen display as seen in the Figure \ref{fig:displays} (g). Calculation of the information that are presented to the user ${ST\textsubscript{avg}}$ and ${DLM}$ are carried out as follows:
 
 \begin{itemize}
-	\item ${ST\textsubscript{avg}}$ in seconds is calculated simply by using the following equation, given that there are ${N\textsubscript{process}}$ processes measured:
+	\item ${ST\textsubscript{avg}}$ in seconds is calculated simply by using the following equation:
 	\begin{equation}
 	ST\textsubscript{avg} =  {\frac{1}{N\textsubscript{process}}} {\sum_{n=0}^{N\textsubscript{process}} ST\textsubscript{n}} 
 	\end{equation}

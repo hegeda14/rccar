@@ -340,7 +340,7 @@ $(function(){
 <div id="keyboardInfo"><img src="images/keyboard.png"></div>
 <p>&nbsp;</p>
 <div id="header" style="align:center; text-align:center;">
-  <p><img src="images/logo.png" width="400" height="131"></p>
+  <p><img src="images/logo.png" width="319" height="103"><img src="images/a4mcarlogo.png" width="164" height="95"></p>
 </div>
 <div id="bilgi">
 
