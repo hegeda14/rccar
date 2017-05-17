@@ -8,7 +8,7 @@
 #
 # Description:
 #    A4MCAR Project - Touchscreen display process utilizes the touchscreen display of the A4MCAR high-level module
-#					  and includes necessary operations to make use of A4MCAR's online timing features
+#			and includes necessary operations to make use of A4MCAR's online timing features
 #
 # Author:
 #    M. Ozcelikors <mozcelikors@gmail.com>
@@ -63,19 +63,19 @@ coord_y = [120,170, 220, 270, 320, 370, 420, 120, 170, 220, 270, 320, 370, 420]
 
 #Process definitions
 aprocess_list = []
-aprocess_list.append(aprocess("Xtightvnc", 0, 1, "VNC Server", "cd ../../scripts/tightvnc/  && sudo bash tightvnc_start.sh &"))
-aprocess_list.append(aprocess("mjpg_streamer", 0, 1, "Camera Stream", "cd ../../scripts/camera_start/  && sudo bash raspberrypi_camera_start.sh &"))
-aprocess_list.append(aprocess("touchscreen_display", 1, "../../logs/timing/touchscreen_display_timing.inc", 1, "Display", ""))
-aprocess_list.append(aprocess("ethernet_client", 1, "../../logs/timing/ethernet_client_timing.inc", 1, "Ethernet App", "cd ../ethernet_client/ && sudo python ethernet_client.py &"))
-aprocess_list.append(aprocess("core_recorder", 1, "../../logs/timing/core_recorder_timing.inc", 1, "Core Recorder", "cd ../core_recorder/ && sudo python core_recorder.py &"))
-aprocess_list.append(aprocess("dummy_load25_1", 1, "../../logs/timing/dummy_load25_1_timing.inc", 1, "Cycler25_1", "cd ../dummy_loads/ && sudo python dummy_load25_1.py &"))
-aprocess_list.append(aprocess("dummy_load25_2", 1, "../../logs/timing/dummy_load25_2_timing.inc", 1, "Cycler25_2", "cd ../dummy_loads/ && sudo python dummy_load25_2.py &"))
-aprocess_list.append(aprocess("dummy_load25_3", 1, "../../logs/timing/dummy_load25_3_timing.inc", 1, "Cycler25_3", "cd ../dummy_loads/ && sudo python dummy_load25_3.py &"))
-aprocess_list.append(aprocess("dummy_load25_4", 1, "../../logs/timing/dummy_load25_4_timing.inc", 1, "Cycler25_4", "cd ../dummy_loads/ && sudo python dummy_load25_4.py &"))
-aprocess_list.append(aprocess("dummy_load25_5", 1, "../../logs/timing/dummy_load25_5_timing.inc", 1, "Cycler25_5", "cd ../dummy_loads/ && sudo python dummy_load25_5.py &"))
-aprocess_list.append(aprocess("dummy_load100", 1, "../../logs/timing/dummy_load100_timing.inc", 1, "Cycler100", "cd ../dummy_loads/ && sudo python dummy_load100.py &"))
-aprocess_list.append(aprocess("apache2", 0, 1, "Apache Server", "sudo service apache2 start"))
-#aprocess_list.append(aprocess("image_processing", 1, "../../logs/timing/image_processing_timing.inc", 1, "ImageProcess", "cd ../image_processing/ && sudo -E ./image_processing &"))
+aprocess_list.append(aprocess.aprocess("Xtightvnc", 0, "None", 1, "VNC Server", "cd ../../scripts/tightvnc/  && sudo bash tightvnc_start.sh &"))
+aprocess_list.append(aprocess.aprocess("mjpg_streamer", 0, "None",1, "Camera Stream", "cd ../../scripts/camera_start/  && sudo bash raspberrypi_camera_start.sh &"))
+aprocess_list.append(aprocess.aprocess("touchscreen_display", 1, "../../logs/timing/touchscreen_display_timing.inc", 1, "Display", "None"))
+aprocess_list.append(aprocess.aprocess("ethernet_client", 1, "../../logs/timing/ethernet_client_timing.inc", 1, "Ethernet App", "cd ../ethernet_client/ && sudo python ethernet_client.py &"))
+aprocess_list.append(aprocess.aprocess("core_recorder", 1, "../../logs/timing/core_recorder_timing.inc", 1, "Core Recorder", "cd ../core_recorder/ && sudo python core_recorder.py &"))
+aprocess_list.append(aprocess.aprocess("dummy_load25_1", 1, "../../logs/timing/dummy_load25_1_timing.inc", 1, "Cycler25_1", "cd ../dummy_loads/ && sudo python dummy_load25_1.py &"))
+aprocess_list.append(aprocess.aprocess("dummy_load25_2", 1, "../../logs/timing/dummy_load25_2_timing.inc", 1, "Cycler25_2", "cd ../dummy_loads/ && sudo python dummy_load25_2.py &"))
+aprocess_list.append(aprocess.aprocess("dummy_load25_3", 1, "../../logs/timing/dummy_load25_3_timing.inc", 1, "Cycler25_3", "cd ../dummy_loads/ && sudo python dummy_load25_3.py &"))
+aprocess_list.append(aprocess.aprocess("dummy_load25_4", 1, "../../logs/timing/dummy_load25_4_timing.inc", 1, "Cycler25_4", "cd ../dummy_loads/ && sudo python dummy_load25_4.py &"))
+aprocess_list.append(aprocess.aprocess("dummy_load25_5", 1, "../../logs/timing/dummy_load25_5_timing.inc", 1, "Cycler25_5", "cd ../dummy_loads/ && sudo python dummy_load25_5.py &"))
+aprocess_list.append(aprocess.aprocess("dummy_load100", 1, "../../logs/timing/dummy_load100_timing.inc", 1, "Cycler100", "cd ../dummy_loads/ && sudo python dummy_load100.py &"))
+aprocess_list.append(aprocess.aprocess("apache2", 0, "None", 1, "Apache Server", "sudo service apache2 start"))
+#aprocess_list.append(aprocess.aprocess("image_processing", 1, "../../logs/timing/image_processing_timing.inc", 1, "ImageProcess", "cd ../image_processing/ && sudo -E ./image_processing &"))
 aprocess_list_len = len(aprocess_list)
 
 
@@ -408,14 +408,24 @@ def UpdateShowDistributionPage():
 	text = font.render ("Core Frequencies at:", True, (0,0,255))
 	screen.blit(text,(50,302))
 
+	text = font.render ("Total Deadlines Missed:", True, (0,0,255))
+	screen.blit(text,(50,323))
+
 	text = font.render("Cores Running:", True, (0,0,255))
 	screen.blit(text,(400,302))
+
+	text = font.render("Traceable Processes Running:", True, (0,0,255))
+	screen.blit(text,(400,323))
+
+	
 
 	text = font.render (str(psutil.cpu_freq()).split(',')[0].split('=')[1]+" MHz", True, (0,0,0))
 	screen.blit(text, (220,302))
 
 	text = font.render (str(psutil.cpu_count()), True, (0,0,0))
 	screen.blit(text, (530,302))
+
+	
 
 	#deadline variables: missed count: missed total, count: total
 	missed = 0
@@ -434,7 +444,7 @@ def UpdateShowDistributionPage():
 
 	for i in range(0,aprocess_list_len):
 		aprocess_list[i].UpdateProcessIDAndRunning()
-		if (aprocess_list[i].apname != "touchscreen_display"):
+		if (aprocess_list[i].apname != "touchscreen_display" and aprocess_list[i].traceable == 1 and aprocess_list[i].aprunning == 1):
 			try:
 				file_obj = open(aprocess_list[i].aplogfilepath,"r")
 				data_obj = file_obj.read()
@@ -451,7 +461,16 @@ def UpdateShowDistributionPage():
 				#print int_objs
 				file_obj.close()
 			except Exception as inst:
-				print inst
+				#print inst
+				debug = 1
+
+	#Traceable Processes running
+	text = font.render (str(total), True, (0,0,0))
+	screen.blit(text, (640,323))
+
+	#Total Deadlines Missed
+	text = font.render (str(missed), True, (0,0,0))
+	screen.blit(text, (250,323))
 
 	slack_avg = slack_sum / total
 	deadline_missed_percentage = int((missed*100)/total)
@@ -505,13 +524,19 @@ def GetProcessIDFromProcessName(process_name):
 	return x
 	
 def AllocateProcessWithCore(process_name, core):
+	global aprocess_list
+	global aprocess_list_len
+
 	pid = GetProcessIDFromProcessName(process_name)
 
 	if (pid != ""):
 		try:
 			os.system("sudo taskset -pc "+core+" "+pid)
+			for i in range(0,aprocess_list_len):
+				if (process_name == aprocess_list[i].apname):
+					aprocess_list[i].aaffinity = core
 		except Exception as inst:
-			print inst
+			debug = 1
      
 def APP4MCDistributionActions():
 	try:
@@ -522,9 +547,9 @@ def APP4MCDistributionActions():
 					try:
 						AllocateProcessWithCore(words[2], words[5])
 					except Exception as inst:
-						print inst
+						debug = 1
 	except Exception as inst:
-		print inst
+		debug = 1
 
 def SequentialDistributionActions():
 	global aprocess_list
@@ -579,7 +604,7 @@ def UpdateAllocationPage():
 			colorc = color_green
 		else:
 			colorc = color_red
-		text = font.render (str(aprocess_list.display_name), True, colorc)
+		text = font.render (str(aprocess_list[i].display_name), True, colorc)
 		screen.blit(text,(coord_x[i],coord_y[i]))
 
 
@@ -595,14 +620,32 @@ def KillProcess(process_name):
 			os.system("sudo kill -9 "+pid)
 		except Exception as inst:
 			print inst
+
+def GetCoreAffinityFromPID (pid):
+	cmd = ['taskset','-c','-p', str(pid) .strip('\n')]
+	try:
+		x = subprocess.check_output(cmd, shell=False, stderr=subprocess.STDOUT)
+		affinity_list = x.split(':')[1].strip('\n')
+	except Exception as inst:
+		#print inst
+		affinity_list = "NaN"
+	return affinity_list
           
 def AllocateProcess(process_name):
+	global aprocess_list
+	global aprocess_list_len
 	pid = GetProcessIDFromProcessName(process_name)
-	core = mykeys.run(screen, mjpg_streamer_core)
+	core = mykeys.run(screen, GetCoreAffinityFromPID (pid))
 
 	try:
 		os.system("sudo taskset -pc "+core+" "+pid)
+		for i in range(0,aprocess_list_len):
+			if (process_name == aprocess_list[i].apname):
+				aprocess_list[i].aaffinity = core
+	except Exception as inst:
+ 		print "Err-AllocateProcess"
 
+	
 
 def StartProcess(process_name):
 	global aprocess_list
@@ -612,6 +655,9 @@ def StartProcess(process_name):
 		if (process_name == aprocess_list[i].apname):
 			try:
 				os.system(str(aprocess_list[i].apstartcommand))
+			except Exception as inst:
+				print "Err-StartProcess"
+                                
 	# & at the end in commands is important to run the app in the background
 	
 def AllocationPage():
@@ -638,7 +684,7 @@ def AllocationPage():
 	
 	for i in range(0,aprocess_list_len):
 		font = pygame.font.SysFont("Roboto Condensed", 30)
-		text = font.render (str(aprocess_list.display_name), True, (0, 0, 0))
+		text = font.render (str(aprocess_list[i].display_name), True, (0, 0, 0))
 		screen.blit(text,(coord_x[i],coord_y[i]))
 		font = pygame.font.SysFont("Roboto Condensed", 20)
 		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
@@ -663,8 +709,8 @@ def UpdateCoreAllocationPage():
 	global coord_x
 	global coord_y
 	
-	UpdateProcessInfo()
-	GetCoreInfoRpi()
+	#UpdateProcessInfo()
+	#GetCoreInfoRpi()
 	
 	#Red and green color
 	color_red = ((255,0,0))
@@ -676,11 +722,11 @@ def UpdateCoreAllocationPage():
 		else:
 			colorc = color_red
 		font = pygame.font.SysFont("Roboto Condensed", 30)
-		text = font.render (str(aprocess_list.display_name), True, colorc)
+		text = font.render (str(aprocess_list[i].display_name), True, colorc)
 		screen.blit(text,(coord_x[i], coord_y[i]))
 		font = pygame.font.SysFont("Roboto Condensed", 20)
 		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
-		text = font.render (str(aprocess_list.aaffinity), True, (0, 0, 0))
+		text = font.render (str(aprocess_list[i].aaffinity), True, (0, 0, 0))
 		screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
 
 def CoreAllocationPage():
@@ -705,7 +751,7 @@ def CoreAllocationPage():
 	
 	for i in range(0,aprocess_list_len):
 		font = pygame.font.SysFont("Roboto Condensed", 30)
-		text = font.render (str(aprocess_list.display_name), True, (0, 0, 0))
+		text = font.render (str(aprocess_list[i].display_name), True, (0, 0, 0))
 		screen.blit(text,(coord_x[i],coord_y[i]))
 		font = pygame.font.SysFont("Roboto Condensed", 20)
 		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
