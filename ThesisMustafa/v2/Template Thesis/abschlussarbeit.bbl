@@ -14,6 +14,23 @@ http://www.amalthea-project.org/.
 \bibitem{app4mcproposaleclipse}
 https://projects.eclipse.org/proposals/app4mc.
 
+\bibitem{springerparallel}
+Thomas Rauber and Gudula R{\"u}nger.
+\newblock {\em Parallel Programming}.
+\newblock Springer-Verlag Berlin Heidelberg, 2013.
+
+\bibitem{interconnection}
+http://www2.cs.siu.edu/~cs401/textbook/ch5.pdf.
+
+\bibitem{dsm}
+CS-550: Distributed Shared Memory~[SiS '94].
+\newblock Distributed resource management: Distributed shared memory.
+
+\bibitem{lukas1}
+Lukas Krawczyk.
+\newblock Introduction in dps architecture, distributed and parallel systems
+  lecture notes, esm dps ws 2015/2016.
+
 \bibitem{timingposter}
 https://www.gliwa.com/downloads/timing%20poster.pdf.
 
@@ -253,12 +270,12 @@ https://wiki.debian.org/howto/cpufrequencyscaling.
 \bibitem{gateworks}
 http://trac.gateworks.com/wiki/dvfs.
 
-\bibitem{springerparallel}
-Thomas Rauber and Gudula R{\"u}nger.
-\newblock {\em Parallel Programming}.
-\newblock Springer-Verlag Berlin Heidelberg, 2013.
-
 \bibitem{mii}
 https://en.wikipedia.org/wiki/media-independent\texttt{\_}interface.
+
+\bibitem{multicore1}
+Jernej Barbic.
+\newblock Multi-core architectures.
+\newblock 2006.
 
 \end{thebibliography}

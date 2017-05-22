@@ -36,45 +36,66 @@ The demonstrator, A4MCAR, is equipped with a distributed architecture that invol
 
 In this paper, the development and parallelism evaluation of the demonstrator A4MCAR as well as the studies on parallel computing and tracing options are discussed. Obtained results are used in APP4MC for better development. The remainder of this paper is organized as follows: Chapter \ref{multicorechapter} is dedicated to Multi-core programming while Chapter \ref{app4mcchapter} is dedicated to explaining APP4MC environment. In Chapter \ref{designchapter}, the demonstrator design and implementation will be explained. After Chapter \ref{designchapter}, Chapter \ref{informationchapter} and Chapter \ref{evaluationchapter} will involve Information Tracing and System Modeling with APP4MC and Effective Parallelism Evaluation, respectively. The paper will be concluded with Chapter \ref{conclusionchapter}.
 
-\section{Related Work}
-
 %%% CHAPTER Introduction ------------------------------end----
 %%% CHAPTER Multi-core Programming ------------------begin----
-\chapter{Multi-core Programming} \label{multicorechapter} %Chapter outline is work in progess..
-Some text will come here! \\
-\section{Distributed and Parallel Systems} %and Distributed systems
-Some text will come here! \\
-\subsection{Introduction} %Definitions and intro
-%Orange folder.. definitions.
-Some text will come here! \\
-\subsection{Memory Architectures} %characteristics + architectures
-%\subsubsection{Computers with Shared Memory Organization}
-%\subsubsection{Computers with Distributed Memory Organization}
-%\subsubsection{Computers with Distributed and Shared Memory Organization}
-Some text will come here! \\
-\subsection{Memory Communication} %Distributed + shared mem comm techniques
-Some text will come here! \\
-\section{Introduction to Parallelism} 
-Some text will come here! \\
-\subsection{Levels of Parallelism}
-Some text will come here! \\
-\subsection{Characteristics, Challenges and Constraints of Parallel Systems} % involves co-design stages (parallelization of programs pp.108) partitioning mapping egc. + Also advantages and disadvantages
-Some text will come here! \\
-\subsection{Coordination and Mutual Exclusion}
-Some text will come here! \\
-\subsubsection{Parallelism Terminology}  %terminology: intro, process, task ,thread, runnable etc
-Some text will come here! \\
-\subsubsection{Problems in Coordination} % race cond, deadlock, livelocketc. 
-Some text will come here! \\
-\subsubsection{Mutual Exclusion} %mutex semaphore etc.
-Some text will come here! \\
-\subsection{Optimization of Parallelization}
-Some text will come here! \\
-\section{Multi-core Processor Architecture}
-Some text will come here! \\
-\section{Scheduling}  \label{schedulingsection}%and schedulers
+\chapter{Parallel Programming} \label{multicorechapter} 
+\section{Introduction to Parallelism} %why parallelism, Distributed and parallel architectures, Multicore processors
+High performance systems, scientific computations and multi-feature systems require well-established parallel software. The physical problems in our world are being solved by computer systems by making use of simulations which are becoming more and more complex as the years go by. Graphical applications which involve big data operations also make use of the benefits of the parallel software. As the data that is involved in such systems increase, required amount of computing power, memory space and the need for accuracy and speed also increases. In the last decades, the improvements in high performance computing and the advancements in processors are significantly developed which allows the development of efficient parallel software in systems. Today, computers with multicore processors allow every desktop to be eligible for parallel software development. In \cite{springerparallel}, it is pointed out that the technological developments regarding multi-core processors and parallel computing was forced by physical reasons. As increasing the clock speed causes overheating which gets harder and harder to get rid of as the clock speed increases, the developments regarding multi-core technology allowed more computations to be achieved without having to increase the clock frequency \cite{springerparallel}.
+
+While the hardware-related developments are out there, in order to make use of parallelism one should modify an existing software to increase its performance on a multi-core processor. Furthermore, the execution time of the parallel program should be lesser the execution time of the sequential program for it to worth the effort. Designing a parallel program, as compared to a sequential program could be time consuming. In this regard, one should know how the parallel programming models and modern techniques to utilize a software in parallel manner. With this idea, it can be said that there is much research going on in the area of parallel programming languages and environments with the goal of utilizing parallel programs at the right level of abstraction \cite{springerparallel}.
+
+The following sections in this chapter will give an introduction to parallelism, modern techniques, and will explain the theoretical part of parallelism which is addressed in this report.
+\section{Memory Architectures} 
+Parallelization of a program is all about efficient usage of CPU time (also called as computation time) and memory access. Assuming some tasks are distributed through a distributed, many-core or multi-core system, the synchronization between the tasks' access to memory should be achieved. With these goals in mind, machines according to their memory architectures could be summarized as follows:
+\begin{itemize}
+	\item \textbf{Distributed Memory Machines (DMM):} Distributed Memory Machines are the systems that use distributed memory architecture. A DMM is illustrated in the Figure \ref{fig:memarch}. In the distributed memory architecture, the units which consist of a processor and a memory are interconnected using a network \cite{springerparallel}. There are several topologies with which the nodes can be interconnected. Such topologies involve point-to-point topology, bus topology, crossbar topology, ring topology, mesh topology and hypercube topology which makes use of an external routing unit \cite{interconnection}. The advantage of distributed memory is that each processing unit has individual memory units. Thus, all local memory is private and can only be accessed via the respective local processor. Therefore, the communication between the individual processor memories are only handled via a \textbf{message passing interface (MPI)} \cite{springerparallel}. However, DMMs often have very large communication costs compared to other memory architectures. DMMs often resemble networks of workstations according to \cite{springerparallel}. Collection of complete computers with a dedicated interconnection network are called \textbf{clusters} and they also use message passing interfaces for communication. The difference between cluster systems and distributed systems is that a job scheduler is used in clusters as opposed to being addressed individually. Today's popular message passing libraries to address communication in cluster systems and distributed systems involve PVM and MPI libraries \cite{springerparallel}. 
+	\item \textbf{Shared Memory Machines (SMM):} Shared Memory Machines are the systems that use the shared memory architecture. Since shared memory architecture has a \textbf{shared physical memory (global memory)}, the coordination of processor accesses to global memory should be considered. A global memory can be a collection of memory modules and the data access to the global memory is handled by reading or writing \textbf{shared variables}. A shared memory architecture is illustrated in the Figure \ref{fig:memarch}. A typical example of a shared memory architecture can be found in \textbf{multi-core processors} in which there exists many physical processing units called \textbf{cores}, and shared memory modules. In computers, parallel programs for SMMs are often handled by using \textbf{threads} which are control flows which shares data with other threads by accessing a global address space. While \textbf{kernel threads} are managed by \textbf{operating system (OS)} and mapped to the system cores by the OS, the \textbf{user threads} are often mapped to cores by using specific programming environments. Today's user threads within a computer system often use frameworks and libraries such as OpenMP and POSIX thread (Pthread) for C language, Java Threads, and Python's 'threading' library \cite{springerparallel}. 
+	
+	While using shared memory architecture is advantageous in terms of costliness, the design of shared variables and mutual exclusion of shared variables might be effortful and time consuming. The coordination problems of shared address space may lead to error-prone non-deterministic systems which will have the issues such as \textbf{race conditions} which will be described in the coming sections. 
+\end{itemize}
+\textbf{Distributed Shared Memory (DSM)} architecture is often used in systems as well. A depiction of such an architecture is given in the Figure \ref{fig:memarch}. In distributed shared memory, the shared memory model is implemented in distributed systems. Shared memory model allows all nodes to have virtual memory space. Since distributed systems have high communication costs, by moving data to the location of access, the DSM systems reduce the high communication cost \cite{dsm}. 
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/memarch.png}
+	\caption{Memory Architectures \cite{lukas1}}
+	\label{fig:memarch}
+\end{figure}
+%memory architectures
+
+\section{Introduction to Multi-core Processors} %pp. 26
+The processor chip technology is being developed progressively for many past years. However, according to \cite{springerparallel}, the fashion of increasing the chip performance has changed due to the physical limitations. As an example, pipelined parallelism of instruction execution is limited by the clock speed. The Parallel Programming book by Thomas Rauber et al. \cite{springerparallel} explains these limitations as follows:
+\begin{itemize}
+	\item Clock speed of a processor can no longer be increased significantly. Since the increase of the number of transistors on a chip is achieved by increasing the transistor density and this results in excessive heating due to current leakage, expensive cooling equipment are required. Furthermore, the heating on a chip should not exceed a certain limit to keep the chip functioning properly.
+	\item Memory access times can not be reduced as the same rate as the processor clock increase. That results in a bottleneck when the processor is accessing the memory. \textbf{Cache memories}, which are the temporary memories that are used in order to reduce the memory access times, are used in order to overcome this issue but further performance increase in processing units may not be resolved with caches.
+	\item The speed of signal transfers within the wires could be a limiting factor.
+	\item The physical size of a chip limits the number of pins that are used, which can limit the bandwidth between CPU and memory, which will also create a bottleneck at the memory communication.
+\end{itemize}
+Due to the aforementioned limitations, rather than increasing the performance, multi-core processors have been developed which consist of several physical execution cores. Due to the physical cores, total parallelism as opposed to single-core threading is achieved by using multi-core processors. Cores of a multi-core processor consist of seperate execution resources such as functional units (Arithmetic Logic Unit (ALU), multiplier) and execution pipelines \cite{springerparallel}. A multi-core processor or a microcontroller also fits in a single chip package same as a single-core processor. Proper software application examples in a multi-core computer system involve background applications and scientific cpu-intensive computations that distribute a task into several cores to improve their performance.
+
+Within a multi-core processor, usage of threads should also be understood. It is known that the single-core processor threading can be used to achieve parallel software with higher performance. The threading is also possible in multi-core processors which will achieve even higher performance and will allow more features to be parallelized. The graphical illustration of this is given with the Figure \ref{fig:differentthreading}. Using the physical core for only one thread or a process is related to \textbf{mapping}, whereas the timing organization of many threads in one core is handled by \textbf{scheduling} which is done by the operating system. These terms will be further explained in the coming sections.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/differentthreading.png}
+	\caption{Illustration of time-sliced execution paths in a multi-core processor \cite{multicore1}}
+	\label{fig:differentthreading}
+\end{figure}
+
+\section{Developing Parallel Software} 
+%basic concepts terminology
+%terminology: intro, process, task ,thread, runnable etc
+
+%levels of parallelism
+
+%co-design stages etc. % involves co-design stages (parallelization of programs pp.108) partitioning mapping egc. + Also advantages and disadvantages 
 Some text will come here! \\
 
+\section{Coordination and Mutual Exclusion} %mutex semaphore etc.% race cond, deadlock, livelocketc. %shared variables shf 133-134
+Some text will come here! \\
+\section{Scheduling}\label{schedulingsection}%and schedulers
+Some text will come here! \\
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -82,10 +103,11 @@ Some text will come here! \\
 	\caption{Timing properties for scheduling in multi-tasked systems \cite{timingposter}}
 	\label{fig:scheduling}
 \end{figure}
-\section{Real-time Parallelization Trends in Practice: RTOS, MPI, OpenMP, Pthreads, Java Threads} %x Give example of FreeRTOS for RTOS.
+\section{Evaluation of Parallel Software}
 Some text will come here! \\
-\section{Importance of Multi-core computing to automotive industry: AUTOSAR} %add autosar architecture picture
+\section{Optimization of Parallel Software}
 Some text will come here! \\
+\section{New Trends in Parallelization} %Real-time Parallelization Trends in Practice: RTOS, MPI, OpenMP, Pthreads, Java Threads and AUTOSAR... 
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -93,15 +115,15 @@ Some text will come here! \\
 	\caption{AUTOSAR Architecture \cite{autosararch}}
 	\label{fig:autosararch}
 \end{figure}
-\section{Multi-core Programming with XMOS Multi-core Microcontrollers}
 Some text will come here! \\
-\section{Multi-core Programming with Raspberry Pi 3}
+\section{Theoretical Objectives and Related Work}
 Some text will come here! \\
-%%% CHAPTER Multi-core Programming ------------------end----
+
+%%% CHAPTER Parallel Programming ------------------end----
 %%% CHAPTER APP4MC Development Environment ----------begin----
 \chapter{APP4MC Development Environment} \label{app4mcchapter}
-\section{Introduction} %Motivation
-\section{Features}
+\section{Introduction} %Motivation, why is it useful...
+\section{Features} %include schema
 \section{Modeling}
 %%% CHAPTER APP4MC Development Environment ------------end----
 %%% CHAPTER A4MCAR ----------------------------------begin----
@@ -402,7 +424,7 @@ All the source and header files that contain task functions and that are develop
 \subsubsection{Acceleration} \label{accelerationsection}
 For acceleration and deceleration, a brushless DC motor is controlled by delivering PWM signals to the TBLE02-S Electronic Speed Controller. The task and how it is connected to other tasks can be seen in Figure \ref{fig:sysmlxmostasksbrief}. In order to deliver the desired PWM signal, a task that use timers have been created which is given in Listing \ref{lst_tble02task}. The created template of the task in Listing \ref{lst_tble02task} is not only used for the acceleration task, but also used for the other tasks that use PWM signaling to control other devices. In the task, it is seen that in order to generate the desired duty cycle, the amount of time for which the output signal must be on and off are calculated (Lines 19 through 38) and the output port is toggled (Lines 39 through 48) accordingly. The port toggling is done inside a timer event (shown in Line 17) that is dynamically delayed given the calculated on and off times.
 
-\lstinputlisting[caption=Created PWM signaling template, label=lst_tble02task, style=xc]{content/listings/lst_tble02task.txt}
+\newpage\lstinputlisting[caption=Created PWM signaling template, label=lst_tble02task, style=xc]{content/listings/lst_tble02task.txt}
 The desired PWM pulse widths are taken from the TBLE02-S Electronic Speed Controller manual and the overall PWM period has been set to 20ms which is the standard period for most of the controllers. Since the motor speed is very high and it is not desired in our application, the pulse widths are manipulated in order to reach lower speeds in full force. The interface 'control\texttt{\_}if' (Line 9 and Line 13) is used that delivers a number between 0-100 in order to express speeding information while also delivering a direction value which is either FORWARD (0) or REVERSE (1). With this information, the developed task is able to control the acceleration of the A4MCAR. Additionaly, the acceleration task is modified in order to control acceleration using proximity sensor inputs for safety. Minimum safest front distance is set to 50 centimeters.
 
 Acceleration task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with acceleration task having the function name 'Task\texttt{\_}DriveTBLE02E'.
@@ -447,9 +469,9 @@ As stated in the Section \ref{lloverviewsection}, the proximity sensing is handl
 
 The pseudo version of the proximity sensing task is given in Listing \ref{lst_proximitysensing}. The proximity sensing task is a periodic task that polls individual ultrasonic sensors using their respective addresses (Line 12 and Line 13) in order to obtain what is the distance perceived by front, rear, left, and right sensors. In order to handle this in a modular manner, device addresses are placed in the header file. Furthermore, the task that maintains I\textsuperscript{2}C communication alongside proximity sensing task is seperated and the two tasks are connected using 'i2c\texttt{\_}master\texttt{\_}if' interface (shown in Line 1). The sensing is achieved every 0.2 seconds within a timer event (shown in Line 7) and when the sensing of each sensor complete, the value is sent by its respective interface 'distancesensor\texttt{\_}if' to the acceleration task (Line 22). 
 
-\lstinputlisting[caption=Proximity sensing task, label=lst_proximitysensing, style=xc]{content/listings/lst_proximitysensing.txt}
-
 Proximity sensing task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with proximity sensing task having the function name 'Task\texttt{\_}ReadSonarSensors'.
+
+\newpage\lstinputlisting[caption=Proximity sensing task, label=lst_proximitysensing, style=xc]{content/listings/lst_proximitysensing.txt}
 
 \subsection{Lighting System}
 The light system of the A4MCAR is a light module from the RC-Car parts producer Modelcraft that is driven with PWM. The module uses two PWM channels: one for light adjustment due to steering input, one for light adjustment due to acceleration input. Similarly to all the other PWM control tasks, PWM signal generator template that is given in \ref{lst_tble02task} has been used in order to generate correct pulse widths for the light system. The task that is given in \ref{lst_tble02task} has been adjusted to have two timer events for each PWM channel as opposed to one timer event. Desired pulse widths for several modes are contained in the header file of the light system task and these modes have been selected given the steering, angle, and gear inputs from the Bluetooth communication task. The functions regarding pulse width time generation for different light system modes have also been created. 
@@ -580,6 +602,7 @@ To help with the utilization assessment and visualization purposes, a core readi
 
 With the help of a simple function the core usage information is easily retrieved. The function is given in the Listing \ref{lst_psutil}. It should be noted that 'd' in the listing is an array with 4 elements, each of which indicating core usage for individual cores.
 
+\newpage
 \lstinputlisting[caption=Psutil function to retrieve core utilization information , label=lst_psutil, style=python]{content/listings/lst_psutil.txt}
 
 \subsection{Ethernet (TCP) Client Implementation}
@@ -632,6 +655,16 @@ The web page that has been designed for users is shown in the Figure \ref{fig:we
 	\includegraphics[width=\textwidth]{content/images/web.png}
 	\caption{Web interface of A4MCAR}
 	\label{fig:web}
+\end{figure}
+
+An alternative to this interface have also been created which is used for smoother driving by using arrow buttons. However, the interface that uses buttons can use only constant speeds for actuation which are set to 80 percent of the full speed. The alternative interface can be seen in Figure \ref{fig:web2}
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/web2.png}
+	\caption{Alternative web interface of A4MCAR}
+	\label{fig:web2}
 \end{figure}
 
 The overall dynamical behavior of the web page is illustrated in component diagram that is seen in the Figure \ref{fig:weboverallbehavior}. In the diagram, it should be noticed that the server page jqueryControl.php is the main web interface. It has some server pages and files embedded to it in order to function as a whole to deliver the features of controlling A4MCAR, core utilization display, and camera streaming. In the following subsections, each of these tasks will be explained using the component diagram shown in the Figure \ref{fig:weboverallbehavior}.
@@ -877,7 +910,7 @@ XTA tool is also able to work with specific commands by using the XTA console (s
 	\begin{lstlisting}[style=xc]
 	analyze function Function_Name
 	\end{lstlisting}
-	\item Finally, loops can be analyzed using XTA. The way a loop is defined is either setting a loop point from the editor or defining an endpoint inside loop. A loop point having and end point "looppoint" can be analyzed using the following command in the XTA console:
+	\item Finally, loops can be analyzed using XTA. The way a loop is defined is either setting a loop point from the editor or defining an endpoint inside loop. A loop point having and end point "looppoint" can be analyzed using the following command in the XTA console: \\
 	\begin{lstlisting}[style=xc]
 		analyze loop looppoint
 	\end{lstlisting}
@@ -941,7 +974,7 @@ Besides the implemented core monitoring task, XMOS features several more means t
 
 Using the "debug\texttt{\_}printf" function, xC-specific tools, a function has been created that helps to find out which function refers to which core. The reason this information is important is because the core ids that are referred with the "par" statements are not the same ids of the core usage implemention. The same issue holds true for the tile ids, as well. By using the following listing, this information could be monitored at run-time:
 
-\begin{lstlisting}[style=xc]
+\newpage\begin{lstlisting}[style=xc]
 	int PrintCoreAndTileInformation(char * Function_Name)
 	{
 		debug_printf("Starting %s task on core ID %d on tile %x\n", Function_Name, 	get_logical_core_id(), get_local_tile_id());
@@ -962,7 +995,16 @@ Here, the get\texttt{\_}logical\texttt{\_}core\texttt{\_}id() is the function to
 %%Onceki sectiona ek olarak
 %% core_monitoring.xc den bahset
 \subsection{Discovering Energy Consumption Features}
-One of the most important optimization goals include reducing the energy consumption. To reduce the energy consumption one should have a properly utilized software which is achieved through balancing the CPU load through all the cores of the system. In order to understand this, Power Consumption Application Manual for XS1-L devices \cite{xs1energymanual} should be studied well. Since CPU hardware related power consumption is out of reach for this research, we focus on resource related power consumption. A good illustration of how power consumption changes is shown in the Figure \ref{fig:xs1energy} \cite{xs1energymanual}.
+One of the most important optimization goals include reducing the energy consumption. To reduce the energy consumption one should have a properly utilized software which is achieved through balancing the CPU load through all the cores of the system. In order to understand this, Power Consumption Application Manual for XS1-L devices \cite{xs1energymanual} should be studied well. 
+
+There are two types of power consumption described regarding a processing unit. Static power consumption describes a chip's power consumption that is caused by the leakage current as the chip is heating \cite{springerparallel}. Therefore, since the leakage current could not be controlled by a user directly, dynamic power consumption, which is the power consumption that is resulted from actual computations, is the concern of our research. The dynamic power consumption of a chip is described by the following equation \cite{dvfspaper}: 
+\begin{equation} \label{dyneq}
+P\textsubscript{dynamic} = {\alpha} {C\textsubscript{L}} {V\textsubscript{DD}\textsuperscript{2}} {f\textsubscript{clk}}
+\end{equation}
+
+We can see from the equation that the power depends on switching probability ${\alpha}$, chip voltage ${V\textsubscript{DD}}$, clock frequency ${f\textsubscript{clk}}$ and collective switching capacitance ${C\textsubscript{L}}$. It is stated in the \cite{springerparallel} that since ${V\textsubscript{DD}}$ linearly depends on the clock frequency ${f\textsubscript{clk}}$, a cubic relationship between power consumption and clock frequency could be observed. The linear relationship between the current ${I\textsubscript{DD}}$ and the frequency is also depicted in the Figure \ref{fig:xs1energy}, showing the performance values for a XS1-L device of XMOS xCORE-200 eXplorerKIT \cite{xs1energymanual}.
+
+%two techniques that power could be reduced..
 
 \begin{figure}[!ht]
 	\centering
@@ -972,11 +1014,11 @@ One of the most important optimization goals include reducing the energy consump
 	\label{fig:xs1energy}
 \end{figure}
 
-In the figure, we see that the base power consumption of one xCORE running an instruction sequence is given with respect to the clock frequency. By looking at the figure, we can see that the internal base current that is related to the operation of xCORE is directly proportional to the clock frequency of the xCORE core. Since the current is directly proportional to the power, as seen by the equation i.e. $P = {I\textsubscript{DD}}  {V\textsubscript{DD}}$, we can conclude that load balancing is one of the most important things to take core of to get a lower current in the core, thus reducing the power consumption. It is important to add at this point that power consumption and energy consumption are directly proportional if system is not fully loaded. In other words, decreasing the clock frequency alone is useful to achieve reduced energy consumption in a system in which the load is balanced and there are no deadline misses \cite{dvfspaper}. Using provided internal registers, xCORE core and tile frequencies can be reduced. 
+In the figure, we see that the base power consumption of one xCORE running an instruction sequence is given with respect to the clock frequency. By looking at the figure, we can see that the internal base current that is related to the operation of xCORE is directly proportional to the clock frequency of the xCORE core. Since the current is directly proportional to the power, as seen by the equation i.e. $P = {I\textsubscript{DD}}  {V\textsubscript{DD}}$, we can conclude that load balancing is one of the most important things to take care of to get a lower frequency thus current in the core, thus reducing the power consumption. It is important to add at this point that power consumption and energy consumption are directly proportional if system is not fully loaded. In other words, decreasing the clock frequency alone is useful to achieve reduced energy consumption in a system in which the load is balanced and there are no deadline misses \cite{dvfspaper}. Using provided internal registers, xCORE core and tile frequencies can be reduced according to the manual \cite{xs1energymanual}. 
 
-It is important to keep in mind that reducing the clock speed is not the only way to reduce the power consumption. If the dynamic switching power is considered rather than the base power consumption, the factors such as operating frequency, amount of communication, and the data itself are all big causes of the power consumption \cite{xs1energymanual}.  
+It is important to keep in mind that reducing the clock speed is not the only way to reduce the power consumption. If the dynamic switching power is considered rather than the base power consumption, the factors such as operating frequency, amount of communication, and the data itself are all big causes of the power consumption \cite{xs1energymanual}. Therefore, two techniques with which power and energy can be reduced, can be defined. First technique encapsulates the aforementioned techniques, i.e decreasing the frequency of a chip dynamically by using DFS (Dynamic Frequency Scaling) and decreasing the frequency and operating voltage together dynamically (Dynamic Voltage and Frequency Scaling). The second technique involves shutting down the chip sections which are not used dynamically. In the following sections, these techniques will be referenced.
 
-An important energy related feature that comes with XS-1 devices is the AEC (Active Energy Consumption) mode \cite{xs1energymanual}. When this mode is turned on and AEC mode clock frequency is set to a desired value, xCORE device lowers the clock frequency of the AEC-enabled cores to the desired AEC mode clock frequency when the core is paused or waiting for an input \cite{xs1energymanual}. This could be slightly related to DVFS (Dynamic Voltage and Frequency Scaling) \cite{dvfsieee} which is a processors ability to dynamically scale its frequency and operating voltage depending on the load. DVFS is common for Linux OS running computers and it will be discussed in the next section.
+An important energy related feature that comes with XS-1 devices is the AEC (Active Energy Consumption) mode \cite{xs1energymanual} which can be an example of the mixture of both of the aforementioned techniques. When this mode is turned on and AEC mode clock frequency is set to a desired value, xCORE device lowers the clock frequency of the AEC-enabled cores to the desired AEC mode clock frequency when the core is paused or waiting for an input \cite{xs1energymanual}. This could be slightly related to DVFS (Dynamic Voltage and Frequency Scaling) \cite{dvfsieee} which is a processors ability to dynamically scale its frequency and operating voltage depending on the load. DVFS is common for Linux OS running computers and it will be discussed in the next section.
 
 \section{High-Level Module Information Tracing and System Management}
 
@@ -1155,7 +1197,7 @@ As an example, for a 4-core system such as Raspberry Pi 3, core affinity can be 
 \lstinputlisting[caption=CorePlacer.sh script to pin a process to a core using its name, label=lst_CorePlacer, style=bash]{content/listings/lst_CorePlacer.txt}
 
 In A4MCAR or any other equally or more complex applications, to manage the distribution process for every process might be time consuming. In order to overcome this issue, a file format has been designed which is then read by the main processing task (Touchscreen display process). Touchscreen process, when the distribution is selected, reads from this file format coredef\texttt{\_}list.a4p and makes core placements accordingly. An example coredef\texttt{\_}list.a4p is shown by the Listing \ref{lst_coredeflista4p}. It can be seen in the listing that task names and cores are listed by each line.
-\lstinputlisting[caption=File format that contains overall
+\newpage\lstinputlisting[caption=File format that contains overall
  process pinning information, label=lst_coredeflista4p, style=bash]{content/listings/lst_coredeflista4p.txt}
 
 Reading the file and making the changes required is done by using the function given with the Listing \ref{lst_pythondistribute}. In this listing, file is opened (Line 3), each line is parsed (Lines 4 through 6), then the allocation is done by using a function called AllocateProcessWithCore (Line 8) that executes a taskset command with arguments as name of the process and core. Remembering back the Figure \ref{fig:rpicomponents}, one can better understand how this procedure is located amongst other processes in the high-level module.
@@ -1174,12 +1216,7 @@ One of the biggest advantages of achieving a better core utilization is to invok
 	\label{fig:dvfsexplanation}
 \end{figure}
 
-Consider the following dynamic power equation \cite{dvfspaper}: 
-\begin{equation}
-P\textsubscript{dynamic} = {\alpha} {C\textsubscript{L}} {V\textsubscript{DD}\textsuperscript{2}} {f\textsubscript{clk}}
-\end{equation}
-
-We can see from the equation that the power depends on chip voltage ${V\textsubscript{DD}}$, clock frequency ${f\textsubscript{clk}}$ and collective switching capacitance ${C\textsubscript{L}}$. Considering a fixed chip operating voltage ${V\textsubscript{DD}}$, it can be easily seen from the figure that the power is directly proportional to the operation frequency of the CPU. For example, a processor that is running on 500MHz will be drawing less current than the same one that is running on 200MHz. However, using a lesser frequency is not the only way to get a lesser power consumption. One can also reduce the operating voltage ${V\textsubscript{DD}}$ of a chip to reduce power, provided that the ${V\textsubscript{DD}}$ is greater or equal to the minimum working voltage of that particular chip \cite{dvfspaper}. It should be noted that that clock frequency should also be reduced in a system with a reduced operating voltage ${V\textsubscript{DD}}$ for the system to function correctly \cite{dvfspaper2}. The figure depicts that by decreasing frequency and operating voltage at the same time (DVFS), power consumption is reduced a lot more than it is in the frequency scaling.
+Consider the dynamic power consumption equation that was given in \ref{dyneq}. Considering a fixed chip operating voltage ${V\textsubscript{DD}}$, it can be easily seen from the figure that the power is directly proportional to the operation frequency of the CPU. For example, a processor that is running on 500MHz will be drawing less current than the same one that is running on 200MHz. However, using a lesser frequency is not the only way to get a lesser power consumption. One can also reduce the operating voltage ${V\textsubscript{DD}}$ of a chip to reduce power, provided that the ${V\textsubscript{DD}}$ is greater or equal to the minimum working voltage of that particular chip \cite{dvfspaper}. It should be noted that that clock frequency should also be reduced in a system with a reduced operating voltage ${V\textsubscript{DD}}$ for the system to function correctly \cite{dvfspaper2}. The figure depicts that by decreasing frequency and operating voltage at the same time (DVFS), power consumption is reduced a lot more than it is in the frequency scaling.
 
 In Linux, CPUFreq \cite{cpufrequencyscaling} is provided which is a module that is responsible for handling dynamic frequency scaling. CPUFreq governors which are responsible for deciding, what frequency should be used in a system, manipulate the CPUFreq driver to switch the policy of the CPU depending on the system load \cite{cpufrequencyscaling}. In A4MCAR, CPUFreq governor of the high-level module is changed in order to achieve less power consumption. Raspberry Pi 3 supports two frequencies that can be used within CPUFreq governors: 600MHz and 1.2GHz. The available governors and their functions are listed below \cite{gateworks}:
 
@@ -1324,5 +1361,7 @@ Some text \\
 \chapter{About APPSTACLE Project}
 \chapter{Conclusion} \label{conclusionchapter}
 %Contributions overall
+%Conclusions and results
+%Future improvements
 
 %%% CHAPTER Conclusion ------------------------------end----
