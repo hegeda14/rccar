@@ -24,7 +24,16 @@ While there are some commercial tools that provide easement in the parallel soft
 	\item Tools for scheduling, partitioning, and optimizing of multi- and many-core architectures \cite{app4mcproposaleclipse}.
 \end{itemize}
 
-The author aims to investigate and evaluate APP4MC's performance with real-world distributed multi-core system in several aspects such as core utilization, energy consumption and resource usage while studying efficient parallel computing and tracing activities at his time with Project AMALTHEA4public.
+The author aims to investigate and evaluate APP4MC's performance with real-world distributed multi-core system in several aspects. The objectives of this project could be listed as follows:
+\begin{itemize}
+	\item Development of a distributed multi-core demonstrator for the APP4MC platform that involves features with the emphasis of automotive applications.
+	\item Investigation of new trends in parallel software development (such as Real-time Linux parallel programming, POSIX threads, RTOS, evaluation methods etc.)
+	\item Researching techniques to retrieve information (number of instructions, communication costs) and system trace from platforms such as xCORE and Linux to achieve precise modelling with APP4MC.
+	\item In order to achieve optimization goals such as reduced energy consumption and reduced resource usage, different affinity constrained software distributions will be evaluated and energy features will be invoked to see if the goals are met.
+	\item Developing a basic online parallelization evaluation software that will retrieve scheduling properties such as slack times, execution times, and deadlines from all the processes and that will tell how many of the deadlines are met, how good of a software distribution it is while the software is being executed.
+	\item Also taking system traces from the software to carry out offline software evaluation in order to figure out means to balance the load on cores.
+	\item Comparing the conventional schedulers non-constrained affinity distribution (such as a Linux OS scheduler) to the affinity constrained distribution from APP4MC to see if performance can be improved.
+\end{itemize}
 
 With the help of A4MCAR project it is intended that the Real-time Linux community will benefit from the published libraries and documentation that involve code snippets and information instructions on how to develop more optimized distributed and parallel software. Furthermore, the Eclipse and APP4MC community will benefit from the A4MCAR via advanced tool support for RPI developments, open source example applications, and validations of APP4MC parallelization results in order to create a better tooling for public. Those results can be used to assess and compare different parallelization scenarios and consequently identify optimal solutions regarding timing efficiency for the A4MCAR. Thereby, a point of reference can be given as well as an easy starting point for developers approaching parallelism with their developments. 
 
@@ -38,7 +47,7 @@ In this paper, the development and parallelism evaluation of the demonstrator A4
 
 %%% CHAPTER Introduction ------------------------------end----
 %%% CHAPTER Multi-core Programming ------------------begin----
-\chapter{Parallel Programming} \label{multicorechapter} 
+\chapter{Theoretical Background on Concurrent Programming} \label{multicorechapter} 
 \section{Introduction to Parallelism} %why parallelism, Distributed and parallel architectures, Multicore processors
 High performance systems, scientific computations and multi-feature systems require well-established parallel software. The physical problems in our world are being solved by computer systems by making use of simulations which are becoming more and more complex as the years go by. Graphical applications which involve big data operations also make use of the benefits of the parallel software. As the data that is involved in such systems increase, required amount of computing power, memory space and the need for accuracy and speed also increases. In the last decades, the improvements in high performance computing and the advancements in processors are significantly developed which allows the development of efficient parallel software in systems. Today, computers with multicore processors allow every desktop to be eligible for parallel software development. In \cite{springerparallel}, it is pointed out that the technological developments regarding multi-core processors and parallel computing was forced by physical reasons. As increasing the clock speed causes overheating which gets harder and harder to get rid of as the clock speed increases, the developments regarding multi-core technology allowed more computations to be achieved without having to increase the clock frequency \cite{springerparallel}.
 
@@ -83,19 +92,62 @@ Within a multi-core processor, usage of threads should also be understood. It is
 	\label{fig:differentthreading}
 \end{figure}
 
-\section{Developing Parallel Software} 
+\section{Essential Concepts in Parallelization} 
 %basic concepts terminology
 %terminology: intro, process, task ,thread, runnable etc
-
 %levels of parallelism
 
+Basic concepts in parallel programming should be understood to develop efficiently utilized software. The design of a parallel software starts by decomposing an application into its smallest pieces which are called \textbf{runnables}. One or more runnables combined constitute \textbf{tasks} which are functional pieces of an application that can be executed parallel across a multi-core or single-core processor. The size of tasks (mostly in terms of number of instructions) are called \textbf{granularity} \cite{springerparallel}. Therefore, when decomposing an application into smaller pieces, granularity of the tasks should be considered for the load balancing. The tasks of an application are assigned to processes or threads for parallel execution on the hardware platform. Therefore, \textbf{process} can be defined as a program in execution that is assigned to execution resources for execution. The switching between processes are called \textbf{context switches}, and the \textbf{scheduler} of the operating system manages those switches. A \textbf{thread} can be defined a continuous sequence of execution. A process can involve one or many independent control flows, i.e. threads \cite{springerparallel}. 
+
+\textbf{Scheduling} is the process of determining the order of execution of processes or threads on physical hardware whereas \textbf{mapping} is defined as the assignment of processes or threads on processing units. In other words, processes or threads are placed on cores using mapping, whereas their execution sequence is determined programmatically with the help of scheduling. Usage of these techniques for parallel design brings their own challenges Besides assigning processes or threads to cores, one should also manage assigning data to memories and communication to data paths. Constraints such as instruction set, locality /grouping,  sizes, and deadline of the tasks can make this process effortly and time consuming \cite{lukas1}. \textbf{Synchronization} is also an important job which defines the organized communication between processes or threads \cite{springerparallel}. Since the memory organization of the hardware matters, design should consider the hardware along with the software. The coordination and synchronization of processes and threads will be discussed in the next section.
+
+Finding a useful scheduling and mapping strategy is key to parallel design. The practices involve keeping the \textbf{parallel execution time} of a task lower than the \textbf{sequential execution time}, keeping the load balanced through the cores of the system and keeping the communication overhead low. According to the book \cite{springerparallel}, for the quantitative evaluation of parallel programs, measures such as \textbf{speedup} and \textbf{efficiency} can be used which are the measures that compare parallel execution time of a software with its sequential execution time.
+
+\section{Design Techniques in Parallelization} 
 %co-design stages etc. % involves co-design stages (parallelization of programs pp.108) partitioning mapping egc. + Also advantages and disadvantages 
-Some text will come here! \\
+Parallelization can be defines as the transformation of a sequential program into a parallel program \cite{springerparallel}. Although different sources (\cite{springerparallel} and \cite{lukas1}) generalize the design techniques in parallelization differently, one can go through the following challenges in order to develop parallel software through parallelization (also illustrated with the Figure \ref{fig:designtechniques}):
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/designtechniques.png}
+	\caption{Illustration of design techniques in parallelization \cite{lukas1}}
+	\label{fig:designtechniques}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{Partitioning of the problem:}
+	The application that addresses a problem should be decomposed into smaller pieces, i.e. runnables that are considered to be smallest pieces in a software. In some cases, this decomposition can be at task-level. A runnable or a small task can be a function that involves a single read or write access to a register or a shared variable, peripheral communication, or simple computations. In theory, a runnable is only executed in a single core and it has dependencies to another runnables to address a problem. The goal of this decomposition (according to \cite{springerparallel}) is to make sure that all the applications are fine-grained enough that the load balancing can be achieved. In other words, runnables have small granularity and with the help of this the generated tasks can be distributed more efficiently.
+	\item \textbf{Analysis of the communication:} Communication between runnables and tasks should be considered before the task generation. Communication is a big constraint in a parallel software, therefore all the dependencies between runnables or tasks, in terms of which runnable reads or writes data, and what is the communication cost (granularity) should be analyzed.
+	\item \textbf{Agglomeration of executables to tasks (Task Generation):}
+	In the task generation phase, runnables and some tasks are grouped together in order to constitute tasks. This is done with the consideration of dependent runnables in terms of communication. Also, the grouping should consider functional unification as well it should consider load balancing. 
+	\item \textbf{Assignment of tasks to processes or threads:}
+	According to \cite{springerparallel}, this intermediate phase is involved in computer systems where processes and threads are involved. The tasks that are generated can be grouped in order to constitute processes or threads. This step is the step which makes the software mapping-ready. In the cases of some multi-core microcontrollers, the mapping is done at the task-level, therefore this intermediate step is not required.
+	\item \textbf{Mapping of processes or threads to physical processes or cores:}
+	Each process, thread, or task in some cases are assigned to a seperate processor or core after the final agglomeration phase, i.e. when the runnables are grouped sensibly. In cases where there is more process or thread than a core, multiple threads are assigned to some cores. In this case, as mentioned scheduler of the operating system takes care of the execution order of multiple processes or threads on a core. Mapping phase in computer systems is usually done by the operating system but the users can intervene. The main goal of mapping step is to get an equal utilization while keeping the communication overhead smallest \cite{springerparallel} \cite{lukas1}.
+\end{itemize}
 
 \section{Coordination and Mutual Exclusion} %mutex semaphore etc.% race cond, deadlock, livelocketc. %shared variables shf 133-134
-Some text will come here! \\
-\section{Scheduling}\label{schedulingsection}%and schedulers
-Some text will come here! \\
+When developing parallel programs, not managing the critical sections correctly might lead to error-prone systems. A \textbf{critical section} can be defined as a shared variable that is accessed by two or more processes or threads. The actions of the processes or threads, when accessing a critical section, should be co-ordinated. For that purpose, \textbf{mutual exclusion} (also called \textbf{mutex}) concept is studied which refers to the requirement of ensuring that no two concurrent processes are in their critical section at the same time \cite{lukas1}. Generally, the mutual exclusion is handled by using mutex algorithms such as Lamport's Bakery Algorithm \cite{lukas1}, ensuring that every process is live, safe (no non-deterministic behavior is involved) and fair amount of CPU time is granted to each process.
+
+There are many problems that can occur in case the coordination of the process communication via accessing critical sections is not handled properly. A problem that is called \textbf{race condition} can occur in case mutual exclusion is not properly provided. Race condition can be defined as the behavior of a system where the system behavior depends on the order or timing of the uncontrollable (sporadic) events \cite{lukas1}. In other words, race condition happens when the system behaves non-deterministically due to the non-fixed order of accesses to critical region. Another problem that might arise is the \textbf{deadlock} problem which is the issue of processes not releasing the shared variables and waiting to acquire other shared variables that are being used by other processes \cite{lukas1}. In a deadlock scenerio, neither process can continue working therefore the execution does not progress. In a \textbf{livelock} situation, however, two or more processes access a shared variable but does inverting actions, thus even though the processes are alive the execution does not progress and has a non-deterministic behavior. The \textbf{spinlock}, a situation in which a task is continuously waiting for a shared variable to be released, can be given as another example of the problems that might occur if the mutual exclusion is not properly implemented.
+
+Today, many thread and concurrent programming libraries involve functions to use mutual exclusion. A simple way to access a shared variable in a programming language could be to define a mutex variable and lock it before writing to this critical section. After the process writes to the critical section, one must release the section by unlocking the mutex variable. However, it must be remembered that while handling complex critical sections where many processes are involved, coordination of process access' to the critical section should be provided by using mutual exclusion algorithms such as Lamport's Bakery Algorithm. \textbf{Semaphores}  (which are data types that control the access of multiple processes to a shared resource), \textbf{monitors} (which provides buffered locking mechanism to concurrent accesses), and synchronization methods (such as message passing) can also be used in order to coordinate the actions of multiple processes to critical sections \cite{lukas1}\cite{springerparallel}.
+
+\section{Analysis of Scheduling}\label{schedulingsection}%and schedulers
+For the purpose of analysis and evaluation, one can use system traces that involve information such as timing, mapping, and priority in order to see if the tasks, processes or threads are scheduled properly. To meet the optimization goals, this work involves evaluation of several software distributions. 
+
+According to \cite{lukas1}, Quality of Service (QoS) of scheduling could involve the following goals:
+\begin{itemize}
+	\item Even load-balancing
+	\item Efficient resource usage 
+	\item Maximizing throughput (completed processes per time unit) and utilization (percentage a processor is used)
+	\item Minimizing response time and latency
+	\item Maximizing fairness (every process receive fair amount of cpu time depending on their granularity)
+	\item Avoiding starvation (every process is guaranteed to receive cpu time eventually)
+\end{itemize}
+In the later sections, the optimization goals for parallel software will be discussed. It can be argued that an important portion of the optimization goals for a parallel software can be achieved through the scheduling goals.
+
+To understand how tasks are scheduled, one must carefully study the task graph given in the Figure \ref{fig:scheduling}. In the figure, it is seen that two tasks are given with Task B having a higher priority but lesser execution time. Timing properties of the given timeline could be defined as follows \cite{timingposter} \cite{lukas1}:
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -103,11 +155,62 @@ Some text will come here! \\
 	\caption{Timing properties for scheduling in multi-tasked systems \cite{timingposter}}
 	\label{fig:scheduling}
 \end{figure}
-\section{Evaluation of Parallel Software}
-Some text will come here! \\
-\section{Optimization of Parallel Software}
-Some text will come here! \\
+\begin{itemize}
+	\item \textbf{Initial Pending Time (IPT)}: IPT is defined as the preparation time before a task is ready to be started execution.
+	\item \textbf{Core Execution Time (CET)}: CET is the absolute time elapsed at which the task is executed on the processor. Therefore, the amount of time the task is preempted are not counted when calculating the CET. In the figure, it is seen that Task A is preempted once, thus the overall CET is found by adding the times CET1 and CET2.
+	\item \textbf{Gross Execution Time (GET)}: GET is the amount of time it passes for an iteration of a task or an event is executed. In other words, it is the elapsed time the execution is done until the task goes into the sleeping state.
+	\item \textbf{Response Time (RT)}: Response time is calculated by adding IPT and GET. 
+	\item \textbf{Deadline (DL)}: Deadline of a task or an event is the amount of time a task should be completed in order to meet the real-time requirements of the task. Therefore, a reliable task should not miss its deadline even in the worst case. The deadline misses (DLM) can be used as an evaluation measure for the reliability of a task. It can also be used as a measure to compare the quality of software distributions.
+	\item \textbf{Delta Time (DT)}: Dela time of a task can be defined as the time between two gross executions of a task.
+	\item \textbf{Slack Time (ST)}: Slack time is the amount of time a task is at a sleeping state. In other words, slack time is the time between the last response of a task and the start of the pending state. Slack time describes the flexibility of a task, thus it is the time that CPU can be used for other tasks. Therefore, if the slack time is higher in a task, that task is considered to be less stressed. Slack time is also a measure that is used in the evaluation of different software distributions. 
+	\item \textbf{Period (PER)}: Period is one of the most basic properties of a task which defines how long it takes before a task repeats its instructions. The period is defined for tasks that are periodic.
+\end{itemize}
+
+Although the given timeline depicts the overall timing properties of task scheduling, due to tracing and instrumentation limitations not all of the information is extractable from the system trace. IPT, for example is a timing property which is not present in the tracer that is used in the work that this report explains. Therefore, IPT is neglected due to the aforementioned limitations and the fact that it is bound to be a rather small amount of time. Analysis of scheduling is implemented in this work and one should see the details in the Section \ref{onlinetiming}. Furthermore, how information of what kind of evaluation metrics are used are further explained in the Section \ref{opt}.
+
+\section{Optimization and Evaluation of Parallel Software} \label{opt}
+Not every parallel program are beneficial. In order for a parallel program to be useful, it should be optimized. There are four main reasons a parallel software should be optimized. Each optimization process focus on a goal and the design and development of the software should be carried out by considering that goal. The optimization goals (depicted in the Figure \ref{fig:optimization2})  may involve achieving lowest energy consumption, achieving lowest computation time, achieving highest resource utilization, and achieving highest reliability. The way these goals are achieved are also shown in the Figure \ref{fig:optimization2}. 
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/optimization2.png}
+	\caption{Optimization goals of parallel software}
+	\label{fig:optimization2}
+\end{figure}
+
+On a higher level, there is always a question whether the optimized software is really optimal or not. There are strategies with which this could be measured and true optimization could be achieved \cite{lukas1}. Those strategies involve Linear Programming, Integer Linear Programming, Mixed Integer Linear Programming, Quadratic Programming, Evolutionary Algorithm, and Simulated Annealing \cite{lukas1}. Although it is useful to know such strategies exist, the optimization of an parallel software on a higher abstraction layer will not be a part of this work. In this work, the lower level goals and the measures to evaluate whether the goals are achieved will be discussed.
+
+As mentioned before, one of the most basic evaluation techniques to determine if a parallelized software is beneficial as opposed to a sequential software is to check the run-times of the processes. If the parallel run-time (overall execution time) of a program is less than the sequential run-time, then it could be said that parallelization helped in terms of computation time. The following list involved the parallelization evaluation techniques that will be a part of this work in evaluating software distributions.
+\begin{itemize}
+	\item ${ST\textsubscript{avg}}$: Average slack time of all traceable processes
+	\item ${DLM}$: Percentage of deadlines missed
+	\item ${U\textsubscript{0-p}}$: Percentage of utilization of each core
+	\item ${S\textsubscript{p}(n)}$: \textbf{Speedup} value which quantitatively compares the execution time of a sequential implementation with that of the parallel implementation \cite{springerparallel}. Speedup is calculated as follows \cite{springerparallel}, given that ${T\textsuperscript{*}(n)}$ is the sequential run-time and ${T\textsubscript{p}(n)}$ is the parallel run-time:
+	\begin{equation}\label{speedupeqn}
+	S\textsubscript{p}(n)=\frac{T\textsuperscript{*}(n)}{T\textsubscript{p}(n)}
+	\end{equation}
+	It can be said that bigger the speedup value, better the parallel utilization.
+\end{itemize}
+The aforementioned evaluation techniques mostly can be used to evaluate load balancing (${U\textsubscript{0-p}}$), reliability (${DLM}$) and resource utilization (${ST\textsubscript{avg}}$, ${U\textsubscript{0-p}}$ and ${S\textsubscript{p}(n)}$). 
+%optimization info
+%parallel time < sequential time  %speedup
+%metrics slack time etc..
+%load balancing
+
+
 \section{New Trends in Parallelization} %Real-time Parallelization Trends in Practice: RTOS, MPI, OpenMP, Pthreads, Java Threads and AUTOSAR... 
+%embedded computing > single board computers >Raspberry Pi ve neden real-time olamaz..
+New practical trends evolve in software development every passing day. Since today's applications are more complex than it was before, software development field is bound to grow. Surely, with the applications getting more complex, more advanced development environments, platforms, and frameworks are needed. Software engineers has been trying to fulfill this need especially since embedded, internet-based and cyber-physical systems became more common. Since some systems require hard real-time requirements, real-time development has became an important field of study.
+
+One of the most common concurrent programming libraries involve \textbf{Real-time Operating Systems (RTOS)}.  Real-time operating systems are the operating systems or more practically frameworks that are developed for microcontrollers or processors. They provide real-time computing to the viable hardware in order to be used in the applications that requires deterministic and predictive task behavior \cite{rtos1}. RTOS' implement kernel components which are scheduler, thread managers, message queues, semaphores, mutexes, timers, and memory pools \cite{rtos1}. In the basic sense, an RTOS can be used to schedule applications, send and receive messages, get and release semaphores, and handle events in order to manage a parallel system \cite{rtos1}. RTOS' are common for both single-core and multi-core processors. With a single-core processor, many threads are scheduled within a single core whereas in a multi-core processor, the mapping features can also be used. As an example, FreeRTOS (also currently called as CMSIS OS) is a common RTOS library that is developed for ARM Cortex M series microcontrollers (such as STM32F407 or STM32F103C8T6). Another examples involve OSEK/VDX,  RTX, FreeOSEK etc.
+
+As introduced, multi-processor and multi-core solutions are also common. For distributed systems, MPI C/C++ library uses compiler directives to parallelize applications. Furthermore, OpenMP is a C/C++ library that is developed for systems with shared memory architecture and it can be used for another solution to parallelize applications and manage message passing. 
+
+Since thread-level parallelism, i.e. using virtual cores to manage many-tasked, advanced, featured systems, is very common since the multi-core processors became common, almost every programming language has their own separate libraries or frameworks to support multi-threaded software development. A few examples could be given: Java's Thread library, C/C++ POSIX Thread (Pthread) library, and Python's threading library. One could also make use of the mapping features of Linux kernel to develop parallel applications on the process level.
+
+The tendency of applications into the embedded computing domain also made the concurrent programming popular in single board computers such as Pandaboard, Beagleboard, Beaglebone, and Raspberry Pi etc. Since a single board computer can run many programming languages and they provide multiple cores nowadays, one can easily use the aforementioned libraries and frameworks to develop concurrent applications on them. However, although parallelization is not an issue, some single board computers are not very beneficial in terms of real-time computing. Therefore, the real-time capabilities of some single board computers must be discussed.
+
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -115,13 +218,14 @@ Some text will come here! \\
 	\caption{AUTOSAR Architecture \cite{autosararch}}
 	\label{fig:autosararch}
 \end{figure}
-Some text will come here! \\
-\section{Theoretical Objectives and Related Work}
+
+\section{Theoretical Objectives, Practical Objectives and Related Work}
 Some text will come here! \\
 
 %%% CHAPTER Parallel Programming ------------------end----
 %%% CHAPTER APP4MC Development Environment ----------begin----
 \chapter{APP4MC Development Environment} \label{app4mcchapter}
+%partitioning den de bahsedilecek ESSP falan..
 \section{Introduction} %Motivation, why is it useful...
 \section{Features} %include schema
 \section{Modeling}
@@ -288,7 +392,7 @@ Raspberry Pi is conventionally programmed through Linux shell which is programme
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
-	\includegraphics[scale=0.26]{content/images/linuxeditors.png}
+	\includegraphics[width=\textwidth]{content/images/linuxeditors.png}
 	\caption{Linux Shell running Emacs}
 	\label{fig:linuxeditors}
 \end{figure}
@@ -1197,7 +1301,7 @@ As an example, for a 4-core system such as Raspberry Pi 3, core affinity can be 
 \lstinputlisting[caption=CorePlacer.sh script to pin a process to a core using its name, label=lst_CorePlacer, style=bash]{content/listings/lst_CorePlacer.txt}
 
 In A4MCAR or any other equally or more complex applications, to manage the distribution process for every process might be time consuming. In order to overcome this issue, a file format has been designed which is then read by the main processing task (Touchscreen display process). Touchscreen process, when the distribution is selected, reads from this file format coredef\texttt{\_}list.a4p and makes core placements accordingly. An example coredef\texttt{\_}list.a4p is shown by the Listing \ref{lst_coredeflista4p}. It can be seen in the listing that task names and cores are listed by each line.
-\newpage\lstinputlisting[caption=File format that contains overall
+\lstinputlisting[caption=File format that contains overall
  process pinning information, label=lst_coredeflista4p, style=bash]{content/listings/lst_coredeflista4p.txt}
 
 Reading the file and making the changes required is done by using the function given with the Listing \ref{lst_pythondistribute}. In this listing, file is opened (Line 3), each line is parsed (Lines 4 through 6), then the allocation is done by using a function called AllocateProcessWithCore (Line 8) that executes a taskset command with arguments as name of the process and core. Remembering back the Figure \ref{fig:rpicomponents}, one can better understand how this procedure is located amongst other processes in the high-level module.
@@ -1245,7 +1349,7 @@ CPUFreq governor of a Linux system can be changed at any given moment by using t
 \subsection{Online Timing Analysis Features in A4MCAR}
 %whats implemented before in every app, and whats implemented in the touchscreen display (main process)
 %Including formulas for avg.slack time and so on...
-As explained in the Section \ref{onlinetiming} in detail, every created application in A4MCAR's high-level module are built on a template that is able to log timing information. The timing logs are read in the Touchscreen display process, which we refer to as the main processing task in the high level module. The role of main processing task in the online timing analysis is depicted in the Figure \ref{fig:a4mcartiming}. As seen, main processing task is responsible to calculate performance indicators such as average slack time ${ST\textsubscript{avg}}$ and overall deadline misses percentage ${DLM}$ using the timing values from other processes in seconds such as execution time ${ET}$, slack time ${ST}$, deadline ${DL}$ and period ${PER}$ (Recall from Section \ref{schedulingsection}). Main processing task can also read from core usage logs and inform users about the low-level module core utilization percentages ${LU\textsubscript{0-15}}$ and high-level module core utilization percentages ${HU\textsubscript{0-3}}$. Furthermore, number of active cores ${N\textsubscript{cores}}$, number of active and traceable processes ${N\textsubscript{process}}$, number of missed deadlines ${N\textsubscript{missed}}$ and clock frequency ${f\textsubscript{CPU}}$ are also shown by reading the respective logs.
+As explained in the Section \ref{onlinetiming} in detail, every created application in A4MCAR's high-level module are built on a template that is able to log timing information. The timing logs are read in the Touchscreen display process, which we refer to as the main processing task in the high level module. The role of main processing task in the online timing analysis is depicted in the Figure \ref{fig:a4mcartiming}. As seen, main processing task is responsible to calculate performance indicators such as average slack time ${ST\textsubscript{avg}}$ and overall deadline misses percentage ${DLM}$ using the timing values from other processes in seconds such as execution time ${ET}$, slack time ${ST}$, deadline ${DL}$ and period ${PER}$ (Recall from Section \ref{schedulingsection}). Main processing task can also read from core usage logs and inform users about the low-level module core utilization percentages ${LU\textsubscript{0-15}}$ and high-level module core utilization percentages ${HU\textsubscript{0-3}}$. Furthermore, number of active cores ${N\textsubscript{cores}}$, number of active and traceable processes ${N\textsubscript{process}}$, number of missed deadlines ${N\textsubscript{missed}}$ and clock frequency ${f\textsubscript{CPU}}$ are also shown by reading the respective logs. 
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -1306,6 +1410,8 @@ Some text \\
 \subsection{Evaluation of Different Distributions}
 Some text \\
 \subsection{Results from APP4MC Distribution}
+Some text \\
+\subsection{Results Regarding Energy Consumption}
 Some text \\
 %Distributed system and embedded systems characteristics.... scalability etc.. real-time system.
 %Also description of our systems characteristics.

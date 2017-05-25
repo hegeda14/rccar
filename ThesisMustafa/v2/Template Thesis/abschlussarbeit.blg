@@ -125,12 +125,14 @@ Warning--entry type for "gateworks" isn't style-file defined
 --line 536 of file bib/bib.bib
 Warning--entry type for "interconnection" isn't style-file defined
 --line 543 of file bib/bib.bib
+Warning--entry type for "rtos1" isn't style-file defined
+--line 571 of file bib/bib.bib
 Warning--empty note in dsm
 Warning--empty note in lukas1
+Warning--empty note in multicore1
 Warning--empty booktitle in tileref
 Warning--empty note in sysml
 Warning--empty note in apacheguide
 Warning--empty note in dynamicanalysisphd
 Warning--empty booktitle in dvfspaper
-Warning--empty note in multicore1
-(There were 70 warnings)
+(There were 71 warnings)
