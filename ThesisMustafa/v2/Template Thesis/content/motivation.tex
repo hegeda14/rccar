@@ -43,11 +43,11 @@ Automotive or any vehicle control related field tends to require very complex sy
 
 The demonstrator, A4MCAR, is equipped with a distributed architecture that involves a 16-core multi-core microcontroller development board (XMOS xCore-200 eXplorerKIT) and a 4-core single board computer (Raspberry Pi 3) with Linux OS. The software nodes with respect to their priorities and low-level and high-level purposes are distributed along those hardware modules. The demonstrator is not only designed to match up the capabilities of a real vehicle but also involves parts that are related to semi-autonomous driving and control. It can handle wifi and bluetooth connection requests and drive itself accordingly over a web interface or an Android application. Since A4MCAR is specifically designed as a demonstrator, it has the capability to monitor and visualize core utilization and display it using a touchscreen or its web interface. Furthermore, it is equipped with four ultrasonic sensors and a camera with image processing embedded to support its autonomous driving and web interface streaming functions.
 
-In this paper, the development and parallelism evaluation of the demonstrator A4MCAR as well as the studies on parallel computing and tracing options are discussed. Obtained results are used in APP4MC for better development. The remainder of this paper is organized as follows: Chapter \ref{multicorechapter} is dedicated to Multi-core programming while Chapter \ref{app4mcchapter} is dedicated to explaining APP4MC environment. In Chapter \ref{designchapter}, the demonstrator design and implementation will be explained. After Chapter \ref{designchapter}, Chapter \ref{informationchapter} and Chapter \ref{evaluationchapter} will involve Information Tracing and System Modeling with APP4MC and Effective Parallelism Evaluation, respectively. The paper will be concluded with Chapter \ref{conclusionchapter}.
+In this paper, the development and parallelism evaluation of the demonstrator A4MCAR as well as the studies on parallel computing and tracing options are discussed. Obtained results are used in APP4MC for better development. The remainder of this paper is organized as follows: Chapter \ref{multicorechapter} is dedicated to background information on concurrent programming and design with APP4MC while Chapter \ref{designchapter} is dedicated to explaining demonstrator design and implementation. After Chapter \ref{designchapter}, Chapter \ref{informationchapter} and Chapter \ref{evaluationchapter} will involve Information Tracing and System Management and Results, respectively. The paper will be concluded with Chapter \ref{conclusionchapter}.
 
 %%% CHAPTER Introduction ------------------------------end----
 %%% CHAPTER Multi-core Programming ------------------begin----
-\chapter{Theoretical Background on Concurrent Programming} \label{multicorechapter} 
+\chapter{Background Information on Concurrent Programming and APP4MC} \label{multicorechapter} 
 \section{Introduction to Parallelism} %why parallelism, Distributed and parallel architectures, Multicore processors
 High performance systems, scientific computations and multi-feature systems require well-established parallel software. The physical problems in our world are being solved by computer systems by making use of simulations which are becoming more and more complex as the years go by. Graphical applications which involve big data operations also make use of the benefits of the parallel software. As the data that is involved in such systems increase, required amount of computing power, memory space and the need for accuracy and speed also increases. In the last decades, the improvements in high performance computing and the advancements in processors are significantly developed which allows the development of efficient parallel software in systems. Today, computers with multicore processors allow every desktop to be eligible for parallel software development. In \cite{springerparallel}, it is pointed out that the technological developments regarding multi-core processors and parallel computing was forced by physical reasons. As increasing the clock speed causes overheating which gets harder and harder to get rid of as the clock speed increases, the developments regarding multi-core technology allowed more computations to be achieved without having to increase the clock frequency \cite{springerparallel}.
 
@@ -103,9 +103,9 @@ Basic concepts in parallel programming should be understood to develop efficient
 
 Finding a useful scheduling and mapping strategy is key to parallel design. The practices involve keeping the \textbf{parallel execution time} of a task lower than the \textbf{sequential execution time}, keeping the load balanced through the cores of the system and keeping the communication overhead low. According to the book \cite{springerparallel}, for the quantitative evaluation of parallel programs, measures such as \textbf{speedup} and \textbf{efficiency} can be used which are the measures that compare parallel execution time of a software with its sequential execution time.
 
-\section{Design Techniques in Parallelization} 
+\section{Design Techniques in Parallelization} \label{designtech}
 %co-design stages etc. % involves co-design stages (parallelization of programs pp.108) partitioning mapping egc. + Also advantages and disadvantages 
-Parallelization can be defines as the transformation of a sequential program into a parallel program \cite{springerparallel}. Although different sources (\cite{springerparallel} and \cite{lukas1}) generalize the design techniques in parallelization differently, one can go through the following challenges in order to develop parallel software through parallelization (also illustrated with the Figure \ref{fig:designtechniques}):
+Parallelization can be defined as the transformation of a sequential program into a parallel program \cite{springerparallel}. Although different sources (\cite{springerparallel} and \cite{lukas1}) generalize the design techniques in parallelization differently, one can go through the following challenges in order to develop parallel software through parallelization (also illustrated with the Figure \ref{fig:designtechniques}):
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -116,7 +116,7 @@ Parallelization can be defines as the transformation of a sequential program int
 
 \begin{itemize}
 	\item \textbf{Partitioning of the problem:}
-	The application that addresses a problem should be decomposed into smaller pieces, i.e. runnables that are considered to be smallest pieces in a software. In some cases, this decomposition can be at task-level. A runnable or a small task can be a function that involves a single read or write access to a register or a shared variable, peripheral communication, or simple computations. In theory, a runnable is only executed in a single core and it has dependencies to another runnables to address a problem. The goal of this decomposition (according to \cite{springerparallel}) is to make sure that all the applications are fine-grained enough that the load balancing can be achieved. In other words, runnables have small granularity and with the help of this the generated tasks can be distributed more efficiently.
+	The application that addresses a problem should be decomposed into smaller pieces, i.e. runnables that are considered to be smallest pieces in a software. In some cases, this decomposition can be at task-level. A runnable or a small task can be a function that involves a single read or write access to a register or a shared variable, peripheral communication, or simple computations. In theory, a runnable is only executed in a single core and it has no dependencies to another runnables. The goal of this decomposition (according to \cite{springerparallel}) is to make sure that all the applications are fine-grained enough that the load balancing can be achieved. In other words, runnables have small granularity and with the help of this the generated tasks can be distributed more efficiently.
 	\item \textbf{Analysis of the communication:} Communication between runnables and tasks should be considered before the task generation. Communication is a big constraint in a parallel software, therefore all the dependencies between runnables or tasks, in terms of which runnable reads or writes data, and what is the communication cost (granularity) should be analyzed.
 	\item \textbf{Agglomeration of executables to tasks (Task Generation):}
 	In the task generation phase, runnables and some tasks are grouped together in order to constitute tasks. This is done with the consideration of dependent runnables in terms of communication. Also, the grouping should consider functional unification as well it should consider load balancing. 
@@ -169,17 +169,17 @@ To understand how tasks are scheduled, one must carefully study the task graph g
 Although the given timeline depicts the overall timing properties of task scheduling, due to tracing and instrumentation limitations not all of the information is extractable from the system trace. IPT, for example is a timing property which is not present in the tracer that is used in the work that this report explains. Therefore, IPT is neglected due to the aforementioned limitations and the fact that it is bound to be a rather small amount of time. Analysis of scheduling is implemented in this work and one should see the details in the Section \ref{onlinetiming}. Furthermore, how information of what kind of evaluation metrics are used are further explained in the Section \ref{opt}.
 
 \section{Optimization and Evaluation of Parallel Software} \label{opt}
-Not every parallel program are beneficial. In order for a parallel program to be useful, it should be optimized. There are four main reasons a parallel software should be optimized. Each optimization process focus on a goal and the design and development of the software should be carried out by considering that goal. The optimization goals (depicted in the Figure \ref{fig:optimization2})  may involve achieving lowest energy consumption, achieving lowest computation time, achieving highest resource utilization, and achieving highest reliability. The way these goals are achieved are also shown in the Figure \ref{fig:optimization2}. 
+Not every parallel program are beneficial. In order for a parallel program to be useful, it should be optimized. There are four main reasons a parallel software should be optimized. Each optimization process focus on a goal and the design and development of the software should be carried out by considering that goal. The optimization goals (depicted in the Figure \ref{fig:optimization2})  may involve achieving lowest energy consumption, achieving lowest computation time, achieving highest resource utilization, and achieving highest reliability. The way these goals are achieved are also shown in the Figure \ref{fig:optimization2}. It should be added that maximizing or minimizing any software property in a positive way can be generally seen as an optimization problem that deals with e.g. safety, security, distributivity, or scalability demands among others. However, the figure given shows the basic software optimization goals that are related to this work.
 
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
 	\includegraphics[width=\textwidth]{content/images/optimization2.png}
-	\caption{Optimization goals of parallel software}
+	\caption{Optimization goals of parallel software \cite{lukas1}}
 	\label{fig:optimization2}
 \end{figure}
 
-On a higher level, there is always a question whether the optimized software is really optimal or not. There are strategies with which this could be measured and true optimization could be achieved \cite{lukas1}. Those strategies involve Linear Programming, Integer Linear Programming, Mixed Integer Linear Programming, Quadratic Programming, Evolutionary Algorithm, and Simulated Annealing \cite{lukas1}. Although it is useful to know such strategies exist, the optimization of an parallel software on a higher abstraction layer will not be a part of this work. In this work, the lower level goals and the measures to evaluate whether the goals are achieved will be discussed.
+On a higher level, there is always a question whether the optimized software is really optimal or not. There are strategies with which this could be measured and true optimization could be achieved \cite{lukas1}. Those strategies involve Linear Programming, Integer Linear Programming, Mixed Integer Linear Programming, Quadratic Programming, Evolutionary Algorithm, and Simulated Annealing \cite{lukas1}. Although it is useful to know such strategies exist, the optimization of an parallel software on a higher abstraction layer will not be a part of this work. 
 
 As mentioned before, one of the most basic evaluation techniques to determine if a parallelized software is beneficial as opposed to a sequential software is to check the run-times of the processes. If the parallel run-time (overall execution time) of a program is less than the sequential run-time, then it could be said that parallelization helped in terms of computation time. The following list involved the parallelization evaluation techniques that will be a part of this work in evaluating software distributions.
 \begin{itemize}
@@ -209,7 +209,18 @@ As introduced, multi-processor and multi-core solutions are also common. For dis
 
 Since thread-level parallelism, i.e. using virtual cores to manage many-tasked, advanced, featured systems, is very common since the multi-core processors became common, almost every programming language has their own separate libraries or frameworks to support multi-threaded software development. A few examples could be given: Java's Thread library, C/C++ POSIX Thread (Pthread) library, and Python's threading library. One could also make use of the mapping features of Linux kernel to develop parallel applications on the process level.
 
-The tendency of applications into the embedded computing domain also made the concurrent programming popular in single board computers such as Pandaboard, Beagleboard, Beaglebone, and Raspberry Pi etc. Since a single board computer can run many programming languages and they provide multiple cores nowadays, one can easily use the aforementioned libraries and frameworks to develop concurrent applications on them. However, although parallelization is not an issue, some single board computers are not very beneficial in terms of real-time computing. Therefore, the real-time capabilities of some single board computers must be discussed.
+The tendency of applications into the embedded computing domain also made the concurrent programming popular in single board computers such as Pandaboard, Beagleboard, Beaglebone, and Raspberry Pi etc. Since a single board computer can run many programming languages and they provide multiple cores nowadays, one can easily use the aforementioned libraries and frameworks to develop concurrent applications on them. However, although parallelization is not an issue, some single board computers are not very beneficial in terms of real-time computing. Therefore, since Raspberry Pi is used in A4MCAR due to being low-cost, real-time aspects of it should also be discussed.
+
+According to \cite{rtrpi1} and \cite{rtrpi2}, a \textbf{real-time application} can ensure guaranteed response within strict timing constraints. Real-time nature of an operating system is related to \textbf{interrupt latency}, the time to process an interrupt, and \textbf{scheduling latency}, time to start a processing task \cite{rtrpi2}. Although Raspberry Pi is a good embedded platform for most of the applications, its real-time capabilities are not satisfying in terms of the following \cite{rtrpi2}:
+\begin{itemize}
+	\item Current Linux or BSD kernels for Raspberry Pi do not support real-time.
+	\item Current Linux or BSD kernels for Raspberry Pi has a lot of overhead.
+	\item Raspberry Pi does not have a real-time clock. 
+\end{itemize}
+
+The solutions offered in \cite{rtrpi2} involves adding pulse generators or real-time clocks, building new Linux kernel without unnecessary services to remove overhead, or using real-time operating systems such as RTEMS that are ported to Raspberry Pi.
+
+Since this work targets the automotive domain, the reader would benefit from knowing what concurrency solutions are used for automotive systems. Since an embedded system in an automobile consists of many ECUs (Electronic Control Units) with multi-processor capabilities, it is crucial to handle synchronization and communication between the distributed and parallel nodes. A software solution that is used by many automotive OEMs and part suppliers can be given as the \textbf{AUTOSAR} \cite{autosararch}. AUTOSAR is a framework that is used for microcontrollers or processors which has services on many abstraction layers to deal with memory, communication, I/O operations. A real-time runtime environment (RTE) deals with scheduling (OSEK scheduler), events, timers and semaphores apart from the application. AUTOSAR architecture, therefore, intends to provide modular applications that only communicate using hardware and software ports with other micro-controllers and other embedded ECUs. The hierarchical representation of AUTOSAR architecture can be seen in the Figure \ref{fig:autosararch}.
 
 \begin{figure}[!ht]
 	\centering
@@ -219,17 +230,64 @@ The tendency of applications into the embedded computing domain also made the co
 	\label{fig:autosararch}
 \end{figure}
 
-\section{Theoretical Objectives, Practical Objectives and Related Work}
+\section{Parallel Design using Eclipse APP4MC} \label{app4mcchapter}
+As introduced in the Introduction chapter, this work uses Eclipse APP4MC development tool for software parallelization. \textbf{APP4MC (Application Platform Project for MultiCore)} \cite{ICPDSSE} \cite{app4mcweb} is an Eclipse-based project that aims to achieve an open, consistent, expandable tool platform for embedded software engineering \cite{app4mchelp}. APP4MC targets multi-core and many-core platforms, while the main focus is the optimization of embedded multi-core systems \cite{app4mchelp}. Due to its focus, APP4MC is partnered with many automotive OEMs and part suppliers that deal with embedded software engineering.  Furthermore, it supports interoperability and extensibility and unifies data exchange in cross-organizational projects \cite{app4mcweb}. Additionaly, since APP4MC uses Eclipse platform to its purposes, the development environment has a complete open-source nature under Eclipse Public License (EPL) \cite{epl}. 
+
+%xxxx
+Eclipse APP4MC platform editor window can be seen in the Figure \ref{fig:app4mcenv} \cite{app4mchelp}. In the figure, Explorer window is used for finding models, performing operations such as partitioning, task generation, mapping, and model migration. The tree editor shows the hierarchical structure of the selected AMALTHEA model, whereas the Element Properties window is used for editing the properties of AMALTHEA model elements selected in the Tree Editor \cite{app4mchelp}.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/app4mcenv.png}
+	\caption{Eclipse APP4MC platform Editor Window \cite{app4mchelp}}
+	\label{fig:app4mcenv}
+\end{figure}
+
+
+APP4MC is a project that has a lot of synergies with its predecessor AMALTHEA4public \cite{amalthea4publicweb} project. APP4MC uses AMALTHEA models, which are XML models that describe software components and hardware platforms. Main operation of APP4MC involves modeling the system by creating AMALTHEA models and performing partitioning, mapping, optimization on parallel programs \cite{ICPDSSE}. APP4MC also has the ability to trace simulate parallel programs. Basic ingredients for an AMALTHEA model is illustrated in the Figure \ref{fig:app4mcmodel} \cite{app4mcweb}. It is seen that AMALTHEA model can contain software decisions, costs, constraints, as well it can contain hardware platform information \cite{app4mcweb}. More information on modeling will be discussed later in this section.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/app4mcmodel.png}
+	\caption{AMALTHEA Model for APP4MC \cite{app4mcweb}}
+	\label{fig:app4mcmodel}
+\end{figure}
+
+An illustration of how parallel software can be designed for embedded multi-core platforms are given in the Figure \ref{fig:app4mcdesign}. Studying the illustration given in the Figure \ref{fig:app4mcdesign} in combination with the parallel design techniques that were given in the Section \ref{designtech}, the following remarks can be made regarding the design procedure with APP4MC platform:
+\begin{itemize}
+	\item \textbf{Modeling:} Design of a parallel software starts with modeling in APP4MC. An AMALTHEA model is constructed that involves three seperate models: (1)- hardware model, (2)-software model, (3)-constraints model. In the hardware model, each distributed ECU is modeled in a hierarchical  manner. Hardware model involves information such as number of processor cores, system clock frequency for processors, and memory details. In the software model, runnables are modeled. Runnables are found with the help of binary analysis tools and by using the decomposition technique mentioned in the Section \ref{designtech}. Each runnable are modeled by making use of information such as granularity (number of instructions) and label accesses (memory read-write). In the early development stages, model contains a rough model of the software, but the model is constantly improved by using the Tracing functionality of the APP4MC as well it can be improved by using several other tracing software.
+	\item \textbf{Partitioning:} Partitioning stage in APP4MC-aided parallel design corresponds to identification of initial tasks. After an initial AMALTHEA model is constructed, the one can perform partitioning in APP4MC by simply selecting the model and pressing the "Perform Partitioning" button. At this stage, APP4MC will analyze the runnables and runnable label accesses in order to suggest how tasks should look like for a balanced parallel distribution. APP4MC uses two partitioning algorithms that are ESSP (Earliest Start Schedule Partitioning) (performed by default) and CPP (Critical Path Partitioning) in order to find the partitions of the system. ESSP and CPP algorithms are based on the Graph Theory \cite{graphtheory} which is commonly used in hardware and software co-design. Partitioning algorithms are used for analysis of the granularity and communication costs of individual runnables and create best possible parallelized partitions.
+	\item \textbf{Task Generation:} Initial tasks (partitions) are finalized by pressing "Generate Tasks" button. By making use of the dependencies between partitions and by grouping them, APP4MC generates a model that contains the desired amount of tasks with the help of "Task Generation" phase. 
+	\item \textbf{Mapping (with Simulation and Optimization):} As known, mapping is the stage of placing the software distributions (tasks, processes, threads) into the processors. By making use of the hardware capabilities and using optimization strategies (such as Integer Linear Programming), APP4MC is able to find a mapping model of the system. The utilization details of the simulations will be seen at the end of the mapping stage.
+	\item \textbf{Code Generation:} Since APP4MC provides model-based development, code generation features for C language are available. If desired, APP4MC generates tasks that are written in C language by using the AMALTHEA system model.
+	\item \textbf{Tracing:} By making use of binary tracing, AMALTHEA trace model can be observed and can be re-used to update the system model.
+\end{itemize}
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/app4mcdesign.png}
+	\caption{Illustration of how parallel software are designed using APP4MC platform \cite{amalthea4publicweb}}
+	\label{fig:app4mcdesign}
+\end{figure}
+%final remarks, objectives, usefulness, ve...
+%model and results will be discussed in the results section.
+APP4MC promises beneficial set of tools for embedded parallel software development. However, the demonstration of its features is needed for further improvement. Therefore, in this work APP4MC is used for system parallelization for A4MCAR, a demonstrator RC-Car. Further sections will involve design, modeling, and evaluation of software distributions for this demonstrator.
+
+%arayuz - once de bahsedilebilir...
+
+%partitioning den de bahsedilecek ESSP falan..
+%optimization algoritmasindan da bahsedilecek ILP...
+%Introduction} %Motivation, why is it useful...
+%Features} %include schema
+%Modeling}
+
+%Theoretical Objectives, Practical Objectives and 
+\section{Related Work}
 Some text will come here! \\
 
-%%% CHAPTER Parallel Programming ------------------end----
-%%% CHAPTER APP4MC Development Environment ----------begin----
-\chapter{APP4MC Development Environment} \label{app4mcchapter}
-%partitioning den de bahsedilecek ESSP falan..
-\section{Introduction} %Motivation, why is it useful...
-\section{Features} %include schema
-\section{Modeling}
-%%% CHAPTER APP4MC Development Environment ------------end----
 %%% CHAPTER A4MCAR ----------------------------------begin----
 \chapter{Distributed Multi-core Demonstrator (A4MCAR) Design and Implementation} \label{designchapter}
 \section{System Overview}
@@ -1460,11 +1518,10 @@ Some text \\
 %time.timeshould be used instead of time.clock()
 
 %x DVFS Dynamic Voltage and Frequency Scaling
+%About APPSTACLE Project
 
 
-%%% CHAPTER Effective Parallelism Evaluation --------end----
 %%% CHAPTER Conclusion ----------------------------begin----
-\chapter{About APPSTACLE Project}
 \chapter{Conclusion} \label{conclusionchapter}
 %Contributions overall
 %Conclusions and results

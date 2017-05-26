@@ -42,8 +42,28 @@ https://www.gliwa.com/downloads/timing%20poster.pdf.
 \bibitem{rtos1}
 http://rtos.com/pdfs/what\texttt{\_}is\texttt{\_}an\texttt{\_}rtos\texttt{\_}and\texttt{\_}why\texttt{\_}use\texttt{\_}one\texttt{\_}embedded.com\texttt{\_}.pdf.
 
+\bibitem{rtrpi1}
+https://stackoverflow.com/questions/22241264/what-makes-a-kernel-os-real-time?rq=1.
+
+\bibitem{rtrpi2}
+https://www.socallinuxexpo.org/sites/default/files/presentations/steven\texttt{\_}doran\texttt{\_}scale\texttt{\_}13x.pdf.
+
 \bibitem{autosararch}
 https://hpi.de/fileadmin/user\texttt{\_}upload/fachgebiete/giese/ausarbeitungen\texttt{\_}autosar0809/\\software\texttt{\_}architecture\texttt{\_}warschofsky.pdf.
+
+\bibitem{app4mcweb}
+https://www.eclipse.org/app4mc/.
+
+\bibitem{app4mchelp}
+https://www.eclipse.org/app4mc/help/app4mc-0.8.0/index.html.
+
+\bibitem{epl}
+https://www.eclipse.org/legal/epl-v10.html.
+
+\bibitem{graphtheory}
+Robin~J. Wilson.
+\newblock {\em Introduction to Graph Theory: Fourth Edition}.
+\newblock Prentice Hall, 1996.
 
 \bibitem{xmoskitweb}
 https://www.xmos.com/support/boards?product=18230.
