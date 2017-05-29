@@ -1432,44 +1432,424 @@ In Chapter \ref{evaluationchapter}, the evaluation of distributions and results 
 
 %%% CHAPTER Information Tracing and System Modeling --------end----
 %%% CHAPTER Effective Parallelism Evaluation --------begin----
-\chapter{Effective Parallelism Evaluation}\label{evaluationchapter}
+\chapter{Evaluation and Results}\label{evaluationchapter}
+\section{System Limitations} %hw-sw limitations, xmos hw & xta tracing limitations, overall tracing limitations, perf limitations, granularity limitations due to process-based distribution, image processing has significantly more load,
 Some text \\
-\section{Low-Level Module Parallelism} %in RCCAR
+\section{Modeling the A4MCAR using APP4MC}
 Some text \\
-\subsection{System Model}
-Some text \\
-\subsection{Efficiency Model}
-Some text \\
-\subsection{Evaluation of Different Distributions}
+\section{Evaluation of Different Distributions}
 Some text \\
 %Give Everything in a table, which core mapped, period, execution time rougly, cpu core usage roughly.
 %Also use data from TraceCompass
 
 \begin{table}[h!]
-	\begin{tabular}{|l|l|l|}
+	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		Name & Title & Year \\
+		\textbf{Process Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
 		\hline
 		\hline
-		Philip K. Dick & Minority Report & 1956 \\
+		Web Server &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		Core Recorder &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		Ethernet Client &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		VNC Server &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		TouchscreenDisplay &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		ImageProcess &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		CycleWaster25\texttt{\_}1 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		CycleWaster25\texttt{\_}2 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		CycleWaster25\texttt{\_}3 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		CycleWaster25\texttt{\_}4 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		CycleWaster25\texttt{\_}5 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
+		\hline
+		\hline
+		CycleWaster100 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1\\
 		\hline
 	\end{tabular}
-	\caption{Einfache Tabelle}
-	\label{properties_coremonitoring}
+	\caption{Distribution-1 details in High-level Module}
+	\label{tbl_distr1_hlm}
 \end{table}
-\subsection{Results from APP4MC Distribution}
+
+\begin{table}[h!]
+	\begin{tabular}{|l|l|l|l|l|l|}
+		\hline
+		\textbf{Task Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} & \textbf{Tile} \\
+		\hline
+		\hline
+		EthernetServer.TimerEvent &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		EthernetServer.ShareCoreUsage0 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		EthernetServer.ShareCoreUsage1 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		EthernetServer.xtcp\texttt{\_}event &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		ControlLightSystem.ST\texttt{\_}Timer &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		ControlLightSystem.TH\texttt{\_}Timer &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		ControlLightSystem.ShareState &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		Bluetooth.UART\texttt{\_}RXDataReady &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		Bluetooth.SendCmdEvent &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		Bluetooth.TimerEvent &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		MotorController.ShareSteering &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		MotorController.TimerEvent &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		ReadSonarSensors &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		DriveTBLE02S.ShareDistance &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		DriveTBLE02S.ShareDirection &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		DriveTBLE02S.ShareSpeed &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		DriveTBLE02S.TimerEvent &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		output\texttt{\_}gpio &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		input\texttt{\_}gpio &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		i2c\texttt{\_}master &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		uart\texttt{\_}rx &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		uart\texttt{\_}tx &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		xtcp &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		MonitorCores0 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		\hline
+		MonitorCores1 &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		1\\
+		\hline
+		\hline
+		smi &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		1\\
+		\hline
+		\hline
+		rgmii\texttt{\_}ethernet\texttt{\_}mac &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		1\\
+		\hline
+		\hline
+		ar8035\texttt{\_}phy\texttt{\_}driver &
+		235000 & 
+		Periodic 1.4s & 
+		Manual &
+		1 &
+		1\\
+		\hline
+	\end{tabular}
+	\caption{Distribution-1 details in Low-level Module}
+	\label{tbl_distr1_llm}
+\end{table}
+
+\begin{table}[h!]
+	\begin{tabular}{|l|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Device} & \textbf{f\textsubscript{clk}} & \textbf{Distribution} & \textbf{GET} & \textbf{ST\textsubscript{avg}} & \textbf{S\textsubscript{p}(n)} & \textbf{U\textsubscript{0-3} (\%)} &  \textbf{I\textsubscript{DD}} \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		Distribution-1 &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		Distribution-2 &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		Distribution-3 &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+	\end{tabular}
+	\caption{Distributions compared in High-level module}
+	\label{tbl_hlcomparison}
+\end{table}
+
+\begin{table}[h!]
+	\begin{tabular}{|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Device} & \textbf{f\textsubscript{clk}} & \textbf{Distribution} & \textbf{GET} & \textbf{ST\textsubscript{avg}} &  \textbf{U\textsubscript{0-3} (\%)} &  \textbf{I\textsubscript{DD}} \\
+		\hline
+		\hline
+		LLM &
+		500MHz &
+		Distribution-1 &
+		0.005s &
+		0.1232s &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		LLM &
+		500MHz &
+		Distribution-2 &
+		0.005s &
+		0.1232s &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		LLM &
+		500MHz &
+		Distribution-3 &
+		0.005s &
+		0.1232s &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+	\end{tabular}
+	\caption{Distributions compared in Low-level module}
+	\label{tbl_llcomparison}
+\end{table}
+
+\section{Power Measurements}
 Some text \\
-\section{High-Level Module Parallelism}
-Some text \\
-\subsection{System Model}
-Some text \\
-\subsection{Efficiency Model}
-Some text \\
-\subsection{Evaluation of Different Distributions}
-Some text \\
-\subsection{Results from APP4MC Distribution}
-Some text \\
-\subsection{Results Regarding Energy Consumption}
+\section{Results}
 Some text \\
 %Distributed system and embedded systems characteristics.... scalability etc.. real-time system.
 %Also description of our systems characteristics.
