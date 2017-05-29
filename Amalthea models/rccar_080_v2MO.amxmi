@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<am:Amalthea xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:am="http://app4mc.eclipse.org/amalthea/0.8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <commonElements>
+    <tags name="ASIL_A" tagType="Safety"/>
+    <tags name="ASIL_B" tagType="Safety"/>
+    <tags name="ASIL_C" tagType="Safety"/>
+    <tags name="ASIL_D" tagType="Safety"/>
+  </commonElements>
+  <swModel>
+    <runnables name="Task_MonitorCoresInATile_0" tags="ASIL_C?type=Tag" activation="periodic_1000ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="245"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile0_0?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_MonitorCoresInATile_1" tags="ASIL_C?type=Tag" activation="periodic_1000ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="245"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile1_0?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_ReadSonarSensors" tags="ASIL_D?type=Tag" activation="periodic_200ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="519"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="sensorsval_0?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="device_addr?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="buf_n?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="send_stop_bit?type=Label" access="write"/>
+    </runnables>
+    <runnables name="output_gpio.output" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="44"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="p_txd?type=Label" access="write"/>
+    </runnables>
+    <runnables name="input_gpio_1bit_with_events.input" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsDeviation">
+          <deviation>
+            <lowerBound xsi:type="am:LongObject" value="7"/>
+            <upperBound xsi:type="am:LongObject" value="15"/>
+            <distribution xsi:type="am:GaussDistribution"/>
+          </deviation>
+        </default>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="p_rxd?type=Label" access="write"/>
+    </runnables>
+    <runnables name="i2c_master" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsDeviation">
+          <deviation>
+            <lowerBound xsi:type="am:LongObject" value="572"/>
+            <upperBound xsi:type="am:LongObject" value="1188"/>
+            <distribution xsi:type="am:GaussDistribution"/>
+          </deviation>
+        </default>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="device_addr?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="buf_n?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="send_stop_bit?type=Label" access="read"/>
+    </runnables>
+    <runnables name="uart_rx" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="448"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="p_rxd?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="uart_rx_c?type=Label" access="write"/>
+    </runnables>
+    <runnables name="uart_tx" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="71"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="p_txd?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="uart_tx_c?type=Label" access="write"/>
+    </runnables>
+    <runnables name="xtcp" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="2000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="c_xtcp_a?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="packet?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="packet_n?type=Label" access="write"/>
+    </runnables>
+    <runnables name="rgmii_ethernet_mac" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="4000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="packet?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="packet_n?type=Label" access="read"/>
+    </runnables>
+    <runnables name="ar8035_phy_driver.case0poll" tags="ASIL_D?type=Tag" activation="periodic_1000ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="75"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="phy_address?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="reg_address?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="smi_val?type=Label" access="write"/>
+    </runnables>
+    <runnables name="smi" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsDeviation">
+          <deviation>
+            <lowerBound xsi:type="am:LongObject" value="133"/>
+            <upperBound xsi:type="am:LongObject" value="225"/>
+            <distribution xsi:type="am:GaussDistribution"/>
+          </deviation>
+        </default>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="smi_val?type=Label" access="read"/>
+    </runnables>
+    <runnables name="T_TouchscreenDisplay" activation="P_200ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="1130000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_EthernetApp" activation="P_10ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="120000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_CoreReader" activation="P_3s?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="125000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_MJPGStreamer" activation="P_3s?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="20000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_TightVNC" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="10000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Cyclewaster25_1" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="519000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Apache" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="250000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Cyclewaster25_2" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="519000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Cyclewaster25_3" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="519000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Cyclewaster25_4" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="519000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Cyclewaster25_5" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="519000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Cyclewaster25_100" activation="P_0.5s?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="519000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_ImageProcessing" activation="P_0.5s?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="33834586"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="Task_DriveTBLE02S_MotorController.control_interface.ShareDirectionValue" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="50"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="directionval_0?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="directionval_1?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_DriveTBLE02S_MotorController.control_interface.ShareSpeedValue" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="50"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="speedval_0?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="speedval_1?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_DriveTBLE02S_MotorController.sensors_interface.ShareDistanceSensorValues" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="50"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="sensorsval_0?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="sensorsval_1?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_DriveTBLE02S_MotorController.TimerEvent" tags="ASIL_D?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsDeviation">
+          <deviation>
+            <lowerBound xsi:type="am:LongObject" value="39"/>
+            <upperBound xsi:type="am:LongObject" value="1001"/>
+          </deviation>
+        </default>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="sensorsval_1?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="directionval_1?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="speedval_1?type=Label" access="read"/>
+    </runnables>
+    <runnables name="Task_ControlLightSystem.p_ST_PWM_Timer_Event" tags="ASIL_D?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsDeviation">
+          <deviation>
+            <lowerBound xsi:type="am:LongObject" value="39"/>
+            <upperBound xsi:type="am:LongObject" value="1001"/>
+            <distribution xsi:type="am:GaussDistribution"/>
+          </deviation>
+        </default>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="on_period_ST?type=Label" access="read"/>
+    </runnables>
+    <runnables name="Task_ControlLightSystem.p_TH_PWM_Timer_Event" tags="ASIL_D?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsDeviation">
+          <deviation>
+            <lowerBound xsi:type="am:LongObject" value="39"/>
+            <upperBound xsi:type="am:LongObject" value="1001"/>
+            <distribution xsi:type="am:GaussDistribution"/>
+          </deviation>
+        </default>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="on_period_TH?type=Label" access="read"/>
+    </runnables>
+    <runnables name="Task_ControlLightSystem.ShareLightSystemState" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="50"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="lightstate_0?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="on_period_ST?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="on_period_TH?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_EthernetAppTCPServer.core_stats_interface_tile0.ShareCoreUsage" tags="ASIL_C?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="50"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile0_0?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile0_1?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_EthernetAppTCPServer.core_stats_interface_tile1.ShareCoreUsage" tags="ASIL_C?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="50"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile1_0?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile1_1?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_EthernetAppTCPServer.TimerEvent" tags="ASIL_C?type=Tag" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="1000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile0_1?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile1_1?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="tx_buffer?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_EthernetAppTCPServer.xtcp_event" tags="ASIL_C?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="100"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="tx_buffer?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="c_xtcp_a?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="cmd_length?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="override_command?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_GetRemoteCommandsViaBluetooth.SendCmdEvent" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsDeviation">
+          <deviation>
+            <lowerBound xsi:type="am:LongObject" value="48"/>
+            <upperBound xsi:type="am:LongObject" value="127"/>
+            <distribution xsi:type="am:GaussDistribution"/>
+          </deviation>
+        </default>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="cmd_length?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="cmd_length_1?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="override_command?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="ethoverridecmd_1?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_GetRemoteCommandsViaBluetooth.TimerEvent" tags="ASIL_D?type=Tag" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="1000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="cmd_length_1?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="uart_rx_c_1?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="ethoverridecmd_1?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="lightstate_0?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="speedval_0?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="directionval_0?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="speedval_0?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_GetRemoteCommandsViaBluetooth.UART_RXDataReady" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsDeviation">
+          <deviation>
+            <lowerBound xsi:type="am:LongObject" value="34"/>
+            <upperBound xsi:type="am:LongObject" value="1017"/>
+            <distribution xsi:type="am:GaussDistribution"/>
+          </deviation>
+        </default>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="uart_rx_c?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="uart_rx_c_1?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="uart_tx_c?type=Label" access="read"/>
+    </runnables>
+    <runnables name="Task_SteeringServo_MotorController.steering_interface.ShareSteeringValue" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="30"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="steeringval_0?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="steeringval_1?type=Label" access="write"/>
+    </runnables>
+    <runnables name="Task_SteeringServo_MotorController.TimerEvent" tags="ASIL_D?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsDeviation">
+          <deviation>
+            <lowerBound xsi:type="am:LongObject" value="44"/>
+            <upperBound xsi:type="am:LongObject" value="987"/>
+            <distribution xsi:type="am:GaussDistribution"/>
+          </deviation>
+        </default>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="steeringval_1?type=Label" access="read"/>
+    </runnables>
+    <labels name="coreusage_tile0_0" constant="false" bVolatile="false">
+      <size value="64" unit="bit"/>
+    </labels>
+    <labels name="coreusage_tile0_1" constant="false" bVolatile="false">
+      <size value="64" unit="bit"/>
+    </labels>
+    <labels name="coreusage_tile1_0" constant="false" bVolatile="false">
+      <size value="64" unit="bit"/>
+    </labels>
+    <labels name="coreusage_tile1_1" constant="false" bVolatile="false">
+      <size value="64" unit="bit"/>
+    </labels>
+    <labels name="tx_buffer" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+      <dataType xsi:type="am:Array" numberElements="1400"/>
+    </labels>
+    <labels name="override_command" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+      <dataType xsi:type="am:Array" numberElements="10"/>
+    </labels>
+    <labels name="cmd_length" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="uart_rx_c" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="p_rxd" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="p_txd" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="ethoverridecmd_1" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+      <dataType xsi:type="am:Array" numberElements="10"/>
+    </labels>
+    <labels name="cmd_length_1" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="steeringval_0" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="directionval_0" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="speedval_0" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="lightstate_0" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="on_period_ST" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="on_period_TH" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="steeringval_1" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="directionval_1" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="speedval_1" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="sensorsval_0" constant="false" bVolatile="false">
+      <size value="8" unit="bit"/>
+      <dataType xsi:type="am:Array" numberElements="4"/>
+    </labels>
+    <labels name="sensorsval_1" constant="false" bVolatile="false">
+      <size value="8" unit="bit"/>
+      <dataType xsi:type="am:Array" numberElements="4"/>
+    </labels>
+    <labels name="device_addr" constant="false" bVolatile="false">
+      <size value="8" unit="bit"/>
+    </labels>
+    <labels name="buf_n" constant="false" bVolatile="false">
+      <size value="8" unit="bit"/>
+      <dataType xsi:type="am:Array" numberElements="8"/>
+    </labels>
+    <labels name="send_stop_bit" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="c_xtcp_a" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="packet" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+      <dataType xsi:type="am:Array" numberElements="32"/>
+    </labels>
+    <labels name="packet_n" constant="false" bVolatile="false">
+      <size value="32" unit="bit"/>
+    </labels>
+    <labels name="phy_address" constant="false" bVolatile="false">
+      <size value="8" unit="bit"/>
+    </labels>
+    <labels name="reg_address" constant="false" bVolatile="false">
+      <size value="8" unit="bit"/>
+    </labels>
+    <labels name="smi_val" constant="false" bVolatile="false">
+      <size value="16" unit="bit"/>
+    </labels>
+    <labels name="uart_rx_c_1" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="uart_tx_c" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <activations xsi:type="am:PeriodicActivation" name="periodic_0ms_20ms">
+      <min value="0" unit="ms"/>
+      <max value="20" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="periodic_1000ms">
+      <min value="1000" unit="ms"/>
+      <max value="1000" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="periodic_200ms">
+      <min value="200" unit="ms"/>
+      <max value="200" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_100ms">
+      <min value="100" unit="ms"/>
+      <max value="100" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_10ms">
+      <min value="10" unit="ms"/>
+      <max value="10" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_3s">
+      <min value="3" unit="s"/>
+      <max value="3" unit="s"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_10us">
+      <min value="10" unit="us"/>
+      <max value="10" unit="us"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_100ns">
+      <min value="100" unit="ns"/>
+      <max value="100" unit="ns"/>
+    </activations>
+    <activations xsi:type="am:SporadicActivation" name="Sporadic"/>
+    <activations xsi:type="am:PeriodicActivation" name="P_1.4s">
+      <min value="1400" unit="ms"/>
+      <max value="1400" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_0.5s">
+      <min value="500" unit="ms"/>
+      <max value="500" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_200ms">
+      <min value="200" unit="ms"/>
+      <max value="200" unit="ms"/>
+    </activations>
+  </swModel>
+  <hwModel>
+    <coreTypes name="XCore-200" bitWidth="32" instructionsPerCycle="1.0"/>
+    <coreTypes name="ARM Cortex-A53" bitWidth="64" instructionsPerCycle="1.0"/>
+    <system>
+      <ecus name="XMOS">
+        <quartzes name="Q1">
+          <frequency unit="MHz" value="100.0"/>
+        </quartzes>
+        <microcontrollers name="Tile0">
+          <quartzes name="Tile0" type="DYNAMIC">
+            <frequency unit="MHz" value="100.0"/>
+          </quartzes>
+          <cores name="0" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="1" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="2" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="3" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="4" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="5" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="6" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="7" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+        </microcontrollers>
+        <microcontrollers name="Tile1">
+          <quartzes name="Tile1" type="DYNAMIC">
+            <frequency unit="MHz" value="100.0"/>
+          </quartzes>
+          <cores name="8" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="9" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="10" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="11" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="12" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="13" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="14" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="15" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+        </microcontrollers>
+      </ecus>
+      <ecus name="RPI3">
+        <microcontrollers name="ARM Cortex-A53">
+          <cores name="RPI_0" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="ClockARM0">
+              <frequency unit="GHz" value="1.2"/>
+            </quartzes>
+          </cores>
+          <cores name="RPI_1" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="ClockARM1">
+              <frequency unit="GHz" value="1.2"/>
+            </quartzes>
+          </cores>
+          <cores name="RPI_2" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="ClockARM2">
+              <frequency unit="GHz" value="1.2"/>
+            </quartzes>
+          </cores>
+          <cores name="RPI_3" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="ClockARM3">
+              <frequency unit="GHz" value="1.2"/>
+            </quartzes>
+          </cores>
+        </microcontrollers>
+      </ecus>
+    </system>
+  </hwModel>
+  <constraintsModel>
+    <affinityConstraints xsi:type="am:RunnablePairingConstraint" name="MotorController">
+      <group xsi:type="am:RunnableEntityGroup" runnables="Task_DriveTBLE02S_MotorController.control_interface.ShareDirectionValue?type=Runnable Task_DriveTBLE02S_MotorController.control_interface.ShareSpeedValue?type=Runnable Task_DriveTBLE02S_MotorController.sensors_interface.ShareDistanceSensorValues?type=Runnable Task_DriveTBLE02S_MotorController.TimerEvent?type=Runnable"/>
+    </affinityConstraints>
+    <affinityConstraints xsi:type="am:RunnablePairingConstraint" name="LightSystem">
+      <group xsi:type="am:RunnableEntityGroup" runnables="Task_ControlLightSystem.p_ST_PWM_Timer_Event?type=Runnable Task_ControlLightSystem.p_TH_PWM_Timer_Event?type=Runnable Task_ControlLightSystem.ShareLightSystemState?type=Runnable"/>
+    </affinityConstraints>
+    <affinityConstraints xsi:type="am:RunnablePairingConstraint" name="Ethernet">
+      <group xsi:type="am:RunnableEntityGroup" runnables="Task_EthernetAppTCPServer.core_stats_interface_tile0.ShareCoreUsage?type=Runnable Task_EthernetAppTCPServer.core_stats_interface_tile1.ShareCoreUsage?type=Runnable Task_EthernetAppTCPServer.TimerEvent?type=Runnable Task_EthernetAppTCPServer.xtcp_event?type=Runnable"/>
+    </affinityConstraints>
+    <affinityConstraints xsi:type="am:RunnablePairingConstraint" name="Bluetooth">
+      <group xsi:type="am:RunnableEntityGroup" runnables="Task_GetRemoteCommandsViaBluetooth.SendCmdEvent?type=Runnable Task_GetRemoteCommandsViaBluetooth.TimerEvent?type=Runnable Task_GetRemoteCommandsViaBluetooth.UART_RXDataReady?type=Runnable"/>
+    </affinityConstraints>
+    <affinityConstraints xsi:type="am:RunnablePairingConstraint" name="Steering">
+      <group xsi:type="am:RunnableEntityGroup" runnables="Task_SteeringServo_MotorController.steering_interface.ShareSteeringValue?type=Runnable Task_SteeringServo_MotorController.TimerEvent?type=Runnable"/>
+    </affinityConstraints>
+    <affinityConstraints xsi:type="am:RunnablePairingConstraint" name="Monitor_Tile0">
+      <target xsi:type="am:TargetCore" cores="0?type=Core"/>
+      <group xsi:type="am:RunnableEntityGroup" runnables="Task_MonitorCoresInATile_0?type=Runnable"/>
+    </affinityConstraints>
+    <affinityConstraints xsi:type="am:RunnablePairingConstraint" name="Monitor_Tile1">
+      <target xsi:type="am:TargetCore" cores="8?type=Core"/>
+      <group xsi:type="am:RunnableEntityGroup" runnables="Task_MonitorCoresInATile_1?type=Runnable"/>
+    </affinityConstraints>
+    <affinityConstraints xsi:type="am:RunnablePairingConstraint" name="GenericRPIBinder">
+      <target xsi:type="am:TargetCore" cores="RPI_0?type=Core RPI_1?type=Core RPI_2?type=Core RPI_3?type=Core"/>
+      <group xsi:type="am:RunnableEntityGroup" runnables="T_Apache?type=Runnable T_CoreReader?type=Runnable T_Cyclewaster25_1?type=Runnable T_Cyclewaster25_100?type=Runnable T_Cyclewaster25_2?type=Runnable T_Cyclewaster25_3?type=Runnable T_Cyclewaster25_4?type=Runnable T_Cyclewaster25_5?type=Runnable T_EthernetApp?type=Runnable T_ImageProcessing?type=Runnable T_MJPGStreamer?type=Runnable T_TightVNC?type=Runnable T_TouchscreenDisplay?type=Runnable"/>
+    </affinityConstraints>
+    <affinityConstraints xsi:type="am:RunnablePairingConstraint" name="GenericXMOSBinder">
+      <target xsi:type="am:TargetCore" cores="0?type=Core 1?type=Core 10?type=Core 11?type=Core 12?type=Core 13?type=Core 14?type=Core 15?type=Core 2?type=Core 3?type=Core 4?type=Core 5?type=Core 6?type=Core 7?type=Core 8?type=Core 9?type=Core"/>
+      <group xsi:type="am:RunnableEntityGroup" runnables="ar8035_phy_driver.case0poll?type=Runnable i2c_master?type=Runnable input_gpio_1bit_with_events.input?type=Runnable output_gpio.output?type=Runnable rgmii_ethernet_mac?type=Runnable smi?type=Runnable Task_ControlLightSystem.p_ST_PWM_Timer_Event?type=Runnable Task_ControlLightSystem.p_TH_PWM_Timer_Event?type=Runnable Task_ControlLightSystem.ShareLightSystemState?type=Runnable Task_DriveTBLE02S_MotorController.control_interface.ShareDirectionValue?type=Runnable Task_DriveTBLE02S_MotorController.control_interface.ShareSpeedValue?type=Runnable Task_DriveTBLE02S_MotorController.sensors_interface.ShareDistanceSensorValues?type=Runnable Task_DriveTBLE02S_MotorController.TimerEvent?type=Runnable Task_EthernetAppTCPServer.core_stats_interface_tile0.ShareCoreUsage?type=Runnable Task_EthernetAppTCPServer.core_stats_interface_tile1.ShareCoreUsage?type=Runnable Task_EthernetAppTCPServer.TimerEvent?type=Runnable Task_EthernetAppTCPServer.xtcp_event?type=Runnable Task_GetRemoteCommandsViaBluetooth.SendCmdEvent?type=Runnable Task_GetRemoteCommandsViaBluetooth.TimerEvent?type=Runnable Task_GetRemoteCommandsViaBluetooth.UART_RXDataReady?type=Runnable Task_MonitorCoresInATile_0?type=Runnable Task_MonitorCoresInATile_1?type=Runnable Task_ReadSonarSensors?type=Runnable Task_SteeringServo_MotorController.steering_interface.ShareSteeringValue?type=Runnable Task_SteeringServo_MotorController.TimerEvent?type=Runnable uart_rx?type=Runnable uart_tx?type=Runnable xtcp?type=Runnable"/>
+    </affinityConstraints>
+  </constraintsModel>
+</am:Amalthea>
