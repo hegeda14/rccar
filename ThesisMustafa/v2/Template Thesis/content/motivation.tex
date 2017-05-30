@@ -245,7 +245,7 @@ Eclipse APP4MC platform editor window can be seen in the Figure \ref{fig:app4mce
 \end{figure}
 
 
-APP4MC is a project that has a lot of synergies with its predecessor AMALTHEA4public \cite{amalthea4publicweb} project. APP4MC uses AMALTHEA models, which are XML models that describe software components and hardware platforms. Main operation of APP4MC involves modeling the system by creating AMALTHEA models and performing partitioning, mapping, optimization on parallel programs \cite{ICPDSSE}. APP4MC also has the ability to trace simulate parallel programs. Basic ingredients for an AMALTHEA model is illustrated in the Figure \ref{fig:app4mcmodel} \cite{app4mcweb}. It is seen that AMALTHEA model can contain software decisions, costs, constraints, as well it can contain hardware platform information \cite{app4mcweb}. More information on modeling will be discussed later in this section.
+APP4MC is a project that has a lot of synergies with its predecessor AMALTHEA4public \cite{amalthea4publicweb} project. APP4MC uses AMALTHEA models, which are XML models that describe software components and hardware platforms. Main operation of APP4MC involves modeling the system by creating AMALTHEA models and performing partitioning, mapping, optimization on parallel programs \cite{ICPDSSE}. APP4MC also has the ability to trace simulate parallel programs. Basic ingredients for an AMALTHEA model is illustrated in the Figure \ref{fig:app4mcmodel} \cite{app4mcweb}. It is seen that AMALTHEA model can contain software decisions, costs, constraints, as well it can contain hardware platform information \cite{app4mcweb}. Constraint models are used to define process groups to make sure some processes belong together. Furthermore, a target platform dependency of a process group is also modeled using constraints model. More information on modeling will be discussed later in this section.
 
 \begin{figure}[!ht]
 	\centering
@@ -1434,7 +1434,14 @@ In Chapter \ref{evaluationchapter}, the evaluation of distributions and results 
 %%% CHAPTER Effective Parallelism Evaluation --------begin----
 \chapter{Evaluation and Results}\label{evaluationchapter}
 \section{System Limitations} %hw-sw limitations, xmos hw & xta tracing limitations, overall tracing limitations, perf limitations, granularity limitations due to process-based distribution, image processing has significantly more load,
-Some text \\
+In this chapter, system modeling with APP4MC and evaluations of mapping outcomes are discussed. A4MCAR, like every embedded system does, has its limitations that are related to both hardware and software. The following list explains the limitations that affect the results of the software distribution:
+\begin{itemize}
+	\item Model Limitations:
+	\item Limitations of perf profiler:
+	\item Limitations of process-based distribution: %reverse engineering, high granularity, image processing app
+	\item Limitations of XTA:
+	\item Hardware Limitations: %Rpi clock can take only 600mhz and 1.2GHz
+\end{itemize}
 \section{Modeling the A4MCAR using APP4MC}
 Some text \\
 \section{Evaluation of Different Distributions}

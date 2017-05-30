@@ -12,7 +12,8 @@
  *    M. Ozcelikors <mozcelikors@gmail.com>
  *
  * Contributors:
- *
+ *	  This code uses https://github.com/AbdulazizAlaa/Computer-Vision-Projects/tree/master/Traffic%20Cone%20Detection repo
+ * 		as a skeleton.
  *
  * Update History:
  *
@@ -25,7 +26,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
-#include <pigpio.h>
+//#include <pigpio.h>
 
 #include <unistd.h>
 #include <string.h>
@@ -138,7 +139,7 @@ int compareOpenings(int opening_count, int opening_count_prev, int first_time_cm
 	}
 }
 
-#define CLOSEBUTTON_PIN 21
+/*#define CLOSEBUTTON_PIN 21
 void SetupGpio (void)
 {
 	gpioInitialise();
@@ -154,8 +155,7 @@ void SafeShutdownCheckGpio(void)
 		//Exit system safely
 		system("halt");
 	}
-}
-
+}*/
 
 void CreateTimingLog(char * filename)
 {
@@ -271,12 +271,6 @@ int main(int argc, char *argv[])
 		//cv::imwrite("raspicam_img.jpg", frame);
 
 		printf("Starting...\n");
-		//key = waitKey(10);
-		//cout <<(int) char(key) << endl;
-		//if(char(key) == 27){
-		//    break;
-		//}
-		// if(char(key) == 10){
 
 		frameRGB.create(frame.size(), frame.type());
 		cvtColor(frame, frameRGB, CV_BGR2RGB);
@@ -288,10 +282,10 @@ int main(int argc, char *argv[])
 
 		inRange(imgHsv, Scalar(u_h, u_s, u_v), Scalar(d_h, d_s, d_v), imgRedThresh);
 
-		//converting the original image into grayscale
+		//transforming to grayscale
 		imgGrayScale.create(frame.size(), frame.type());
 		cvtColor(frame, imgGrayScale, CV_BGR2GRAY);
-		bitwise_and(imgRedThresh, imgGrayScale, imgGrayScale);//??Degistirildi bitwise_and(imgResultingThresh, imgGrayScale, imgGrayScale);
+		bitwise_and(imgRedThresh, imgGrayScale, imgGrayScale);
 
 		// Floodfill from point (0, 0)
 		Mat im_floodfill = imgGrayScale.clone();
@@ -319,7 +313,6 @@ int main(int argc, char *argv[])
 			contPeri = arcLength(contours.at(i), true);
 			approxPolyDP(contours.at(i), approx,  0.01 * contPeri, true);
 
-			//if(approx.size()>=7 && approx.size()<=9){
 			bBox = boundingRect(approx);
 			aspectRatio = bBox.width/bBox.height;
 
@@ -327,9 +320,6 @@ int main(int argc, char *argv[])
 			convexHull(contours.at(i), tempCont);
 			hullArea = contourArea(tempCont);
 			solidity = area / hullArea;
-
-			// cout << "contour : " << approx.size() << endl;
-			// cout << bBox.width << "::" << bBox.height << "::" << solidity  << "::" << aspectRatio <<endl;
 
 			tempVecCont.clear();
 			tempVecCont.push_back(approx);
@@ -497,7 +487,7 @@ int main(int argc, char *argv[])
 
 		counter++;
 		//usleep(100*1000);
-		//Subimage almak icin
+		//To take subimage
 		//cv::Mat subImg = drawing(cv::Range(0, 100), cv::Range(0, 100));
 		//imshow("My work", subImg);
 		//----

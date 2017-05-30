@@ -98,6 +98,7 @@ _PERIOD = 0.2
 missed=0
 total=0
 slack_sum=0.0
+gross_execution_time=0.0
 
 def CreateTimingLog(filename):
 	global _START_TIME
@@ -388,6 +389,7 @@ def UpdateShowDistributionPage():
 	global total
 	global missed
 	global slack_sum
+	global gross_execution_time
         
 	global _PERIOD
 	global _PREV_SLACK_TIME
@@ -405,6 +407,10 @@ def UpdateShowDistributionPage():
 
 	#Show CPU Frequencies and CPU Count
 	font = pygame.font.SysFont("Roboto Condensed", 20)
+
+	text = font.render ("Gross Execution Time:", True, (0,0,255))
+	screen.blit(text,(50,281))
+
 	text = font.render ("Core Frequencies at:", True, (0,0,255))
 	screen.blit(text,(50,302))
 
@@ -431,10 +437,12 @@ def UpdateShowDistributionPage():
 	missed = 0
 	total = 0
 	slack_sum = 0.0
+	gross_execution_time = 0.0
 
 	# Updates for display app
 	total = total + 1
 	slack_sum = slack_sum + _PREV_SLACK_TIME
+	gross_execution_time = gross_execution_time + round(_EXECUTION_TIME,2)
 
 	if (_EXECUTION_TIME > _PERIOD):
 		missed = missed + 1
@@ -457,6 +465,7 @@ def UpdateShowDistributionPage():
 				
 				differences_list.append(float(exectime_l)) #i.e. execution time list
 				slack_sum = slack_sum + slack_l
+				gross_execution_time = gross_execution_time + round(exectime_l,2)
 				total = total + 1
 				#print int_objs
 				file_obj.close()
@@ -471,6 +480,10 @@ def UpdateShowDistributionPage():
 	#Total Deadlines Missed
 	text = font.render (str(missed), True, (0,0,0))
 	screen.blit(text, (250,323))
+
+	#Gross Execution Time
+	text = font.render (str(gross_execution_time)+"s", True, (0,0,0))
+	screen.blit(text,(240,281))
 
 	slack_avg = slack_sum / total
 	deadline_missed_percentage = int((missed*100)/total)

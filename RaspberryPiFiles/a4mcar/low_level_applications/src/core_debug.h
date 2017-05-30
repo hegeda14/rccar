@@ -11,10 +11,6 @@
  * Authors:
  *    M. Ozcelikors <mozcelikors@gmail.com>
  *
- * Contributors:
- *    Suggestions from the following XCORE thread are applied:
- *      https://www.xcore.com/viewtopic.php?f=26&t=5017
- *
  * Update History:
  *
  */

@@ -1,4 +1,5 @@
-sudo -E ./TrafficConeDetection
+sudo -E ./image_processing 
 or
-gksudo ./TrafficConeDetection
+
+gksudo ./image_processing
 Camera must be plugged for it to run

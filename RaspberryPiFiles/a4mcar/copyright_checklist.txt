@@ -1,0 +1,15 @@
+File																		Type of citation									Source
+-------------------------------------------------------------------------	-------------------------------------------------	----------------------------
+a4mcar\high_level_applications\apps\image_processing\image_processing.cpp	Used the code as skeleton, and wrote on top of it	https://github.com/AbdulazizAlaa/Computer-Vision-Projects/tree/master/Traffic%20Cone%20Detection
+
+a4mcar\web_interface\images\logo2.png										Image contains logos of used technologies
+
+a4mcar\low_level_applications\src\ar8035_phy_driver.xc						Used the code as skeleton, and wrote on top of it	https://github.com/Pajeh/XMOS_gigabit_tcp_reflect
+a4mcar\low_level_applications\src\ethernet_app.xc
+a4mcar\low_level_applications\src\ethernet_app.h
+a4mcar\low_level_applications\src\ethernet_config.h
+
+a4mcar\low_level_applications\src\core_monitoring.xc						Code snippet recommended at a forum used			https://www.xcore.com/viewtopic.php?f=26&t=5017
+
+a4mcar\low_level_applications\src\string_itoa.xc							C's 'itoa' function implementation used.			Source unknown, (took it from my old libraries)
+a4mcar\low_level_applications\src\string_itoa.h
