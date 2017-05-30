@@ -5,21 +5,23 @@
     <tags name="ASIL_B" tagType="Safety"/>
     <tags name="ASIL_C" tagType="Safety"/>
     <tags name="ASIL_D" tagType="Safety"/>
+    <tags name="LLM_Task" tagType="Process Allocation"/>
+    <tags name="HLM_Task" tagType="Process Allocation"/>
   </commonElements>
   <swModel>
-    <runnables name="Task_MonitorCoresInATile_0" tags="ASIL_C?type=Tag" activation="periodic_1000ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="Task_MonitorCoresInATile_0" tags="LLM_Task?type=Tag" activation="periodic_1000ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="245"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile0_0?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_MonitorCoresInATile_1" tags="ASIL_C?type=Tag" activation="periodic_1000ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="Task_MonitorCoresInATile_1" tags="LLM_Task?type=Tag" activation="periodic_1000ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="245"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile1_0?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_ReadSonarSensors" tags="ASIL_D?type=Tag" activation="periodic_200ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="Task_ReadSonarSensors" tags="LLM_Task?type=Tag" activation="periodic_200ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="519"/>
       </runnableItems>
@@ -28,13 +30,13 @@
       <runnableItems xsi:type="am:LabelAccess" data="buf_n?type=Label" access="write"/>
       <runnableItems xsi:type="am:LabelAccess" data="send_stop_bit?type=Label" access="write"/>
     </runnables>
-    <runnables name="output_gpio.output" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="output_gpio.output" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="44"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="p_txd?type=Label" access="write"/>
     </runnables>
-    <runnables name="input_gpio_1bit_with_events.input" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="input_gpio_1bit_with_events.input" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsDeviation">
           <deviation>
@@ -46,7 +48,7 @@
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="p_rxd?type=Label" access="write"/>
     </runnables>
-    <runnables name="i2c_master" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="i2c_master" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsDeviation">
           <deviation>
@@ -60,21 +62,21 @@
       <runnableItems xsi:type="am:LabelAccess" data="buf_n?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="send_stop_bit?type=Label" access="read"/>
     </runnables>
-    <runnables name="uart_rx" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="uart_rx" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="448"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="p_rxd?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="uart_rx_c?type=Label" access="write"/>
     </runnables>
-    <runnables name="uart_tx" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="uart_tx" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="71"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="p_txd?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="uart_tx_c?type=Label" access="write"/>
     </runnables>
-    <runnables name="xtcp" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="xtcp" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="2000"/>
       </runnableItems>
@@ -82,14 +84,14 @@
       <runnableItems xsi:type="am:LabelAccess" data="packet?type=Label" access="write"/>
       <runnableItems xsi:type="am:LabelAccess" data="packet_n?type=Label" access="write"/>
     </runnables>
-    <runnables name="rgmii_ethernet_mac" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="rgmii_ethernet_mac" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="4000"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="packet?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="packet_n?type=Label" access="read"/>
     </runnables>
-    <runnables name="ar8035_phy_driver.case0poll" tags="ASIL_D?type=Tag" activation="periodic_1000ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="ar8035_phy_driver.case0poll" tags="LLM_Task?type=Tag" activation="periodic_1000ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="75"/>
       </runnableItems>
@@ -97,7 +99,7 @@
       <runnableItems xsi:type="am:LabelAccess" data="reg_address?type=Label" access="write"/>
       <runnableItems xsi:type="am:LabelAccess" data="smi_val?type=Label" access="write"/>
     </runnables>
-    <runnables name="smi" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="smi" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsDeviation">
           <deviation>
@@ -109,93 +111,93 @@
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="smi_val?type=Label" access="read"/>
     </runnables>
-    <runnables name="T_TouchscreenDisplay" activation="P_200ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_TouchscreenDisplay" tags="HLM_Task?type=Tag" activation="P_200ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="1130000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_EthernetApp" activation="P_10ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_EthernetApp" tags="HLM_Task?type=Tag" activation="P_10ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="120000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_CoreReader" activation="P_3s?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_CoreReader" tags="HLM_Task?type=Tag" activation="P_3s?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="125000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_MJPGStreamer" activation="P_3s?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_MJPGStreamer" tags="HLM_Task?type=Tag" activation="P_3s?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="20000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_TightVNC" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="T_TightVNC" tags="HLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="10000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_Cyclewaster25_1" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_Cyclewaster25_1" tags="HLM_Task?type=Tag" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="519000000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_Apache" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="T_Apache" tags="HLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="250000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_Cyclewaster25_2" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_Cyclewaster25_2" tags="HLM_Task?type=Tag" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="519000000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_Cyclewaster25_3" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_Cyclewaster25_3" tags="HLM_Task?type=Tag" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="519000000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_Cyclewaster25_4" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_Cyclewaster25_4" tags="HLM_Task?type=Tag" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="519000000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_Cyclewaster25_5" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_Cyclewaster25_5" tags="HLM_Task?type=Tag" activation="P_1.4s?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="519000000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_Cyclewaster25_100" activation="P_0.5s?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_Cyclewaster25_100" tags="HLM_Task?type=Tag" activation="P_0.5s?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="519000000"/>
       </runnableItems>
     </runnables>
-    <runnables name="T_ImageProcessing" activation="P_0.5s?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="T_ImageProcessing" tags="HLM_Task?type=Tag" activation="P_0.5s?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="33834586"/>
       </runnableItems>
     </runnables>
-    <runnables name="Task_DriveTBLE02S_MotorController.control_interface.ShareDirectionValue" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_DriveTBLE02S_MotorController.control_interface.ShareDirectionValue" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="50"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="directionval_0?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="directionval_1?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_DriveTBLE02S_MotorController.control_interface.ShareSpeedValue" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_DriveTBLE02S_MotorController.control_interface.ShareSpeedValue" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="50"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="speedval_0?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="speedval_1?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_DriveTBLE02S_MotorController.sensors_interface.ShareDistanceSensorValues" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_DriveTBLE02S_MotorController.sensors_interface.ShareDistanceSensorValues" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="50"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="sensorsval_0?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="sensorsval_1?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_DriveTBLE02S_MotorController.TimerEvent" tags="ASIL_D?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="Task_DriveTBLE02S_MotorController.TimerEvent" tags="LLM_Task?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsDeviation">
           <deviation>
@@ -208,7 +210,7 @@
       <runnableItems xsi:type="am:LabelAccess" data="directionval_1?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="speedval_1?type=Label" access="read"/>
     </runnables>
-    <runnables name="Task_ControlLightSystem.p_ST_PWM_Timer_Event" tags="ASIL_D?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="Task_ControlLightSystem.p_ST_PWM_Timer_Event" tags="LLM_Task?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsDeviation">
           <deviation>
@@ -220,7 +222,7 @@
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="on_period_ST?type=Label" access="read"/>
     </runnables>
-    <runnables name="Task_ControlLightSystem.p_TH_PWM_Timer_Event" tags="ASIL_D?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="Task_ControlLightSystem.p_TH_PWM_Timer_Event" tags="LLM_Task?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsDeviation">
           <deviation>
@@ -232,7 +234,7 @@
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="on_period_TH?type=Label" access="read"/>
     </runnables>
-    <runnables name="Task_ControlLightSystem.ShareLightSystemState" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_ControlLightSystem.ShareLightSystemState" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="50"/>
       </runnableItems>
@@ -240,21 +242,21 @@
       <runnableItems xsi:type="am:LabelAccess" data="on_period_ST?type=Label" access="write"/>
       <runnableItems xsi:type="am:LabelAccess" data="on_period_TH?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_EthernetAppTCPServer.core_stats_interface_tile0.ShareCoreUsage" tags="ASIL_C?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_EthernetAppTCPServer.core_stats_interface_tile0.ShareCoreUsage" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="50"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile0_0?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile0_1?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_EthernetAppTCPServer.core_stats_interface_tile1.ShareCoreUsage" tags="ASIL_C?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_EthernetAppTCPServer.core_stats_interface_tile1.ShareCoreUsage" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="50"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile1_0?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile1_1?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_EthernetAppTCPServer.TimerEvent" tags="ASIL_C?type=Tag" callback="false" service="false">
+    <runnables name="Task_EthernetAppTCPServer.TimerEvent" tags="LLM_Task?type=Tag" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="1000"/>
       </runnableItems>
@@ -262,7 +264,7 @@
       <runnableItems xsi:type="am:LabelAccess" data="coreusage_tile1_1?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="tx_buffer?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_EthernetAppTCPServer.xtcp_event" tags="ASIL_C?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_EthernetAppTCPServer.xtcp_event" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="100"/>
       </runnableItems>
@@ -271,7 +273,7 @@
       <runnableItems xsi:type="am:LabelAccess" data="cmd_length?type=Label" access="write"/>
       <runnableItems xsi:type="am:LabelAccess" data="override_command?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_GetRemoteCommandsViaBluetooth.SendCmdEvent" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_GetRemoteCommandsViaBluetooth.SendCmdEvent" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsDeviation">
           <deviation>
@@ -286,7 +288,7 @@
       <runnableItems xsi:type="am:LabelAccess" data="override_command?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="ethoverridecmd_1?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_GetRemoteCommandsViaBluetooth.TimerEvent" tags="ASIL_D?type=Tag" callback="false" service="false">
+    <runnables name="Task_GetRemoteCommandsViaBluetooth.TimerEvent" tags="LLM_Task?type=Tag" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="1000"/>
       </runnableItems>
@@ -298,7 +300,7 @@
       <runnableItems xsi:type="am:LabelAccess" data="directionval_0?type=Label" access="write"/>
       <runnableItems xsi:type="am:LabelAccess" data="speedval_0?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_GetRemoteCommandsViaBluetooth.UART_RXDataReady" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_GetRemoteCommandsViaBluetooth.UART_RXDataReady" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsDeviation">
           <deviation>
@@ -312,14 +314,14 @@
       <runnableItems xsi:type="am:LabelAccess" data="uart_rx_c_1?type=Label" access="write"/>
       <runnableItems xsi:type="am:LabelAccess" data="uart_tx_c?type=Label" access="read"/>
     </runnables>
-    <runnables name="Task_SteeringServo_MotorController.steering_interface.ShareSteeringValue" tags="ASIL_D?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
+    <runnables name="Task_SteeringServo_MotorController.steering_interface.ShareSteeringValue" tags="LLM_Task?type=Tag" activation="Sporadic?type=SporadicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsConstant" value="30"/>
       </runnableItems>
       <runnableItems xsi:type="am:LabelAccess" data="steeringval_0?type=Label" access="read"/>
       <runnableItems xsi:type="am:LabelAccess" data="steeringval_1?type=Label" access="write"/>
     </runnables>
-    <runnables name="Task_SteeringServo_MotorController.TimerEvent" tags="ASIL_D?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
+    <runnables name="Task_SteeringServo_MotorController.TimerEvent" tags="LLM_Task?type=Tag" activation="periodic_0ms_20ms?type=PeriodicActivation" callback="false" service="false">
       <runnableItems xsi:type="am:RunnableInstructions">
         <default xsi:type="am:InstructionsDeviation">
           <deviation>
