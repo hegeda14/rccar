@@ -868,7 +868,7 @@ Based on the documentation of the mjpg-streamer, a script using Bash language is
 	\item Port:              8081
 \end{itemize}
 \subsubsection{Core Utilization Display}
-Core utilization display is shown at the bottom of the Figure \ref{fig:web}. It is responsible for gathering all the core usage information from the files, displaying a graph showing percentages, and calculating average core utilizations. These operations are handled within the server page core\texttt{\_}usage\texttt{\_}read\texttt{\_}rpi.php as shown in the Figure \ref{fig:weboverallbehavior}. This server page is embedded into the main web interface which is jqueryControl.php.
+Core utilization display is shown at the bottom of the Figure \ref{fig:web}. It is responsible for gathering all the core usage information from the files, displaying a graph showing percentages, and calculating average core utilizations. These operations are handled within the server page utilizationGraph.php as shown in the Figure \ref{fig:weboverallbehavior}. This server page is embedded into the main web interface which is jqueryControl.php.
 
 For the efforts regarding creating a graph, a third party script library called 'jqPlot' \cite{jqplot} which runs within the jQuery framework is used.  The jqPlot offers various functions in order to create various plots such as bar graphs, line graphs, pie charts and 3D plots. In order to embed the plots into the web page, AJAX has been used.
 
@@ -1335,7 +1335,7 @@ To evaluate performance indicators and observe load balance, tracing the high-le
 		sudo LD_LIBRARY_PATH=/opt/libbabeltrace/lib perf data convert --to-ctf=./ctf
 	\end{lstlisting}
 	
-	Once the trace which is in CTF format is generated, it can be imported into the Eclipse TraceCompass. An example trace imported into Eclipse TraceCompass platform is given in the Figure \ref{fig:tracecompass}. Using the figure, the main windows in the Eclipse TraceCompass can be discussed. TraceCompass enables users to look at their system using several views such as call graphs, threads, context switches, cpu usage, critical path, I/O, control flow, and resources which can be seen as (1) in the figure. Control flow window (2) shows each process state with respect to time including the transitions along all the processes. System-wide CPU usage and individual processes' CPU usages are shown in the CPU Usage window which is shown as (3) in the figure. Therefore, if the system has 4 cores, the CPU usage of up to 400 percent could be observed. Resources window (shown as (4)) depicts how processes are distributed amongst the existing cores with respect to time. Therefore, the load balancing could be roughly observed from this view by simply looking at each of the cores. Moreover, using the Resources window, one can measure and estime the timing properties of the schedule of the system. Finally, the trace event list (shown as (5)) can be used to see exact events that occurred in a specific time by selecting a timeframe from other windows.
+	Once the trace which is in CTF format is generated, it can be imported into the Eclipse TraceCompass. An example trace imported into Eclipse TraceCompass platform is given in the Figure \ref{fig:tracecompass}. Using the figure, the main windows in the Eclipse TraceCompass can be discussed. TraceCompass enables users to look at their system using several views such as call graphs, threads, context switches, cpu usage, critical path, I/O, control flow, and resources which can be seen as (1) in the figure. Control flow window (2) shows each process state with respect to time including the transitions along all the processes. System-wide CPU usage and individual processes' CPU usages are shown in the CPU Usage window which is shown as (3) in the figure. Therefore, if the system has 4 cores, the CPU usage of up to 400 percent could be observed. Resources window (shown as (4)) depicts how processes are distributed amongst the existing cores with respect to time. Therefore, the load balancing could be roughly observed from this view by simply looking at each of the cores. Moreover, using the Resources window, one can measure and estimate the timing properties of the schedule of the system. Finally, the trace event list (shown as (5)) can be used to see exact events that occurred in a specific time by selecting a time frame from other windows.
 	\begin{figure}[!ht]
 		\centering
 		\captionsetup{justification=centering}
@@ -1343,6 +1343,10 @@ To evaluate performance indicators and observe load balance, tracing the high-le
 		\caption{Eclipse TraceCompass running on Windows}
 		\label{fig:tracecompass}
 	\end{figure}
+
+	To ease the process of having to trace using perf, convert the trace, and take a look at the process ID list to interpret the trace, a Linux shell (bash) script has been created in order to get necessary outputs from tracing processes and threads automatically. The Listing \ref{lst_tracebash} shows the content of the script. It is seen in the script that command line arguments are taken (Lines 1 to 4) to make the process more modular. The Lines 11 to 20 is dedicated to executing the commands that are discussed above by making use of the command line arguments. By stating the trace name, tracing period, and perf module installation location, one can use this script to generate traces easier. %explain some lines..
+	\lstinputlisting[caption=Script to generate traces automatically, label=lst_tracebash, style=python]{content/listings/lst_tracebash.txt}
+	
 	%Explain tracecompass windows, add bubbles to the gui figure...	
 \end{itemize}
 
@@ -1437,15 +1441,40 @@ In Chapter \ref{evaluationchapter}, the evaluation of distributions and results 
 In this chapter, system modeling with APP4MC and evaluations of mapping outcomes are discussed. A4MCAR, like every embedded system does, has its limitations that are related to both hardware and software. The following list explains the limitations that affect the results of the software distribution:
 \begin{itemize}
 	\item Model Limitations:
+	\item Sporadic Activations: %non-determinism & randomness
 	\item Limitations of perf profiler:
 	\item Limitations of process-based distribution: %reverse engineering, high granularity, image processing app
 	\item Limitations of XTA:
 	\item Hardware Limitations: %Rpi clock can take only 600mhz and 1.2GHz
 \end{itemize}
 \section{Modeling the A4MCAR using APP4MC}
-Some text \\
+In the Section \ref{app4mcchapter}, motivations and design techniques of using APP4MC has been introduced. Recall from the aforementioned section that user has to start designing the parallel application by making use of the modeling functionality of APP4MC. In order to evaluate how APP4MC performs using A4MCAR, the design starts by identifying several attributes that are related to software and hardware. With the help of the modeling functionality of the APP4MC, A4MCAR's hardware details, software details, constraints, and common elements (such as tags) are described. It is important to mention that APP4MC can be used to describe several types of models such as Components Model, OS Model, Mapping Model, Stimuli Model, and Event Model. However, depicted model in this work explains the minimalistic model that can be used to make use of APP4MC's partitioning and mapping features. The models contain XML-based hierarchy with elements having their childs and attributes. With this hierarchy, containment of the elements are described easily. The following list briefly explains the initially created model, which is also shown in the AMALTHEA Contents tree window given by the Figure \ref{fig:overallmodel}:
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[scale=0.8]{content/images/overallmodel.png}
+	\caption{AMALTHEA Contents tree window for the created model for A4MCAR}
+	\label{fig:overallmodel}
+\end{figure}
+\begin{itemize}
+	\item \textbf{Hardware Model:} Hardware model consists of two processor types: \textit{xCORE-200} for low-level module (XMOS board), and \textit{ARM Cortex-A53} for high-level module (RPI3 board). The \textit{HW System} element contains ECUs (\textit{XMOS} and \textit{RPI3}) with each of ECUs having their respective microcontrollers defined under them. In A4MCAR, \textit{XMOS} ECU has two tiles defined as microcontrollers (\textit{Tile0} and \textit{Tile1}) , whereas \textit{RPI3} ECU has only one microcontroller element which is \textit{CortexA53}. Each microcontroller element has their respective clocks and individual cores defined under them. That is, \textit{Tile0} has 8 cores, \textit{Tile1} has 8 cores, and \textit{CortexA53} has 4 cores. Furthermore, default clock setup (when energy consumption is not a concern) requires \textit{Tile0} and \textit{Tile1} to have 500MHz system frequency in the model whereas \textit{CortexA53} is defined as 1.2GHz. The defined hardware model is used in APP4MC when mapping of software processes to the hardware cores are performed.
+	\item \textbf{Software Model:} Software model defines the pairwise relationship between runnables, activation conditions of runnables, labels (memory read and write accesses), events and interrupts. A minimalistic software model in APP4MC should have runnables, labels and activations defined which are shown in the Figure \ref{fig:overallmodel}. 
+	
+	Recall that in the chapter \ref{informationchapter}, the information tracing of multi-tasked systems are discussed. By making use of the aforementioned techniques, runnables, labels, and activations should be defined. Even in a distributed architecture such as A4MCAR, all the runnables from each ECU are listed under the \textit{Runnables} element. Runnables usually are the independent smallest functional parts of a task. However, in A4MCAR some processes, events, and tasks are modeled as runnables due to the ease of modeling. In A4MCAR, an initial analysis led up to a model with 41 runnables. Each runnable listed under \textit{Runnables} element has their granularity (i.e number of instructions) defined. Furthermore, labels are used to define shared variables and inter-process communication. After labels are defined (either by defining bit size or memory size), each runnable are configured depending on their read and write accesses to labels. Finally, activations of each runnable are listed under \textit{Activations} element. Activation can either be periodic or sporadic (random).
+	
+	After the minimalistic software model is ready, performing partitioning and tracing features will improve the existing model. As an example, \textit{Process Prototypes} will be automatically generated after the partitioning.
+	\item \textbf{Constraints Model:} Contraints model define target core dependencies and pairings in the generated partitions. In A4MCAR's model, runnables that functionally belong together are paired using constraints model. As an example, in the Figure \ref{fig:overallmodel} it is seen that tasks related to e.g. \textit{Bluetooth}, \textit{Ethernet} and \textit{Steering} are bound together. Thus, the created partitions and tasks would consider this runnable binding. Furthermore, target core requirements for \textit{Monitor\texttt{\_}Tile0} task and \textit{Monitor\texttt{\_}Tile1} task are defined using constraints model, since \textit{Monitor\texttt{\_}Tile0} task should be on one of the \textit{Tile0} cores and \textit{Monitor\texttt{\_}Tile1} task should be on one of the \textit{Tile1} cores. Finally, generic core specifications are defined (\textit{GenericRPIBinder} and \textit{GenericXMOSBinder}) . Since A4MCAR has a distributed architecture, it is important to make sure that low-level module tasks are mapped to low-level module cores and high-level module tasks are mapped to high-level cores by specifying those binders.
+	As a general note, the information that is specified in the constraints model is used in the pre-partitioning, partitioning, and mapping phases.
+	\item \textbf{Common Elements:} In A4MCAR, tags are used from common elements model. Tags define binders for runnables that are considered in the pre-partitioning phase. Thus, pre-partitioning phase would generate partitions that have the same tags. In A4MCAR, by making use of two tags which are \textit{LLM\texttt{\_}Task} and \textit{HLM\texttt{\_}Task}, it is made sure that generated partitions and tasks will not have runnables that run on the other module. That is, low-level module runnables and high-level module runnables are isolated.   
+\end{itemize}
+After the modeling, partitioning (pre-partitioning is performed automatically before partitioning), task generation, and mapping is performed by using APP4MC to obtain the distribution results.
+%then what happens? partitioning mapping etc.
+%maybe add window from Partitioning console window and Mapping console window
+% basit model interfaceler + rpi dekiler..
+
 \section{Evaluation of Different Distributions}
 Some text \\
+%maybe add window from Partitioning console window and Mapping console window
 %Give Everything in a table, which core mapped, period, execution time rougly, cpu core usage roughly.
 %Also use data from TraceCompass
 
@@ -1907,10 +1936,15 @@ Some text \\
 %x DVFS Dynamic Voltage and Frequency Scaling
 %About APPSTACLE Project
 
+%prepartitioning asamasi icin feedbackler sayesinde app4mc gelistirildi. tag'lere dayali gruplama getirildi.
+
+%give APPSTACLE intorudction, figures, and improvements as appendix.
 
 %%% CHAPTER Conclusion ----------------------------begin----
 \chapter{Conclusion} \label{conclusionchapter}
 %Contributions overall
+%one contribution -> prepartitioning asamasi icin feedbackler sayesinde app4mc gelistirildi. tag'lere dayali gruplama getirildi.
+
 %Conclusions and results
 %Future improvements
 
