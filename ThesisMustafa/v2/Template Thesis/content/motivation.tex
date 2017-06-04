@@ -633,7 +633,7 @@ The pseudo version of the proximity sensing task is given in Listing \ref{lst_pr
 
 Proximity sensing task and how it data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with proximity sensing task having the function name 'Task\texttt{\_}ReadSonarSensors'.
 
-\newpage\lstinputlisting[caption=Proximity sensing task, label=lst_proximitysensing, style=xc]{content/listings/lst_proximitysensing.txt}
+\lstinputlisting[caption=Proximity sensing task, label=lst_proximitysensing, style=xc]{content/listings/lst_proximitysensing.txt}
 
 \subsection{Lighting System}
 The light system of the A4MCAR is a light module from the RC-Car parts producer Modelcraft that is driven with PWM. The module uses two PWM channels: one for light adjustment due to steering input, one for light adjustment due to acceleration input. Similarly to all the other PWM control tasks, PWM signal generator template that is given in \ref{lst_tble02task} has been used in order to generate correct pulse widths for the light system. The task that is given in \ref{lst_tble02task} has been adjusted to have two timer events for each PWM channel as opposed to one timer event. Desired pulse widths for several modes are contained in the header file of the light system task and these modes have been selected given the steering, angle, and gear inputs from the Bluetooth communication task. The functions regarding pulse width time generation for different light system modes have also been created. 
@@ -764,7 +764,6 @@ To help with the utilization assessment and visualization purposes, a core readi
 
 With the help of a simple function the core usage information is easily retrieved. The function is given in the Listing \ref{lst_psutil}. It should be noted that 'd' in the listing is an array with 4 elements, each of which indicating core usage for individual cores.
 
-\newpage
 \lstinputlisting[caption=Psutil function to retrieve core utilization information , label=lst_psutil, style=python]{content/listings/lst_psutil.txt}
 
 \subsection{Ethernet (TCP) Client Implementation}
@@ -891,17 +890,17 @@ In order to fully utilize the developed parallel software on the high-level modu
 			Process Name & File Name & Period & Core Utilization \\
 			\hline
 			\hline
-			CycleWaster25\texttt{\_}1 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}1.py & 1.4 second & 25 percent \\
+			CycleWaster25\texttt{\_}1 & dummy\texttt{\_}load25\texttt{\_}1.py & 1.4 second & 25 percent \\
 			\hline
-			CycleWaster25\texttt{\_}2 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}2.py & 1.4 second &  25 percent \\
+			CycleWaster25\texttt{\_}2 & dummy\texttt{\_}load25\texttt{\_}2.py & 1.4 second &  25 percent \\
 			\hline
-			CycleWaster25\texttt{\_}3 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}3.py & 1.4 second &  25 percent \\
+			CycleWaster25\texttt{\_}3 & dummy\texttt{\_}load25\texttt{\_}3.py & 1.4 second &  25 percent \\
 			\hline
-			CycleWaster25\texttt{\_}4 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}4.py & 1.4 second &  25 percent \\
+			CycleWaster25\texttt{\_}4 & dummy\texttt{\_}load25\texttt{\_}4.py & 1.4 second &  25 percent \\
 			\hline
-			CycleWaster25\texttt{\_}5 & burn\texttt{\_}cycles\texttt{\_}around25\texttt{\_}5.py & 1.4 second &  25 percent \\
+			CycleWaster25\texttt{\_}5 & dummy\texttt{\_}load25\texttt{\_}5.py & 1.4 second &  25 percent \\
 			\hline
-			CycleWaster100 & burn\texttt{\_}cycles\texttt{\_}around100 & 0.50 second & 100 percent \\
+			CycleWaster100 & dummy\texttt{\_}load100.py & 0.50 second & 100 percent \\
 			\hline
 		\end{tabular}
 		\caption{Dummy load processes running in high-level module}
@@ -1046,7 +1045,7 @@ Low-level and high-level modules of A4MCAR requires several information. To star
 In this chapter, the aforementioned techniques for system analysis will be discussed with the emphasis of their applicability on a real distributed multi-core system that involves elements from a low-level multi-core micro-controller and a high-level single board computer that is running on x86/Linux platform in order to elaborate  modeling, managing, profiling, tracing of systems and evaluation of various software distributions.
 
 \section{Low-Level Module Information Tracing and System Management}
-\subsection{Static Binary Analysis via XTA}
+\subsection{Static Binary Analysis via XTA} \label{staticbinary}
 XMOS Timing Analyzer (XTA) \cite{xtamanual} is an Eclipse-based tool that comes with xTIMEcomposer platform which is used for analyzing the timing and the execution details of the multi-tasked software that are developed using XMOS boards and processors \cite{xtamanual}. The tool is able to measure shortest and longest time required to execute a section of code by analyzing the binary file. Thus, the code is not executed in order to be analyzed. Furthermore, it is also able to check the minimum and maximum number of instructions required to execute a section of the code.  A screenshot from the XTA tool is given in the Figure \ref{fig:xtass}.
 
 \begin{figure}[!ht]
@@ -1437,15 +1436,15 @@ In Chapter \ref{evaluationchapter}, the evaluation of distributions and results 
 %%% CHAPTER Information Tracing and System Modeling --------end----
 %%% CHAPTER Effective Parallelism Evaluation --------begin----
 \chapter{Evaluation and Results}\label{evaluationchapter}
-\section{System Limitations} %hw-sw limitations, xmos hw & xta tracing limitations, overall tracing limitations, perf limitations, granularity limitations due to process-based distribution, image processing has significantly more load,
+\section{System Limitations and Factors that Affect the Results} %hw-sw limitations, xmos hw & xta tracing limitations, overall tracing limitations, perf limitations, granularity limitations due to process-based distribution, image processing has significantly more load,
 In this chapter, system modeling with APP4MC and evaluations of mapping outcomes are discussed. A4MCAR, like every embedded system does, has its limitations that are related to both hardware and software. The following list explains the limitations that affect the results of the software distribution:
 \begin{itemize}
-	\item Model Limitations:
-	\item Sporadic Activations: %non-determinism & randomness
-	\item Limitations of perf profiler:
-	\item Limitations of process-based distribution: %reverse engineering, high granularity, image processing app
-	\item Limitations of XTA:
-	\item Hardware Limitations: %Rpi clock can take only 600mhz and 1.2GHz
+	\item \textbf{Model Limitations}: Although the created AMALTHEA model contains most of the information related to runnables, it does not contain information such as OS scheduling, reading/writing to/from files, kernel overheads, and tracing overheads. Therefore, created AMALTHEA model is not 100\% precise. This situation will create non-deterministic error in the outcomes that should be noted. 
+	\item \textbf{Sporadic Activations}: Since some tasks especially in the low-level module are activated randomly rather than periodically, the system and the model has non-deterministic behavior to some degree. That is one of the limitations which constrain the output from APP4MC. %non-determinism & randomness
+	\item \textbf{Limitations of perf profiler}: Perf profiler uses dynamic analysis to get the granularity of the tasks \cite{perf2}. Due to the profiler overhead, the resulting granularities that are observed with the help of the perf profiler might contain errors. However, it is assumed in this work that granularities of tasks being relative would not produce errors in the partitioning.
+	\item \textbf{Limitations of process-based distribution}: Since in this work not very fine-grained processes are distributed, the load balancing by 100\% would not be possible. As an example, image processing process contains significantly higher instruction size than of any other process. Therefore, the goal is to achieve the best possible load balancing with the obtained granularity data. %reverse engineering, high granularity, image processing app
+	\item \textbf{Limitations of XTA}: XTA tool, as mentioned in the section \ref{staticbinary}, generates hardware related unresolvable errors when analyzing the granularities for runnables. In this work, for the tasks that the timing analysis resulted in unresolvable errors, the disassembly instructions are counted. This approach disregards loops and might lead to non-accurate granularities.
+	\item \textbf{Hardware Limitations}: Hardware limitations affect the outcomes when the energy consumption is a concern. Since the default DVFS option for Raspberry Pi 3 only allows underclocking to 600MHz clock frequency and other frequencies are not supported, the default underclocking is investigated to obtain reduced energy consumption.%Rpi clock can take only 600mhz and 1.2GHz
 \end{itemize}
 \section{Modeling the A4MCAR using APP4MC}
 In the Section \ref{app4mcchapter}, motivations and design techniques of using APP4MC has been introduced. Recall from the aforementioned section that user has to start designing the parallel application by making use of the modeling functionality of APP4MC. In order to evaluate how APP4MC performs using A4MCAR, the design starts by identifying several attributes that are related to software and hardware. With the help of the modeling functionality of the APP4MC, A4MCAR's hardware details, software details, constraints, and common elements (such as tags) are described. It is important to mention that APP4MC can be used to describe several types of models such as Components Model, OS Model, Mapping Model, Stimuli Model, and Event Model. However, depicted model in this work explains the minimalistic model that can be used to make use of APP4MC's partitioning and mapping features. The models contain XML-based hierarchy with elements having their childs and attributes. With this hierarchy, containment of the elements are described easily. The following list briefly explains the initially created model, which is also shown in the AMALTHEA Contents tree window given by the Figure \ref{fig:overallmodel}:
