@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
+ * Copyright (c) 2017 FH Dortmund.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,6 @@
  *
  * Authors:
  *    M. Ozcelikors <mozcelikors@gmail.com>
- *
- * Contributors:
- *    Suggestions from the following XCORE thread are applied:
- *      https://www.xcore.com/viewtopic.php?f=26&t=5017
  *
  * Update History:
  *

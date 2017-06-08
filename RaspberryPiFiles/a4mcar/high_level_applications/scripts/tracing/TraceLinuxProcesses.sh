@@ -50,7 +50,7 @@ else
 	
 	echo "### Process IDs are written to out_$trace_name/Processes_List.txt"
 	echo "### Trace in Perf format is written to out_$trace_name/perf.data"
-	echo "### Trace in CTF format is written to out_$trace_name/trace.tar.gz"
+	echo "### Trace in CTF format is written to out_$trace_name/ctf_trace.tar.gz"
 	echo "### Exiting.."
 fi
 

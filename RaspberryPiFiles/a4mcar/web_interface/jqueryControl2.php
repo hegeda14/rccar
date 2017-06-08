@@ -186,72 +186,124 @@ body{
 <script src="jquery_ui/jquery.min.js"></script>
 <script src="jquery_ui/jquery-ui.min.js"></script>
 <script type="text/javascript">
+var isDown    = false;
+var Direction = 50; //0-left, 50-middle 99-right ->for the sake of easement
+var Gear      = 'F'; // F (fwd) or R (rev)
+
 $(document).ready(function(){
 	 $('#forward_btn').mousedown(function(){
 			$.ajax({ 
 				url: "pythonControl.php?process=S80A50FE"
 			});
+			isDown = true;
+			Direction = 50;
+			Gear = 'F';
 	 });
-	 $('#forward_btn').mouseup(function(){
-			$.ajax({ 
-				url: "pythonControl.php?process=S00A50FE"
-			});
-	 });
+	 
 	 //-------------
 	 $('#backward_btn').mousedown(function(){
 			$.ajax({ 
 				url: "pythonControl.php?process=S99A50RE"
 			});
+			isDown = true;
+			Direction = 50;
+			Gear = 'R';
 	 });
-	 $('#backward_btn').mouseup(function(){
-			$.ajax({ 
-				url: "pythonControl.php?process=S00A50RE"
-			});
-	 });
+	 
 	 //-------------
 	 $('#turnleft_btn').mousedown(function(){
 			$.ajax({ 
 				url: "pythonControl.php?process=S80A00FE"
 			});
+			isDown = true;
+			Direction = 0;
+			Gear = 'F';
 	 });
-	 $('#turnleft_btn').mouseup(function(){
-			$.ajax({ 
-				url: "pythonControl.php?process=S00A00FE"
-			});
-	 });
+	 
 	 //-------------
 	 $('#turnright_btn').mousedown(function(){
 			$.ajax({ 
 				url: "pythonControl.php?process=S80A99FE"
 			});
+			isDown = true;
+			Direction = 99;
+			Gear = 'F';
 	 });
-	 $('#turnright_btn').mouseup(function(){
-			$.ajax({ 
-				url: "pythonControl.php?process=S00A99FE"
-			});
-	 });
+	 
 	 //-------------
 	 $('#turnbackright_btn').mousedown(function(){
 			$.ajax({ 
 				url: "pythonControl.php?process=S80A99RE"
 			});
+			isDown = true;
+			Direction = 99;
+			Gear = 'R';
 	 });
-	 $('#turnbackright_btn').mouseup(function(){
-			$.ajax({ 
-				url: "pythonControl.php?process=S00A99RE"
-			});
-	 });
+	 
 	 //-------------
 	 $('#turnbackleft_btn').mousedown(function(){
 			$.ajax({ 
 				url: "pythonControl.php?process=S80A00RE"
 			});
+			isDown = true;
+			Direction = 0;
+			Gear = 'R';
 	 });
-	 $('#turnbackleft_btn').mouseup(function(){
-			$.ajax({ 
-				url: "pythonControl.php?process=S00A00RE"
-			});
+	 
+	 $(document).mouseup(function(){
+			if (isDown == true)
+			{
+				if (Direction == 0)
+				{
+					if (Gear == 'R')
+					{
+						$.ajax({ 
+							url: "pythonControl.php?process=S00A00RE"
+						});
+					}
+					else //Gear F
+					{
+						$.ajax({ 
+							url: "pythonControl.php?process=S00A00FE"
+						});
+					}
+				}
+				else if (Direction == 50)
+				{
+					if (Gear == 'R')
+					{
+						$.ajax({ 
+							url: "pythonControl.php?process=S00A50RE"
+						});
+					}
+					else //Gear F
+					{
+						$.ajax({ 
+							url: "pythonControl.php?process=S00A50FE"
+						});
+					}
+				}
+				else //Direction 99
+				{
+					if (Gear == 'R')
+					{
+						$.ajax({ 
+							url: "pythonControl.php?process=S00A99RE"
+						});
+					}
+					else //Gear F
+					{
+						$.ajax({ 
+							url: "pythonControl.php?process=S00A99FE"
+						});
+					}
+				}
+				isDown = false;	
+			}	 
 	 });
+	 
+	 
+	 
 	 //-------------
 	 
 	 $('#sensorinfo_btn').click(function(){
