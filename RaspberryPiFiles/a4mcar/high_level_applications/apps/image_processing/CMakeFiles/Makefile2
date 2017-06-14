@@ -53,49 +53,13 @@ CMAKE_SOURCE_DIR = /home/pi/a4mcar/high_level_applications/apps/image_processing
 CMAKE_BINARY_DIR = /home/pi/a4mcar/high_level_applications/apps/image_processing
 
 #=============================================================================
-# Target rules for target CMakeFiles/command.dir
-
-# All Build rule for target.
-CMakeFiles/command.dir/all:
-	$(MAKE) -f CMakeFiles/command.dir/build.make CMakeFiles/command.dir/depend
-	$(MAKE) -f CMakeFiles/command.dir/build.make CMakeFiles/command.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles  1
-	@echo "Built target command"
-.PHONY : CMakeFiles/command.dir/all
-
-# Include target in all.
-all: CMakeFiles/command.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/command.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/command.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles 0
-.PHONY : CMakeFiles/command.dir/rule
-
-# Convenience name for target.
-command: CMakeFiles/command.dir/rule
-.PHONY : command
-
-# clean rule for target.
-CMakeFiles/command.dir/clean:
-	$(MAKE) -f CMakeFiles/command.dir/build.make CMakeFiles/command.dir/clean
-.PHONY : CMakeFiles/command.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/command.dir/clean
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/image_processing.dir
 
 # All Build rule for target.
-CMakeFiles/image_processing.dir/all: CMakeFiles/pigpio.dir/all
-CMakeFiles/image_processing.dir/all: CMakeFiles/command.dir/all
+CMakeFiles/image_processing.dir/all:
 	$(MAKE) -f CMakeFiles/image_processing.dir/build.make CMakeFiles/image_processing.dir/depend
 	$(MAKE) -f CMakeFiles/image_processing.dir/build.make CMakeFiles/image_processing.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles  2
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles  1
 	@echo "Built target image_processing"
 .PHONY : CMakeFiles/image_processing.dir/all
 
@@ -105,7 +69,7 @@ all: CMakeFiles/image_processing.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/image_processing.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/image_processing.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles 0
 .PHONY : CMakeFiles/image_processing.dir/rule
@@ -121,41 +85,6 @@ CMakeFiles/image_processing.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/image_processing.dir/clean
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/pigpio.dir
-
-# All Build rule for target.
-CMakeFiles/pigpio.dir/all:
-	$(MAKE) -f CMakeFiles/pigpio.dir/build.make CMakeFiles/pigpio.dir/depend
-	$(MAKE) -f CMakeFiles/pigpio.dir/build.make CMakeFiles/pigpio.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles  3
-	@echo "Built target pigpio"
-.PHONY : CMakeFiles/pigpio.dir/all
-
-# Include target in all.
-all: CMakeFiles/pigpio.dir/all
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/pigpio.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles 1
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/pigpio.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles 0
-.PHONY : CMakeFiles/pigpio.dir/rule
-
-# Convenience name for target.
-pigpio: CMakeFiles/pigpio.dir/rule
-.PHONY : pigpio
-
-# clean rule for target.
-CMakeFiles/pigpio.dir/clean:
-	$(MAKE) -f CMakeFiles/pigpio.dir/build.make CMakeFiles/pigpio.dir/clean
-.PHONY : CMakeFiles/pigpio.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/pigpio.dir/clean
 .PHONY : clean
 
 #=============================================================================

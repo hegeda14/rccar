@@ -16,10 +16,14 @@
 
 import subprocess
 import os
+import ctypes
+
+libc = ctypes.cdll.LoadLibrary('libc.so.6')
+SYS_gettid = 224 #For Raspbian Jessie arm-linux, Look from /usr/include/arm-linux-gnueabihf/asm/unistd.h
 
 class aprocess:
 
-	def __init__ (self, apname, traceable, aplogfilepath, displayed, display_name, apstartcommand):
+	def __init__ (self, apname, traceable, aplogfilepath, displayed, display_name, apstartcommand, isthread):
 
 		#Basic Attributes for Process
 		self.apname = apname #Process Name, Must be the similar to ps command
@@ -27,6 +31,7 @@ class aprocess:
 		self.aprunning = 0 #Flag that restores if a process is running
 		self.aaffinity = "0-3" #Core Affinity for the process, must be string
 		self.apstartcommand = apstartcommand #Command to start process
+		self.isthread = isthread #Flag to indicate whether the process is actually a thread
 		
 		#Tracing Related Attributes
 		self.traceable = traceable # Only traceable processes are considered in timing calculations.
@@ -41,14 +46,15 @@ class aprocess:
 		
 		
 	def UpdateProcessIDAndRunning(self):
-		# Returns process id, or 0 if process not running
-		try:
-			self.aprunning = 1
-			x = subprocess.check_output(['pgrep','-f',self.apname,'-n']) #,'-u','root'
-		except Exception as inst:
-			x = 0
-			self.aprunning = 0
-		self.apid = x
+		if (self.isthread == 0):
+			# Returns process id, or 0 if process not running
+			try:
+				self.aprunning = 1
+				x = subprocess.check_output(['pgrep','-f',self.apname,'-n']) #,'-u','root'
+			except Exception as inst:
+				x = 0
+				self.aprunning = 0
+			self.apid = x
 		return 1
 		
 	def UpdateProcessCoreAffinity(self):
@@ -66,10 +72,30 @@ class aprocess:
 		#Sets core affinity of a process object using taskset
 		if (self.aprunning == 1 and core_affinity != ""):
 			try:
-				os.system("sudo taskset -pc "+core_affinity+" "+self.apid)
+				os.system("sudo taskset -pc "+str(core_affinity)+" "+str(self.apid))
 				self.UpdateProcessCoreAffinity()
 			except Exception as inst:
 				#print inst
 				#print "Err-SetCoreAffinity"
 				debug = 1
+
+	def UpdateThreadIDAndRunning(self):
+		if (self.isthread == 1):
+			self.apid = libc.syscall(SYS_gettid)
+			if (self.apid != -1):
+				self.aprunning = 1
+			else:
+				self.aprunning = 0
+			#print self.apid
+		return 1
+
+	def SetCoreAffinityOfThread(self, core_affinity):
+		if (self.isthread == 1):
+			if (self.aprunning == 1 and core_affinity != ""):
+				try:
+					os.system("sudo taskset -pc "+str(core_affinity)+" "+str(self.apid))
+					self.UpdateProcessCoreAffinity()
+				except Exception as inst:
+					debug = 1
+					print inst
 		

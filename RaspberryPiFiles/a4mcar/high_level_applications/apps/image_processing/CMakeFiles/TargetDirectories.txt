@@ -1,3 +1,1 @@
-/home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles/command.dir
 /home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles/image_processing.dir
-/home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles/pigpio.dir

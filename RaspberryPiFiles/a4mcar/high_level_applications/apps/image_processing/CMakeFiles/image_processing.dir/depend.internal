@@ -58,7 +58,6 @@ CMakeFiles/image_processing.dir/image_processing.cpp.o
  /home/pi/opencv_workspace/opencv/modules/video/include/opencv2/video/tracking_c.h
  /home/pi/opencv_workspace/opencv/modules/videoio/include/opencv2/videoio.hpp
  /home/pi/opencv_workspace/opencv/modules/videoio/include/opencv2/videoio/videoio_c.h
- /usr/local/include/pigpio.h
  /usr/local/include/raspicam/raspicam.h
  /usr/local/include/raspicam/raspicam_cv.h
  /usr/local/include/raspicam/raspicamtypes.h

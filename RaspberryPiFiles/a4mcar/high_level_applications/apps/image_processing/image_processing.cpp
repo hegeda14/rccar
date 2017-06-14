@@ -12,8 +12,7 @@
  *    M. Ozcelikors <mozcelikors@gmail.com>
  *
  * Contributors:
- *	  This code uses https://github.com/AbdulazizAlaa/Computer-Vision-Projects/tree/master/Traffic%20Cone%20Detection repo
- * 		as a skeleton.
+ *
  *
  * Update History:
  *
@@ -55,9 +54,8 @@ clock_t _START_TIME;
 clock_t _END_TIME;
 double _EXECUTION_TIME;
 double _PREV_SLACK_TIME;
-double _PERIOD = 0.0;
-double _DEADLINE = 0.0;
-
+double _PERIOD = 0.65;
+double _DEADLINE = 0.65;
 
 char key;
 char* output_window_name = "Camera Output";
@@ -270,7 +268,13 @@ int main(int argc, char *argv[])
 
 		//cv::imwrite("raspicam_img.jpg", frame);
 
-		printf("Starting...\n");
+		//printf("Starting...\n");
+		//key = waitKey(10);
+		//cout <<(int) char(key) << endl;
+		//if(char(key) == 27){
+		//    break;
+		//}
+		// if(char(key) == 10){
 
 		frameRGB.create(frame.size(), frame.type());
 		cvtColor(frame, frameRGB, CV_BGR2RGB);
@@ -282,10 +286,10 @@ int main(int argc, char *argv[])
 
 		inRange(imgHsv, Scalar(u_h, u_s, u_v), Scalar(d_h, d_s, d_v), imgRedThresh);
 
-		//transforming to grayscale
+		//converting the original image into grayscale
 		imgGrayScale.create(frame.size(), frame.type());
 		cvtColor(frame, imgGrayScale, CV_BGR2GRAY);
-		bitwise_and(imgRedThresh, imgGrayScale, imgGrayScale);
+		bitwise_and(imgRedThresh, imgGrayScale, imgGrayScale);//??Degistirildi bitwise_and(imgResultingThresh, imgGrayScale, imgGrayScale);
 
 		// Floodfill from point (0, 0)
 		Mat im_floodfill = imgGrayScale.clone();
@@ -300,7 +304,7 @@ int main(int argc, char *argv[])
 
 		GaussianBlur(imgGrayScale, imgGrayScale, Size(7,7), 1.5, 1.5);
 
-		imshow(grayscale_window_name, imgGrayScale);
+		//imshow(grayscale_window_name, imgGrayScale);
 
 		edges.create(imgGrayScale.size(), imgGrayScale.type());
 		Canny(imgGrayScale, edges, canny_lowthreshold, canny_highthreshold, 3);
@@ -313,6 +317,7 @@ int main(int argc, char *argv[])
 			contPeri = arcLength(contours.at(i), true);
 			approxPolyDP(contours.at(i), approx,  0.01 * contPeri, true);
 
+			//if(approx.size()>=7 && approx.size()<=9){
 			bBox = boundingRect(approx);
 			aspectRatio = bBox.width/bBox.height;
 
@@ -320,6 +325,9 @@ int main(int argc, char *argv[])
 			convexHull(contours.at(i), tempCont);
 			hullArea = contourArea(tempCont);
 			solidity = area / hullArea;
+
+			// cout << "contour : " << approx.size() << endl;
+			// cout << bBox.width << "::" << bBox.height << "::" << solidity  << "::" << aspectRatio <<endl;
 
 			tempVecCont.clear();
 			tempVecCont.push_back(approx);
@@ -368,8 +376,8 @@ int main(int argc, char *argv[])
 		//printf("1. y = %d\n",detections_y[maximum_idx]);
 		//printf("2. y = %d\n",detections_y[second_maximum_idx]);
 
-		printf("mid = %d\n",opening_midpoint);
-		printf("maximum=%f\n",maximum);
+		//printf("mid = %d\n",opening_midpoint);
+		//printf("maximum=%f\n",maximum);
 		if(maximum > 10000 || second_maximum > 10000 || third_maximum > 10000) //was 3000
 		{
 			cmd = LEFT;
@@ -388,14 +396,14 @@ int main(int argc, char *argv[])
 		second_last_maximum = second_maximum;
 		last_maximum = maximum;
 
-		printf("cmd=%d   speed=%d\n", cmd, speed);
+		//printf("cmd=%d   speed=%d\n", cmd, speed);
 		//printf("midpointimg = %d\n", imgRedThresh.rows);
 
 		detection_count = 0;
 		opening_count = 0;
 		// cout << endl << endl;
-		imshow(thresholded_window_name, edges);
-		imshow(contours_window_name, drawing);
+		//imshow(thresholded_window_name, edges);
+		//imshow(contours_window_name, drawing);
 
 		//TCP Writing to Socket & Command construction
 		if(MID == cmd && SLOW == speed)
@@ -482,22 +490,21 @@ int main(int argc, char *argv[])
 			send_flag = 0;
 		}
 
+		counter++;
+
+
+		//imshow(thresholded_window_name, imgGrayScale);
+		//imshow(contours_window_name, imgRedThresh);
+		//imshow(output_window_name, frameRGB);
+
 		CreateTimingLog("../../logs/timing/image_processing_timing.inc");
 
-
-		counter++;
-		//usleep(100*1000);
-		//To take subimage
-		//cv::Mat subImg = drawing(cv::Range(0, 100), cv::Range(0, 100));
-		//imshow("My work", subImg);
-		//----
-
-
-		imshow(thresholded_window_name, imgGrayScale);
-		imshow(contours_window_name, imgRedThresh);
-
-		// }
-		imshow(output_window_name, frameRGB);
+		if(_PERIOD > _EXECUTION_TIME)
+		{
+			usleep((_PERIOD - _EXECUTION_TIME)*1000*1000);
+			//waitKey(_PERIOD - _EXECUTION_TIME*1000);
+		}
+		
 	}
 	
 	destroyWindow(output_window_name);

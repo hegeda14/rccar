@@ -714,7 +714,7 @@ The way multi-tasking is handled with this constructed software architecture (in
 
 Regarding hardware, the high-level module is connected to two devices. The interfacing of these devices, a Raspberry Pi camera v2.0 and a Touchscreen display is illustrated in the Figure \ref{fig:hwoverview}. It is seen in the figure that interfaces such as HDMI, SPI, and CSI have been utilized. In the following sections, hardware communication and the related software will be further explained.
 %%Full names as appendix  ??? MAYBE LATER
-\subsection{Implemented Online Timing Features} \label{onlinetiming}
+\subsection{Implemented Online Timing Features and Making Processes Schedulable} \label{onlinetiming}
 In order to seek an assessment technique to compare timing performance of different distributions, online timing features are implemented in the user-developed processes of the high-level module of A4MCAR. Thus, while applications are running, a performance evaluation could be done with the help of the those features. The code skeleton is developed for both Python and C,C++ applications and the applications are integrated on top of the skeleton with timing features. Therefore, it is important to understand how each application that will be discussed in the following sections are timed.
 
 Recall that in the Section \ref{schedulingsection} the timing properties in a scheduled system is explained that is shown in Figure \ref{fig:scheduling}. By making use of the figure, limitations of implementations and the implemented timing features could be listed as follows:
@@ -735,7 +735,7 @@ Recall that in the Section \ref{schedulingsection} the timing properties in a sc
 	previous\texttt{\_}slack\texttt{\_}time=start\texttt{\_}time - end\texttt{\_}time
 	\end{equation}
 	
-	\item In order to keep a constant period while the process is being scheduled, the processes are delayed dynamically between each iteration. Thus, processes which have a constant period could be modeled easier. In order to achieve a constant period each process are delayed by the following:
+	\item In order to keep a constant period while the process is being scheduled, the processes are delayed dynamically between each iteration. Thus, processes which have a constant period could be modeled easier and having the constant period will make the process or thread schedulable. In order to achieve a constant period each process are delayed by the following:
 	\begin{equation}
 	delay\texttt{\_}time=period - execution\texttt{\_}time
 	\end{equation}
@@ -1209,6 +1209,10 @@ Perf \cite{perf1} \cite{perf2} is a well-known lightweight system performance co
 \begin{lstlisting}[style=bash]
 sudo perf stat -e instructions:u -p <pid>
 \end{lstlisting}
+For the analysis of high-level applications in A4MCAR, the following variation of the perf stat command is used which is able to determine the instruction count of a running process or thread with a timeout. If the timeout is set to the period of the schedulable process or thread, one can obtain rough idea about the granularity of the process or thread. In the following listing, <timeout> is the period in seconds.
+\begin{lstlisting}[style=bash]
+sudo perf stat -e instructions:u -p <pid> -- sleep <timeout>
+\end{lstlisting}
 
 \subsubsection{Process Management and Monitoring}
 Managing and monitoring processes and threads of a Linux system are crucial preliminaries that should be discussed in order to work with A4MCAR's high-level module using Linux platform. One can list the process management and monitoring issues as follows:
@@ -1439,12 +1443,12 @@ In Chapter \ref{evaluationchapter}, the evaluation of distributions and results 
 \section{System Limitations and Factors that Affect the Results} %hw-sw limitations, xmos hw & xta tracing limitations, overall tracing limitations, perf limitations, granularity limitations due to process-based distribution, image processing has significantly more load,
 In this chapter, system modeling with APP4MC and evaluations of mapping outcomes are discussed. A4MCAR, like every embedded system does, has its limitations that are related to both hardware and software. The following list explains the limitations that affect the results of the software distribution:
 \begin{itemize}
-	\item \textbf{Model Limitations}: Although the created AMALTHEA model contains most of the information related to runnables, it does not contain information such as OS scheduling, reading/writing to/from files, kernel overheads, and tracing overheads. Therefore, created AMALTHEA model is not 100\% precise. This situation will create non-deterministic error in the outcomes that should be noted. 
-	\item \textbf{Sporadic Activations}: Since some tasks especially in the low-level module are activated randomly rather than periodically, the system and the model has non-deterministic behavior to some degree. That is one of the limitations which constrain the output from APP4MC. %non-determinism & randomness
+	\item \textbf{Model limitations and overheads in the system}: Although the created AMALTHEA model contains most of the information related to runnables, it does not contain information such as OS scheduling, reading/writing to/from files, kernel overheads, and tracing overheads. Therefore, created AMALTHEA model is not 100\% precise. This situation will create non-deterministic error in the outcomes that should be noted. 
+	\item \textbf{Sporadic activations}: Since some tasks especially in the low-level module are activated randomly rather than periodically, the system and the model has non-deterministic behavior to some degree. That is one of the limitations which constrain the output from APP4MC. %non-determinism & randomness
 	\item \textbf{Limitations of perf profiler}: Perf profiler uses dynamic analysis to get the granularity of the tasks \cite{perf2}. Due to the profiler overhead, the resulting granularities that are observed with the help of the perf profiler might contain errors. However, it is assumed in this work that granularities of tasks being relative would not produce errors in the partitioning.
 	\item \textbf{Limitations of process-based distribution}: Since in this work not very fine-grained processes are distributed, the load balancing by 100\% would not be possible. As an example, image processing process contains significantly higher instruction size than of any other process. Therefore, the goal is to achieve the best possible load balancing with the obtained granularity data. %reverse engineering, high granularity, image processing app
 	\item \textbf{Limitations of XTA}: XTA tool, as mentioned in the section \ref{staticbinary}, generates hardware related unresolvable errors when analyzing the granularities for runnables. In this work, for the tasks that the timing analysis resulted in unresolvable errors, the disassembly instructions are counted. This approach disregards loops and might lead to non-accurate granularities.
-	\item \textbf{Hardware Limitations}: Hardware limitations affect the outcomes when the energy consumption is a concern. Since the default DVFS option for Raspberry Pi 3 only allows underclocking to 600MHz clock frequency and other frequencies are not supported, the default underclocking is investigated to obtain reduced energy consumption.%Rpi clock can take only 600mhz and 1.2GHz
+	\item \textbf{Hardware limitations}: Hardware limitations affect the outcomes when the energy consumption is a concern. Since the default DVFS option for Raspberry Pi 3 only allows underclocking to 600MHz clock frequency and other frequencies are not supported, the default underclocking is investigated to obtain reduced energy consumption.%Rpi clock can take only 600mhz and 1.2GHz
 \end{itemize}
 \section{Modeling the A4MCAR using APP4MC}
 In the Section \ref{app4mcchapter}, motivations and design techniques of using APP4MC has been introduced. Recall from the aforementioned section that user has to start designing the parallel application by making use of the modeling functionality of APP4MC. In order to evaluate how APP4MC performs using A4MCAR, the design starts by identifying several attributes that are related to software and hardware. With the help of the modeling functionality of the APP4MC, A4MCAR's hardware details, software details, constraints, and common elements (such as tags) are described. It is important to mention that APP4MC can be used to describe several types of models such as Components Model, OS Model, Mapping Model, Stimuli Model, and Event Model. However, depicted model in this work explains the minimalistic model that can be used to make use of APP4MC's partitioning and mapping features. The models contain XML-based hierarchy with elements having their childs and attributes. With this hierarchy, containment of the elements are described easily. The following list briefly explains the initially created model, which is also shown in the AMALTHEA Contents tree window given by the Figure \ref{fig:overallmodel}:
@@ -1466,7 +1470,9 @@ In the Section \ref{app4mcchapter}, motivations and design techniques of using A
 	As a general note, the information that is specified in the constraints model is used in the pre-partitioning, partitioning, and mapping phases.
 	\item \textbf{Common Elements:} In A4MCAR, tags are used from common elements model. Tags define binders for runnables that are considered in the pre-partitioning phase. Thus, pre-partitioning phase would generate partitions that have the same tags. In A4MCAR, by making use of two tags which are \textit{LLM\texttt{\_}Task} and \textit{HLM\texttt{\_}Task}, it is made sure that generated partitions and tasks will not have runnables that run on the other module. That is, low-level module runnables and high-level module runnables are isolated.   
 \end{itemize}
-After the modeling, partitioning (pre-partitioning is performed automatically before partitioning), task generation, and mapping is performed by using APP4MC to obtain the distribution results.
+Although the previously explained model includes both low-level module and high-level module components, to generate partitioning and mapping outputs, the model is seperated to two AMALTHEA models, each of which containing the elements for respective modules (high-level and low-level). The reason to use this approach was the lack of the implementation of tag-based (in our case with respect to modules) partition grouping in the version of APP4MC (0.8.1) that was used. 
+
+After the modeling, partitioning (pre-partitioning is performed automatically before partitioning), task generation, and mapping is performed by using APP4MC to obtain the distribution results. Obtained results will be shown in the following sections.
 %then what happens? partitioning mapping etc.
 %maybe add window from Partitioning console window and Mapping console window
 % basit model interfaceler + rpi dekiler..

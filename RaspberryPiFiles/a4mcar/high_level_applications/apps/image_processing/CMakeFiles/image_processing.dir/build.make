@@ -97,8 +97,6 @@ image_processing: /home/pi/opencv_workspace/opencv/build/lib/libopencv_flann.so.
 image_processing: /home/pi/opencv_workspace/opencv/build/lib/libopencv_features2d.so.3.1.0
 image_processing: /home/pi/opencv_workspace/opencv/build/lib/libopencv_core.so.3.1.0
 image_processing: /home/pi/opencv_workspace/opencv/build/lib/libopencv_calib3d.so.3.1.0
-image_processing: libpigpio.a
-image_processing: libcommand.a
 image_processing: /opt/vc/lib/libmmal_core.so
 image_processing: /opt/vc/lib/libmmal_util.so
 image_processing: /opt/vc/lib/libmmal.so

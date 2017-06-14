@@ -27,6 +27,7 @@ import socket
 import select
 import RPi.GPIO as GPIO
 import threading
+from threading import Lock
 import subprocess #for Popen
 import serial #pyserial
 import glob #For listing serial ports
@@ -61,23 +62,22 @@ core_usage_rpi = [0,0,0,0]
 coord_x = [30,  30,  30,  30,  30,  30,  30, 380, 380, 380, 380, 380, 380, 380]
 coord_y = [120,170, 220, 270, 320, 370, 420, 120, 170, 220, 270, 320, 370, 420]
 
-#Process definitions
+#Process definitions (thread functions also append to this list variable)
 aprocess_list = []
-aprocess_list.append(aprocess.aprocess("Xtightvnc", 0, "None", 1, "VNC Server", "cd ../../scripts/tightvnc/  && sudo bash tightvnc_start.sh &"))
-aprocess_list.append(aprocess.aprocess("mjpg_streamer", 0, "None",1, "Camera Stream", "cd ../../scripts/camera_start/  && sudo bash raspberrypi_camera_start.sh &"))
-aprocess_list.append(aprocess.aprocess("touchscreen_display", 1, "../../logs/timing/touchscreen_display_timing.inc", 1, "Display", "None"))
-aprocess_list.append(aprocess.aprocess("ethernet_client", 1, "../../logs/timing/ethernet_client_timing.inc", 1, "Ethernet App", "cd ../ethernet_client/ && sudo python ethernet_client.py &"))
-aprocess_list.append(aprocess.aprocess("core_recorder", 1, "../../logs/timing/core_recorder_timing.inc", 1, "Core Recorder", "cd ../core_recorder/ && sudo python core_recorder.py &"))
-aprocess_list.append(aprocess.aprocess("dummy_load25_1", 1, "../../logs/timing/dummy_load25_1_timing.inc", 1, "Cycler25_1", "cd ../dummy_loads/ && sudo python dummy_load25_1.py &"))
-aprocess_list.append(aprocess.aprocess("dummy_load25_2", 1, "../../logs/timing/dummy_load25_2_timing.inc", 1, "Cycler25_2", "cd ../dummy_loads/ && sudo python dummy_load25_2.py &"))
-aprocess_list.append(aprocess.aprocess("dummy_load25_3", 1, "../../logs/timing/dummy_load25_3_timing.inc", 1, "Cycler25_3", "cd ../dummy_loads/ && sudo python dummy_load25_3.py &"))
-aprocess_list.append(aprocess.aprocess("dummy_load25_4", 1, "../../logs/timing/dummy_load25_4_timing.inc", 1, "Cycler25_4", "cd ../dummy_loads/ && sudo python dummy_load25_4.py &"))
-aprocess_list.append(aprocess.aprocess("dummy_load25_5", 1, "../../logs/timing/dummy_load25_5_timing.inc", 1, "Cycler25_5", "cd ../dummy_loads/ && sudo python dummy_load25_5.py &"))
-aprocess_list.append(aprocess.aprocess("dummy_load100", 1, "../../logs/timing/dummy_load100_timing.inc", 1, "Cycler100", "cd ../dummy_loads/ && sudo python dummy_load100.py &"))
-aprocess_list.append(aprocess.aprocess("apache2", 0, "None", 1, "Apache Server", "sudo service apache2 start"))
-#aprocess_list.append(aprocess.aprocess("image_processing", 1, "../../logs/timing/image_processing_timing.inc", 1, "ImageProcess", "cd ../image_processing/ && sudo -E ./image_processing &"))
+aprocess_list.append(aprocess.aprocess("Xtightvnc", 0, "None", 1, "VNC Server", "cd ../../scripts/tightvnc/  && sudo bash tightvnc_start.sh &", 0))
+aprocess_list.append(aprocess.aprocess("mjpg_streamer", 0, "None",1, "Camera Stream", "cd ../../scripts/camera_start/  && sudo bash raspberrypi_camera_start.sh &", 0))
+aprocess_list.append(aprocess.aprocess("touchscreen_display", 1, "../../logs/timing/touchscreen_display_timing.inc", 1, "Display", "None", 0))
+aprocess_list.append(aprocess.aprocess("ethernet_client", 1, "../../logs/timing/ethernet_client_timing.inc", 1, "Ethernet App", "cd ../ethernet_client/ && sudo python ethernet_client.py &", 0))
+aprocess_list.append(aprocess.aprocess("core_recorder", 1, "../../logs/timing/core_recorder_timing.inc", 1, "Core Recorder", "cd ../core_recorder/ && sudo python core_recorder.py &", 0))
+aprocess_list.append(aprocess.aprocess("dummy_load25_1", 1, "../../logs/timing/dummy_load25_1_timing.inc", 1, "Cycler25_1", "cd ../dummy_loads/ && sudo python dummy_load25_1.py &", 0))
+aprocess_list.append(aprocess.aprocess("dummy_load25_2", 1, "../../logs/timing/dummy_load25_2_timing.inc", 1, "Cycler25_2", "cd ../dummy_loads/ && sudo python dummy_load25_2.py &", 0))
+aprocess_list.append(aprocess.aprocess("dummy_load25_3", 1, "../../logs/timing/dummy_load25_3_timing.inc", 1, "Cycler25_3", "cd ../dummy_loads/ && sudo python dummy_load25_3.py &", 0))
+aprocess_list.append(aprocess.aprocess("dummy_load25_4", 1, "../../logs/timing/dummy_load25_4_timing.inc", 1, "Cycler25_4", "cd ../dummy_loads/ && sudo python dummy_load25_4.py &", 0))
+#aprocess_list.append(aprocess.aprocess("dummy_load25_5", 1, "../../logs/timing/dummy_load25_5_timing.inc", 1, "Cycler25_5", "cd ../dummy_loads/ && sudo python dummy_load25_5.py &", 0))
+#aprocess_list.append(aprocess.aprocess("dummy_load100", 1, "../../logs/timing/dummy_load100_timing.inc", 1, "Cycler100", "cd ../dummy_loads/ && sudo python dummy_load100.py &", 0))
+aprocess_list.append(aprocess.aprocess("apache2", 0, "None", 1, "Apache Server", "sudo service apache2 start", 0))
+aprocess_list.append(aprocess.aprocess("image_processing", 1, "../../logs/timing/image_processing_timing.inc", 1, "ImageProcess", "cd ../image_processing/ && sudo -E ./image_processing &", 0))
 aprocess_list_len = len(aprocess_list)
-
 
 #Software Distribution Type
 #1- APP4MC Distribution (Uses coredef_list.a4p)
@@ -85,14 +85,26 @@ aprocess_list_len = len(aprocess_list)
 #3- Sequential Distribution (Every process on core 3)
 distribution_type = 2
 
+#Power Setting
+#0- Performance 1.2Ghz
+#1- Powersave   600Mhz
+default_power_setting = 0
+
+#For allocation in main thread
+Allocate_Active = 0
+SKA_Process_Name = ""
+
 #Timing Related ---start
-_DEADLINE = 0.1
+_DEADLINE = 0.5
 _START_TIME = 0
 _END_TIME = 0
 _EXECUTION_TIME = 0                  
 _PREV_SLACK_TIME = 0
-_PERIOD = 0.2
+_PERIOD = 0.5
 #Timing Related ---end
+
+#Locks for mutual exclusion
+lock_aprocess_list = Lock()
 
 #For timing calculations, missed deadlines, total processes, and slack time sum
 missed=0
@@ -377,13 +389,10 @@ def UpdateChangeDistributionPage():
 	text = font.render (" Sequential Distribution", True, colorc)
 	screen.blit(text,(220,220))
 
-	return 1 
+	return 1
 
 
 def UpdateShowDistributionPage():
-	global aprocess_list
-	global aprocess_list_len
-	
 	global distribution_type
 
 	global total
@@ -405,6 +414,23 @@ def UpdateShowDistributionPage():
 	#TASK CONTENT
 	screen.blit(get_image('images/display_r3_c1_s1.png'),(0,175))
 
+	if(distribution_type == 0):
+		font = pygame.font.SysFont("Roboto Condensed", 40)
+		text = font.render ("Distribution: No distribution selected", True, (0, 0, 0))
+		screen.blit(text,(50,350))
+	elif(distribution_type == 1):
+		font = pygame.font.SysFont("Roboto Condensed", 40)
+		text = font.render ("Distribution: APP4MC Distribution", True, (0, 0, 0))
+		screen.blit(text,(50,350))
+	elif(distribution_type == 2):
+		font = pygame.font.SysFont("Roboto Condensed", 40)
+		text = font.render ("Distribution: Automatic (OS) Distribution", True, (0, 0, 0))
+		screen.blit(text,(50,350))
+	elif(distribution_type == 3):
+		font = pygame.font.SysFont("Roboto Condensed", 40)
+		text = font.render ("Distribution: Sequential Distribution", True, (0, 0, 0))
+		screen.blit(text,(50,350))
+
 	#Show CPU Frequencies and CPU Count
 	font = pygame.font.SysFont("Roboto Condensed", 20)
 
@@ -423,56 +449,16 @@ def UpdateShowDistributionPage():
 	text = font.render("Traceable Processes Running:", True, (0,0,255))
 	screen.blit(text,(400,323))
 
-	
-
 	text = font.render (str(psutil.cpu_freq()).split(',')[0].split('=')[1]+" MHz", True, (0,0,0))
 	screen.blit(text, (220,302))
 
+	AddPromptBox_Passive(320, 302, 67, 30)
+	text = font.render ("Change", True, (50, 50, 50))
+	screen.blit(text,(325,302))
+
 	text = font.render (str(psutil.cpu_count()), True, (0,0,0))
 	screen.blit(text, (530,302))
-
 	
-
-	#deadline variables: missed count: missed total, count: total
-	missed = 0
-	total = 0
-	slack_sum = 0.0
-	gross_execution_time = 0.0
-
-	# Updates for display app
-	total = total + 1
-	slack_sum = slack_sum + _PREV_SLACK_TIME
-	gross_execution_time = gross_execution_time + round(_EXECUTION_TIME,2)
-
-	if (_EXECUTION_TIME > _PERIOD):
-		missed = missed + 1
-        
-	# Updates from other apps
-	differences_list = []
-
-	for i in range(0,aprocess_list_len):
-		aprocess_list[i].UpdateProcessIDAndRunning()
-		if (aprocess_list[i].apname != "touchscreen_display" and aprocess_list[i].traceable == 1 and aprocess_list[i].aprunning == 1):
-			try:
-				file_obj = open(aprocess_list[i].aplogfilepath,"r")
-				data_obj = file_obj.read()
-				int_objs = data_obj.split(' ')
-				exectime_l = float(int_objs[1])
-				period_l = float (int_objs[2])
-				slack_l = float (int_objs[0])
-				if (exectime_l>period_l):
-					missed = missed + 1
-				
-				differences_list.append(float(exectime_l)) #i.e. execution time list
-				slack_sum = slack_sum + slack_l
-				gross_execution_time = gross_execution_time + round(exectime_l,2)
-				total = total + 1
-				#print int_objs
-				file_obj.close()
-			except Exception as inst:
-				#print inst
-				debug = 1
-
 	#Traceable Processes running
 	text = font.render (str(total), True, (0,0,0))
 	screen.blit(text, (640,323))
@@ -484,10 +470,14 @@ def UpdateShowDistributionPage():
 	#Gross Execution Time
 	text = font.render (str(gross_execution_time)+"s", True, (0,0,0))
 	screen.blit(text,(240,281))
+	
+	if (total != 0):
+		slack_avg = slack_sum / total
+		deadline_missed_percentage = int((missed*100)/total)
+        else:
+		slack_avg = 0
+		deadline_missed_percentage = 0
 
-	slack_avg = slack_sum / total
-	deadline_missed_percentage = int((missed*100)/total)
-        
 	font = pygame.font.SysFont("Roboto Condensed", 60)
 			 
 	text = font.render (str(slack_avg)[0:8]+"s", True, (0, 0, 0))
@@ -498,23 +488,6 @@ def UpdateShowDistributionPage():
 	screen.blit(text,(400,180))
 	pygame.display.flip()
 
-	if(distribution_type == 0):
-		font = pygame.font.SysFont("Roboto Condensed", 40)
-		text = font.render ("Distribution: No distribution selected", True, (0, 0, 0))
-		screen.blit(text,(50,350))
-	elif(distribution_type == 1):
-		font = pygame.font.SysFont("Roboto Condensed", 40)
-		text = font.render ("Distribution: APP4MC Distribution", True, (0, 0, 0))
-		screen.blit(text,(50,350))
-	elif(distribution_type == 2):
-		font = pygame.font.SysFont("Roboto Condensed", 40)
-		text = font.render ("Distribution: Automatic (OS) Distribution", True, (0, 0, 0))
-		screen.blit(text,(50,350))
-	elif(distribution_type == 3):
-		font = pygame.font.SysFont("Roboto Condensed", 40)
-		text = font.render ("Distribution: Sequential Distribution", True, (0, 0, 0))
-		screen.blit(text,(50,350))
-
 	#TimingRelated --start
 	CreateTimingLog("../../logs/timing/touchscreen_display_timing.inc")
 	#TimingRelated --end
@@ -523,10 +496,13 @@ def AutomaticDistributionActions():
 	global aprocess_list
 	global aprocess_list_len
 	
-	UpdateProcessInfo()
+	#UpdateProcessInfo() #Not needed now since the Thread_TimingCalculation updates this constantly
 
+	lock_aprocess_list.acquire()#----
 	for i in range(0,aprocess_list_len):
 		aprocess_list[i].SetCoreAffinity("0-3")
+	lock_aprocess_list.release()#----
+	UpdateCoreAffinityOfProcesses()
 		
 def GetProcessIDFromProcessName(process_name):
 	# Returns process id, or 0 if process not running
@@ -550,28 +526,63 @@ def AllocateProcessWithCore(process_name, core):
 					aprocess_list[i].aaffinity = core
 		except Exception as inst:
 			debug = 1
+
+def UpdateCoreAffinityOfProcesses():
+	global aprocess_list
+	global aprocess_list_len
+
+	lock_aprocess_list.acquire()
+	for i in range(0,aprocess_list_len):
+		aprocess_list[i].UpdateProcessCoreAffinity()
+	lock_aprocess_list.release()
      
 def APP4MCDistributionActions():
+	#---
+	global aprocess_list
+	global aprocess_list_len
+	#---
+	process_names = []
+	process_affinities = []
+	#---
 	try:
 		with open('../../logs/core_mapping/coredef_list.a4p','rb') as coredef_list:
 			for line in coredef_list:
 				words = line.strip('\n').split(' ')
 				if (len(words)>3):
-					try:
-						AllocateProcessWithCore(words[2], words[5])
-					except Exception as inst:
-						debug = 1
+					process_names.append(words[2].strip('\n'))
+					process_affinities.append(words[5].strip('\n'))
+					#try:
+					#	AllocateProcessWithCore(words[2], words[5])
+					#except Exception as inst:
+					#	debug = 1
 	except Exception as inst:
 		debug = 1
+
+	lock_aprocess_list.acquire()
+	for i in range(0, aprocess_list_len):
+		for k in range(0, len(process_names)):
+			if (aprocess_list[i].apname == process_names[k] and aprocess_list[i].aprunning == 1):
+				if (aprocess_list[i].apid != "NaN" and aprocess_list[i].apid != 0):
+					try:
+						os.system("sudo taskset -pc "+str(process_affinities[k])+" "+str(aprocess_list[i].apid))
+					except Exception as inst:
+						print inst
+				
+	lock_aprocess_list.release()
+
+	UpdateCoreAffinityOfProcesses()
 
 def SequentialDistributionActions():
 	global aprocess_list
 	global aprocess_list_len
 	
-	UpdateProcessInfo()
-
+	#UpdateProcessInfo() #Not needed now since the Thread_TimingCalculation updates this constantly
+	lock_aprocess_list.acquire() #----
 	for i in range(0,aprocess_list_len):
 		aprocess_list[i].SetCoreAffinity("3")
+	lock_aprocess_list.release() #----
+
+	UpdateCoreAffinityOfProcesses()
 
 def ShowDistributionPage():
 	Clear_Variables()
@@ -610,8 +621,9 @@ def UpdateAllocationPage():
 	#Font definition
 	font = pygame.font.SysFont("Roboto Condensed", 30)
 	
-	UpdateProcessInfo()
-	
+	#UpdateProcessInfo() #Not needed now since the Thread_TimingCalculation updates this constantly
+
+	lock_aprocess_list.acquire() #----
 	for i in range(0,aprocess_list_len):
 		if (aprocess_list[i].aprunning == 1):
 			colorc = color_green
@@ -619,6 +631,7 @@ def UpdateAllocationPage():
 			colorc = color_red
 		text = font.render (str(aprocess_list[i].display_name), True, colorc)
 		screen.blit(text,(coord_x[i],coord_y[i]))
+	lock_aprocess_list.release() #----
 
 
 def KillProcess(process_name):
@@ -643,7 +656,15 @@ def GetCoreAffinityFromPID (pid):
 		#print inst
 		affinity_list = "NaN"
 	return affinity_list
-          
+
+def AllocateProcessInMainThread(process_name):
+	global Allocate_Active
+	global SKA_Process_Name
+
+	Allocate_Active = 1
+	SKA_Process_Name = process_name
+
+
 def AllocateProcess(process_name):
 	global aprocess_list
 	global aprocess_list_len
@@ -657,21 +678,19 @@ def AllocateProcess(process_name):
 				aprocess_list[i].aaffinity = core
 	except Exception as inst:
  		print "Err-AllocateProcess"
-
 	
-
 def StartProcess(process_name):
 	global aprocess_list
 	global aprocess_list_len
 	
+
 	for i in range(0,aprocess_list_len):
 		if (process_name == aprocess_list[i].apname):
 			try:
 				os.system(str(aprocess_list[i].apstartcommand))
 			except Exception as inst:
 				print "Err-StartProcess"
-                                
-	# & at the end in commands is important to run the app in the background
+
 	
 def AllocationPage():
 	global aprocess_list
@@ -693,19 +712,26 @@ def AllocationPage():
 	text = font.render ("Start/Kill Rpi Processes", True, (255, 255, 255))
 	screen.blit(text,(30,30))
 	
-	UpdateProcessInfo()
+	#UpdateProcessInfo() #Not needed now since the Thread_TimingCalculation updates this constantly
 	
+	lock_aprocess_list.acquire() #----
 	for i in range(0,aprocess_list_len):
 		font = pygame.font.SysFont("Roboto Condensed", 30)
 		text = font.render (str(aprocess_list[i].display_name), True, (0, 0, 0))
 		screen.blit(text,(coord_x[i],coord_y[i]))
 		font = pygame.font.SysFont("Roboto Condensed", 20)
-		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
-		text = font.render ("Start", True, (255, 0, 0))
-		screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
-		AddPromptBox_Passive(coord_x[i]+250, coord_y[i], 50, 40)
-		text = font.render ("Kill", True, (255, 0, 0))
-		screen.blit(text,(coord_x[i]+260,coord_y[i]+10))	
+
+		if (aprocess_list[i].isthread == 0):
+			AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
+			text = font.render ("Start", True, (255, 0, 0))
+			screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
+			AddPromptBox_Passive(coord_x[i]+250, coord_y[i], 50, 40)
+			text = font.render ("Kill", True, (255, 0, 0))
+			screen.blit(text,(coord_x[i]+260,coord_y[i]+10))
+		else:
+			text = font.render ("[Thread]", True, (0, 0, 255))
+			screen.blit(text,(coord_x[i]+180,coord_y[i]+10))
+	lock_aprocess_list.release() #----	
 	
 	return 1
 
@@ -728,12 +754,14 @@ def UpdateCoreAllocationPage():
 	#Red and green color
 	color_red = ((255,0,0))
 	color_green = ((34,139,34))
-	
+
+	lock_aprocess_list.acquire()#----
 	for i in range(0,aprocess_list_len):
 		if (aprocess_list[i].aprunning == 1):
 			colorc = color_green
 		else:
 			colorc = color_red
+		
 		font = pygame.font.SysFont("Roboto Condensed", 30)
 		text = font.render (str(aprocess_list[i].display_name), True, colorc)
 		screen.blit(text,(coord_x[i], coord_y[i]))
@@ -741,6 +769,7 @@ def UpdateCoreAllocationPage():
 		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
 		text = font.render (str(aprocess_list[i].aaffinity), True, (0, 0, 0))
 		screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
+	lock_aprocess_list.release()#----
 
 def CoreAllocationPage():
 	global aprocess_list
@@ -762,6 +791,7 @@ def CoreAllocationPage():
 	text = font.render ("Allocate Rpi Processes", True, (255, 255, 255))
 	screen.blit(text,(30,30))
 	
+	lock_aprocess_list.acquire() #----
 	for i in range(0,aprocess_list_len):
 		font = pygame.font.SysFont("Roboto Condensed", 30)
 		text = font.render (str(aprocess_list[i].display_name), True, (0, 0, 0))
@@ -773,6 +803,7 @@ def CoreAllocationPage():
 		AddPromptBox_Passive(coord_x[i]+250, coord_y[i], 80, 40)
 		text = font.render ("Allocate", True, (255, 0, 0))
 		screen.blit(text,(coord_x[i]+260,coord_y[i]+10))
+	lock_aprocess_list.release() #----
 
 	return 1
 
@@ -945,59 +976,24 @@ def Settings_NetworkSettingsOfDevice():
 		RestartFunction()
 		print "r"
 
+def TogglePowerSetting():
+	global default_power_setting
+
+	if (default_power_setting == 0):
+		default_power_setting = 1
+		#change to 600MHz
+		os.system("sudo cpufreq-set -g powersave")
+	elif (default_power_setting == 1):
+		default_power_setting = 0
+		#change to 1.2GHz
+		os.system("sudo cpufreq-set -g performance")
+
 
 def RestartFunction():
 	screen.blit(get_image('images/shuttingdown.png'),(181,175))
 	pygame.display.flip()
 	time.sleep(3)
 	os.system("reboot")
-
-def Thread_UpdateCoreUsageInfo():
-	global core_usage_tile0
-	global core_usage_tile1
-	global core_usage_rpi
-	while True:
-		if(Current_Page != 2):
-			try:
-				target_rpi = open ('/var/www/html/core_usage_rpi.inc','r')
-				string_rpi = target_rpi.read()
-				core_usage_rpi2 = string_rpi.split(',',5)
-				core_usage_rpi[0] = float(core_usage_rpi2[0])
-				core_usage_rpi[1] = float(core_usage_rpi2[1])
-				core_usage_rpi[2] = float(core_usage_rpi2[2])
-				core_usage_rpi[3] = float(core_usage_rpi2[3])
-				target_rpi.close()
-		
-				target_xmos = open('/var/www/html/core_usage_xmos.inc','r')
-				string_xmos = target_xmos.read()
-				core_usage_xmos = string_xmos.split(',',16)
-				core_usage_tile0[0] = float(core_usage_xmos[0])
-				core_usage_tile0[1] = float(core_usage_xmos[1])
-				core_usage_tile0[2] = float(core_usage_xmos[2])
-				core_usage_tile0[3] = float(core_usage_xmos[3])
-				core_usage_tile0[4] = float(core_usage_xmos[4])
-				core_usage_tile0[5] = float(core_usage_xmos[5])
-				core_usage_tile0[6] = float(core_usage_xmos[6])
-				core_usage_tile0[7] = float(core_usage_xmos[7])
-				core_usage_tile1[0] = float(core_usage_xmos[8])
-				core_usage_tile1[1] = float(core_usage_xmos[9])
-				core_usage_tile1[2] = float(core_usage_xmos[10])
-				core_usage_tile1[3] = float(core_usage_xmos[11])
-				core_usage_tile1[4] = float(core_usage_xmos[12])
-				core_usage_tile1[5] = float(core_usage_xmos[13])
-				core_usage_tile1[6] = float(core_usage_xmos[14])
-				core_usage_tile1[7] = float(core_usage_xmos[15])
-				target_xmos.close()
-
-				#Printing
-				#print core_usage_rpi
-				#print core_usage_tile0
-				#print core_usage_tile1
-				#print "ethernet_alive"
-				
-			except Exception as inst:
-				print inst
-		time.sleep(2)
 
 def UpdatePercentagePage():
 	global core_usage_rpi
@@ -1077,8 +1073,367 @@ def UpdateHomePage():
 	font = pygame.font.SysFont("Roboto Condensed", 25)
 	text = font.render ("Avg : "+str(int(avg_tile1))+"%", True, (100, 100, 100))
 	screen.blit(text,(520,180))
+
 	
+def Thread_TimingCalculation():
+	global aprocess_list
+	global aprocess_list_len
+
+	global total
+	global missed
+	global slack_sum
+	global gross_execution_time
+
+	#Timing Related ---start
+	_thr_DEADLINE = 2.8
+	_thr_START_TIME = 0
+	_thr_END_TIME = 0
+	_thr_EXECUTION_TIME = 0                  
+	_thr_PREV_SLACK_TIME = 0
+	_thr_PERIOD = 2.8
+	#Timing Related ---end
+
+	#Initialize thread and append it to the global process list
+	this_thread = aprocess.aprocess("Thread_TimingCalculation", 1, "../../logs/timing/timing_calculations_timing.inc", 1, "TimingThread", "None", 1)
+	this_thread.UpdateThreadIDAndRunning()
+	this_thread.SetCoreAffinityOfThread("0-3")
+	lock_aprocess_list.acquire() #----
+	aprocess_list.append(this_thread)
+	lock_aprocess_list.release() #----
+	aprocess_list_len = len(aprocess_list)
+
+	while True:
+
+		#Timing Related --start
+		_thr_START_TIME = time.time()
+		_thr_PREV_SLACK_TIME = _thr_START_TIME - _thr_END_TIME
+
+		# TASK CONTENT starts here
+		#accumulator variables: missed count: missed total, count: total
+		missed_ac = 0
+		total_ac = 0
+		slack_sum_ac = 0.0
+		gross_execution_time_ac = 0.0
+
+		# Updates from all apps
+		differences_list = []
 	
+		lock_aprocess_list.acquire() #----
+		for i in range(0,aprocess_list_len):
+			aprocess_list[i].UpdateProcessIDAndRunning()
+			if (aprocess_list[i].traceable == 1 and aprocess_list[i].aprunning == 1):
+				try:
+					file_obj = open(aprocess_list[i].aplogfilepath,"r")
+					data_obj = file_obj.read()
+					int_objs = data_obj.split(' ')
+					exectime_l = float(int_objs[1])
+					period_l = float (int_objs[2])
+					slack_l = float (int_objs[0])
+					if (exectime_l>period_l):
+						missed_ac = missed_ac + 1
+					
+					differences_list.append(float(exectime_l)) #i.e. execution time list
+					slack_sum_ac = slack_sum_ac + slack_l
+					gross_execution_time_ac = gross_execution_time_ac + round(exectime_l,2)
+					total_ac = total_ac + 1
+					#print int_objs
+					file_obj.close()
+				except Exception as inst:
+					#print inst
+					debug = 1
+		lock_aprocess_list.release() #----
+
+		total = total_ac
+		missed = missed_ac
+		slack_sum = slack_sum_ac
+		gross_execution_time = gross_execution_time_ac
+
+		# TASK CONTENT ends here
+
+		#Create timing log
+		try:
+			file_obj = open(str(this_thread.aplogfilepath), "w+r")
+		except Exception as inst:
+			print inst
+		_thr_END_TIME = time.time()
+		_thr_EXECUTION_TIME = _thr_END_TIME - _thr_START_TIME
+		try:
+			file_obj.write(str(_thr_PREV_SLACK_TIME)+' '+str(_thr_EXECUTION_TIME)+' '+str(_thr_PERIOD)+' '+str(_thr_DEADLINE))
+			file_obj.close()
+		except Exception as inst:
+			print inst
+
+		# Delay		
+		if (_thr_PERIOD > _thr_EXECUTION_TIME):
+			time.sleep(_thr_PERIOD - _thr_EXECUTION_TIME)
+
+def Thread_TouchscreenEvents():
+	global pygame
+	global s
+	global screen
+	global Current_Page
+	global New_Current_Page
+	global mykeys
+
+	global current_static_ip
+	global current_gateway
+	global current_ssid
+	global current_psk
+
+	global aprocess_list
+	global aprocess_list_len
+
+	global coord_x
+	global coord_y
+
+	global distribution_type
+
+	global Allocate_Active
+	global SKA_Process_Name
+
+	#Timing Related ---start
+	_thr_DEADLINE = 0.1
+	_thr_START_TIME = 0
+	_thr_END_TIME = 0
+	_thr_EXECUTION_TIME = 0                  
+	_thr_PREV_SLACK_TIME = 0
+	_thr_PERIOD = 0.1
+	#Timing Related ---end
+
+	#Initialize thread and append it to the global process list
+	this_thread = aprocess.aprocess("Thread_TouchscreenEvents", 1, "../../logs/timing/touchscreen_events_timing.inc", 1, "TouchEvents", "None", 1)
+	this_thread.UpdateThreadIDAndRunning()
+	this_thread.SetCoreAffinityOfThread("0-3")
+	lock_aprocess_list.acquire() #----
+	aprocess_list.append(this_thread)
+	lock_aprocess_list.release() #----
+	aprocess_list_len = len(aprocess_list)
+	
+	while True:
+		#Timing Related
+		_thr_START_TIME = time.time()
+		_thr_PREV_SLACK_TIME = _thr_START_TIME - _thr_END_TIME
+
+		#TASK CONTENT starts here
+
+		#Events
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				done = True
+				s.close()
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+				done = True
+				s.close()
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				(mouseX, mouseY) = pygame.mouse.get_pos()
+				#Control screen state using mouseclick coordinates
+				if ((mouseX>710 and mouseX<710+90) and (mouseY>0 and mouseY < 0+94)):
+					New_Current_Page = 2
+				elif ((mouseX>710 and mouseX<710+90) and (mouseY>94 and mouseY < 94+93)):
+					QuitFunction()
+				elif ((mouseX>710 and mouseX<710+90) and (mouseY>187 and mouseY < 187+107)):
+					ShutdownSystem()
+				elif ((mouseX>710 and mouseX<710+90) and (mouseY>294 and mouseY < 294+84)):
+					#Previous_Page
+					if (Current_Page == 1):
+						New_Current_Page = 8
+					elif (Current_Page == 8):
+						New_Current_Page = 7
+					elif (Current_Page == 7):
+						New_Current_Page = 5
+					elif (Current_Page == 5):
+						New_Current_Page = 4
+					elif (Current_Page == 4):
+						New_Current_Page = 3
+					elif (Current_Page == 3):
+						New_Current_Page = 1
+					else:
+						New_Current_Page = 1
+				
+				elif ((mouseX>710 and mouseX<710+90) and (mouseY>378 and mouseY < 378+102)):
+					#Next_Page
+					if (Current_Page == 1): #Homepage
+						New_Current_Page = 3
+					elif (Current_Page == 3):
+						New_Current_Page = 4
+					elif (Current_Page == 4):
+						New_Current_Page = 5
+					elif (Current_Page == 5):
+						New_Current_Page = 7#6
+					elif (Current_Page == 6):
+						New_Current_Page = 7
+					elif (Current_Page == 7):
+						New_Current_Page = 8
+					else:
+						New_Current_Page = 1
+	
+				if (Current_Page == 2): #Settings Page
+					if ((mouseX>220 and mouseX<220+250) and (mouseY>120 and mouseY < 120+40)):
+						#Static IP Prompt
+						current_static_ip = mykeys.run(screen, current_static_ip)
+						UpdateSettingsPageValues()
+					elif ((mouseX>220 and mouseX<220+250) and (mouseY>170 and mouseY < 170+40)):
+						#Gateway Prompt
+						current_gateway = mykeys.run(screen, current_gateway)
+						UpdateSettingsPageValues()
+					elif ((mouseX>220 and mouseX<220+250) and (mouseY>220 and mouseY < 220+40)):
+						#SSID Prompt
+						current_ssid = mykeys.run(screen, current_ssid)
+						UpdateSettingsPageValues()
+					elif ((mouseX>220 and mouseX<220+250) and (mouseY>270 and mouseY < 270+40)):
+						#PSK Prompt
+						current_psk = mykeys.run(screen, current_psk)
+						UpdateSettingsPageValues()
+					elif ((mouseX>243 and mouseX<243+227) and (mouseY>330 and mouseY<330+49)):
+						#Enter button
+						Settings_NetworkSettingsOfDevice()
+				
+				if (Current_Page == 4): #AllocationPage
+					start_w = 60
+					kill_w = 50
+					h=40
+					
+					for i in range(0,aprocess_list_len):
+						if (aprocess_list[i].isthread == 0):
+							if ((mouseX>180+coord_x[i] and mouseX<180+coord_x[i]+start_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
+								StartProcess(aprocess_list[i].apname)
+							if ((mouseX>250+coord_x[i] and mouseX<250+coord_x[i]+kill_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
+								KillProcess(aprocess_list[i].apname)
+	
+				if (Current_Page == 5 ):
+					#CoreAllocationPage
+					start_w = 60
+					kill_w = 80
+					h=40
+	
+					for i in range(0,aprocess_list_len):
+						if ((mouseX>250+coord_x[i] and mouseX<250+coord_x[i]+kill_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
+							AllocateProcessInMainThread(aprocess_list[i].apname)
+	
+				if (Current_Page == 8):
+					if ((mouseX>320 and mouseX<387) and (mouseY>302 and mouseY<332)):
+						TogglePowerSetting()
+
+				if (New_Current_Page == 7): #ChangeDistributionPage
+					if ((mouseX>220 and mouseX<220+350) and (mouseY>280 and mouseY<280+40)):
+						#Automatic (OS) distro
+						distribution_type=2
+						AutomaticDistributionActions()
+					elif ((mouseX>220 and mouseX<220+350) and (mouseY>340 and mouseY<340+40)):
+						#APP4MC distro
+						distribution_type=1
+						APP4MCDistributionActions()
+					elif ((mouseX>220 and mouseX<220+350) and (mouseY>220 and mouseY<220+40)):
+						#sequential distro
+						distribution_type=3
+						SequentialDistributionActions()
+		#Create timing log
+		try:
+			file_obj = open(str(this_thread.aplogfilepath), "w+r")
+		except Exception as inst:
+			print inst
+		_thr_END_TIME = time.time()
+		_thr_EXECUTION_TIME = _thr_END_TIME - _thr_START_TIME
+		try:
+			file_obj.write(str(_thr_PREV_SLACK_TIME)+' '+str(_thr_EXECUTION_TIME)+' '+str(_thr_PERIOD)+' '+str(_thr_DEADLINE))
+			file_obj.close()
+		except Exception as inst:
+			print inst
+
+		# Delay		
+		if (_thr_PERIOD > _thr_EXECUTION_TIME):
+			time.sleep(_thr_PERIOD - _thr_EXECUTION_TIME)
+
+		
+
+def Thread_UpdateCoreUsageInfo():
+	global core_usage_tile0
+	global core_usage_tile1
+	global core_usage_rpi
+	global Current_Page
+
+	#Timing Related ---start
+	_thr_DEADLINE = 2
+	_thr_START_TIME = 0
+	_thr_END_TIME = 0
+	_thr_EXECUTION_TIME = 0                  
+	_thr_PREV_SLACK_TIME = 0
+	_thr_PERIOD = 2
+	#Timing Related ---end
+
+	#Initialize thread and append it to the global process list
+	this_thread = aprocess.aprocess("Thread_UpdateCoreUsageInfo", 1, "../../logs/timing/update_util_timing.inc", 1, "UpdateUtil", "None", 1)
+	this_thread.UpdateThreadIDAndRunning()
+	this_thread.SetCoreAffinityOfThread("0-3")
+	lock_aprocess_list.acquire() #----
+	aprocess_list.append(this_thread)
+	lock_aprocess_list.release() #----
+	aprocess_list_len = len(aprocess_list)
+
+	while True:
+		#Timing Related
+		_thr_START_TIME = time.time()
+		_thr_PREV_SLACK_TIME = _thr_START_TIME - _thr_END_TIME
+
+		#TASK CONTENT starts here
+		if(Current_Page != 2):
+			try:
+				target_rpi = open ('/var/www/html/core_usage_rpi.inc','r')
+				string_rpi = target_rpi.read()
+				core_usage_rpi2 = string_rpi.split(',',5)
+				core_usage_rpi[0] = float(core_usage_rpi2[0])
+				core_usage_rpi[1] = float(core_usage_rpi2[1])
+				core_usage_rpi[2] = float(core_usage_rpi2[2])
+				core_usage_rpi[3] = float(core_usage_rpi2[3])
+				target_rpi.close()
+		
+				target_xmos = open('/var/www/html/core_usage_xmos.inc','r')
+				string_xmos = target_xmos.read()
+				core_usage_xmos = string_xmos.split(',',16)
+				core_usage_tile0[0] = float(core_usage_xmos[0])
+				core_usage_tile0[1] = float(core_usage_xmos[1])
+				core_usage_tile0[2] = float(core_usage_xmos[2])
+				core_usage_tile0[3] = float(core_usage_xmos[3])
+				core_usage_tile0[4] = float(core_usage_xmos[4])
+				core_usage_tile0[5] = float(core_usage_xmos[5])
+				core_usage_tile0[6] = float(core_usage_xmos[6])
+				core_usage_tile0[7] = float(core_usage_xmos[7])
+				core_usage_tile1[0] = float(core_usage_xmos[8])
+				core_usage_tile1[1] = float(core_usage_xmos[9])
+				core_usage_tile1[2] = float(core_usage_xmos[10])
+				core_usage_tile1[3] = float(core_usage_xmos[11])
+				core_usage_tile1[4] = float(core_usage_xmos[12])
+				core_usage_tile1[5] = float(core_usage_xmos[13])
+				core_usage_tile1[6] = float(core_usage_xmos[14])
+				core_usage_tile1[7] = float(core_usage_xmos[15])
+				target_xmos.close()
+
+				#Printing
+				#print core_usage_rpi
+				#print core_usage_tile0
+				#print core_usage_tile1
+				#print "ethernet_alive"
+				
+			except Exception as inst:
+				print inst
+
+		#Create timing log
+		try:
+			file_obj = open(str(this_thread.aplogfilepath), "w+r")
+		except Exception as inst:
+			print inst
+		_thr_END_TIME = time.time()
+		_thr_EXECUTION_TIME = _thr_END_TIME - _thr_START_TIME
+		try:
+			file_obj.write(str(_thr_PREV_SLACK_TIME)+' '+str(_thr_EXECUTION_TIME)+' '+str(_thr_PERIOD)+' '+str(_thr_DEADLINE))
+			file_obj.close()
+		except Exception as inst:
+			print inst
+
+		# Delay		
+		if (_thr_PERIOD > _thr_EXECUTION_TIME):
+			time.sleep(_thr_PERIOD - _thr_EXECUTION_TIME)
+
 #Main
 
 cmdargs = len ( sys.argv )
@@ -1135,116 +1490,15 @@ New_Current_Page = 1
 HomePage()
 
 #Thread start
-threading.Thread(target=Thread_UpdateCoreUsageInfo).start()
+threading.Thread(target=Thread_UpdateCoreUsageInfo, name=Thread_UpdateCoreUsageInfo).start()
+time.sleep(1)
+threading.Thread(target=Thread_TimingCalculation, name=Thread_TimingCalculation).start()
+time.sleep(1)
+threading.Thread(target=Thread_TouchscreenEvents, name=Thread_TouchscreenEvents).start()
+time.sleep(1)
 
 while not done:
-	#Events
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			done = True
-			s.close()
-		if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-			done = True
-			s.close()
-		if event.type == pygame.MOUSEBUTTONDOWN:
-			(mouseX, mouseY) = pygame.mouse.get_pos()
-			#Control screen state using mouseclick coordinates
-			if ((mouseX>710 and mouseX<710+90) and (mouseY>0 and mouseY < 0+94)):
-				New_Current_Page = 2
-			elif ((mouseX>710 and mouseX<710+90) and (mouseY>94 and mouseY < 94+93)):
-				QuitFunction()
-			elif ((mouseX>710 and mouseX<710+90) and (mouseY>187 and mouseY < 187+107)):
-				ShutdownSystem()
-			elif ((mouseX>710 and mouseX<710+90) and (mouseY>294 and mouseY < 294+84)):
-				#Previous_Page
-				if (Current_Page == 1):
-					New_Current_Page = 8
-				elif (Current_Page == 8):
-					New_Current_Page = 7
-				elif (Current_Page == 7):
-					New_Current_Page = 5
-				elif (Current_Page == 5):
-					New_Current_Page = 4
-				elif (Current_Page == 4):
-					New_Current_Page = 3
-				elif (Current_Page == 3):
-					New_Current_Page = 1
-				else:
-					New_Current_Page = 1
-			
-			elif ((mouseX>710 and mouseX<710+90) and (mouseY>378 and mouseY < 378+102)):
-				#Next_Page
-				if (Current_Page == 1): #Homepage
-					New_Current_Page = 3
-				elif (Current_Page == 3):
-					New_Current_Page = 4
-				elif (Current_Page == 4):
-					New_Current_Page = 5
-				elif (Current_Page == 5):
-					New_Current_Page = 7#6
-				elif (Current_Page == 6):
-					New_Current_Page = 7
-				elif (Current_Page == 7):
-					New_Current_Page = 8
-				else:
-					New_Current_Page = 1
-
-			if (Current_Page == 2): #Settings Page
-				if ((mouseX>220 and mouseX<220+250) and (mouseY>120 and mouseY < 120+40)):
-					#Static IP Prompt
-					current_static_ip = mykeys.run(screen, current_static_ip)
-					UpdateSettingsPageValues()
-				elif ((mouseX>220 and mouseX<220+250) and (mouseY>170 and mouseY < 170+40)):
-					#Gateway Prompt
-					current_gateway = mykeys.run(screen, current_gateway)
-					UpdateSettingsPageValues()
-				elif ((mouseX>220 and mouseX<220+250) and (mouseY>220 and mouseY < 220+40)):
-					#SSID Prompt
-					current_ssid = mykeys.run(screen, current_ssid)
-					UpdateSettingsPageValues()
-				elif ((mouseX>220 and mouseX<220+250) and (mouseY>270 and mouseY < 270+40)):
-					#PSK Prompt
-					current_psk = mykeys.run(screen, current_psk)
-					UpdateSettingsPageValues()
-				elif ((mouseX>243 and mouseX<243+227) and (mouseY>330 and mouseY<330+49)):
-					#Enter button
-					Settings_NetworkSettingsOfDevice()
-			
-			if (Current_Page == 4): #AllocationPage
-				start_w = 60
-				kill_w = 50
-				h=40
-				
-				for i in range(0,aprocess_list_len):
-					if ((mouseX>180+coord_x[i] and mouseX<180+coord_x[i]+start_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
-						StartProcess(aprocess_list[i].apname)
-					if ((mouseX>250+coord_x[i] and mouseX<250+coord_x[i]+kill_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
-						KillProcess(aprocess_list[i].apname)
-
-			if (Current_Page == 5 ):
-				#CoreAllocationPage
-				start_w = 60
-				kill_w = 80
-				h=40
-
-				for i in range(0,aprocess_list_len):
-					if ((mouseX>250+coord_x[i] and mouseX<250+coord_x[i]+kill_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
-						AllocateProcess(aprocess_list[i].apname)
-
-			if (New_Current_Page == 7): #ChangeDistributionPage
-				if ((mouseX>220 and mouseX<220+350) and (mouseY>280 and mouseY<280+40)):
-					#Automatic (OS) distro
-					distribution_type=2
-					AutomaticDistributionActions()
-				elif ((mouseX>220 and mouseX<220+350) and (mouseY>340 and mouseY<340+40)):
-					#APP4MC distro
-					distribution_type=1
-					APP4MCDistributionActions()
-				elif ((mouseX>220 and mouseX<220+350) and (mouseY>220 and mouseY<220+40)):
-					#sequential distro
-					distribution_type=3
-					SequentialDistributionActions()
-
+	
 	if (Current_Page == 3):
 		UpdatePercentagePage()
 	elif (Current_Page == 1):
@@ -1302,6 +1556,11 @@ while not done:
 			ShowDistributionPage()
 			
 		Current_Page = New_Current_Page
+
+	#Allocation in main due to [xcb] error
+	if (Allocate_Active == 1):
+		Allocate_Active = 0
+		AllocateProcess(SKA_Process_Name)
 
 	pygame.display.flip()
 

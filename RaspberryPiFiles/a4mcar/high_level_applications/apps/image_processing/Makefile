@@ -103,19 +103,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named command
-
-# Build rule for target.
-command: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 command
-.PHONY : command
-
-# fast build rule for target.
-command/fast:
-	$(MAKE) -f CMakeFiles/command.dir/build.make CMakeFiles/command.dir/build
-.PHONY : command/fast
-
-#=============================================================================
 # Target rules for targets named image_processing
 
 # Build rule for target.
@@ -127,67 +114,6 @@ image_processing: cmake_check_build_system
 image_processing/fast:
 	$(MAKE) -f CMakeFiles/image_processing.dir/build.make CMakeFiles/image_processing.dir/build
 .PHONY : image_processing/fast
-
-#=============================================================================
-# Target rules for targets named pigpio
-
-# Build rule for target.
-pigpio: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 pigpio
-.PHONY : pigpio
-
-# fast build rule for target.
-pigpio/fast:
-	$(MAKE) -f CMakeFiles/pigpio.dir/build.make CMakeFiles/pigpio.dir/build
-.PHONY : pigpio/fast
-
-home/pi/opencv_workspace/pigpio/command.o: home/pi/opencv_workspace/pigpio/command.c.o
-.PHONY : home/pi/opencv_workspace/pigpio/command.o
-
-# target to build an object file
-home/pi/opencv_workspace/pigpio/command.c.o:
-	$(MAKE) -f CMakeFiles/command.dir/build.make CMakeFiles/command.dir/home/pi/opencv_workspace/pigpio/command.c.o
-.PHONY : home/pi/opencv_workspace/pigpio/command.c.o
-
-home/pi/opencv_workspace/pigpio/command.i: home/pi/opencv_workspace/pigpio/command.c.i
-.PHONY : home/pi/opencv_workspace/pigpio/command.i
-
-# target to preprocess a source file
-home/pi/opencv_workspace/pigpio/command.c.i:
-	$(MAKE) -f CMakeFiles/command.dir/build.make CMakeFiles/command.dir/home/pi/opencv_workspace/pigpio/command.c.i
-.PHONY : home/pi/opencv_workspace/pigpio/command.c.i
-
-home/pi/opencv_workspace/pigpio/command.s: home/pi/opencv_workspace/pigpio/command.c.s
-.PHONY : home/pi/opencv_workspace/pigpio/command.s
-
-# target to generate assembly for a file
-home/pi/opencv_workspace/pigpio/command.c.s:
-	$(MAKE) -f CMakeFiles/command.dir/build.make CMakeFiles/command.dir/home/pi/opencv_workspace/pigpio/command.c.s
-.PHONY : home/pi/opencv_workspace/pigpio/command.c.s
-
-home/pi/opencv_workspace/pigpio/pigpio.o: home/pi/opencv_workspace/pigpio/pigpio.c.o
-.PHONY : home/pi/opencv_workspace/pigpio/pigpio.o
-
-# target to build an object file
-home/pi/opencv_workspace/pigpio/pigpio.c.o:
-	$(MAKE) -f CMakeFiles/pigpio.dir/build.make CMakeFiles/pigpio.dir/home/pi/opencv_workspace/pigpio/pigpio.c.o
-.PHONY : home/pi/opencv_workspace/pigpio/pigpio.c.o
-
-home/pi/opencv_workspace/pigpio/pigpio.i: home/pi/opencv_workspace/pigpio/pigpio.c.i
-.PHONY : home/pi/opencv_workspace/pigpio/pigpio.i
-
-# target to preprocess a source file
-home/pi/opencv_workspace/pigpio/pigpio.c.i:
-	$(MAKE) -f CMakeFiles/pigpio.dir/build.make CMakeFiles/pigpio.dir/home/pi/opencv_workspace/pigpio/pigpio.c.i
-.PHONY : home/pi/opencv_workspace/pigpio/pigpio.c.i
-
-home/pi/opencv_workspace/pigpio/pigpio.s: home/pi/opencv_workspace/pigpio/pigpio.c.s
-.PHONY : home/pi/opencv_workspace/pigpio/pigpio.s
-
-# target to generate assembly for a file
-home/pi/opencv_workspace/pigpio/pigpio.c.s:
-	$(MAKE) -f CMakeFiles/pigpio.dir/build.make CMakeFiles/pigpio.dir/home/pi/opencv_workspace/pigpio/pigpio.c.s
-.PHONY : home/pi/opencv_workspace/pigpio/pigpio.c.s
 
 image_processing.o: image_processing.cpp.o
 .PHONY : image_processing.o
@@ -219,17 +145,9 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... command"
 	@echo "... edit_cache"
 	@echo "... image_processing"
-	@echo "... pigpio"
 	@echo "... rebuild_cache"
-	@echo "... home/pi/opencv_workspace/pigpio/command.o"
-	@echo "... home/pi/opencv_workspace/pigpio/command.i"
-	@echo "... home/pi/opencv_workspace/pigpio/command.s"
-	@echo "... home/pi/opencv_workspace/pigpio/pigpio.o"
-	@echo "... home/pi/opencv_workspace/pigpio/pigpio.i"
-	@echo "... home/pi/opencv_workspace/pigpio/pigpio.s"
 	@echo "... image_processing.o"
 	@echo "... image_processing.i"
 	@echo "... image_processing.s"

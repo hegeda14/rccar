@@ -18,11 +18,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.0/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.0/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.0/Modules/CMakeCommonLanguageInclude.cmake"
-  "/usr/share/cmake-3.0/Modules/CMakeConfigurableFile.in"
   "/usr/share/cmake-3.0/Modules/CMakeGenericSystem.cmake"
   "/usr/share/cmake-3.0/Modules/CMakeParseArguments.cmake"
   "/usr/share/cmake-3.0/Modules/CMakeSystemSpecificInformation.cmake"
-  "/usr/share/cmake-3.0/Modules/CheckFunctionExists.c"
   "/usr/share/cmake-3.0/Modules/CheckIncludeFiles.cmake"
   "/usr/share/cmake-3.0/Modules/CheckLibraryExists.cmake"
   "/usr/share/cmake-3.0/Modules/CheckSymbolExists.cmake"
@@ -52,7 +50,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/command.dir/DependInfo.cmake"
   "CMakeFiles/image_processing.dir/DependInfo.cmake"
-  "CMakeFiles/pigpio.dir/DependInfo.cmake"
   )

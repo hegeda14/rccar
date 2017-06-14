@@ -10,8 +10,6 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles/pigpio.dir/DependInfo.cmake"
-  "/home/pi/a4mcar/high_level_applications/apps/image_processing/CMakeFiles/command.dir/DependInfo.cmake"
   )
 
 # The include file search paths:
@@ -37,7 +35,6 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "/home/pi/opencv_workspace/opencv/modules/calib3d/include"
   "/home/pi/opencv_workspace/opencv/modules/stitching/include"
   "/home/pi/opencv_workspace/opencv/modules/videostab/include"
-  "/home/pi/opencv_workspace/pigpio"
   )
 set(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
 set(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
