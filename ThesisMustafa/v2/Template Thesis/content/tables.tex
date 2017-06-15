@@ -2,66 +2,78 @@
 \begin{table}[h!]
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		\textbf{Process Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+		\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
 		\hline
 		\hline
-		Web Server & 250000 &  Sporadic &  Manual & 1\\
+		Camera Stream & 1500000 &  Sporadic [1s periodic]&  Manual & 1\\
 		\hline
 		\hline
-		Core Recorder & 125000 &  Periodic 3s &  Manual & 1\\
+		Web Server & 500000 &  Sporadic [1s periodic]&  Manual & 1\\
+		\hline
+		\hline
+		Core Recorder & 525000 &  Periodic 3s &  Manual & 1\\
 		\hline
 		\hline
 		Ethernet Client & 120000 &  Periodic 0.01s &  Manual & 1\\
 		\hline
 		\hline
-		VNC Server & 10000 &  Sporadic &  Manual & 1\\
+		VNC Server & 10000000 &  Sporadic [1s periodic] &  Manual & 1\\
 		\hline
 		\hline
-		TouchscreenDisplay & 1130000 &  Periodic 0.1s &  Manual & 1\\
+		Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  Manual & 1\\
 		\hline
 		\hline
-		ImageProcess & 450000000 &  Periodic 0.05s &  Manual & 1\\
+		Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  Manual & 1\\
 		\hline
 		\hline
-		CycleWaster25\texttt{\_}1 & 519000000 &  Periodic 1.4s &  Manual & 1\\
+		Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  Manual & 1\\
+		\hline
+		\hline
+		Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  Manual & 1\\
+		\hline
+		\hline
+		ImageProcess & 450000000 &  Periodic 0.65s &  Manual & 1\\
+		\hline
+		\hline
+		CycleWaster25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  Manual & 1\\
 		\hline
 		\hline
 		CycleWaster25\texttt{\_}2 &
-		519000000 & 
+		198000000 & 
 		Periodic 1.4s & 
 		Manual &
 		1\\
 		\hline
 		\hline
 		CycleWaster25\texttt{\_}3 &
-		519000000 & 
+		198000000 & 
 		Periodic 1.4s & 
 		Manual &
 		1\\
 		\hline
 		\hline
 		CycleWaster25\texttt{\_}4 &
-		519000000 & 
+		198000000 & 
 		Periodic 1.4s & 
 		Manual &
 		1\\
 		\hline
 		\hline
 		CycleWaster25\texttt{\_}5 &
-		519000000 & 
+		198000000 & 
 		Periodic 1.4s & 
 		Manual &
 		1\\
 		\hline
 		\hline
 		CycleWaster100 &
-		519000000 & 
+		198000000 & 
 		Periodic 0.5s & 
 		Manual &
 		1\\
 		\hline
 	\end{tabular}
-	\caption{HLM-Distribution-A details in High-level Module}
+	\caption{HLM-Distribution-A details in High-level Module (with Sporadic activation assumptions)}
 	\label{tbl_HLM_Distribution_A}
 \end{table}
 }

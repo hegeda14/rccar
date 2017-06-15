@@ -922,7 +922,7 @@ For demonstration of parallelization of an image processing process along with s
 	\label{fig:traffic_cone_detection}
 \end{figure}
 
-The applied transformations and how the traffic cone is detected as demonstration is illustrated with the Figure \ref{fig:imageproc}. The idea that is depicted is to retrieve contours of the possible objects and then determining whether it is a traffic cone or not by filtering those contours by their sizes and aspect ratios. In the figure, it is seen that several transformations are applied for this purpose. Creating the threshold image and then subtracting the background (steps: Background AND, Flood Fill, Image Inversion, Bitwise OR), the image is prepared for the canny edge detection step. Canny Edge Detector, i.e. 'Canny' function is able to find edges of desired objects. By using edges, contours can be found which represents the outlines of objects. By judging the contours on their sizes and aspect ratios the desired objects are detected.
+The applied transformations and how the traffic cone is detected as demonstration is illustrated with the Figure \ref{fig:imageproc}. The idea that is depicted is to retrieve contours of the possible objects and then determining whether it is a traffic cone or not by filtering those contours by their sizes and aspect ratios. In the figure, it is seen that several transformations are applied for this purpose. Creating the threshold image and then subtracting the background (steps: Background AND, Flood Fill, Image Inversion, Bitwise OR), the image is prepared for the canny edge detection step. Canny Edge Detector, i.e. 'Canny' function is able to find edges of desired objects. By using edges, contours can be found which represent the outlines of objects. By judging the contours on their sizes and aspect ratios the desired objects are detected.
 
 \begin{figure}[!ht]
 	\centering
@@ -1413,7 +1413,7 @@ Reading the file and making the changes required is done by using the function g
 
 \subsection{Discovering Energy Consumption Features}
 %cpufrequtils
-One of the biggest advantages of achieving a better core utilization is to invoke energy saving features of processors by running CPU at lower clock speeds and lower voltages. As mentioned before, computers that run on Linux platform provide a feature that is called DVFS (Dynamic Voltage and Freuqency Scaling) \cite{dvfsieee} which is a processors' ability to dynamically scale its frequency and operating voltage depending on the load. DVFS can affect hardware peripheral chips apart from the processor. Here, Figure \ref{fig:dvfsexplanation} \cite{dvfspaper} depicts how using DVFS can improve the energy consumption in a system.
+One of the biggest advantages of achieving a better core utilization is to invoke energy saving features of processors by running CPU at lower clock speeds and lower voltages. As mentioned before, computers that run on Linux platform provide a feature that is called DVFS (Dynamic Voltage and Freuqency Scaling) \cite{dvfsieee} which is a processor's ability to dynamically scale its frequency and operating voltage depending on the load. DVFS can affect hardware peripheral chips apart from the processor. Here, Figure \ref{fig:dvfsexplanation} \cite{dvfspaper} depicts how using DVFS can improve the energy consumption in a system.
 
 \begin{figure}[!ht]
 	\centering
@@ -1526,7 +1526,7 @@ Some text \\
 \subsubsection{HLM-Distribution-A}
 \hlmdistrA
 
-\subsubsection{Comparison of Low-level Module Distributions}
+\subsubsection{Comparison of High-level Module Distributions}
 \hlcomparison
 
 \subsection{Evaluation of Low Level Module Distributions}
