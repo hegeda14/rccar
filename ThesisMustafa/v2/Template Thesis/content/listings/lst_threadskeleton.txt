@@ -1,0 +1,24 @@
+def Thread_Name():
+	global aprocess_list
+	global aprocess_list_len
+	global SharedVariable2
+	
+	#Initialize thread and append it to the global process list
+	this_thread = aprocess.aprocess("Thread_Name", 1, "file.inc", 1, "Name", "None", 1)
+	this_thread.UpdateThreadIDAndRunning()
+	this_thread.SetCoreAffinityOfThread("0-3")
+	lock_aprocess_list.acquire() 
+	aprocess_list.append(this_thread)
+	lock_aprocess_list.release() 
+	aprocess_list_len = len(aprocess_list)
+	
+	while True:
+		_thr_START_TIME = time.time()
+		_thr_PREV_SLACK_TIME = _thr_START_TIME - _thr_END_TIME
+		#TASK CONTENT starts here
+		# ...
+		#TASK CONTENT ends here
+		CreateTimingLog()
+		#Delay		
+		if (_thr_PERIOD > _thr_EXECUTION_TIME):
+			time.sleep(_thr_PERIOD - _thr_EXECUTION_TIME)

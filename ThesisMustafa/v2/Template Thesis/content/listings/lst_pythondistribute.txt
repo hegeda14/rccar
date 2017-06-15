@@ -1,12 +1,25 @@
 def APP4MCDistributionActions():
-        try:
-                with open('coredef_list.a4p','rb') as coredef_list:
-                        for line in coredef_list:
-                                words = line.strip('\n').split(' ')
-                                if (len(words)>3):
-                                        try:
-                                                AllocateProcessWithCore(words[2], words[5])
-                                        except Exception as inst:
-                                                print inst
-        except Exception as inst:
-                print inst
+	global aprocess_list
+	global aprocess_list_len
+	process_names = []
+	process_affinities = []
+	try:
+		with open('../../logs/core_mapping/coredef_list.a4p','rb') as coredef_list:
+			for line in coredef_list:
+				words = line.strip('\n').split(' ')
+				if (len(words)>3):
+					process_names.append(words[2].strip('\n'))
+					process_affinities.append(words[5].strip('\n'))
+	except Exception as inst:
+		print inst
+	lock_aprocess_list.acquire()
+	for i in range(0, aprocess_list_len):
+		for k in range(0, len(process_names)):
+			if (aprocess_list[i].apname == process_names[k] and aprocess_list[i].aprunning == 1):
+				if (aprocess_list[i].apid != "NaN" and aprocess_list[i].apid != 0):
+					try:
+						os.system("sudo taskset -pc "+str(process_affinities[k])+" "+str(aprocess_list[i].apid))
+					except Exception as inst:
+						print inst
+	lock_aprocess_list.release()
+	UpdateCoreAffinityOfProcesses()

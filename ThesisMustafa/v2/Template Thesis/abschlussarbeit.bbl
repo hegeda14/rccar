@@ -42,6 +42,9 @@ https://www.gliwa.com/downloads/timing%20poster.pdf.
 \bibitem{rtos1}
 http://rtos.com/pdfs/what\texttt{\_}is\texttt{\_}an\texttt{\_}rtos\texttt{\_}and\texttt{\_}why\texttt{\_}use\texttt{\_}one\texttt{\_}embedded.com\texttt{\_}.pdf.
 
+\bibitem{pythonthreading}
+https://docs.python.org/2/library/threading.html.
+
 \bibitem{rtrpi1}
 https://stackoverflow.com/questions/22241264/what-makes-a-kernel-os-real-time?rq=1.
 
@@ -195,6 +198,9 @@ https://github.com/jacksonliam/mjpg-streamer.
 
 \bibitem{jqplot}
 http://www.jqplot.com/.
+
+\bibitem{opencv}
+http://opencv.org/.
 
 \bibitem{pygame}
 https://www.pygame.org/.

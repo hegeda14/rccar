@@ -137,6 +137,15 @@ Warning--entry type for "rtrpi2" isn't style-file defined
 --line 597 of file bib/bib.bib
 Warning--entry type for "app4mchelp" isn't style-file defined
 --line 604 of file bib/bib.bib
+Warning--entry type for "pythonthreading" isn't style-file defined
+--line 619 of file bib/bib.bib
+Warning--entry type for "opencv" isn't style-file defined
+--line 626 of file bib/bib.bib
+I was expecting a `,' or a `}'---line 628 of file bib/bib.bib
+ :  
+ :  url={http://opencv.org/}
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
 Warning--empty note in dsm
 Warning--empty note in lukas1
 Warning--empty note in multicore1
@@ -145,4 +154,4 @@ Warning--empty note in sysml
 Warning--empty note in apacheguide
 Warning--empty note in dynamicanalysisphd
 Warning--empty booktitle in dvfspaper
-(There were 76 warnings)
+(There was 1 error message)
