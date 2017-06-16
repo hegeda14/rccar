@@ -52,5 +52,8 @@ text_file.close()
 text_file = open("../../logs/timing/image_processing_timing.inc","w")
 text_file.write("0 0 0 0")
 text_file.close()
+text_file = open("../../logs/image_processing/detection.inc","w")
+text_file.write("undetected")
+text_file.close()
 
 

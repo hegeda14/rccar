@@ -289,7 +289,7 @@ int main(int argc, char *argv[])
 		//converting the original image into grayscale
 		imgGrayScale.create(frame.size(), frame.type());
 		cvtColor(frame, imgGrayScale, CV_BGR2GRAY);
-		bitwise_and(imgRedThresh, imgGrayScale, imgGrayScale);//??Degistirildi bitwise_and(imgResultingThresh, imgGrayScale, imgGrayScale);
+		bitwise_and(imgRedThresh, imgGrayScale, imgGrayScale);
 
 		// Floodfill from point (0, 0)
 		Mat im_floodfill = imgGrayScale.clone();
@@ -391,7 +391,10 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-
+			ofstream myfile;
+			myfile.open("../../logs/image_processing/detection.inc");
+			myfile << "undetected";
+			myfile.close();
 		}
 		second_last_maximum = second_maximum;
 		last_maximum = maximum;
@@ -486,6 +489,10 @@ int main(int argc, char *argv[])
 			ofstream myfile;
 			myfile.open("../../logs/driving/driving_command.inc");
 			myfile << "S00A00FE";
+			myfile.close();
+			
+			myfile.open("../../logs/image_processing/detection.inc");
+			myfile << "detected";
 			myfile.close();
 			send_flag = 0;
 		}

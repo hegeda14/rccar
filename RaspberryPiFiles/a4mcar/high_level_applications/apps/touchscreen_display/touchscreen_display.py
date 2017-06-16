@@ -94,6 +94,9 @@ default_power_setting = 0
 Allocate_Active = 0
 SKA_Process_Name = ""
 
+#To show image detection status
+ImageProcessingIndicator = pygame.Rect(700,10,10,10)
+
 #Timing Related ---start
 _DEADLINE = 0.5
 _START_TIME = 0
@@ -1075,6 +1078,18 @@ def UpdateHomePage():
 	screen.blit(text,(520,180))
 
 	
+def ImageProcessingUpdate():
+	global screen
+	myfile_str = ""
+	with open('../../logs/image_processing/detection.inc', 'r') as myfile:
+		myfile_str = myfile.read()
+		myfile.close()
+	if (myfile_str == "detected"):
+		screen.fill(Color("red"), ImageProcessingIndicator)
+	else:
+		screen.fill(Color("green"), ImageProcessingIndicator)
+	
+	
 def Thread_TimingCalculation():
 	global aprocess_list
 	global aprocess_list_len
@@ -1561,6 +1576,8 @@ while not done:
 	if (Allocate_Active == 1):
 		Allocate_Active = 0
 		AllocateProcess(SKA_Process_Name)
+		
+	ImageProcessingUpdate()
 
 	pygame.display.flip()
 
