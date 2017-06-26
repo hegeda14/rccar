@@ -1524,17 +1524,71 @@ Some text \\
 %Give Everything in a table, which core mapped, period, execution time rougly, cpu core usage roughly.
 %Also use data from TraceCompass
 \subsection{Evaluation of High Level Module Distributions}
-\subsubsection{HLM-Distribution-A}
-\hlmdistrA
+
+\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distributions hlmdistrInitial}
+
+Initial distribution for high-level module, hlmdistrInitial, involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Since both the image processing process and the camera stream use the Raspberry Pi camera, this distribution demonstrates how mapping will result when the camera is used by Camera Stream. That is to say, image processing application is not running but will be given with another distribution. 
+
+Three mapping results are compared: OS distribution where core affinities are not constrained, Sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping abilities. With the Tables \ref{tbl_hlmdistrInitialOS}, \ref{tbl_hlmdistrInitialSequential}, and \ref{tbl_hlmdistrInitialAFP}, process and thread details and mapping set-up are given for the hlmdistrInitial distribution mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
+
+\hlmdistrInitialOS
+
+\hlmdistrInitialSequential
+
+\hlmdistrInitialAFP
+
+\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distributions hlmdistrInitial2}
+
+The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. hlmdistrInitial2 set-up for OS, Sequential, and APP4MC-based mapping are given with the Tables \ref{tbl_hlmdistrInitial2OS}, \ref{tbl_hlmdistrInitial2Sequential}, and \ref{tbl_hlmdistrInitial2AFP}, respectively.
+
+\hlmdistrInitialTOS
+
+\hlmdistrInitialTSequential
+
+\hlmdistrInitialTAFP
+
+\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution hlmdistrInitial}
+
+Initial distribution for high-level module, hlmdistrInitial, involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Three mapping results are compared: OS distribution where core affinities are not constrained, Sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping abilities. With the Tables \ref{tbl_hlmdistrInitialOS}, \ref{tbl_hlmdistrInitialSequential}, and \ref{tbl_hlmdistrInitialAFP}, process and thread details and mapping set-up are given for the hlmdistrInitial distribution mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
+
+\hlmdistrInitialOS
+
+\hlmdistrInitialSequential
+
+\hlmdistrInitialAFP
+
+\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution hlmdistrA}
+
+In the distribution hlmdistrA, the A4MCAR is partially stressed. This is achieved by introducing two dummy loads. After this introduction, the APP4MC model is updated and results are obtained once more. The Tables \ref{tbl_hlmdistrAOS}, \ref{tbl_hlmdistrASequential}, \ref{tbl_hlmdistrAAFP} show this distribution details mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
+
+\hlmdistrAOS
+
+\hlmdistrASequential
+
+\hlmdistrAAFP
+
+\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution hlmdistrB}
+
+The distribution hlmdistrB represents the distribution in which all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. By using APP4MC once again to model this fully stressed state, OS, Sequential, and APP4MC mapping set-up are given with the Tables \ref{tbl_hlmdistrBOS}, \ref{tbl_hlmdistrBSequential}, and \ref{tbl_hlmdistrBAFP}, respectively.
+
+\hlmdistrBOS
+
+\hlmdistrBSequential
+
+\hlmdistrBAFP
+
 
 \subsubsection{Comparison of High-level Module Distributions}
+Some text
 \hlcomparison
 
 \subsection{Evaluation of Low Level Module Distributions}
 \subsubsection{LLM-Distribution-A}
+Some text
 \llmdistrA
 
 \subsubsection{Comparison of Low-level Module Distributions}
+Some text
 \llcomparison
 
 \section{Results}

@@ -1,85 +1,621 @@
-\newcommand{\hlmdistrA}{
-\begin{table}[h!]
+\newcommand{\hlmdistrInitialOS}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Camera Stream & 1500000 &  Sporadic [1s periodic]&  OS & 0-3\\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  OS & 0-3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  OS & 0-3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s &  OS & 0-3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  OS & 0-3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrInitial distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrInitialOS}
+	\end{table}
+}
+
+\newcommand{\hlmdistrInitialSequential}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Camera Stream & 1500000 &  Sporadic [1s periodic]&  Sequential & 3\\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  Sequential & 3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  Sequential & 3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s &  Sequential & 3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  Sequential & 3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrInitial distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrInitialSequential}
+	\end{table}
+}
+
+
+\newcommand{\hlmdistrInitialAFP}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Camera Stream & 1500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  APP4MC & 3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s &  APP4MC & 3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  APP4MC & 3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrInitial distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrInitialAFP}
+	\end{table}
+}
+
+\newcommand{\hlmdistrInitialTOS}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  OS & 0-3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  OS & 0-3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s &  OS & 0-3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  OS & 0-3\\
+			\hline
+			\hline
+			ImageProcess & 450000000 &  Periodic 0.65s &  OS & 0-3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrInitial2 distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrInitial2OS}
+	\end{table}
+}
+
+\newcommand{\hlmdistrInitialTSequential}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  Sequential & 3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  Sequential & 3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s &  Sequential & 3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  Sequential & 3\\
+			\hline
+			\hline
+			ImageProcess & 450000000 &  Periodic 0.65s &  Sequential & 3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrInitial2 distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrInitial2Sequential}
+	\end{table}
+}
+
+
+\newcommand{\hlmdistrInitialTAFP}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  APP4MC & 3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s &  APP4MC & 3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  APP4MC & 3\\
+			\hline
+			\hline
+			ImageProcess & 450000000 &  Periodic 0.65s &  APP4MC & 3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrInitial2 distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrInitial2AFP}
+	\end{table}
+}
+
+\newcommand{\hlmdistrAOS}{
+\begin{table}[!ht]
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
 		\hline
 		\hline
-		Camera Stream & 1500000 &  Sporadic [1s periodic]&  Manual & 1\\
+		Web Server & 500000 &  Sporadic [1s periodic]&  OS & 0-3\\
 		\hline
 		\hline
-		Web Server & 500000 &  Sporadic [1s periodic]&  Manual & 1\\
+		Core Recorder & 525000 &  Periodic 3s &  OS & 0-3\\
 		\hline
 		\hline
-		Core Recorder & 525000 &  Periodic 3s &  Manual & 1\\
+		Ethernet Client & 120000 &  Periodic 0.01s &  OS & 0-3\\
 		\hline
 		\hline
-		Ethernet Client & 120000 &  Periodic 0.01s &  Manual & 1\\
+		VNC Server & 10000000 &  Sporadic [1s periodic] &  OS & 0-3\\
 		\hline
 		\hline
-		VNC Server & 10000000 &  Sporadic [1s periodic] &  Manual & 1\\
+		Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  OS & 0-3\\
 		\hline
 		\hline
-		Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  Manual & 1\\
+		Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  OS & 0-3\\
 		\hline
 		\hline
-		Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  Manual & 1\\
+		Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  OS & 0-3\\
 		\hline
 		\hline
-		Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  Manual & 1\\
+		Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  OS & 0-3\\
 		\hline
 		\hline
-		Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  Manual & 1\\
+		ImageProcess & 450000000 &  Periodic 0.65s &  OS & 0-3\\
 		\hline
 		\hline
-		ImageProcess & 450000000 &  Periodic 0.65s &  Manual & 1\\
+		dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  OS & 0-3\\
 		\hline
 		\hline
-		CycleWaster25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  Manual & 1\\
-		\hline
-		\hline
-		CycleWaster25\texttt{\_}2 &
+		dummy{\_}load{\_}25\texttt{\_}2 &
 		198000000 & 
 		Periodic 1.4s & 
-		Manual &
-		1\\
-		\hline
-		\hline
-		CycleWaster25\texttt{\_}3 &
-		198000000 & 
-		Periodic 1.4s & 
-		Manual &
-		1\\
-		\hline
-		\hline
-		CycleWaster25\texttt{\_}4 &
-		198000000 & 
-		Periodic 1.4s & 
-		Manual &
-		1\\
-		\hline
-		\hline
-		CycleWaster25\texttt{\_}5 &
-		198000000 & 
-		Periodic 1.4s & 
-		Manual &
-		1\\
-		\hline
-		\hline
-		CycleWaster100 &
-		198000000 & 
-		Periodic 0.5s & 
-		Manual &
-		1\\
+		OS &
+		0-3\\
 		\hline
 	\end{tabular}
-	\caption{HLM-Distribution-A details in High-level Module (with Sporadic activation assumptions)}
-	\label{tbl_HLM_Distribution_A}
+	\caption{hlmdistrA details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+	\label{tbl_hlmdistrAOS}
 \end{table}
 }
 
+\newcommand{\hlmdistrASequential}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  Sequential & 3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  Sequential & 3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s &  Sequential & 3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s & Sequential & 3\\
+			\hline
+			\hline
+			ImageProcess & 450000000 &  Periodic 0.65s &  Sequential & 3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  Sequential & 3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}2 &
+			198000000 & 
+			Periodic 1.4s & 
+			Sequential &
+			3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrA details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrASequential}
+	\end{table}
+}
+
+
+\newcommand{\hlmdistrAAFP}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  APP4MC & 3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s &  APP4MC & 3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s & APP4MC & 3\\
+			\hline
+			\hline
+			ImageProcess & 450000000 &  Periodic 0.65s &  APP4MC & 3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  APP4MC & 3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}2 &
+			198000000 & 
+			Periodic 1.4s & 
+			APP4MC &
+			3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrA details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrAAFP}
+	\end{table}
+}
+
+\newcommand{\hlmdistrBOS}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  OS & 0-3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  OS & 0-3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s &  OS & 0-3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  OS & 0-3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  OS & 0-3\\
+			\hline
+			\hline
+			ImageProcess & 450000000 &  Periodic 0.65s &  OS & 0-3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  OS & 0-3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}2 &
+			198000000 & 
+			Periodic 1.4s & 
+			OS &
+			0-3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}3 &
+			198000000 & 
+			Periodic 1.4s & 
+			OS &
+			0-3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}4 &
+			198000000 & 
+			Periodic 1.4s & 
+			OS &
+			0-3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}5 &
+			198000000 & 
+			Periodic 1.4s & 
+			OS &
+			0-3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}100 &
+			198000000 & 
+			Periodic 0.5s & 
+			OS &
+			0-3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrB details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrBOS}
+	\end{table}
+}
+
+\newcommand{\hlmdistrBSequential}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  Sequential & 3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  Sequential & 3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s & Sequential & 3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] & Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s & Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s & Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s & Sequential & 3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s & Sequential & 3\\
+			\hline
+			\hline
+			ImageProcess & 450000000 &  Periodic 0.65s & Sequential & 3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s & Sequential & 3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}2 &
+			198000000 & 
+			Periodic 1.4s & 
+			Sequential &
+			3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}3 &
+			198000000 & 
+			Periodic 1.4s & 
+			Sequential &
+			3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}4 &
+			198000000 & 
+			Periodic 1.4s & 
+			Sequential &
+			3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}5 &
+			198000000 & 
+			Periodic 1.4s & 
+			Sequential &
+			3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}100 &
+			198000000 & 
+			Periodic 0.5s & 
+			Sequential &
+			3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrB details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrBSequential}
+	\end{table}
+}
+
+
+\newcommand{\hlmdistrBAFP}{
+	\begin{table}[!ht]
+		\begin{tabular}{|l|l|l|l|l|}
+			\hline
+			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
+			\hline
+			\hline
+			Web Server & 500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
+			\hline
+			\hline
+			Core Recorder & 525000 &  Periodic 3s &  APP4MC & 3\\
+			\hline
+			\hline
+			Ethernet Client & 120000 &  Periodic 0.01s & APP4MC & 3\\
+			\hline
+			\hline
+			VNC Server & 10000000 &  Sporadic [1s periodic] & APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / MainThread & 110000000 &  Periodic 0.5s & APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s & APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s & APP4MC & 3\\
+			\hline
+			\hline
+			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s & APP4MC & 3\\
+			\hline
+			\hline
+			ImageProcess & 450000000 &  Periodic 0.65s & APP4MC & 3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s & APP4MC & 3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}2 &
+			198000000 & 
+			Periodic 1.4s & 
+			APP4MC &
+			3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}3 &
+			198000000 & 
+			Periodic 1.4s & 
+			APP4MC &
+			3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}4 &
+			198000000 & 
+			Periodic 1.4s & 
+			APP4MC &
+			3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}25\texttt{\_}5 &
+			198000000 & 
+			Periodic 1.4s & 
+			APP4MC &
+			3\\
+			\hline
+			\hline
+			dummy{\_}load{\_}100 &
+			198000000 & 
+			Periodic 0.5s & 
+			APP4MC &
+			3\\
+			\hline
+		\end{tabular}
+		\caption{hlmdistrB details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_hlmdistrBAFP}
+	\end{table}
+}
+
 \newcommand{\hlcomparison}{
-\begin{table}[h!]
+\begin{table}[!ht]
 	\begin{tabular}{|l|l|l|l|l|l|l|l|}
 		\hline
 		\textbf{Device} & \textbf{f\textsubscript{clk}} & \textbf{Distribution} & \textbf{GET} & \textbf{ST\textsubscript{avg}} & \textbf{S\textsubscript{p}(n)} & \textbf{U\textsubscript{0-3} (\%)} &  \textbf{I\textsubscript{DD}} \\
@@ -87,7 +623,7 @@
 		\hline
 		HLM &
 		1.2GHz &
-		Distribution-1 &
+		hlmdistrInitial (OS) &
 		0.005s &
 		0.1232s &
 		1.23 &
@@ -97,7 +633,7 @@
 		\hline
 		HLM &
 		1.2GHz &
-		Distribution-2 &
+		hlmdistrInitial (Sequential) &
 		0.005s &
 		0.1232s &
 		1.23 &
@@ -107,7 +643,97 @@
 		\hline
 		HLM &
 		1.2GHz &
-		Distribution-3 &
+		hlmdistrInitial (APP4MC) &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		hlmdistrInitial2 (OS) &
+		1.56s &
+		1.077s &
+		1.23 &
+		varies &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		hlmdistrInitial2 (Sequential) &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		hlmdistrInitial2 (APP4MC) &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		hlmdistrA (OS) &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		hlmdistrA (Sequential) &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		hlmdistrA (APP4MC) &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		hlmdistrB (OS) &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		hlmdistrB (Sequential) &
+		0.005s &
+		0.1232s &
+		1.23 &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		\hline
+		HLM &
+		1.2GHz &
+		hlmdistrB (APP4MC) &
 		0.005s &
 		0.1232s &
 		1.23 &
@@ -121,7 +747,7 @@
 }
 
 \newcommand{\llmdistrA}{
-\begin{table}[h!]
+\begin{table}[!ht]
 	\begin{tabular}{|l|l|l|l|l|l|}
 		\hline
 		\textbf{Task Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} & \textbf{Tile} \\
@@ -357,7 +983,7 @@
 }
 
 \newcommand{\llcomparison}{
-\begin{table}[h!]
+\begin{table}[!ht]
 	\begin{tabular}{|l|l|l|l|l|l|l|}
 		\hline
 		\textbf{Device} & \textbf{f\textsubscript{clk}} & \textbf{Distribution} & \textbf{GET} & \textbf{ST\textsubscript{avg}} &  \textbf{U\textsubscript{0-3} (\%)} &  \textbf{I\textsubscript{DD}} \\
