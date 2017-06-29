@@ -1,5 +1,6 @@
 \newcommand{\hlmdistrInitialOS}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -31,14 +32,15 @@
 			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  OS & 0-3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrInitial distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}wStream distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrInitialOS}
 	\end{table}
 }
 
 \newcommand{\hlmdistrInitialSequential}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -70,8 +72,8 @@
 			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  Sequential & 3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrInitial distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}wStream distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrInitialSequential}
 	\end{table}
 }
@@ -79,6 +81,7 @@
 
 \newcommand{\hlmdistrInitialAFP}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -110,14 +113,15 @@
 			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  APP4MC & 3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrInitial distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}wStream distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrInitialAFP}
 	\end{table}
 }
 
 \newcommand{\hlmdistrInitialTOS}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -149,14 +153,15 @@
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s &  OS & 0-3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrInitial2 distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}wImageProc distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrInitial2OS}
 	\end{table}
 }
 
 \newcommand{\hlmdistrInitialTSequential}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -188,8 +193,8 @@
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s &  Sequential & 3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrInitial2 distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}wImageProc distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrInitial2Sequential}
 	\end{table}
 }
@@ -197,6 +202,7 @@
 
 \newcommand{\hlmdistrInitialTAFP}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -228,14 +234,15 @@
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s &  APP4MC & 3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrInitial2 distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}wImageProc distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrInitial2AFP}
 	\end{table}
 }
 
 \newcommand{\hlmdistrAOS}{
 \begin{table}[!ht]
+	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{|l|l|l|l|l|}
 		\hline
 		\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -277,14 +284,15 @@
 		OS &
 		0-3\\
 		\hline
-	\end{tabular}
-	\caption{hlmdistrA details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+	\end{tabular}}
+	\caption{HL{\_}Distr{\_}AvgStress details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
 	\label{tbl_hlmdistrAOS}
 \end{table}
 }
 
 \newcommand{\hlmdistrASequential}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -326,8 +334,8 @@
 			Sequential &
 			3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrA details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}AvgStress details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrASequential}
 	\end{table}
 }
@@ -335,6 +343,7 @@
 
 \newcommand{\hlmdistrAAFP}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -376,14 +385,15 @@
 			APP4MC &
 			3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrA details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}AvgStress details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrAAFP}
 	\end{table}
 }
 
 \newcommand{\hlmdistrBOS}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -453,14 +463,15 @@
 			OS &
 			0-3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrB details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}FullStress details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrBOS}
 	\end{table}
 }
 
 \newcommand{\hlmdistrBSequential}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -530,8 +541,8 @@
 			Sequential &
 			3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrB details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}FullStress details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrBSequential}
 	\end{table}
 }
@@ -539,6 +550,7 @@
 
 \newcommand{\hlmdistrBAFP}{
 	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
 		\begin{tabular}{|l|l|l|l|l|}
 			\hline
 			\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} \\
@@ -608,146 +620,318 @@
 			APP4MC &
 			3\\
 			\hline
-		\end{tabular}
-		\caption{hlmdistrB details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\end{tabular}}
+		\caption{HL{\_}Distr{\_}FullStress details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
 		\label{tbl_hlmdistrBAFP}
 	\end{table}
 }
 
 \newcommand{\hlcomparison}{
-\begin{table}[!ht]
-	\begin{tabular}{|l|l|l|l|l|l|l|l|}
-		\hline
-		\textbf{Device} & \textbf{f\textsubscript{clk}} & \textbf{Distribution} & \textbf{GET} & \textbf{ST\textsubscript{avg}} & \textbf{S\textsubscript{p}(n)} & \textbf{U\textsubscript{0-3} (\%)} &  \textbf{I\textsubscript{DD}} \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrInitial (OS) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrInitial (Sequential) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrInitial (APP4MC) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrInitial2 (OS) &
-		1.56s &
-		1.077s &
-		1.23 &
-		varies &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrInitial2 (Sequential) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrInitial2 (APP4MC) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrA (OS) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrA (Sequential) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrA (APP4MC) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrB (OS) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrB (Sequential) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-		\hline
-		HLM &
-		1.2GHz &
-		hlmdistrB (APP4MC) &
-		0.005s &
-		0.1232s &
-		1.23 &
-		54/23/11/99 &
-		0.670A \\
-		\hline
-	\end{tabular}
-	\caption{Distributions compared in High-level module}
-	\label{tbl_hlcomparison}
-\end{table}
+	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			\textbf{No} & \textbf{Distr.Name} & \textbf{Distr.Type} & \textbf{f\textsubscript{clk}} &\textbf{GET} & \textbf{ST\textsubscript{avg}} & \textbf{S\textsubscript{p}(n)} & \textbf{U\textsubscript{0-3} (\%)} & 
+			\textbf{DLM} &  \textbf{I\textsubscript{DD}} \\
+				\hline
+				\hline
+				1 &
+				HL{\_}Distr{\_}wStream &
+				OS &
+				1.2GHz &
+				0.83s &
+				1.275s &
+				x &
+				varies &
+				0 \% &
+				0.605-0.660A \\
+				\hline
+				\hline
+				2 &
+				HL{\_}Distr{\_}wStream &
+				Sequential &
+				1.2GHz &
+				0.96s &
+				1.256s &
+				x &
+				0/0/0/100 &
+				0 \% &
+				0.605-0.660A \\
+				\hline
+				\hline
+				3 &
+				HL{\_}Distr{\_}wStream &
+				APP4MC &
+				1.2GHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				4 &
+				HL{\_}Distr{\_}wImageProc &
+				OS &
+				1.2GHz &
+				1.5s &
+				1.077s &
+				x &
+				varies&
+				0 \% &
+				0.770-0.840A \\
+				\hline
+				\hline
+				5 &
+				HL{\_}Distr{\_}wImageProc &
+				Sequential &
+				1.2GHz &
+				3.22s &
+				0.833s &
+				x &
+				0/0/0/100 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				6 &
+				HL{\_}Distr{\_}wImageProc &
+				APP4MC &
+				1.2GHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				7 &
+				HL{\_}Distr{\_}AvgStress &
+				OS &
+				1.2GHz &
+				2.6s &
+				1.05s &
+				x &
+				varies  &
+				0 \% &
+				0.800-0.950A \\
+				\hline
+				\hline
+				8 &
+				HL{\_}Distr{\_}AvgStress &
+				Sequential &
+				1.2GHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				9 &
+				HL{\_}Distr{\_}AvgStress &
+				APP4MC &
+				1.2GHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				10 &
+				HL{\_}Distr{\_}FullStress &
+				OS &
+				1.2GHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				11 &
+				HL{\_}Distr{\_}FullStress &
+				Sequential &
+				1.2GHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				12 &
+				HL{\_}Distr{\_}FullStress &
+				APP4MC &
+				1.2GHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				13 &
+				HL{\_}Distr{\_}wStream &
+				OS &
+				600MHz &
+				0.83s &
+				1.275s &
+				x &
+				varies &
+				0 \% &
+				0.605-0.660A \\
+				\hline
+				\hline
+				14 &
+				HL{\_}Distr{\_}wStream &
+				Sequential &
+				600MHz &
+				0.96s &
+				1.256s &
+				x &
+				0/0/0/100 &
+				0 \% &
+				0.605-0.660A \\
+				\hline
+				\hline
+				15 &
+				HL{\_}Distr{\_}wStream &
+				APP4MC &
+				600MHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				16 &
+				HL{\_}Distr{\_}wImageProc &
+				OS &
+				600MHz &
+				1.5s &
+				1.077s &
+				x &
+				varies&
+				0 \% &
+				0.770-0.840A \\
+				\hline
+				\hline
+				17 &
+				HL{\_}Distr{\_}wImageProc &
+				Sequential &
+				600MHz &
+				3.22s &
+				0.833s &
+				x &
+				0/0/0/100 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				18 &
+				HL{\_}Distr{\_}wImageProc &
+				APP4MC &
+				600MHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				19 &
+				HL{\_}Distr{\_}AvgStress &
+				OS &
+				600MHz &
+				2.6s &
+				1.05s &
+				x &
+				varies  &
+				0 \% &
+				0.800-0.950A \\
+				\hline
+				\hline
+				20 &
+				HL{\_}Distr{\_}AvgStress &
+				Sequential &
+				600MHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				21 &
+				HL{\_}Distr{\_}AvgStress &
+				APP4MC &
+				600MHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				22 &
+				HL{\_}Distr{\_}FullStress &
+				OS &
+				600MHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				23 &
+				HL{\_}Distr{\_}FullStress &
+				Sequential &
+				600MHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+				\hline
+				24 &
+				HL{\_}Distr{\_}FullStress &
+				APP4MC &
+				600MHz &
+				0.005s &
+				0.1232s &
+				1.23 &
+				54/23/11/99 &
+				0 \% &
+				0.670A \\
+				\hline
+			\end{tabular}
+			}
+			\caption{Distributions compared in High-level module}
+			\label{tbl_hlcomparison}
+		\end{table}
 }
 
 \newcommand{\llmdistrA}{
 \begin{table}[!ht]
+	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{|l|l|l|l|l|l|}
 		\hline
 		\textbf{Task Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} & \textbf{Tile} \\
@@ -976,7 +1160,7 @@
 		1 &
 		1\\
 		\hline
-	\end{tabular}
+	\end{tabular}}
 	\caption{LLM-Distribution-A details in Low-level Module}
 	\label{tbl_LLM_Distribution_A}
 \end{table}
@@ -984,6 +1168,7 @@
 
 \newcommand{\llcomparison}{
 \begin{table}[!ht]
+	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{|l|l|l|l|l|l|l|}
 		\hline
 		\textbf{Device} & \textbf{f\textsubscript{clk}} & \textbf{Distribution} & \textbf{GET} & \textbf{ST\textsubscript{avg}} &  \textbf{U\textsubscript{0-3} (\%)} &  \textbf{I\textsubscript{DD}} \\
@@ -1015,7 +1200,7 @@
 		54/23/11/99 &
 		0.670A \\
 		\hline
-	\end{tabular}
+	\end{tabular}}
 	\caption{Distributions compared in Low-level module}
 	\label{tbl_llcomparison}
 \end{table}

@@ -1389,7 +1389,22 @@ To evaluate performance indicators and observe load balance, tracing the high-le
 	To ease the process of having to trace using perf, convert the trace, and take a look at the process ID list to interpret the trace, a Linux shell (bash) script has been created in order to get necessary outputs from tracing processes and threads automatically. The Listing \ref{lst_tracebash} shows the content of the script. It is seen in the script that command line arguments are taken (Lines 1 to 4) to make the process more modular. The Lines 11 to 20 is dedicated to executing the commands that are discussed above by making use of the command line arguments. By stating the trace name, tracing period, and perf module installation location, one can use this script to generate traces easier. %explain some lines..
 	\lstinputlisting[caption=Script to generate traces automatically, label=lst_tracebash, style=python]{content/listings/lst_tracebash.txt}
 	
-	%Explain tracecompass windows, add bubbles to the gui figure...	
+	At this point, it is really important for a developer to let Linux Kernel and by extension the TraceCompass identify the processes and threads. The way this is achieved is by manipulating the name of the processes and threads that are visible to Linux kernel, which is known as \texttt{command}. In this work, this is researched for both C++ (POSIX threads) and Python (threading) processes and threads.
+	
+	For POSIX-thread based C/C++ programs, \texttt{command} is the executable name for a process when executed as \texttt{./cppprogram}. However to set the \texttt{command} for the threads of a POSIX-thread based program, \texttt{pthread{\_}setname{\_}np} function should be used.
+	
+	For Python's threading-based programs, both process and thread names should be made visible by specifying \texttt{command}, or either the TraceCompass will recognize the processes and threads as just \texttt{python}. To set the \texttt{command} for a Python executable the first line of the Python program should be set to \texttt{\#!/usr/bin/python} as opposed to \texttt{\#!/usr/bin/env python} to make the script executable. After that, if the process is executed using its name \texttt{./pyprogram}, the TraceCompass will recognize the process name. Moreover for threads inside a Python program, prctl module can be used to set the \texttt{command}. The function \texttt{prctl.set{\_}name} is useful in this regard.
+	
+	With all processes and threads named and traced, TraceCompass will visualize the scheduling as shown in Figure \ref{fig:tracecompasscommands}.
+	
+	\begin{figure}[!ht]
+		\centering
+		\captionsetup{justification=centering}
+		\includegraphics[width=\textwidth]{content/images/tracecompasscommands.png}
+		\caption{TraceCompass visualization of processes and threads}
+		\label{fig:tracecompasscommands}
+	\end{figure}
+
 \end{itemize}
 
 \subsection{Process and Thread Mapping}
@@ -1525,11 +1540,11 @@ Some text \\
 %Also use data from TraceCompass
 \subsection{Evaluation of High Level Module Distributions}
 
-\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distributions hlmdistrInitial}
+\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution HL{\_}Distr{\_}wStream}
 
-Initial distribution for high-level module, hlmdistrInitial, involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Since both the image processing process and the camera stream use the Raspberry Pi camera, this distribution demonstrates how mapping will result when the camera is used by Camera Stream. That is to say, image processing application is not running but will be given with another distribution. 
+Initial distribution for high-level module, HL{\_}Distr{\_}wStream, involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Since both the image processing process and the camera stream use the Raspberry Pi camera, this distribution demonstrates how mapping will result when the camera is used by Camera Stream. That is to say, image processing application is not running but will be given with another distribution. 
 
-Three mapping results are compared: OS distribution where core affinities are not constrained, Sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping abilities. With the Tables \ref{tbl_hlmdistrInitialOS}, \ref{tbl_hlmdistrInitialSequential}, and \ref{tbl_hlmdistrInitialAFP}, process and thread details and mapping set-up are given for the hlmdistrInitial distribution mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
+Three mapping results are compared: OS distribution where core affinities are not constrained, Sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping abilities. With the Tables \ref{tbl_hlmdistrInitialOS}, \ref{tbl_hlmdistrInitialSequential}, and \ref{tbl_hlmdistrInitialAFP}, process and thread details and mapping set-up are given for the HL{\_}Distr{\_}wStream distribution mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
 
 \hlmdistrInitialOS
 
@@ -1537,9 +1552,9 @@ Three mapping results are compared: OS distribution where core affinities are no
 
 \hlmdistrInitialAFP
 
-\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distributions hlmdistrInitial2}
+\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distributions HL{\_}Distr{\_}wImageProc}
 
-The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. hlmdistrInitial2 set-up for OS, Sequential, and APP4MC-based mapping are given with the Tables \ref{tbl_hlmdistrInitial2OS}, \ref{tbl_hlmdistrInitial2Sequential}, and \ref{tbl_hlmdistrInitial2AFP}, respectively.
+The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. HL{\_}Distr{\_}wImageProc set-up for OS, Sequential, and APP4MC-based mapping are given with the Tables \ref{tbl_hlmdistrInitial2OS}, \ref{tbl_hlmdistrInitial2Sequential}, and \ref{tbl_hlmdistrInitial2AFP}, respectively.
 
 \hlmdistrInitialTOS
 
@@ -1547,19 +1562,9 @@ The process list when the camera stream is not active but the image processing i
 
 \hlmdistrInitialTAFP
 
-\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution hlmdistrInitial}
+\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution HL{\_}Distr{\_}AvgStress}
 
-Initial distribution for high-level module, hlmdistrInitial, involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Three mapping results are compared: OS distribution where core affinities are not constrained, Sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping abilities. With the Tables \ref{tbl_hlmdistrInitialOS}, \ref{tbl_hlmdistrInitialSequential}, and \ref{tbl_hlmdistrInitialAFP}, process and thread details and mapping set-up are given for the hlmdistrInitial distribution mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
-
-\hlmdistrInitialOS
-
-\hlmdistrInitialSequential
-
-\hlmdistrInitialAFP
-
-\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution hlmdistrA}
-
-In the distribution hlmdistrA, the A4MCAR is partially stressed. This is achieved by introducing two dummy loads. After this introduction, the APP4MC model is updated and results are obtained once more. The Tables \ref{tbl_hlmdistrAOS}, \ref{tbl_hlmdistrASequential}, \ref{tbl_hlmdistrAAFP} show this distribution details mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
+In the distribution HL{\_}Distr{\_}AvgStress, the A4MCAR is partially stressed. This is achieved by introducing two dummy loads. After this introduction, the APP4MC model is updated and results are obtained once more. The Tables \ref{tbl_hlmdistrAOS}, \ref{tbl_hlmdistrASequential}, \ref{tbl_hlmdistrAAFP} show this distribution details mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
 
 \hlmdistrAOS
 
@@ -1567,9 +1572,9 @@ In the distribution hlmdistrA, the A4MCAR is partially stressed. This is achieve
 
 \hlmdistrAAFP
 
-\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution hlmdistrB}
+\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution HL{\_}Dist{\_}FullStress}
 
-The distribution hlmdistrB represents the distribution in which all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. By using APP4MC once again to model this fully stressed state, OS, Sequential, and APP4MC mapping set-up are given with the Tables \ref{tbl_hlmdistrBOS}, \ref{tbl_hlmdistrBSequential}, and \ref{tbl_hlmdistrBAFP}, respectively.
+The distribution HL{\_}Dist{\_}FullStress represents the distribution in which all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. By using APP4MC once again to model this fully stressed state, OS, Sequential, and APP4MC mapping set-up are given with the Tables \ref{tbl_hlmdistrBOS}, \ref{tbl_hlmdistrBSequential}, and \ref{tbl_hlmdistrBAFP}, respectively.
 
 \hlmdistrBOS
 
