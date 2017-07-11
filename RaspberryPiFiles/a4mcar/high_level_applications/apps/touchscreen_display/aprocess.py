@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 # Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
 # All rights reserved. This program and the accompanying materials
@@ -98,4 +98,10 @@ class aprocess:
 				except Exception as inst:
 					debug = 1
 					print inst
+					
+	def OverrideAProcessAttributes(self, running, core_affinity, aplogfilepath):
+		self.aprunning = running
+		self.aaffinity = core_affinity
+		self.aplogfilepath = aplogfilepath
+		return 1
 		

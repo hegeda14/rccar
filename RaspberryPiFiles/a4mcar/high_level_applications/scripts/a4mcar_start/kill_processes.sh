@@ -17,3 +17,5 @@ bash ProcessKill.sh dummy_load25_3
 bash ProcessKill.sh dummy_load25_4
 bash ProcessKill.sh dummy_load25_5
 bash ProcessKill.sh dummy_load100
+bash ProcessKill.sh image_processing
+bash ProcessKill.sh dummy_graph

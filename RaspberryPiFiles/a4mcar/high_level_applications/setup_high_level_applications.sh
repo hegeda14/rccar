@@ -58,6 +58,20 @@ sudo chmod 777 /usr/local/bin/mjpg_streamer
 echo "### Clearing downloaded files..."
 sudo rm -rf ~/Downloads/a4mcar_required_modules/
 
+echo "### Installing prctl"
+sudo apt-get install python-prctl
+
+echo "### Making all python scripts executable"
+sudo chmod +x $DIR/apps/touchscreen_display/touchscreen_display.py
+sudo chmod +x $DIR/apps/ethernet_client/ethernet_client.py
+sudo chmod +x $DIR/apps/dummy_loads/dummy_load25_1.py
+sudo chmod +x $DIR/apps/dummy_loads/dummy_load25_2.py
+sudo chmod +x $DIR/apps/dummy_loads/dummy_load25_3.py
+sudo chmod +x $DIR/apps/dummy_loads/dummy_load25_4.py
+sudo chmod +x $DIR/apps/dummy_loads/dummy_load25_5.py
+sudo chmod +x $DIR/apps/dummy_loads/dummy_load100.py
+sudo chmod +x $DIR/apps/core_recorder/core_recorder.py
+
 echo "### WHAT TO DO NEXT? ###"
 echo "Please install opencv-3.0.0 and raspicam-0.1.3 to proceed with the optional image_processing module"
 echo "Before the image_processing module is built, the following variables should be exported"

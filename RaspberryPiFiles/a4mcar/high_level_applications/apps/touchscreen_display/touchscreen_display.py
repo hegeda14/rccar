@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 # Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
 # All rights reserved. This program and the accompanying materials
@@ -38,6 +38,7 @@ import virtkeyboard
 import netinfo     #How Pynetinfo package imported. To install run pip install X.tar.gz to package, first.
 import re #regex for ssid, psk retrieval
 import psutil
+import prctl
 
 #Virtual Keyboard related definitions
 mykeys = virtkeyboard.VirtualKeyboard()
@@ -67,16 +68,28 @@ aprocess_list = []
 aprocess_list.append(aprocess.aprocess("Xtightvnc", 0, "None", 1, "VNC Server", "cd ../../scripts/tightvnc/  && sudo bash tightvnc_start.sh &", 0))
 aprocess_list.append(aprocess.aprocess("mjpg_streamer", 0, "None",1, "Camera Stream", "cd ../../scripts/camera_start/  && sudo bash raspberrypi_camera_start.sh &", 0))
 aprocess_list.append(aprocess.aprocess("touchscreen_display", 1, "../../logs/timing/touchscreen_display_timing.inc", 1, "Display", "None", 0))
-aprocess_list.append(aprocess.aprocess("ethernet_client", 1, "../../logs/timing/ethernet_client_timing.inc", 1, "Ethernet App", "cd ../ethernet_client/ && sudo python ethernet_client.py &", 0))
-aprocess_list.append(aprocess.aprocess("core_recorder", 1, "../../logs/timing/core_recorder_timing.inc", 1, "Core Recorder", "cd ../core_recorder/ && sudo python core_recorder.py &", 0))
-aprocess_list.append(aprocess.aprocess("dummy_load25_1", 1, "../../logs/timing/dummy_load25_1_timing.inc", 1, "Cycler25_1", "cd ../dummy_loads/ && sudo python dummy_load25_1.py &", 0))
-aprocess_list.append(aprocess.aprocess("dummy_load25_2", 1, "../../logs/timing/dummy_load25_2_timing.inc", 1, "Cycler25_2", "cd ../dummy_loads/ && sudo python dummy_load25_2.py &", 0))
-aprocess_list.append(aprocess.aprocess("dummy_load25_3", 1, "../../logs/timing/dummy_load25_3_timing.inc", 1, "Cycler25_3", "cd ../dummy_loads/ && sudo python dummy_load25_3.py &", 0))
-aprocess_list.append(aprocess.aprocess("dummy_load25_4", 1, "../../logs/timing/dummy_load25_4_timing.inc", 1, "Cycler25_4", "cd ../dummy_loads/ && sudo python dummy_load25_4.py &", 0))
-#aprocess_list.append(aprocess.aprocess("dummy_load25_5", 1, "../../logs/timing/dummy_load25_5_timing.inc", 1, "Cycler25_5", "cd ../dummy_loads/ && sudo python dummy_load25_5.py &", 0))
-#aprocess_list.append(aprocess.aprocess("dummy_load100", 1, "../../logs/timing/dummy_load100_timing.inc", 1, "Cycler100", "cd ../dummy_loads/ && sudo python dummy_load100.py &", 0))
+aprocess_list.append(aprocess.aprocess("ethernet_client", 1, "../../logs/timing/ethernet_client_timing.inc", 1, "Ethernet App", "cd ../ethernet_client/ && sudo ./ethernet_client.py &", 0))
+aprocess_list.append(aprocess.aprocess("core_recorder", 1, "../../logs/timing/core_recorder_timing.inc", 1, "Core Recorder", "cd ../core_recorder/ && sudo ./core_recorder.py &", 0))
+aprocess_list.append(aprocess.aprocess("dummy_load25_1", 1, "../../logs/timing/dummy_load25_1_timing.inc", 1, "Cycler25_1", "cd ../dummy_loads/ && sudo ./dummy_load25_1.py &", 0))
+aprocess_list.append(aprocess.aprocess("dummy_load25_2", 1, "../../logs/timing/dummy_load25_2_timing.inc", 1, "Cycler25_2", "cd ../dummy_loads/ && sudo ./dummy_load25_2.py &", 0))
+#aprocess_list.append(aprocess.aprocess("dummy_load25_3", 1, "../../logs/timing/dummy_load25_3_timing.inc", 1, "Cycler25_3", "cd ../dummy_loads/ && sudo ./dummy_load25_3.py &", 0))
+#aprocess_list.append(aprocess.aprocess("dummy_load25_4", 1, "../../logs/timing/dummy_load25_4_timing.inc", 1, "Cycler25_4", "cd ../dummy_loads/ && sudo ./dummy_load25_4.py &", 0))
+#aprocess_list.append(aprocess.aprocess("dummy_load25_5", 1, "../../logs/timing/dummy_load25_5_timing.inc", 1, "Cycler25_5", "cd ../dummy_loads/ && sudo ./dummy_load25_5.py &", 0))
+aprocess_list.append(aprocess.aprocess("dummy_load100", 1, "../../logs/timing/dummy_load100_timing.inc", 1, "Cycler100", "cd ../dummy_loads/ && sudo ./dummy_load100.py &", 0))
 aprocess_list.append(aprocess.aprocess("apache2", 0, "None", 1, "Apache Server", "sudo service apache2 start", 0))
 aprocess_list.append(aprocess.aprocess("image_processing", 1, "../../logs/timing/image_processing_timing.inc", 1, "ImageProcess", "cd ../image_processing/ && sudo -E ./image_processing &", 0))
+
+#Add dummy graph's main process
+aprocess_list.append(aprocess.aprocess("dummy_graph", 0, "None", 1, "Dummy Graph", "cd ../dummy_loads/ && sudo ./dummy_graph.py &", 0))
+
+#Add dummy_graph threads
+thread_names =			["A",   "B",   "C", "D",  "E",  "F",  "G",  "H",  "I",  "J"]
+thread_objs = [None] * len(thread_names)
+for i in range (0, len(thread_names)):
+	thread_objs[i] = aprocess.aprocess(thread_names[i], 1, "../../logs/timing/"+thread_names[i]+".inc", 0, thread_names[i], "None", 1)
+	aprocess_list.append(thread_objs[i])
+
+#Find out aprocess list length
 aprocess_list_len = len(aprocess_list)
 
 #Software Distribution Type
@@ -108,6 +121,9 @@ _PERIOD = 0.5
 
 #Locks for mutual exclusion
 lock_aprocess_list = Lock()
+
+#Maximum number of processes to display
+no_of_proc_to_display = 14
 
 #For timing calculations, missed deadlines, total processes, and slack time sum
 missed=0
@@ -616,6 +632,7 @@ def UpdateAllocationPage():
 	global aprocess_list_len
 	global coord_x
 	global coord_y
+	global no_of_proc_to_display
 	
 	#Red and green color
 	color_red = ((255,0,0))
@@ -627,18 +644,27 @@ def UpdateAllocationPage():
 	#UpdateProcessInfo() #Not needed now since the Thread_TimingCalculation updates this constantly
 
 	lock_aprocess_list.acquire() #----
+	k = 0
 	for i in range(0,aprocess_list_len):
-		if (aprocess_list[i].aprunning == 1):
-			colorc = color_green
-		else:
-			colorc = color_red
-		text = font.render (str(aprocess_list[i].display_name), True, colorc)
-		screen.blit(text,(coord_x[i],coord_y[i]))
+		if (k < no_of_proc_to_display and aprocess_list[i].displayed == 1):
+			
+			if (aprocess_list[i].aprunning == 1):
+				colorc = color_green
+			else:
+				colorc = color_red
+			text = font.render (str(aprocess_list[i].display_name), True, colorc)
+			screen.blit(text,(coord_x[k],coord_y[k]))
+			k = k + 1
 	lock_aprocess_list.release() #----
 
 
 def KillProcess(process_name):
 	pid = GetProcessIDFromProcessName(process_name)
+	if (process_name == "dummy_graph"):
+                for i in range(0,aprocess_list_len):
+                        if (len(aprocess_list[i].apname) < 2):
+                                aprocess_list[i].aprunning = 0
+	
 	if (process_name == "apache2"):
 		try:
 			os.system("sudo service apache2 stop &")
@@ -686,6 +712,10 @@ def StartProcess(process_name):
 	global aprocess_list
 	global aprocess_list_len
 	
+	if (process_name == "dummy_graph"):
+		for i in range(0,aprocess_list_len):
+			if (len(aprocess_list[i].apname) < 2):
+				aprocess_list[i].aprunning = 1
 
 	for i in range(0,aprocess_list_len):
 		if (process_name == aprocess_list[i].apname):
@@ -693,13 +723,13 @@ def StartProcess(process_name):
 				os.system(str(aprocess_list[i].apstartcommand))
 			except Exception as inst:
 				print "Err-StartProcess"
-
 	
 def AllocationPage():
 	global aprocess_list
 	global aprocess_list_len
 	global coord_x
 	global coord_y
+	global no_of_proc_to_display
 	
 	Clear_Variables()
 	
@@ -718,22 +748,25 @@ def AllocationPage():
 	#UpdateProcessInfo() #Not needed now since the Thread_TimingCalculation updates this constantly
 	
 	lock_aprocess_list.acquire() #----
+	k = 0
 	for i in range(0,aprocess_list_len):
-		font = pygame.font.SysFont("Roboto Condensed", 30)
-		text = font.render (str(aprocess_list[i].display_name), True, (0, 0, 0))
-		screen.blit(text,(coord_x[i],coord_y[i]))
-		font = pygame.font.SysFont("Roboto Condensed", 20)
+		if (k < no_of_proc_to_display and aprocess_list[i].displayed == 1):
+			font = pygame.font.SysFont("Roboto Condensed", 30)
+			text = font.render (str(aprocess_list[i].display_name), True, (0, 0, 0))
+			screen.blit(text,(coord_x[k],coord_y[k]))
+			font = pygame.font.SysFont("Roboto Condensed", 20)
 
-		if (aprocess_list[i].isthread == 0):
-			AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
-			text = font.render ("Start", True, (255, 0, 0))
-			screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
-			AddPromptBox_Passive(coord_x[i]+250, coord_y[i], 50, 40)
-			text = font.render ("Kill", True, (255, 0, 0))
-			screen.blit(text,(coord_x[i]+260,coord_y[i]+10))
-		else:
-			text = font.render ("[Thread]", True, (0, 0, 255))
-			screen.blit(text,(coord_x[i]+180,coord_y[i]+10))
+			if (aprocess_list[i].isthread == 0):
+				AddPromptBox_Passive(coord_x[k]+180, coord_y[k], 60, 40)
+				text = font.render ("Start", True, (255, 0, 0))
+				screen.blit(text,(coord_x[k]+190,coord_y[k]+10))
+				AddPromptBox_Passive(coord_x[k]+250, coord_y[k], 50, 40)
+				text = font.render ("Kill", True, (255, 0, 0))
+				screen.blit(text,(coord_x[k]+260,coord_y[k]+10))
+			else:
+				text = font.render ("[Thread]", True, (0, 0, 255))
+				screen.blit(text,(coord_x[k]+180,coord_y[k]+10))
+			k = k + 1
 	lock_aprocess_list.release() #----	
 	
 	return 1
@@ -750,6 +783,7 @@ def UpdateCoreAllocationPage():
 	global aprocess_list_len
 	global coord_x
 	global coord_y
+	global no_of_proc_to_display
 	
 	#UpdateProcessInfo()
 	#GetCoreInfoRpi()
@@ -759,19 +793,22 @@ def UpdateCoreAllocationPage():
 	color_green = ((34,139,34))
 
 	lock_aprocess_list.acquire()#----
+	k = 0
 	for i in range(0,aprocess_list_len):
-		if (aprocess_list[i].aprunning == 1):
-			colorc = color_green
-		else:
-			colorc = color_red
-		
-		font = pygame.font.SysFont("Roboto Condensed", 30)
-		text = font.render (str(aprocess_list[i].display_name), True, colorc)
-		screen.blit(text,(coord_x[i], coord_y[i]))
-		font = pygame.font.SysFont("Roboto Condensed", 20)
-		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
-		text = font.render (str(aprocess_list[i].aaffinity), True, (0, 0, 0))
-		screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
+		if (k < no_of_proc_to_display and aprocess_list[i].displayed == 1):
+			if (aprocess_list[i].aprunning == 1):
+				colorc = color_green
+			else:
+				colorc = color_red
+			
+			font = pygame.font.SysFont("Roboto Condensed", 30)
+			text = font.render (str(aprocess_list[i].display_name), True, colorc)
+			screen.blit(text,(coord_x[k], coord_y[k]))
+			font = pygame.font.SysFont("Roboto Condensed", 20)
+			AddPromptBox_Passive(coord_x[k]+180, coord_y[k], 60, 40)
+			text = font.render (str(aprocess_list[i].aaffinity), True, (0, 0, 0))
+			screen.blit(text,(coord_x[k]+190,coord_y[k]+10))
+			k = k + 1
 	lock_aprocess_list.release()#----
 
 def CoreAllocationPage():
@@ -779,6 +816,7 @@ def CoreAllocationPage():
 	global aprocess_list_len
 	global coord_x
 	global coord_y
+	global no_of_proc_to_display
 	
 	Clear_Variables()
 	
@@ -795,17 +833,20 @@ def CoreAllocationPage():
 	screen.blit(text,(30,30))
 	
 	lock_aprocess_list.acquire() #----
+	k = 0
 	for i in range(0,aprocess_list_len):
-		font = pygame.font.SysFont("Roboto Condensed", 30)
-		text = font.render (str(aprocess_list[i].display_name), True, (0, 0, 0))
-		screen.blit(text,(coord_x[i],coord_y[i]))
-		font = pygame.font.SysFont("Roboto Condensed", 20)
-		AddPromptBox_Passive(coord_x[i]+180, coord_y[i], 60, 40)
-		text = font.render ("", True, (0, 0, 0))
-		screen.blit(text,(coord_x[i]+190,coord_y[i]+10))
-		AddPromptBox_Passive(coord_x[i]+250, coord_y[i], 80, 40)
-		text = font.render ("Allocate", True, (255, 0, 0))
-		screen.blit(text,(coord_x[i]+260,coord_y[i]+10))
+		if (k < no_of_proc_to_display and aprocess_list[i].displayed == 1):
+			font = pygame.font.SysFont("Roboto Condensed", 30)
+			text = font.render (str(aprocess_list[i].display_name), True, (0, 0, 0))
+			screen.blit(text,(coord_x[k],coord_y[k]))
+			font = pygame.font.SysFont("Roboto Condensed", 20)
+			AddPromptBox_Passive(coord_x[k]+180, coord_y[k], 60, 40)
+			text = font.render ("", True, (0, 0, 0))
+			screen.blit(text,(coord_x[k]+190,coord_y[k]+10))
+			AddPromptBox_Passive(coord_x[k]+250, coord_y[k], 80, 40)
+			text = font.render ("Allocate", True, (255, 0, 0))
+			screen.blit(text,(coord_x[k]+260,coord_y[k]+10))
+			k = k + 1
 	lock_aprocess_list.release() #----
 
 	return 1
@@ -1116,6 +1157,7 @@ def Thread_TimingCalculation():
 	aprocess_list.append(this_thread)
 	lock_aprocess_list.release() #----
 	aprocess_list_len = len(aprocess_list)
+	prctl.set_name("Thread_TimingCalculation") #Sets the thread title for linux kernel
 
 	while True:
 
@@ -1223,6 +1265,7 @@ def Thread_TouchscreenEvents():
 	aprocess_list.append(this_thread)
 	lock_aprocess_list.release() #----
 	aprocess_list_len = len(aprocess_list)
+	prctl.set_name("Thread_TouchscreenEvents") #Sets the thread title for linux kernel
 	
 	while True:
 		#Timing Related
@@ -1308,12 +1351,14 @@ def Thread_TouchscreenEvents():
 					kill_w = 50
 					h=40
 					
+					k=0
 					for i in range(0,aprocess_list_len):
-						if (aprocess_list[i].isthread == 0):
-							if ((mouseX>180+coord_x[i] and mouseX<180+coord_x[i]+start_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
+						if (aprocess_list[i].isthread == 0 and k < no_of_proc_to_display and aprocess_list[i].displayed == 1):
+							if ((mouseX>180+coord_x[k] and mouseX<180+coord_x[k]+start_w) and (mouseY>coord_y[k] and mouseY < coord_y[k]+h)):
 								StartProcess(aprocess_list[i].apname)
-							if ((mouseX>250+coord_x[i] and mouseX<250+coord_x[i]+kill_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
+							if ((mouseX>250+coord_x[k] and mouseX<250+coord_x[k]+kill_w) and (mouseY>coord_y[k] and mouseY < coord_y[k]+h)):
 								KillProcess(aprocess_list[i].apname)
+							k = k + 1
 	
 				if (Current_Page == 5 ):
 					#CoreAllocationPage
@@ -1321,9 +1366,12 @@ def Thread_TouchscreenEvents():
 					kill_w = 80
 					h=40
 	
+					k = 0
 					for i in range(0,aprocess_list_len):
-						if ((mouseX>250+coord_x[i] and mouseX<250+coord_x[i]+kill_w) and (mouseY>coord_y[i] and mouseY < coord_y[i]+h)):
-							AllocateProcessInMainThread(aprocess_list[i].apname)
+						if (k < no_of_proc_to_display and aprocess_list[i].displayed == 1):
+							if ((mouseX>250+coord_x[k] and mouseX<250+coord_x[k]+kill_w) and (mouseY>coord_y[k] and mouseY < coord_y[k]+h)):
+								AllocateProcessInMainThread(aprocess_list[i].apname)
+							k = k + 1
 	
 				if (Current_Page == 8):
 					if ((mouseX>320 and mouseX<387) and (mouseY>302 and mouseY<332)):
@@ -1384,6 +1432,7 @@ def Thread_UpdateCoreUsageInfo():
 	aprocess_list.append(this_thread)
 	lock_aprocess_list.release() #----
 	aprocess_list_len = len(aprocess_list)
+	prctl.set_name("Thread_UpdateCoreUsageInfo") #Sets the thread title for linux kernel
 
 	while True:
 		#Timing Related

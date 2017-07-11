@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<am:Amalthea xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:am="http://app4mc.eclipse.org/amalthea/0.8.1">
+  <hwModel>
+    <coreTypes name="ARM Cortex-A53" bitWidth="64" instructionsPerCycle="1.0"/>
+    <system>
+      <ecus name="RPI3">
+        <microcontrollers name="ARM Cortex-A53">
+          <cores name="RPI_0" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="ClockARM0">
+              <frequency unit="GHz" value="1.2"/>
+            </quartzes>
+            <prescaler name="" clockRatio="1.0" quartz="ClockARM0?type=Quartz"/>
+          </cores>
+          <cores name="RPI_1" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="ClockARM1">
+              <frequency unit="GHz" value="1.2"/>
+            </quartzes>
+            <prescaler clockRatio="1.0" quartz="ClockARM1?type=Quartz"/>
+          </cores>
+          <cores name="RPI_2" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="ClockARM2">
+              <frequency unit="GHz" value="1.2"/>
+            </quartzes>
+            <prescaler name="" clockRatio="1.0" quartz="ClockARM2?type=Quartz"/>
+          </cores>
+          <cores name="RPI_3" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0">
+            <quartzes name="ClockARM3">
+              <frequency unit="GHz" value="1.2"/>
+            </quartzes>
+            <prescaler name="" clockRatio="1.0" quartz="ClockARM3?type=Quartz"/>
+          </cores>
+        </microcontrollers>
+      </ecus>
+    </system>
+  </hwModel>
+  <constraintsModel/>
+</am:Amalthea>

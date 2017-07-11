@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 # Copyright (c) 2017 Eclipse Foundation and FH Dortmund.
 # All rights reserved. This program and the accompanying materials

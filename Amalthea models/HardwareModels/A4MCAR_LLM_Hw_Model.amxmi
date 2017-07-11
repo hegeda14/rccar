@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<am:Amalthea xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:am="http://app4mc.eclipse.org/amalthea/0.8.1">
+  <hwModel>
+    <coreTypes name="XCore-200" bitWidth="32" instructionsPerCycle="1.0"/>
+    <system>
+      <ecus name="XMOS">
+        <microcontrollers name="Tile0">
+          <quartzes name="Tile0" type="DYNAMIC">
+            <frequency unit="MHz" value="500.0"/>
+          </quartzes>
+          <prescaler clockRatio="1.0" quartz="Tile0?type=Quartz"/>
+          <cores name="0" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="1" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="2" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="3" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="4" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="5" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="6" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="7" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+        </microcontrollers>
+        <microcontrollers name="Tile1">
+          <quartzes name="Tile1" type="DYNAMIC">
+            <frequency unit="MHz" value="500.0"/>
+          </quartzes>
+          <prescaler name="" clockRatio="1.0" quartz="Tile1?type=Quartz"/>
+          <cores name="8" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="9" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="10" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="11" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="12" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="13" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="14" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+          <cores name="15" coreType="XCore-200?type=CoreType" lockstepGroup="0"/>
+        </microcontrollers>
+      </ecus>
+    </system>
+  </hwModel>
+</am:Amalthea>
