@@ -8,32 +8,26 @@
 			\hline
 			Camera Stream & 1500000 &  Sporadic [1s periodic]&  OS & 0-3\\
 			\hline
-			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  OS & 0-3\\
-			\hline
 			\hline
 			Core Recorder & 525000 &  Periodic 3s &  OS & 0-3\\
 			\hline
-			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s &  OS & 0-3\\
-			\hline
 			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] &  OS & 0-3\\
 			\hline
+			Dummy Graph & given* &  given* & OS & 0-3\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  OS & 0-3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  OS & 0-3\\
 			\hline
-			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  OS & 0-3\\
-			\hline
 			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  OS & 0-3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}wStream distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}wStream distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrInitialOS}
 	\end{table}
 }
@@ -48,32 +42,26 @@
 			\hline
 			Camera Stream & 1500000 &  Sporadic [1s periodic]&  Sequential & 3\\
 			\hline
-			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  Sequential & 3\\
-			\hline
 			\hline
 			Core Recorder & 525000 &  Periodic 3s &  Sequential & 3\\
 			\hline
-			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s &  Sequential & 3\\
-			\hline
 			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] &  Sequential & 3\\
 			\hline
+			Dummy Graph & given* &  given* & Sequential & 3\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  Sequential & 3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  Sequential & 3\\
 			\hline
-			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  Sequential & 3\\
-			\hline
 			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  Sequential & 3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}wStream distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}wStream distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrInitialSequential}
 	\end{table}
 }
@@ -89,35 +77,30 @@
 			\hline
 			Camera Stream & 1500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
 			\hline
-			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
-			\hline
 			\hline
 			Core Recorder & 525000 &  Periodic 3s &  APP4MC & 3\\
 			\hline
-			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s &  APP4MC & 3\\
-			\hline
 			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] &  APP4MC & 3\\
 			\hline
+			Dummy Graph & given* &  given* & APP4MC & given**\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  APP4MC & 3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  APP4MC & 3\\
 			\hline
-			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  APP4MC & 3\\
-			\hline
 			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  APP4MC & 3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}wStream distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}wStream distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrInitialAFP}
 	\end{table}
 }
+
 
 \newcommand{\hlmdistrInitialTOS}{
 	\begin{table}[!ht]
@@ -129,32 +112,26 @@
 			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  OS & 0-3\\
 			\hline
-			\hline
 			Core Recorder & 525000 &  Periodic 3s &  OS & 0-3\\
-			\hline
 			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s &  OS & 0-3\\
 			\hline
-			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] &  OS & 0-3\\
 			\hline
+			Dummy Graph & given* &  given* & OS & 0-3\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  OS & 0-3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  OS & 0-3\\
-			\hline
 			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  OS & 0-3\\
 			\hline
-			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  OS & 0-3\\
-			\hline
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s &  OS & 0-3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}wImageProc distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}wImageProc distribution details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrInitial2OS}
 	\end{table}
 }
@@ -169,32 +146,26 @@
 			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  Sequential & 3\\
 			\hline
-			\hline
 			Core Recorder & 525000 &  Periodic 3s &  Sequential & 3\\
-			\hline
 			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s &  Sequential & 3\\
 			\hline
-			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] &  Sequential & 3\\
 			\hline
+			Dummy Graph & given* &  given* & Sequential & 3\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  Sequential & 3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  Sequential & 3\\
-			\hline
 			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  Sequential & 3\\
 			\hline
-			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  Sequential & 3\\
-			\hline
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s &  Sequential & 3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}wImageProc distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}wImageProc distribution details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrInitial2Sequential}
 	\end{table}
 }
@@ -210,32 +181,26 @@
 			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
 			\hline
-			\hline
 			Core Recorder & 525000 &  Periodic 3s &  APP4MC & 3\\
-			\hline
 			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s &  APP4MC & 3\\
 			\hline
-			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] &  APP4MC & 3\\
 			\hline
+			Dummy Graph & given* &  given* & APP4MC & given**\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  APP4MC & 3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  APP4MC & 3\\
-			\hline
 			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  APP4MC & 3\\
 			\hline
-			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  APP4MC & 3\\
-			\hline
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s &  APP4MC & 3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}wImageProc distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}wImageProc distribution details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrInitial2AFP}
 	\end{table}
 }
@@ -250,33 +215,25 @@
 		\hline
 		Web Server & 500000 &  Sporadic [1s periodic]&  OS & 0-3\\
 		\hline
-		\hline
 		Core Recorder & 525000 &  Periodic 3s &  OS & 0-3\\
-		\hline
 		\hline
 		Ethernet Client & 120000 &  Periodic 0.01s &  OS & 0-3\\
 		\hline
-		\hline
 		VNC Server & 10000000 &  Sporadic [1s periodic] &  OS & 0-3\\
 		\hline
+		Dummy Graph & given* &  given* & OS & 0-3\\
 		\hline
 		Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  OS & 0-3\\
 		\hline
-		\hline
 		Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  OS & 0-3\\
-		\hline
 		\hline
 		Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  OS & 0-3\\
 		\hline
-		\hline
 		Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  OS & 0-3\\
-		\hline
 		\hline
 		ImageProcess & 450000000 &  Periodic 0.65s &  OS & 0-3\\
 		\hline
-		\hline
 		dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  OS & 0-3\\
-		\hline
 		\hline
 		dummy{\_}load{\_}25\texttt{\_}2 &
 		198000000 & 
@@ -285,7 +242,7 @@
 		0-3\\
 		\hline
 	\end{tabular}}
-	\caption{HL{\_}Distr{\_}AvgStress details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+	\caption{HL{\_}Distr{\_}AvgStress details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 	\label{tbl_hlmdistrAOS}
 \end{table}
 }
@@ -300,33 +257,25 @@
 			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  Sequential & 3\\
 			\hline
-			\hline
 			Core Recorder & 525000 &  Periodic 3s &  Sequential & 3\\
-			\hline
 			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s &  Sequential & 3\\
 			\hline
-			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] &  Sequential & 3\\
 			\hline
+			Dummy Graph & given* &  given* & Sequential & 3\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  Sequential & 3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  Sequential & 3\\
-			\hline
 			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  Sequential & 3\\
 			\hline
-			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s & Sequential & 3\\
-			\hline
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s &  Sequential & 3\\
 			\hline
-			\hline
 			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  Sequential & 3\\
-			\hline
 			\hline
 			dummy{\_}load{\_}25\texttt{\_}2 &
 			198000000 & 
@@ -335,7 +284,7 @@
 			3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}AvgStress details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}AvgStress details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrASequential}
 	\end{table}
 }
@@ -351,33 +300,25 @@
 			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
 			\hline
-			\hline
 			Core Recorder & 525000 &  Periodic 3s &  APP4MC & 3\\
-			\hline
 			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s &  APP4MC & 3\\
 			\hline
-			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] &  APP4MC & 3\\
 			\hline
+			Dummy Graph & given* &  given* & APP4MC & given**\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  APP4MC & 3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  APP4MC & 3\\
-			\hline
 			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  APP4MC & 3\\
 			\hline
-			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s & APP4MC & 3\\
-			\hline
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s &  APP4MC & 3\\
 			\hline
-			\hline
 			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  APP4MC & 3\\
-			\hline
 			\hline
 			dummy{\_}load{\_}25\texttt{\_}2 &
 			198000000 & 
@@ -386,7 +327,7 @@
 			3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}AvgStress details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}AvgStress details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrAAFP}
 	\end{table}
 }
@@ -401,61 +342,31 @@
 			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  OS & 0-3\\
 			\hline
-			\hline
 			Core Recorder & 525000 &  Periodic 3s &  OS & 0-3\\
-			\hline
 			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s &  OS & 0-3\\
 			\hline
-			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] &  OS & 0-3\\
 			\hline
+			Dummy Graph & given* &  given* & OS & 0-3\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s &  OS & 0-3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s &  OS & 0-3\\
-			\hline
 			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s &  OS & 0-3\\
 			\hline
-			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s &  OS & 0-3\\
-			\hline
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s &  OS & 0-3\\
 			\hline
-			\hline
 			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s &  OS & 0-3\\
-			\hline
 			\hline
 			dummy{\_}load{\_}25\texttt{\_}2 &
 			198000000 & 
 			Periodic 1.4s & 
 			OS &
 			0-3\\
-			\hline
-			\hline
-			dummy{\_}load{\_}25\texttt{\_}3 &
-			198000000 & 
-			Periodic 1.4s & 
-			OS &
-			0-3\\
-			\hline
-			\hline
-			dummy{\_}load{\_}25\texttt{\_}4 &
-			198000000 & 
-			Periodic 1.4s & 
-			OS &
-			0-3\\
-			\hline
-			\hline
-			dummy{\_}load{\_}25\texttt{\_}5 &
-			198000000 & 
-			Periodic 1.4s & 
-			OS &
-			0-3\\
-			\hline
 			\hline
 			dummy{\_}load{\_}100 &
 			198000000 & 
@@ -464,7 +375,7 @@
 			0-3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}FullStress details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}FullStress details in High-level Module mapped using OS affinities (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrBOS}
 	\end{table}
 }
@@ -479,61 +390,31 @@
 			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  Sequential & 3\\
 			\hline
-			\hline
 			Core Recorder & 525000 &  Periodic 3s &  Sequential & 3\\
-			\hline
 			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s & Sequential & 3\\
 			\hline
-			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] & Sequential & 3\\
 			\hline
+			Dummy Graph & given* &  given* & Sequential & 3\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s & Sequential & 3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s & Sequential & 3\\
-			\hline
 			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s & Sequential & 3\\
 			\hline
-			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s & Sequential & 3\\
-			\hline
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s & Sequential & 3\\
 			\hline
-			\hline
 			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s & Sequential & 3\\
-			\hline
 			\hline
 			dummy{\_}load{\_}25\texttt{\_}2 &
 			198000000 & 
 			Periodic 1.4s & 
 			Sequential &
 			3\\
-			\hline
-			\hline
-			dummy{\_}load{\_}25\texttt{\_}3 &
-			198000000 & 
-			Periodic 1.4s & 
-			Sequential &
-			3\\
-			\hline
-			\hline
-			dummy{\_}load{\_}25\texttt{\_}4 &
-			198000000 & 
-			Periodic 1.4s & 
-			Sequential &
-			3\\
-			\hline
-			\hline
-			dummy{\_}load{\_}25\texttt{\_}5 &
-			198000000 & 
-			Periodic 1.4s & 
-			Sequential &
-			3\\
-			\hline
 			\hline
 			dummy{\_}load{\_}100 &
 			198000000 & 
@@ -542,7 +423,7 @@
 			3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}FullStress details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}FullStress details in High-level Module mapped using Sequential affinities (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrBSequential}
 	\end{table}
 }
@@ -558,61 +439,31 @@
 			\hline
 			Web Server & 500000 &  Sporadic [1s periodic]&  APP4MC & 3\\
 			\hline
-			\hline
 			Core Recorder & 525000 &  Periodic 3s &  APP4MC & 3\\
-			\hline
 			\hline
 			Ethernet Client & 120000 &  Periodic 0.01s & APP4MC & 3\\
 			\hline
-			\hline
 			VNC Server & 10000000 &  Sporadic [1s periodic] & APP4MC & 3\\
 			\hline
+			Dummy Graph & given* &  given* & APP4MC & given**\\
 			\hline
 			Touchscreen / MainThread & 110000000 &  Periodic 0.5s & APP4MC & 3\\
 			\hline
-			\hline
 			Touchscreen / UpdateUtil & 150000000 &  Periodic 2s & APP4MC & 3\\
-			\hline
 			\hline
 			Touchscreen / TimingCalculation & 158000000 &  Periodic 2.8s & APP4MC & 3\\
 			\hline
-			\hline
 			Touchscreen / TouchEvents & 10000000 &  Periodic 0.1s & APP4MC & 3\\
-			\hline
 			\hline
 			ImageProcess & 450000000 &  Periodic 0.65s & APP4MC & 3\\
 			\hline
-			\hline
 			dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s & APP4MC & 3\\
-			\hline
 			\hline
 			dummy{\_}load{\_}25\texttt{\_}2 &
 			198000000 & 
 			Periodic 1.4s & 
 			APP4MC &
 			3\\
-			\hline
-			\hline
-			dummy{\_}load{\_}25\texttt{\_}3 &
-			198000000 & 
-			Periodic 1.4s & 
-			APP4MC &
-			3\\
-			\hline
-			\hline
-			dummy{\_}load{\_}25\texttt{\_}4 &
-			198000000 & 
-			Periodic 1.4s & 
-			APP4MC &
-			3\\
-			\hline
-			\hline
-			dummy{\_}load{\_}25\texttt{\_}5 &
-			198000000 & 
-			Periodic 1.4s & 
-			APP4MC &
-			3\\
-			\hline
 			\hline
 			dummy{\_}load{\_}100 &
 			198000000 & 
@@ -621,7 +472,7 @@
 			3\\
 			\hline
 		\end{tabular}}
-		\caption{HL{\_}Distr{\_}FullStress details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets)}
+		\caption{HL{\_}Distr{\_}FullStress details in High-level Module mapped using affinity results obtained from APP4MC (with Sporadic activation assumptions shown with square brackets and *Dummy graph details given in Figure \ref{fig:dummygraph})}
 		\label{tbl_hlmdistrBAFP}
 	\end{table}
 }
@@ -646,7 +497,6 @@
 				0 \% &
 				0.605-0.660A \\
 				\hline
-				\hline
 				2 &
 				HL{\_}Distr{\_}wStream &
 				Sequential &
@@ -657,7 +507,6 @@
 				0/0/0/100 &
 				0 \% &
 				0.605-0.660A \\
-				\hline
 				\hline
 				3 &
 				HL{\_}Distr{\_}wStream &
@@ -670,7 +519,6 @@
 				0 \% &
 				0.670A \\
 				\hline
-				\hline
 				4 &
 				HL{\_}Distr{\_}wImageProc &
 				OS &
@@ -681,7 +529,6 @@
 				varies&
 				0 \% &
 				0.770-0.840A \\
-				\hline
 				\hline
 				5 &
 				HL{\_}Distr{\_}wImageProc &
@@ -694,7 +541,6 @@
 				0 \% &
 				0.670A \\
 				\hline
-				\hline
 				6 &
 				HL{\_}Distr{\_}wImageProc &
 				APP4MC &
@@ -705,7 +551,6 @@
 				54/23/11/99 &
 				0 \% &
 				0.670A \\
-				\hline
 				\hline
 				7 &
 				HL{\_}Distr{\_}AvgStress &
@@ -718,7 +563,6 @@
 				0 \% &
 				0.800-0.950A \\
 				\hline
-				\hline
 				8 &
 				HL{\_}Distr{\_}AvgStress &
 				Sequential &
@@ -729,7 +573,6 @@
 				54/23/11/99 &
 				0 \% &
 				0.670A \\
-				\hline
 				\hline
 				9 &
 				HL{\_}Distr{\_}AvgStress &
@@ -742,7 +585,6 @@
 				0 \% &
 				0.670A \\
 				\hline
-				\hline
 				10 &
 				HL{\_}Distr{\_}FullStress &
 				OS &
@@ -753,7 +595,6 @@
 				54/23/11/99 &
 				0 \% &
 				0.670A \\
-				\hline
 				\hline
 				11 &
 				HL{\_}Distr{\_}FullStress &
@@ -766,7 +607,6 @@
 				0 \% &
 				0.670A \\
 				\hline
-				\hline
 				12 &
 				HL{\_}Distr{\_}FullStress &
 				APP4MC &
@@ -777,7 +617,6 @@
 				54/23/11/99 &
 				0 \% &
 				0.670A \\
-				\hline
 				\hline
 				13 &
 				HL{\_}Distr{\_}wStream &
@@ -790,7 +629,6 @@
 				0 \% &
 				0.605-0.660A \\
 				\hline
-				\hline
 				14 &
 				HL{\_}Distr{\_}wStream &
 				Sequential &
@@ -801,7 +639,6 @@
 				0/0/0/100 &
 				0 \% &
 				0.605-0.660A \\
-				\hline
 				\hline
 				15 &
 				HL{\_}Distr{\_}wStream &
@@ -814,7 +651,6 @@
 				0 \% &
 				0.670A \\
 				\hline
-				\hline
 				16 &
 				HL{\_}Distr{\_}wImageProc &
 				OS &
@@ -825,7 +661,6 @@
 				varies&
 				0 \% &
 				0.770-0.840A \\
-				\hline
 				\hline
 				17 &
 				HL{\_}Distr{\_}wImageProc &
@@ -838,7 +673,6 @@
 				0 \% &
 				0.670A \\
 				\hline
-				\hline
 				18 &
 				HL{\_}Distr{\_}wImageProc &
 				APP4MC &
@@ -849,7 +683,6 @@
 				54/23/11/99 &
 				0 \% &
 				0.670A \\
-				\hline
 				\hline
 				19 &
 				HL{\_}Distr{\_}AvgStress &
@@ -862,7 +695,6 @@
 				0 \% &
 				0.800-0.950A \\
 				\hline
-				\hline
 				20 &
 				HL{\_}Distr{\_}AvgStress &
 				Sequential &
@@ -873,7 +705,6 @@
 				54/23/11/99 &
 				0 \% &
 				0.670A \\
-				\hline
 				\hline
 				21 &
 				HL{\_}Distr{\_}AvgStress &
@@ -886,7 +717,6 @@
 				0 \% &
 				0.670A \\
 				\hline
-				\hline
 				22 &
 				HL{\_}Distr{\_}FullStress &
 				OS &
@@ -898,7 +728,6 @@
 				0 \% &
 				0.670A \\
 				\hline
-				\hline
 				23 &
 				HL{\_}Distr{\_}FullStress &
 				Sequential &
@@ -909,7 +738,6 @@
 				54/23/11/99 &
 				0 \% &
 				0.670A \\
-				\hline
 				\hline
 				24 &
 				HL{\_}Distr{\_}FullStress &
@@ -944,14 +772,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		EthernetServer.ShareCoreUsage0 &
 		50 & 
 		Sporadic & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		EthernetServer.ShareCoreUsage1 &
 		50 & 
@@ -960,14 +786,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		EthernetServer.xtcp\texttt{\_}event &
 		100 & 
 		Sporadic & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		ControlLightSystem.ST\texttt{\_}Timer &
 		1001 & 
@@ -976,14 +800,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		ControlLightSystem.TH\texttt{\_}Timer &
 		1001 & 
 		Periodic 0s-0.020s & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		ControlLightSystem.ShareState &
 		50 & 
@@ -992,14 +814,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		Bluetooth.UART\texttt{\_}RXDataReady &
 		1017 & 
 		Sporadic & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		Bluetooth.SendCmdEvent &
 		127 & 
@@ -1008,14 +828,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		Bluetooth.TimerEvent &
 		1000 & 
 		Periodic 0.050s & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		MotorController.ShareSteering &
 		30 & 
@@ -1024,14 +842,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		MotorController.TimerEvent &
 		987 & 
 		Periodic 0s-0.020s & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		ReadSonarSensors &
 		519 & 
@@ -1040,14 +856,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		DriveTBLE02S.ShareDistance &
 		50 & 
 		Sporadic & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		DriveTBLE02S.ShareDirection &
 		50 & 
@@ -1056,14 +870,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		DriveTBLE02S.ShareSpeed &
 		50 & 
 		Sporadic & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		DriveTBLE02S.TimerEvent &
 		1001 & 
@@ -1072,14 +884,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		output\texttt{\_}gpio &
 		44 & 
 		Sporadic & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		input\texttt{\_}gpio &
 		15 & 
@@ -1088,14 +898,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		i2c\texttt{\_}master &
 		1188 & 
 		Sporadic & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		uart\texttt{\_}rx &
 		448 & 
@@ -1104,14 +912,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		uart\texttt{\_}tx &
 		71 & 
 		Sporadic & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		xtcp &
 		2000 & 
@@ -1120,14 +926,12 @@
 		1 &
 		0\\
 		\hline
-		\hline
 		MonitorCores0 &
 		245 & 
 		Periodic 1s & 
 		Manual &
 		1 &
 		0\\
-		\hline
 		\hline
 		MonitorCores1 &
 		245 & 
@@ -1136,7 +940,6 @@
 		1 &
 		1\\
 		\hline
-		\hline
 		smi &
 		225 & 
 		Sporadic & 
@@ -1144,14 +947,12 @@
 		1 &
 		1\\
 		\hline
-		\hline
 		rgmii\texttt{\_}ethernet\texttt{\_}mac &
 		4000 & 
 		Sporadic & 
 		Manual &
 		1 &
 		1\\
-		\hline
 		\hline
 		ar8035\texttt{\_}phy\texttt{\_}driver &
 		75 & 
@@ -1182,7 +983,6 @@
 		54/23/11/99 &
 		0.670A \\
 		\hline
-		\hline
 		LLM &
 		500MHz &
 		Distribution-2 &
@@ -1190,7 +990,6 @@
 		0.1232s &
 		54/23/11/99 &
 		0.670A \\
-		\hline
 		\hline
 		LLM &
 		500MHz &

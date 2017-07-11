@@ -888,7 +888,7 @@ Core utilization display is shown at the bottom of the Figure \ref{fig:web}. It 
 
 For the efforts regarding creating a graph, a third party script library called 'jqPlot' \cite{jqplot} which runs within the jQuery framework is used.  The jqPlot offers various functions in order to create various plots such as bar graphs, line graphs, pie charts and 3D plots. In order to embed the plots into the web page, AJAX has been used.
 
-\subsection{Dummy Loads}
+\subsection{Dummy Loads and Dummy Graph}
 In order to fully utilize the developed parallel software on the high-level module under full load, several processes have been created which do dummy operations to use a certain percentage of the cores. Although the initial distribution does not involve dummy load processes due to increased responsiveness, the dummy loads is used for stressing the software. To create dummy loads, two ideas are investigated:
 \begin{itemize}
 	\item \textbf{Basic load with very short periods:} While using this methodology achieves certain core percentage loads, having a very short delay is considered to be non model-safe and since periods of the processes are very short, timing logs resulted in deadline misses for further analysis. Therefore, a new method of using bigger load with bigger periods is analyzed.
@@ -925,6 +925,19 @@ In order to fully utilize the developed parallel software on the high-level modu
 	\end{table}
 	
 \end{itemize}
+
+Although the aforementioned processes have been created to stress the Raspberry Pi to find out the parallelization behavior in full utilization, several other purposes have also been considered. One very important distinction that seperates APP4MC's industrial use from A4MCAR is that industry has complicated tracing and distribution tools and standards such as AUTOSAR. Thus, in industry, fine-grained runnables can be created and distributed easily. However in A4MCAR, experiments showed that distributing and tracing such runnables are not so easy with real-world applications. This means that granularity of processes and threads might have a huge size difference when the functionality of the system is considered. Therefore, to demonstrate the partitioning feature of the APP4MC as in an industry application, a software graph that is called 'Dummy Graph' has been created using Python threads. The created software graph is illustrated in the Figure \ref{fig:dummygraph}.
+
+Created graph depicts software runnables (in our case threads that are distributed) and their global communication via shared variables. Each arrow represents a label access and chronological execution order of runnables. For example, arrow pointing from B to F indicates that B writes to a shared variable, and after it is done, F can read and start its calculations. Inside the threads, dummy matrix multiplication with adjustable matrix size (default: 190x190) is introduced. By looping this multiplication and writing a byte to a shared variable after this is done, dummy graph has been completed. As the legend of the image suggests, each thread is activated using 0.5 second periodic activations and threads have instruction sizes varying from approximately 9 million to 81 million, according to the dynamic profiling results. Further discussions and results of this distribution is discussed in Chapter \ref{evaluationchapter}.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[scale=0.4]{content/images/dummygraph.png}
+	\caption{Dummy Graph that is created and its details}
+	\label{fig:dummygraph}
+\end{figure}
+
 
 \subsection{Image Processing with OpenCV}
 Developing cyber-physical systems with multiple sensors require a good knowledge of computer vision. Automotive applications especially when developing Advanced Driving Asistance Systems (ADAS) make use of this knowledge. Huge computational power need involved in such applications makes such processes a challenge. Therefore, a demonstration of an image processing application is crucial in A4MCAR.
@@ -1549,7 +1562,10 @@ In the Section \ref{app4mcchapter}, motivations and design techniques of using A
 \end{itemize}
 Although the previously explained model includes both low-level module and high-level module components, to generate partitioning and mapping outputs, the model is seperated to two AMALTHEA models, each of which containing the elements for respective modules (high-level and low-level). The reason to use this approach was the lack of the implementation of tag-based (in our case with respect to modules) partition grouping in the version of APP4MC (0.8.1) that was used. 
 
+One important thing to consider when partitioning, especially in the Critical Path Partitioning, is that when label accesses are strictly modeled, the partitioning output might not be ideal for parallelization towards load balancing. The reason is that APP4MC, in the partitioning stage puts all the runnables that belong to the critical path to one single partition. Our experiments showed that A4MCAR's real-world application encountered to this problem that results in poor load balancing. To solve this issue, we considered two solutions: (1) - Removing non-critical label accesses, (2) - Defining non-critical label accesses as 'Access Precedence' to prevent APP4MC from considering label accesses strictly in model, and do the partitioning towards load-balancing.
+
 After the modeling, partitioning (pre-partitioning is performed automatically before partitioning), task generation, and mapping is performed by using APP4MC to obtain the distribution results. Obtained results will be shown in the following sections.
+
 %then what happens? partitioning mapping etc.
 %maybe add window from Partitioning console window and Mapping console window
 % basit model interfaceler + rpi dekiler..
@@ -1573,6 +1589,8 @@ Three mapping results are compared: OS distribution where core affinities are no
 
 \hlmdistrInitialAFP
 
+% ExpLAIN PARTITIONING RESULTS, DUMMY GRAPH PARTITIONING ALSO, MAPPING RESULTS, INFERENCES...
+
 \subsubsection{OS, Sequential and APP4MC Mapping Results of the Distributions HL{\_}Distr{\_}wImageProc}
 
 The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. HL{\_}Distr{\_}wImageProc set-up for OS, Sequential, and APP4MC-based mapping are given with the Tables \ref{tbl_hlmdistrInitial2OS}, \ref{tbl_hlmdistrInitial2Sequential}, and \ref{tbl_hlmdistrInitial2AFP}, respectively.
@@ -1582,6 +1600,8 @@ The process list when the camera stream is not active but the image processing i
 \hlmdistrInitialTSequential
 
 \hlmdistrInitialTAFP
+
+% ExpLAIN PARTITIONING RESULTS, DUMMY GRAPH PARTITIONING ALSO, MAPPING RESULTS, INFERENCES...
 
 \subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution HL{\_}Distr{\_}AvgStress}
 
@@ -1593,6 +1613,8 @@ In the distribution HL{\_}Distr{\_}AvgStress, the A4MCAR is partially stressed. 
 
 \hlmdistrAAFP
 
+% ExpLAIN PARTITIONING RESULTS, DUMMY GRAPH PARTITIONING ALSO, MAPPING RESULTS, INFERENCES...
+
 \subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution HL{\_}Dist{\_}FullStress}
 
 The distribution HL{\_}Dist{\_}FullStress represents the distribution in which all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. By using APP4MC once again to model this fully stressed state, OS, Sequential, and APP4MC mapping set-up are given with the Tables \ref{tbl_hlmdistrBOS}, \ref{tbl_hlmdistrBSequential}, and \ref{tbl_hlmdistrBAFP}, respectively.
@@ -1603,6 +1625,7 @@ The distribution HL{\_}Dist{\_}FullStress represents the distribution in which a
 
 \hlmdistrBAFP
 
+% ExpLAIN PARTITIONING RESULTS, DUMMY GRAPH PARTITIONING ALSO, MAPPING RESULTS, INFERENCES...
 
 \subsubsection{Comparison of High-level Module Distributions}
 Some text
