@@ -1,0 +1,52 @@
+[[combinable]]
+void Task_DriveTBLE02S_MotorController (port p, server control_if control_interface, server distancesensor_if sensors_interface)
+{
+    while(1)
+    {
+        select
+        {
+            //Wait for the direction value
+            case control_interface.ShareDirectionValue (int direction):
+                direction_val = direction;
+                break;
+            //Wait for the speed value
+            case control_interface.ShareSpeedValue (int speed):
+                speed_val = speed;
+                break;
+            //Calculate PWM periods and apply period within the timer
+            case tmr when timerafter(time) :> void :
+                tmr :> time;
+                if (direction_val == FORWARD){
+                       if (speed_val == 0){
+                           on_period = TBLE02S_FWD_MINSPEED_PULSE_WIDTH;
+                       }else if (speed_val > 99){
+                           on_period = TBLE02S_FWD_MAXSPEED_PULSE_WIDTH;
+                       }
+                       else{
+                           on_period = (TBLE02S_FWD_MINSPEED_PULSE_WIDTH - ((TBLE02S_FWD_MINSPEED_PULSE_WIDTH - TBLE02S_FWD_MAXSPEED_PULSE_WIDTH) * (speed_val/100.0)));
+                       }
+                   off_period = overall_pwm_period - on_period;
+                }else if (direction_val == REVERSE){ //Reverse speed 0-100 mapping to on period
+                   if (speed_val == 0){
+                       on_period = TBLE02S_REV_MINSPEED_PULSE_WIDTH;
+                   }else if (speed_val > 99){
+                       on_period = TBLE02S_REV_MAXSPEED_PULSE_WIDTH;
+                   }else{
+                       on_period = (TBLE02S_REV_MINSPEED_PULSE_WIDTH + ((TBLE02S_REV_MAXSPEED_PULSE_WIDTH - TBLE02S_REV_MINSPEED_PULSE_WIDTH) * (speed_val/100.0)));
+                   }
+                   off_period = overall_pwm_period - on_period;
+                }
+                //PWM Port Toggling
+                if(port_state == 0){
+                    p <: 1;
+                    port_state = 1;
+                    time += on_period; //Extend timer deadline
+                }else if(port_state == 1){
+                    p <: 0;
+                    port_state = 0;
+                    time += off_period; //Extend timer deadline
+                }
+                break;
+        }
+    }
+}

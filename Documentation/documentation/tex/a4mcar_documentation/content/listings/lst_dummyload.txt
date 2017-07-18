@@ -1,0 +1,3 @@
+a=numpy.random.random([1000,1000])
+b=numpy.random.random([1000,1000])
+c=numpy.mean(a*b)

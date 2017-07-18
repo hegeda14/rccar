@@ -1,0 +1,16 @@
+[COREDEF_LIST_APP4MC]
+Assign Task Xtightvnc To Core 0
+Assign Task mjpg_streamer To Core 0
+Assign Task touchscreen_display To Core 0
+Assign Task ethernet_client To Core 0
+Assign Task core_recorder To Core 0
+Assign Task dummy_load25_1 To Core 1
+Assign Task dummy_load25_2 To Core 2
+Assign Task dummy_load25_3 To Core 1
+Assign Task dummy_load25_4 To Core 2
+Assign Task dummy_load25_5 To Core 2
+Assign Task dummy_load100 To Core 3
+Assign Task apache2 To Core 1
+Assign Thread Thread_UpdateCoreUsageInfo To Core 2
+Assign Thread Thread_TimingCalculation To Core  3
+Assign Thread Thread_TouchscreenEvents To Core 0

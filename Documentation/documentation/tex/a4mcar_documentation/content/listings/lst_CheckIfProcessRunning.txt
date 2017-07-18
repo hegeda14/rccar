@@ -1,0 +1,7 @@
+def CheckIfProcessRunning(process_name):
+	# Returns process id, or 0 if process not running
+	try:
+		x = subprocess.check_output(['pgrep','-f',process_name,'-n'])
+	except Exception as inst:
+		x = 0
+	return x

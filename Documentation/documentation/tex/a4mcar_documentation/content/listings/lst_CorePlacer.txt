@@ -1,0 +1,8 @@
+#!/bin/bash
+args=("$@")
+process_name=${args[0]}
+core=${args[1]}  #Affinity, 0-3 for raspberry pi, could be a range too.
+pid=$(pgrep -f $process_name -n ) #Newest result
+sudo taskset -pc $core $pid &&	  #Place the task on a specific core.
+echo "Process $process_name with PID=$pid has been placed on core $core"
+

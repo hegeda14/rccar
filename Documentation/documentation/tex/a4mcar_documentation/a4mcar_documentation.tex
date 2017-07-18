@@ -1,0 +1,1201 @@
+\input{header}
+\definecolor{mygray}{gray}{.95}
+
+\begin{document}
+
+\title{\rule{\textwidth}{1pt}
+	\textbf{ A4MCAR Documentation} \\ Documentation on Implementation and Parallelism Evaluation of a APP4MC-based Multi-core Demonstrator \rule{\textwidth}{1pt}\vspace{-20pt}}
+\date{}
+
+\maketitle 
+\setlength{\headsep}{20pt}
+\vspace{-20pt}
+\hspace{-12pt}
+
+\begin{tabularx}{\textwidth}{Xlll}
+	& \textit{Version} & \textit{\today }&\\
+	&\textit{Author} &\textit{Mustafa Özcelikörs} & \textit{mozcelikors@gmail.com}\\
+	&\textit{Supervision \& revision} &\textit{Robert Höttger} &\textit{robert.hoettger@fh-dortmund.de}\\ \\
+	
+	&&\multicolumn{2}{l}{University of Applied Sciences and Arts Dortmund}\\ 
+	&&\multicolumn{2}{l}{IDiAL Institute, Project AMALTHEA4public}\\
+	&&\multicolumn{2}{l}{BMBF  	Fund.Nb. 01|S14029K}  \\ \\
+	&&\multicolumn{2}{l}{Also granted by Google Inc. and The Eclipse Foundation}\\ 
+	&&\multicolumn{2}{l}{during the participation on Google Summer of Code 2017.}\\
+\end{tabularx} 
+\vspace{15pt}\\
+
+\begin{tabularx}{\textwidth}{cXc}
+	\includegraphics[width=0.35\textwidth]{content/images/a4mcar.png}&&
+	\includegraphics[width=0.53\textwidth]{content/images/web.png}
+\end{tabularx}
+\vspace{20pt}\\
+
+\centerline{\includegraphics[width=0.5\textwidth]{content/images/fhidial.jpg}} 
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Scope}
+This report is dedicated to explaining A4MCAR demonstrator: motivations behind it, objectives, software and hardware features, tool support for tasks such as binary analysis, profiling, tracing, monitoring, and model-based parallelization fundamentals using APP4MC tool.
+
+\section{Introduction}
+\subsection{Motivation}
+Developing and distributing effective software is one of the most important concerns of today's software-driven fields. Effective software is surely needed in almost every part of embedded systems, especially in the fields of automotive, robotics, defense, transportation, electrical instruments, autonomous and cyber-physical systems. Quality software involvement in fields such as the ones that are mentioned created a great demand for parallel software development in the last ten years. This great demand caused software engineers in especially IT and embedded system sector to study parallel computing along with multi- and many- core systems.
+
+The digitalization of almost every aspect of our lives as we know it requires systems to be more and more complex each passing day. While some years ago the computers had single-core processors, today almost every single computer have at least a couple of cores in their processors. The advancements in processors allowed development of more advanced systems with efficient software. The super computers currently NASA (The National Aeronautics and Space Administration) uses for collecting information are said to record as much data as it has been collected in the entire the world history in just four years. This example should show that how complex applications can be in the century we are living in. Furthermore, one of the most trending topics Cloud Computing, which is being studied to make use of complex computing power of super computers' remotely to public users, is being researched and it will benefit greatly from the advancements in the field of parallel computing.
+
+While parallel computing is used for achieving more complex software, it is also widely used in more basic and cheap processors in order to achieve more tasks with less resource consumption and cost. This is achieved by proper scheduling techniques. Furthermore, with an efficient software distributed efficiently to a processor's cores, one could also make use of less energy consumption features by applying techniques such as under-clocking a processor. To summarize, developing efficient parallel software is not only useful in achieving advanced computing capability but also can help to achieve less energy and resource consumption, thus decreasing the cost of systems and making them more advanced and environment-friendly.
+
+\subsection{Objective and Contributions}
+Even though achieving concurrency using parallel computing is crucial, it might lead to error-prone systems if software is not planned and executed properly. Developers have to consider using the right software and also have to determine and plan not only the hardware constraints but also the software constraints in order to create an efficient and reliable software.
+
+Before its execution, parallel software have to be delicately planned. The first stage of the parallel software development, planning stage, involves several activities such as Modeling, Partitioning, Task generation and Mapping. In the modeling stage, hardware and software model needs to be created. While software model is described by defining runnables, labels, label accesses, runnable activations and software constraints; the hardware model is described by defining processor details, hardware system clock and core information. After the modeling activity, partitioning is done that determines which group of runnables belong together. Partitioning results are combined with system constraints in order to generate tasks. Final activity, Mapping, involves laying out the details about pinning generated tasks to available hardware units and their cores.
+
+While there are some commercial tools that provide easement in the parallel software development, recent study done in Germany, namely AMALTHEA4public \cite{ICPDSSE} \cite{amalthea4publicweb}, aims to provide planning and tracing tools especially for multi-core developments in automotive domain with several open source development tools. The branch of AMALTHEA4public, APP4MC project \cite{app4mcproposaleclipse} provides an Eclipse-based tool chain environment and de-facto standard to integrate tools for all major design steps in the multi- and many-core development phase. A basic set of tools are available to demonstrate all the steps needed in the development process. The APP4MC project aims at providing \cite{app4mcproposaleclipse}:
+
+\begin{itemize}
+	\item A basis for the integration of various tools into a consistent and comprehensive tool chain.
+	\item Extensive models for timing behaviour, software, hardware, and constraints descriptions (used for simulation / analysis and for exchange).
+	\item Editors and domain specific languages for the models.
+	\item Tools for scheduling, partitioning, and optimizing of multi- and many-core architectures \cite{app4mcproposaleclipse}.
+\end{itemize}
+
+The author aims to investigate and evaluate APP4MC's performance with real-world distributed multi-core system in several aspects. The objectives of this project could be listed as follows:
+\begin{itemize}
+	\item Development of a distributed multi-core demonstrator for the APP4MC platform that involves features with the emphasis of automotive applications.
+	\item Investigation of new trends in parallel software development (such as Real-time Linux parallel programming, POSIX threads, RTOS, evaluation methods etc.)
+	\item Researching techniques to retrieve information (number of instructions, communication costs) and system trace from platforms such as xCORE and Linux to achieve precise modelling with APP4MC.
+	\item In order to achieve optimization goals such as reduced energy consumption and reduced resource usage, different affinity constrained software distributions will be evaluated and energy features will be invoked to see if the goals are met.
+	\item Developing a basic online parallelization evaluation software that will retrieve scheduling properties such as slack times, execution times, and deadlines from all the processes and that will tell how many of the deadlines are met, how good of a software distribution it is while the software is being executed. Also, investigating methods to develop threads and processes that are schedulable.
+	\item Also taking system traces from the software to carry out offline software evaluation in order to figure out means to balance the load on cores.
+	\item Comparing the conventional schedulers non-constrained affinity distribution (such as a Linux OS scheduler) to the affinity constrained distribution from APP4MC to see if performance can be improved.
+\end{itemize}
+
+With the help of A4MCAR project it is intended that the Real-time Linux community will benefit from the published libraries and documentation that involve code snippets and information instructions on how to develop more optimized distributed and parallel software. Furthermore, the Eclipse and APP4MC community will benefit from the A4MCAR via advanced tool support for RPI developments, open source example applications, and validations of APP4MC parallelization results in order to create a better tooling for public. Those results can be used to assess and compare different parallelization scenarios and consequently identify optimal solutions regarding timing efficiency for the A4MCAR. Thereby, a point of reference can be given as well as an easy starting point for developers approaching parallelism with their developments. 
+
+\subsection{Methodology}
+
+Automotive or any vehicle control related field tends to require very complex systems. In a real-life automotive application, amount of hardware nodes and software nodes are high in number. Since the main focus of the APP4MC environment is to provide parallel computation tools for automotive domain, a demonstrator is required that is closely related to automotive domain and that can be used for troubleshooting APP4MC. For that purpose, a demonstrator RC-Car called A4MCAR is developed. Although an RC-Car does not match up the number of nodes used in real vehicles, the A4MCAR has several nodes and a distributed architecture, thus matching a vehicle's distributed architecture such as the AUTOSAR used in vehicles. Furthermore, A4MCAR can be used for automotive-like applications that involve motor driving, navigation, sensor driving, and autonomous features.
+
+The demonstrator, A4MCAR, is equipped with a distributed architecture that involves a 16-core multi-core microcontroller development board (XMOS xCore-200 eXplorerKIT) and a 4-core single board computer (Raspberry Pi 3) with Linux OS. The software nodes with respect to their priorities and low-level and high-level purposes are distributed along those hardware modules. The demonstrator is not only designed to match up the capabilities of a real vehicle but also involves parts that are related to semi-autonomous driving and control. It can handle wifi and bluetooth connection requests and drive itself accordingly over a web interface or an Android application. Since A4MCAR is specifically designed as a demonstrator, it has the capability to monitor and visualize core utilization and display it using a touchscreen or its web interface. Furthermore, it is equipped with four ultrasonic sensors and a camera with image processing embedded to support its autonomous driving and web interface streaming functions.
+
+In this report, the development and parallelism evaluation of the demonstrator A4MCAR as well as the studies on parallel computing and tracing options are discussed. Obtained results are used in APP4MC for better development. 
+
+\subsection{Events and Publications}
+
+This project has been contributed in several medium during its evolution. With the supervision of Robert H{\"o}ttger, the author submitted a paper on mixed-critical parallelization of distributed and heterogeneous systems \cite{constrainedpaper} using A4MCAR as a demonstrator on the conference Intelligent Data Acquisition and Advanced Computing Systems: Technology and Applications (IDAACS'2017) held in Bucharest, Romania. Due to close partnership of APP4MC project to Eclipse Foundation, the author of this paper published a contribution called "Developing a multi-core enhanced RC-CAR using APP4MC" on EclipseCon 2016 IoT Day in Ludwigsburg, Germany. The author also attended to two APP4MC hackathons on the topic of demonstrators in 2016 and 2017 held in The Eclipse Foundation Europe GmbH with the participation of many partners such as Robert Bosch GmbH and Fraunhofer IML in Zwingenberg, Germany. The author has also participated in the unconference event of the conference EclipseCon 2017 France to present the work done in FH Dortmund regarding the Rover project, which is one of the other demonstrators of APP4MC. Furthermore contributions has been made to Dortmund International Research Conference  regarding APP4MC on 2017.
+
+The author, with the supervision of his mentor has been accepted to receive a Google grant with the project called "A4MCAR: A Distributed and Parallel Demonstrator for Eclipse APP4MC" \cite{gsoc} from Google Inc. and The Eclipse Foundation during the Google Summer of Code 2017 (GSoC'17) event. During the event, outcomes of the project as well as the code that is created has been contributed to The Eclipse Foundation in an open-source manner under Eclipse Public License (EPL). Thus, the intention of helping Real-time and parallel software development community was supported crucially during the participation on GSoC'17.
+\newpage
+\section{Preliminaries}
+\subsection{Introduction to Parallelism} 
+High performance systems, scientific computations and multi-feature systems require well-established parallel software. The physical problems in our world are being solved by computer systems by making use of simulations which are becoming more and more complex as the years go by. Graphical applications which involve big data operations also make use of the benefits of the parallel software. As the data that is involved in such systems increase, required amount of computing power, memory space and the need for accuracy and speed also increases. In the last decades, the improvements in high performance computing and the advancements in processors are significantly developed which allows the development of efficient parallel software in systems. Today, computers with multicore processors allow every desktop to be eligible for parallel software development. In \cite{springerparallel}, it is pointed out that the technological developments regarding multi-core processors and parallel computing was forced by physical reasons. As increasing the clock speed causes overheating which gets harder and harder to get rid of as the clock speed increases, the developments regarding multi-core technology allowed more computations to be achieved without having to increase the clock frequency \cite{springerparallel}.
+
+While the hardware-related developments are out there, in order to make use of parallelism one should modify an existing software to increase its performance on a multi-core processor. Furthermore, the execution time of the parallel program should be lesser the execution time of the sequential program for it to worth the effort. Designing a parallel program, as compared to a sequential program could be time consuming. In this regard, one should know how the parallel programming models and modern techniques to utilize a software in parallel manner. With this idea, it can be said that there is much research going on in the area of parallel programming languages and environments with the goal of utilizing parallel programs at the right level of abstraction \cite{springerparallel}.
+
+\subsection{Essential Concepts in Parallelization} 
+Basic concepts in parallel programming should be understood to develop efficiently utilized software. The design of a parallel software starts by decomposing an application into its smallest pieces which are called \textbf{runnables}. One or more runnables combined constitute \textbf{tasks} which are functional pieces of an application that can be executed parallel across a multi-core or single-core processor. The size of tasks (mostly in terms of number of instructions) are called \textbf{granularity} \cite{springerparallel}. Therefore, when decomposing an application into smaller pieces, granularity of the tasks should be considered for the load balancing. The tasks of an application are assigned to processes or threads for parallel execution on the hardware platform. Therefore, \textbf{process} can be defined as a program in execution that is assigned to execution resources for execution. The switching between processes are called \textbf{context switches}, and the \textbf{scheduler} of the operating system manages those switches. A \textbf{thread} can be defined a continuous sequence of execution. A process can involve one or many independent control flows, i.e. threads \cite{springerparallel}. 
+
+\textbf{Scheduling} is the process of determining the order of execution of processes or threads on physical hardware whereas \textbf{mapping} is defined as the assignment of processes or threads on processing units. In other words, processes or threads are placed on cores using mapping, whereas their execution sequence is determined programmatically with the help of scheduling. Usage of these techniques for parallel design brings their own challenges Besides assigning processes or threads to cores, one should also manage assigning data to memories and communication to data paths. Constraints such as instruction set, locality /grouping,  sizes, and deadline of the tasks can make this process effortly and time consuming \cite{lukas1}. \textbf{Synchronization} is also an important job which defines the organized communication between processes or threads \cite{springerparallel}. Since the memory organization of the hardware matters, design should consider the hardware along with the software. The coordination and synchronization of processes and threads will be discussed in the next section.
+
+Finding a useful scheduling and mapping strategy is key to parallel design. The practices involve keeping the \textbf{parallel execution time} of a task lower than the \textbf{sequential execution time}, keeping the load balanced through the cores of the system and keeping the communication overhead low. According to the book \cite{springerparallel}, for the quantitative evaluation of parallel programs, measures such as \textbf{speedup} and \textbf{efficiency} can be used which are the measures that compare parallel execution time of a software with its sequential execution time.
+
+\subsection{Design Techniques in Parallelization} \label{designtech}
+
+Parallelization can be defined as the transformation of a sequential program into a parallel program \cite{springerparallel}. Although different sources (\cite{springerparallel} and \cite{lukas1}) generalize the design techniques in parallelization differently, one can go through the following challenges in order to develop parallel software through parallelization (also illustrated with the Figure \ref{fig:designtechniques}):
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{content/images/designtechniques.png}
+	\caption{Illustration of design techniques in parallelization \cite{lukas1}}
+	\label{fig:designtechniques}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{Partitioning of the problem:}
+	The application that addresses a problem should be decomposed into smaller pieces, i.e. runnables that are considered to be smallest pieces in a software. In some cases, this decomposition can be at task-level. A runnable or a small task can be a function that involves a single read or write access to a register or a shared variable, peripheral communication, or simple computations. In theory, a runnable is only executed in a single core and it has no dependencies to another runnables. The goal of this decomposition (according to \cite{springerparallel}) is to make sure that all the applications are fine-grained enough that the load balancing can be achieved. In other words, runnables have small granularity and with the help of this the generated tasks can be distributed more efficiently.
+	\item \textbf{Analysis of the communication:} Communication between runnables and tasks should be considered before the task generation. Communication is a big constraint in a parallel software, therefore all the dependencies between runnables or tasks, in terms of which runnable reads or writes data, and what is the communication cost (granularity) should be analyzed.
+	\item \textbf{Agglomeration of executables to tasks (Task Generation):}
+	In the task generation phase, runnables and some tasks are grouped together in order to constitute tasks. This is done with the consideration of dependent runnables in terms of communication. Also, the grouping should consider functional unification as well it should consider load balancing. 
+	\item \textbf{Assignment of tasks to processes or threads:}
+	According to \cite{springerparallel}, this intermediate phase is involved in computer systems where processes and threads are involved. The tasks that are generated can be grouped in order to constitute processes or threads. This step is the step which makes the software mapping-ready. In the cases of some multi-core microcontrollers, the mapping is done at the task-level, therefore this intermediate step is not required.
+	\item \textbf{Mapping of processes or threads to physical processes or cores:}
+	Each process, thread, or task in some cases are assigned to a seperate processor or core after the final agglomeration phase, i.e. when the runnables are grouped sensibly. In cases where there is more process or thread than a core, multiple threads are assigned to some cores. In this case, as mentioned scheduler of the operating system takes care of the execution order of multiple processes or threads on a core. Mapping phase in computer systems is usually done by the operating system but the users can intervene. The main goal of mapping step is to get an equal utilization while keeping the communication overhead smallest \cite{springerparallel} \cite{lukas1}.
+\end{itemize}
+
+\subsection{Analysis of Scheduling}\label{schedulingsection}%and schedulers
+For the purpose of analysis and evaluation, one can use system traces that involve information such as timing, mapping, and priority in order to see if the tasks, processes or threads are scheduled properly. To meet the optimization goals, this work involves evaluation of several software distributions. 
+
+According to \cite{lukas1}, Quality of Service (QoS) of scheduling could involve the following goals:
+\begin{itemize}
+	\item Even load-balancing
+	\item Efficient resource usage 
+	\item Maximizing throughput (completed processes per time unit) and utilization (percentage a processor is used)
+	\item Minimizing response time and latency
+	\item Maximizing fairness (every process receive fair amount of cpu time depending on their granularity)
+	\item Avoiding starvation (every process is guaranteed to receive cpu time eventually)
+\end{itemize}
+In the later sections, the optimization goals for parallel software will be discussed. It can be argued that an important portion of the optimization goals for a parallel software can be achieved through the scheduling goals.
+
+To understand how tasks are scheduled, one must carefully study the task graph given in the Figure \ref{fig:scheduling}. In the figure, it is seen that two tasks are given with Task B having a higher priority but lesser execution time. Timing properties of the given timeline could be defined as follows \cite{timingposter} \cite{lukas1}:
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{content/images/scheduling.pdf}
+	\caption{Timing properties for scheduling in multi-tasked systems \cite{timingposter}}
+	\label{fig:scheduling}
+\end{figure}
+\begin{itemize}
+	\item \textbf{Initial Pending Time (IPT)}: IPT is defined as the preparation time before a task is ready to be started execution.
+	\item \textbf{Core Execution Time (CET)}: CET is the absolute time elapsed at which the task is executed on the processor. Therefore, the amount of time the task is preempted are not counted when calculating the CET. In the figure, it is seen that Task A is preempted once, thus the overall CET is found by adding the times CET1 and CET2.
+	\item \textbf{Gross Execution Time (GET)}: GET is the amount of time it passes for an iteration of a task or an event is executed. In other words, it is the elapsed time the execution is done until the task goes into the sleeping state.
+	\item \textbf{Response Time (RT)}: Response time is calculated by adding IPT and GET. 
+	\item \textbf{Deadline (DL)}: Deadline of a task or an event is the amount of time a task should be completed in order to meet the real-time requirements of the task. Therefore, a reliable task should not miss its deadline even in the worst case. The deadline misses (DLM) can be used as an evaluation measure for the reliability of a task. It can also be used as a measure to compare the quality of software distributions.
+	\item \textbf{Delta Time (DT)}: Dela time of a task can be defined as the time between two gross executions of a task.
+	\item \textbf{Slack Time (ST)}: Slack time is the amount of time a task is at a sleeping state. In other words, slack time is the time between the last response of a task and the start of the pending state. Slack time describes the flexibility of a task, thus it is the time that CPU can be used for other tasks. Therefore, if the slack time is higher in a task, that task is considered to be less stressed. Slack time is also a measure that is used in the evaluation of different software distributions. 
+	\item \textbf{Period (PER)}: Period is one of the most basic properties of a task which defines how long it takes before a task repeats its instructions. The period is defined for tasks that are periodic.
+\end{itemize}
+
+Although the given timeline depicts the overall timing properties of task scheduling, due to tracing and instrumentation limitations not all of the information is extractable from the system trace. IPT, for example is a timing property which is not present in the tracer that is used in the work that this report explains. Therefore, IPT is neglected due to the aforementioned limitations and the fact that it is bound to be a rather small amount of time.
+
+\subsection{Optimization and Evaluation of Parallel Software} \label{opt}
+Not every parallel program are beneficial. In order for a parallel program to be useful, it should be optimized. There are four main reasons a parallel software should be optimized. Each optimization process focus on a goal and the design and development of the software should be carried out by considering that goal. The optimization goals (depicted in the Figure \ref{fig:optimization2})  may involve achieving lowest energy consumption, achieving lowest computation time, achieving highest resource utilization, and achieving highest reliability. The way these goals are achieved are also shown in the Figure \ref{fig:optimization2}. It should be added that maximizing or minimizing any software property in a positive way can be generally seen as an optimization problem that deals with e.g. safety, security, distributivity, or scalability demands among others. However, the figure given shows the basic software optimization goals that are related to this work.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.85\textwidth]{content/images/optimization2.png}
+	\caption{Optimization goals of parallel software \cite{lukas1}}
+	\label{fig:optimization2}
+\end{figure}
+
+On a higher level, there is always a question whether the optimized software is really optimal or not. There are strategies with which this could be measured and true optimization could be achieved \cite{lukas1}. Those strategies involve Linear Programming, Integer Linear Programming, Mixed Integer Linear Programming, Quadratic Programming, Evolutionary Algorithm, and Simulated Annealing \cite{lukas1}. Although it is useful to know such strategies exist, the optimization of an parallel software on a higher abstraction layer will not be a part of this work. 
+
+As mentioned before, one of the most basic evaluation techniques to determine if a parallelized software is beneficial as opposed to a sequential software is to check the run-times of the processes. If the parallel run-time (overall execution time) of a program is less than the sequential run-time, then it could be said that parallelization helped in terms of computation time. The following list involved the parallelization evaluation techniques that will be a part of this work in evaluating software distributions.
+\begin{itemize}
+	\item ${ST\textsubscript{avg}}$: Average slack time of all traceable processes
+	\item ${DLM}$: Percentage of deadlines missed
+	\item ${U\textsubscript{0-p}}$: Percentage of utilization of each core
+	\item ${S\textsubscript{p}(n)}$: \textbf{Speedup} value which quantitatively compares the execution time of a sequential implementation with that of the parallel implementation \cite{springerparallel}. Speedup is calculated as follows \cite{springerparallel}, given that ${T\textsuperscript{*}(n)}$ is the sequential run-time and ${T\textsubscript{p}(n)}$ is the parallel run-time:
+	\begin{equation}\label{speedupeqn}
+	S\textsubscript{p}(n)=\frac{T\textsuperscript{*}(n)}{T\textsubscript{p}(n)}
+	\end{equation}
+	It can be said that bigger the speedup value, better the parallel utilization.
+\end{itemize}
+The aforementioned evaluation techniques mostly can be used to evaluate load balancing (${U\textsubscript{0-p}}$), reliability (${DLM}$) and resource utilization (${ST\textsubscript{avg}}$, ${U\textsubscript{0-p}}$ and ${S\textsubscript{p}(n)}$). 
+
+\section{Design Using APP4MC}
+As introduced in the Introduction chapter, this work uses Eclipse APP4MC development tool for software parallelization. \textbf{APP4MC (Application Platform Project for MultiCore)} \cite{ICPDSSE} \cite{app4mcweb} is an Eclipse-based project that aims to achieve an open, consistent, expandable tool platform for embedded software engineering \cite{app4mchelp}. APP4MC targets multi-core and many-core platforms, while the main focus is the optimization of embedded multi-core systems \cite{app4mchelp}. Due to its focus, APP4MC is partnered with many automotive OEMs and part suppliers that deal with embedded software engineering.  Furthermore, it supports interoperability and extensibility and unifies data exchange in cross-organizational projects \cite{app4mcweb}. Additionaly, since APP4MC uses Eclipse platform to its purposes, the development environment has a complete open-source nature under Eclipse Public License (EPL) \cite{epl}. 
+
+%xxxx
+Eclipse APP4MC platform editor window can be seen in the Figure \ref{fig:app4mcenv} \cite{app4mchelp}. In the figure, Explorer window is used for finding models, performing operations such as partitioning, task generation, mapping, and model migration. The tree editor shows the hierarchical structure of the selected AMALTHEA model, whereas the Element Properties window is used for editing the properties of AMALTHEA model elements selected in the Tree Editor \cite{app4mchelp}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{content/images/app4mcenv.png}
+	\caption{Eclipse APP4MC platform Editor Window \cite{app4mchelp}}
+	\label{fig:app4mcenv}
+\end{figure}
+
+
+APP4MC is a project that has a lot of synergies with its predecessor AMALTHEA4public \cite{amalthea4publicweb} project. APP4MC uses AMALTHEA models, which are XML models that describe software components and hardware platforms. Main operation of APP4MC involves modeling the system by creating AMALTHEA models and performing partitioning, mapping, optimization on parallel programs \cite{ICPDSSE}. APP4MC also has the ability to trace simulate parallel programs. Basic ingredients for an AMALTHEA model is illustrated in the Figure \ref{fig:app4mcmodel} \cite{app4mcweb}. It is seen that AMALTHEA model can contain software decisions, costs, constraints, as well it can contain hardware platform information \cite{app4mcweb}. Constraint models are used to define process groups to make sure some processes belong together. Furthermore, a target platform dependency of a process group is also modeled using constraints model. More information on modeling will be discussed later in this section.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{content/images/app4mcmodel.png}
+	\caption{AMALTHEA Model for APP4MC \cite{app4mcweb}}
+	\label{fig:app4mcmodel}
+\end{figure}
+
+An illustration of how parallel software can be designed for embedded multi-core platforms are given in the Figure \ref{fig:app4mcdesign}. Studying the illustration given in the Figure \ref{fig:app4mcdesign} in combination with the parallel design techniques, the following remarks can be made regarding the design procedure with APP4MC platform:
+\begin{itemize}
+	\item \textbf{Modeling:} Design of a parallel software starts with modeling in APP4MC. An AMALTHEA model is constructed that involves three seperate models: (1)- hardware model, (2)-software model, (3)-constraints model. In the hardware model, each distributed ECU is modeled in a hierarchical  manner. Hardware model involves information such as number of processor cores, system clock frequency for processors, and memory details. In the software model, runnables are modeled. Runnables are found with the help of binary analysis tools and by using the decomposition technique. Each runnable are modeled by making use of information such as granularity (number of instructions) and label accesses (memory read-write). In the early development stages, model contains a rough model of the software, but the model is constantly improved by using the Tracing functionality of the APP4MC as well it can be improved by using several other tracing software.
+	\item \textbf{Partitioning:} Partitioning stage in APP4MC-aided parallel design corresponds to identification of initial tasks. After an initial AMALTHEA model is constructed, the one can perform partitioning in APP4MC by simply selecting the model and pressing the "Perform Partitioning" button. At this stage, APP4MC will analyze the runnables and runnable label accesses in order to suggest how tasks should look like for a balanced parallel distribution. APP4MC uses two partitioning algorithms that are ESSP (Earliest Start Schedule Partitioning) (performed by default) and CPP (Critical Path Partitioning) in order to find the partitions of the system. ESSP and CPP algorithms are based on the Graph Theory \cite{graphtheory} which is commonly used in hardware and software co-design. Partitioning algorithms are used for analysis of the granularity and communication costs of individual runnables and create best possible parallelized partitions.
+	\item \textbf{Task Generation:} Initial tasks (partitions) are finalized by pressing "Generate Tasks" button. By making use of the dependencies between partitions and by grouping them, APP4MC generates a model that contains the desired amount of tasks with the help of "Task Generation" phase. 
+	\item \textbf{Mapping (with Simulation and Optimization):} As known, mapping is the stage of placing the software distributions (tasks, processes, threads) into the processors. By making use of the hardware capabilities and using optimization strategies (such as Integer Linear Programming), APP4MC is able to find a mapping model of the system. The utilization details of the simulations will be seen at the end of the mapping stage.
+	\item \textbf{Code Generation:} Since APP4MC provides model-based development, code generation features for C language are available. If desired, APP4MC generates tasks that are written in C language by using the AMALTHEA system model.
+	\item \textbf{Tracing:} By making use of binary tracing, AMALTHEA trace model can be observed and can be re-used to update the system model.
+\end{itemize}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{content/images/app4mcdesign.png}
+	\caption{Illustration of how parallel software are designed using APP4MC platform \cite{amalthea4publicweb}}
+	\label{fig:app4mcdesign}
+\end{figure}
+
+APP4MC promises beneficial set of tools for embedded parallel software development. However, the demonstration of its features is needed for further improvement. Therefore, in this work APP4MC is used for system parallelization for A4MCAR, a demonstrator RC-Car. Further sections will involve design, modeling, and evaluation of software distributions for this demonstrator.
+
+\subsection{Related Work}
+There are many studies done in the direction of efficient software parallelization methodology and tooling such as \cite{toolchaintailoringapp4mc}, \cite{priorpaperapp4mc}, \cite{comparisonpaperapp4mc}, \cite{constrainedpaper}, \cite{autosarospaper1}, \cite{paper2}, \cite{paper3}, \cite{paper4}, \cite{paper5}, and \cite{paper6}.
+The works that involve APP4MC-based and AMALTHEA model-based parallelization are e.g. \cite{toolchaintailoringapp4mc}, \cite{priorpaperapp4mc}, \cite{comparisonpaperapp4mc}, \cite{constrainedpaper}, whereas some useful publications in the same direction that doesn't involve APP4MC or AMALTHEA can be given as \cite{autosarospaper1}, \cite{paper2}, \cite{paper3}, \cite{paper4}, \cite{paper5}, and \cite{paper6}.
+
+The work by Carsten Wolff et al. \cite{toolchaintailoringapp4mc} introduces the evolution of AMALTHEA tool project. Many aspects such as standardization, tool-chain support and evolution, software development methodology in the tool-chain are explained. The paper also introduces Eclipse-based open source framework development. Due to AMALTHEA's close relevance to APP4MC project, it is crucial to understand how AMALTHEA is tailored and how it became an open-source embedded multi-core development platform. 
+
+While the aforementioned paper explains the standardization and tool-chain aspects, the paper by Robert H{\"o}ttger et al. \cite{priorpaperapp4mc} describes the model-based partitioning and mapping features of AMALTHEA (and by extension APP4MC) with the emphasis of automotive domain. In the paper, novel approaches to partitioning and mapping in terms of model-based embedded multi-core system engineering are introduced. This work shows that the performance, energy efficiency and timing requirements are improved using their partitioning and mapping methodologies. The work compares approaches such as Critical Path Partitioning and Earliest Start Scheduling Partitioning regarding partitioning and Integer Linear Programming based optimization approaches towards mapping. How specific goals such as energy consumption and load balancing are addressed are also included in this paper. The paper also discussed benefits, industrial relevance and features of the presented model-based multi-core partitioning and mapping techniques in common with existing approaches.
+
+The publication by Andreas Sailer et al. \cite{comparisonpaperapp4mc} gives an extended practical comparison of distributed multi-core development standards in the automotive domain. The XML-based automotive software standards ASAM MDX, AUTOSAR and AMALTHEA are compared with regard to their model, methodology, reference implementation. It is mentioned that out of three standards only AMALTHEA is open-source and has special focus on multi-core development. It is also mentioned that exchange format of AMALTHEA allows the detailed specification of dynamic software architecture properties. Regarding the overall comparison results using a case study, although it is stated that AUTOSAR is much more than just a standard to automotive software development and is capable of many things, the paper concludes that AMALTHEA is able to address some of the deficits of AUTOSAR within the scope of multi-core. Also AUTOSAR compatibility of AMALTHEA within the project AMALTHEA4public and AMALTHEA being a relatively new but open-source supplementary tool to the automotive world is highlighted in the paper \cite{comparisonpaperapp4mc}.
+
+One work that the author of this report is also involved \cite{constrainedpaper} addresses constrained mixed-critical parallelization for distributed heterogeneous systems using APP4MC. This work explains addressing software parallelization via precise modeling and affinity constrained distribution. In the work, the precise modeling, partitioning and mapping features of APP4MC are used in order to achieve software parallelization on the demonstrator A4MCAR. Experiments along A4MCAR show that using new distributions from APP4MC creates significant improvement regarding proper parallelization and energy efficiency compared to the sequential distributions or distributions that are created by the operating system, which are the experimental conformance to the results discussed in the work \cite{priorpaperapp4mc}. In the work, it is also addressed that due to less context switching compared to OS-based distributions, affinity constrained distribution using the results from APP4MC could help to achieve a software that consumes less energy on the hardware system. The work states that by underclocking the CPU without creating and deadline misses could also decrease the energy consumption significantly. Besides the aforementioned aspects, the paper \cite{constrainedpaper} also addresses the APP4MC's model-based technique and capabilities regarding partitioning and mapping along with tools and methods on Linux platform to gather information to create precise software models. Safety considerations such as ASIL-level based partitioning and mapping is explained in the work which shows the APP4MC's relevance to the automotive domain \cite{constrainedpaper}.
+
+As mentioned, there are several other work that is in the same direction as AMALTHEA or APP4MC. As an initial example, Devika et al. \cite{autosarospaper1} explains the implementation of AUTOSAR Multicore Operating System. In their work, Devika et al. talks about real-time operating system OSEK/VDX, standards set by AUTOSAR standard, and the implemented multi-core features of AUTOSAR. Also the challenges such as spin-locks, deadlocks, starvation, fairness are investigated. In order to understand how such challenges are tackled in industry, the work done by Devika et al. is surely a good starting point. Another example of good reads could be given as the contributions done by Navet et al. \cite{paper2} and Alfranseder et al. \cite{paper3}. In their paper, Navet et al. talk about safety critical aspect of multi-core automotive ECUs, i.e. operating system protection mechanisms. Strategies toward scheduling and load-balancing are also explained in their work. The work by Alfranseder et al. \cite{paper3} however try to find solutions to two crucial questions. In their words, those questions are "How can one schedule real-time tasks to the available cores in an optimal way?" and "How can one handle synchronization of shared resources with minimal overhead?". They present a spin-lock and busy-wait based resource sharing protocol to answer these questions. As for more examples for work done in the direction of timing synchronization and tracing, the works by Yu et al. \cite{paper4}, Lu et al. \cite{paper5}, and Nilakantan et al. \cite{paper6} could also be nice reads.
+\newpage
+\section{Implementations on A4MCAR}
+\subsection{A4MCAR Features}
+As A4MCAR targets automotive industry and parallelization studies done by APP4MC, it features not only sensing and actuation related features but also applications that would help with task to core distributions and parallelization performance evaluation. One could see the featured applications for the A4MCAR in Figure \ref{fig:tasksoverall}. 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.27]{content/images/tasksoverall.png}
+	\caption{Applications developed and/or maintained for A4MCAR}
+	\label{fig:tasksoverall}
+\end{figure}
+In the figure, it is seen that the low level module of A4MCAR, built using xCore-200 eXplorerKIT targets mostly actuation and sensing related applications. The full list of tasks developed for the low-level module includes:
+\begin{itemize}
+	\item Core monitoring applications for each tile (two exist) that calculates the average core usages.
+	\item Bluetooth task to configure bluetooth module in slave mode and receive data over UART interface.
+	\item Proximity measurement task that obtaines the distance sensor information from four SR-04 sensors over an I2C sensor network.
+	\item Speed control task in order to use PWM to drive speed controlling motor.
+	\item Steering task that controls a servo motor using PWM signaling in order to steer the A4MCAR using external inputs.
+	\item Light system task in order to control a light module for certain conditions.
+	\item Ethernet server task to maintain a TCP server for data reception and transmission from high level module.
+	\item TCP task and several other ethernet configuration related tasks to configure ethernet module (PHY) drivers and establish proper TCP connection.
+\end{itemize}
+In order to investigate parallelization outcomes on Real-time Linux and make use of high level features such as web server, image processing and touchscreen interface high-level module is introduced to the system. High-level module is designed so that it can communicate with low-level module over TCP in order to send driving information and retrieve core information from low-level module. It is important to mention that high-level module uses Raspberry Pi 3 in order to achieve high level tasks using a robust Debian-based OS, namely Raspbian. Although the features of the high-level module is illustrated in the Figure \ref{fig:tasksoverall}, full feature list can be given as follows:
+
+\begin{itemize}
+	\item Core monitoring application that calculates the average core usages on each core.
+	\item Image processing application that helps to find a traffic cone.
+	\item Apache Web Server that is used to host a web page which shows average core usage, show Raspberry Pi 3 camera (Raspicam) stream and helps to drive the A4MCAR via web page controls.
+	\item Ethernet client application that writes handles data transmission and reception to and from server using file operations and data parsing.
+	\item Camera and streaming application that starts the Raspicam and maintains the stream using configuration parameters such as resolution, quality, frame rate, port and etc.
+	\item A webpage which is used for driving the A4MCAR as well as display core usages on each core and Raspicam stream.
+	\item A touchscreen display application which is used for displaying all cores and their utilization, starting and killing all applications on high-level module, allocation of processes on high-level module to cores dynamically, visualization of timing related performance indicators such as average slack time and deadline misses percentage, selecting different distributions, and configuration of the IP addresses on high-level module.
+	\item Dummy load processes that perform random matrix multiplication in order to find performance indicators in full utilization.
+	\item Several Linux processes that run Linux OS kernel and VNC server process that provides PC connection via SSH connection.
+\end{itemize}
+
+\subsection{Low-level Infrastructure} \label{lowlevelmoduleinfra}
+XMOS xCore-200 eXplorerKIT features XEF216-512, a powerful multi-core microcontroller that provides sixteen 32-bit logical cores that are divided into tiles \cite{xmoskitweb}, which are identical units that contain processing unit, cache memory and switch mechanism \cite{tileref}. XMOS xCore-200 eXplorerKIT contains two tiles with eight logical cores in each tile. It is important to add that logical cores of eXplorerKIT provides 2000 MIPS (Million Instructions per Second) processing power and 512 KB SRAM along with up to 500 MHz clock speed. The specified performance values are considered to be relatively powerful compared to regular microcontrollers. While the processing power and cache memory of its two tiles are identical, ports on each tile have access to different peripherals located on the board. With 53 high-performance GPIO, XMOS xCore-200 eXplorerKIT features 100/1000Mbps Ethernet module, high speed USB interface, a 3D accelerometer, a 3-axis gyroscope, and six servo interfaces which makes the kit useful in a wide variety of applications that include robotics, automotive, signal processing and communication applications \cite{xmoskitweb}.
+
+As the name of the development kit suggests, XEF216-512 uses XMOS' xCore-200 architecture. An illustration of xCore-200 architecture is given in Figure \ref{fig:XE216Architecture}.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.5]{content/images/XE216Architecture.png}
+	\caption{Illustration of XMOS' xCore-200 Architecture \cite{xmosflyer}}
+	\label{fig:XE216Architecture}
+\end{figure}
+
+In xCORE-200 architecture, each core uses the memory of the tile it belongs to and logical cores communicate using a high-speed network. Thus, channels which achieve task communication are linked to other cores via \textbf{xCONNECT Switch}. While this is the case for tasks that are distributed to seperate cores, for tasks that are placed in the same core \textbf{xTIME Scheduler} automatically schedules tasks by synchronizing events. The xTIME Scheduler works similar to RTOS in traditional microcontrollers and uses \textbf{Round-robin scheduling method} \cite{xmosdatasheet} \cite{roundrobin} which is a simple and starvation-free scheduling technique that gives each task equal time slices and disregards priorities in order to schedule processes or tasks. Round-robin scheduling is widely used in operating systems \cite{roundrobin}.
+
+In xCORE architecture, the synchronization of task communication is handled by events rather than ISRs (Interrupt Service Routines) as compared to a traditional microcontroller. Each xCORE tile is connected to hardware ports and thereby pins which can be driven high and low in order to drive electrical peripherals. xCORE tiles are also connected to an OTP (One Time Programmable Memory) and SRAM (Static Random Access Memory). While OTP is used for code locking features, SRAM serves as a memory where the instructions and variables are located \cite{xmosdatasheet}.
+
+Since the xCORE features multiple cores unlike a traditional microcontroller, it should be clearly understood that the task interruption is not present in xCORE. This is illustrated delicately in the Figure \ref{fig:xmosvstraditional} \cite{xmosflyer}. If not stated otherwise in an xCORE application, all the tasks are placed to different logical cores. This means that all the tasks are executed completely parallel in hardware. When the tasks are shared in a core, then the multi-tasking features of the XMOS are invoked and parallelized just like in an RTOS from traditional microcontrollers \cite{xmosflyer}.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\textwidth]{content/images/xmosvstraditional.png}
+	\caption{XMOS vs Traditional Microcontroller \cite{xmosflyer}}
+	\label{fig:xmosvstraditional}
+\end{figure}
+
+Most of the traditional microcontrollers including xCORE microcontrollers nowadays feature pipelining mechanism. The \textbf{instruction pipeline} is a set of data processing elements connected in series, where the output of one element is the input of the next one \cite{pipelinebook}. Via instruction pipelining, processors make use of the stages in order to use the clock to its full performance to reduce the time taken to execute instructions. This mechanism is also present in most of the XMOS processors with five stages. How instruction pipelining mechanism achieves faster instruction execution is illustrated in the Figure \ref{fig:pipeline} \cite{xmosflyer}.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{content/images/pipeline.png}
+	\caption{Pipelining Explained on XMOS \cite{xmosflyer}}
+	\label{fig:pipeline}
+\end{figure}
+
+Traditionally, XMOS based microcontrollers are programmed via xTimeComposer, which is an Eclipse-based software development platform for XMOS based multi core microcontrollers with integrated features such as simulation, symbolic debugging, tracing, runtime instrumentation, and timing analysis with a static code timing analyzer called \textbf{XTA}\cite{xmosflyer}. As A4MCAR needs to make use of timing and performance values, some tracing tools and XTA has been widely used during the development. xTIMEComposer development environment windows are shown and illustrated in Figure \ref{fig:xtimecomposerwindows}.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{content/images/xtimecomposerwindows.png}
+	\caption{xTIMEComposer 14.2.3 Development Environment Windows}
+	\label{fig:xtimecomposerwindows}
+\end{figure} \\
+
+In the Figure \ref{fig:xtimecomposerwindows} it is seen that the main development environment consists of the following windows:
+\begin{itemize}
+	\item \textbf{Project Tree:} This window is used for managing projects and source, include, binary and configuration files within projects.
+	\item \textbf{Coding Window:} Coding window is used for writing code and placing breakpoints. One can switch between several files by clicking on the tabs located on the top of this window.
+	\item \textbf{Console:} The console is used for viewing the building process, verbose and debugging information.
+	\item \textbf{Problems:} The problems window is used for seeing warnings and errors that result from the code.
+	\item \textbf{Task Viewer:} The task viewer is a special feature that is unique in xTIMEComposer and it is used to visualize tasks and at which core and tile they are located. The channel and interface connections between tasks are also visualized using this window.
+	\item \textbf{Tools Panel:} This window is used in order to switch between several tools that xTIMEComposer provide. Analyze and Debug tools are widely used in development. Analyze tool opens xTIMEComposer Timing Analyzer (XTA) tool whereas Debug tool is used for traditional debugging using breakpoints.
+	\item \textbf{Outline:} Outline window lays out the main elements of a file such as its includes, tasks, objects and so on.
+	\item \textbf{Libraries:} The Libraries window can be used in order to search offline and online libraries.
+\end{itemize}
+
+Programming languages which are used for xCORE processors can be listed as C, C++ and xC (C with multicore extensions) \cite{xmosdatasheet}. The aforementioned xC language features three main keywords in order to represent task communication. To represent an interface that sends data to another task, \textbf{client} keyword is used whereas if a task is retrieving data from one or many client ports, the receiving interface is named \textbf{server}. It is important to mention that server interface receives data by throwing events. Additionally, xC also allows to define function attributes which are \textbf{combinable} and \textbf{distributable}. XMOS Programming Guide \cite{xmosprogrguide} suggests that combinable tasks are the ones that continuously react to events and they can be combined to have several tasks running on the same logical core. It is added in the XMOS Programming Guide \cite{xmosprogrguide} that distributable tasks are not dedicated to only one logical core but they run when required by the tasks connected to them. Furthermore, xC features \textbf{timers}, \textbf{events}, \textbf{guards}, \textbf{event priority ordering} in order to help us develop event-based software. These features of xC make multi-core programming easy and robust on xCORE processors.
+
+\subsection{High-level Infrastructure} \label{hlinfrasection}
+High-level processing unit of A4MCAR, Raspberry Pi 3, is a widely used single board computer in embedded applications. It has 1.2GHz 64-bit quad-core processor with ARMv8 architecture, 1GB of RAM, VideoCore IV 3D graphics core and several interfaces such as 40 GPIO pins, 4 USB ports, HDMI port, ethernet port, audio jack, camera interface (CSI), display interface (DSI), micro SD card slot \cite{raspberrypiinfo}. The reason Raspberry Pi 3 is preferred in embedded systems applications is that it provides excellent connectivity via 802.11n Wireless LAN module, Bluetooth 4.1 module, and Bluetooth Low Energy (BLE) module. 
+
+Raspberry Pi 3 can be booted with modern Linux-based operating system distributions such as Debian-based Raspbian OS \cite{raspbiandownload} and Ubuntu-based Ubuntu MATE\cite{ubuntumatedownload} \cite{raspberrypiinfo}. It should be noted that in A4MCAR, Raspbian OS has been used due to its wide software repository and driver support. The fact that Raspberry Pi 3 functions as a Linux computer helps in developing high-level applications that require operating system presence. The open-source nature of Linux and its software ecosystem provides flexible and traceable software development. In A4MCAR, the traceability and flexibility features of Raspberry Pi 3 are highly used. Furthermore, a wide variety of programming languages such as C, C++, Java, LISP, Python, Bash, Perl etc. are supported in Raspberry Pi. In A4MCAR, programming languages such as C, C++, Python, Bash, HTML, JavaScript has been used in order to develop high-level module.
+
+A brief explanation of the architecture of Linux-based computers and as an extension the architecture of the Raspberry Pi 3 should be given in order to develop applications and understand how applications running on Linux work. With that idea in mind, high-level overview of the structure of  the \textbf{Linux kernel} and high-level layers in a Linux system which is given in Figure \ref{fig:linuxarchitecture} should be considered \cite{linuxkernelbook}.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.65\textwidth]{content/images/linuxarchitecture.png}
+	\caption{High-level Linux system architecture \cite{linuxkernelbook}}
+	\label{fig:linuxarchitecture}
+\end{figure}
+
+According to Mauerer \cite{linuxkernelbook}, the kernel is the intermediary level between the hardware and the software that addresses the devices and the components of the system (such as CPU, memory and I/O devices) by passing application requests. While kernel processes requests from user applications, it makes its own decision where data is located and which commands to send to hardware. Kernel is also the instance in a Linux system which shares available resources such as CPU, memory, and network; which is why it should be addressed while working with parallel applications.
+
+In the figure, it is seen that kernel space is not only responsible for accessing device drivers, but it is also responsible for memory and process management. A program under Unix systems (such as Linux) that run continuously is referred to as \textbf{processes} and they are scheduled by Linux kernel. The multi-tasking of processes are done by a mechanism that is called \textbf{task-switching} or \textbf{context-switching} and this is achieved to ensure that CPU performs according to the scheduled tasks. The concept of \textbf{scheduling} in a Linux system is also handled by kernel and it is the procedure of deciding how CPU time should be shared between existing processes. Additionally, \textbf{threads} in a Linux-based computer system are also big parts of multi-tasking which are also handled by kernel. Threads share the same data and resources but they have different execution paths through program \cite{linuxkernelbook}.
+
+In A4MCAR high-level module, we mostly deal with processes and investigate ways to efficiently parallelize process-based system. In this regard, it is crucial to understand the process life cycle and how kernel schedules processes. This knowledge is described delicately by Mauerer \cite{linuxkernelbook} and Ward \cite{howlinuxworksbook}. Figure in \ref{fig:processlifecycle} depicts an illustration of how process life cycle works \cite{linuxkernelbook}.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{content/images/processlifecycle.png}
+	\caption{Process Life Cycle in a Linux System \cite{linuxkernelbook}}
+	\label{fig:processlifecycle}
+\end{figure}
+
+% process life cycle explain..
+In Figure \ref{fig:processlifecycle}, state machine for processes in a Linux system is given. The states of processes can be listed as Running, Waiting, Sleeping, and Stopped. These states can be explained using following scenerios \cite{linuxkernelbook}:
+\begin{itemize}
+	\item If the process is being currently executed, process is in \textbf{Running} state.
+	\item If the process is not being executed because it is waiting for CPU to finish executing another process, it is in \textbf{Waiting} state.
+	\item If the process is waiting for an external event such as a periodic activation or a sporadic activation, it is in \textbf{Sleeping} state. Notice that transition from Sleeping state to Running state is not possible. A process switches to Waiting state from Sleeping state in order to wait for current process to finish its execution.
+	\item If the user decides to kill (terminate) the application, the process goes into \textbf{Stopped} state.
+	\item If a process has been killed but its entries are still alive in the process table, the state of that process is called \textbf{Zombie}. Therefore, although not shown, transition from Running state to Zombie state is also possible.
+\end{itemize}
+
+% terminal, compilers, Nano, Vi, Emacs
+Raspberry Pi is conventionally programmed through Linux shell which is programmed and commanded with the help of Bash scripting language. There are several editors and compilers introduced for Linux shell in order to help developers write, compile, debug, and trace their applications. Most popular editors involve Nano, Vi, and Emacs which are editors that can run without GNU Graphical User Interface. An alternative way is to use open-source platforms such as Eclipse with correct extensions and plugins. The conventional and standart C compiler for the Unix platform GCC, and the standart Python shell can be accessed using all these compilers. It is important to note that in the development of A4MCAR, Nano and Emacs editors have been frequently used as Nano provides easiest way to interact with Linux shell and Emacs provides advanced features to compile and debug programs rapidly.
+
+\subsection{Low-level Module Implementation}
+Low-level module software has been implemented on xCORE-200 eXplorerKIT using the development platform xTIMEcomposer 14.2.3. While developing with xC on xTIMEcomposer, task communication is handled by channels and interfaces. In A4MCAR, for the sake of structured development with defined variable types, interfaces are more commonly used for user-defined tasks. An software design analogy of equating provided interfaces to client interfaces in xC could be made. Similarly, required interfaces could be thought of server interfaces in xC. Using this analogy, the designed software components could be illustrated with a SysML \cite{sysml} diagram as shown in Figure \ref{fig:sysmlxmostasksbrief}.
+
+In xC, two essential concepts are worthy to explain in order to understand multi tasked development. First is how a task is created and the second is how tasks are connected. A task in xC is nothing but a function that has client and server ports with interfaces. Once all functions are connected using globally instantiated interface variables they start acting as tasks. An example of how a task function is declared and how functions are placed on cores and interconnected which is also some of what is implemented for A4MCAR are shown in Listing \ref{lst_exampletaskxc} and Listing \ref{lst_howtasksconnectxc}, respectively.
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\textwidth]{content/images/sysmlxmostasksbrief.png}
+	\caption{Brief block diagram for the developed tasks and interfaces for low-level module}
+	\label{fig:sysmlxmostasksbrief}
+\end{figure}
+
+\lstinputlisting[caption=An Example Task Decleration in xC, label=lst_exampletaskxc]{content/listings/lst_exampletaskxc.txt}
+
+In the code given with the Listing \ref{lst_exampletaskxc}, it is seen that the function prototype has several arguments as client and server interfaces. Those interfaces indicate the role of the data communication using the respective interface. When a task function takes client interface as an argument, it means that the task function sends data to that interface, whereas when a task function receives a message using event handles it is given by the server keyword.
+\newpage
+\lstinputlisting[caption=An Example of How Tasks are Placed and Interconnected in xC, label=lst_howtasksconnectxc]{content/listings/lst_howtasksconnectxc.txt}
+
+The Listing in \ref{lst_howtasksconnectxc} shows in which tile and at which core a task will be places. Using the par keyword (given in Line 1), every line of code in that particular code block will be paralellized using the scheduler of xCORE. 
+
+All the source and header files that contain task functions and that are developed in this fashion are shown in Figure \ref{fig:fullfiletree}.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.6]{content/images/fullfiletree.png}
+	\caption{Full file tree for all the tasks developed for low-level module}
+	\label{fig:fullfiletree}
+\end{figure}
+
+\subsection{High-Level Module Implementation}
+\subsubsection{Overview}
+High-level module of the A4MCAR is composed of several processes and threads running under Raspbian \cite{raspbiandownload} distribution of Linux Operating System that is designed for Raspberry Pi 3.  During the compilation, debugging and execution of the developed processes, several development platforms such as Python 2.7 shell \cite{python27}, GNU C Compiler (GCC) \cite{gcc} have been used. Although it should be noted that remote development using Eclipse IDE \cite{remotedebuggingeclipse} is also possible, the development of A4MCAR has been done using the aforementioned development platforms by connecting into the Raspberry Pi 3 using SSH connection. While the main processes involve C, C++, Python, and Bash \cite{bash} languages, via the capability of the integrated web server to serve web pages, several other scripting and markup languages such as HTML, CSS, JavaScript (with AJAX \cite{howajaxworks} and jQuery \cite{jquery} frameworks) have also been used. The operation of the user developed processes along with third party utility processes and threads that are integrated into the system are given in the Figure \ref{fig:rpicomponents}. 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\textwidth]{content/images/rpicomponents.png}
+	\caption{High-level module software component diagram including files and file accesses}
+	\label{fig:rpicomponents}
+\end{figure}
+
+Since cross development platforms using languages such as C, C++ and Python have been used in A4MCAR high-level module, the multi-tasking is handled in mostly the process layer rather than in thread or task level. That means that each process are executables of their own using different libraries and compilers. However, the touchscreen display process is designed with several threads.
+
+In the Figure \ref{fig:rpicomponents}, it is also seen that the communication between user developed processes are handled with mostly file accesses. All file accesses are asynchronous and there is no event to wait for data or require data within some time as it is low-level module inter-process communication. This should indicate that the communication using read-write accesses does not constrain the processes as it is in a regular inter-process communication. Furthermore, it should be noticed from the Figure in \ref{fig:rpicomponents} that although a process is able to read from many files, there is no example of two or more processes trying to write to the same file. Reading from many files is not critical, while the latter (i.e. two or more processes trying to write to the same file) should be handled by cross-process mutexes or semaphores that would be able to lock and unlock the same physical memory space from cross-processes. Although rarely used in A4MCAR's touchscreen display, it should be known that by using the existing cross-process mutexes or creating a semaphore mechanism, one should be able to allow two or more processes to write to the same file \cite{linuxkernelbook}. However, it can be commented that the locking of the files are handled with the locks from OS kernel in our case and there is no need to create new locks in the applications for file accesses. 
+
+The way multi-tasking is handled with this constructed software architecture (in the Figure \ref{fig:rpicomponents}) is that every process is run by an external script at the boot time (or via touchscreen interface, which is the main control interface in our case) and their scheduling is handled by the Linux kernel. While the scheduling is not manipulated, the mapping or pinning of processes to different cores and evaluating them are the focus of A4MCAR in order to find the most optimal parallelization solution.
+
+Regarding hardware, the high-level module is connected to two devices. The interfacing of these devices, a Raspberry Pi camera v2.0 and a Touchscreen display is illustrated in the Figure \ref{fig:hwoverview}. It is seen in the figure that interfaces such as HDMI, SPI, and CSI have been utilized. In the following sections, hardware communication and the related software will be further explained.
+
+\subsubsection{Implemented Online Timing Features and Making Processes Schedulable} \label{onlinetiming}
+In order to seek an assessment technique to compare timing performance of different distributions and ensure that the developed processes and threads are schedulable, online timing features are implemented in the user-developed processes of the high-level module of A4MCAR. Thus, while applications are running, a performance evaluation could be done with the help of the those features. The code skeleton is developed for both Python and C,C++ applications and the applications are integrated on top of the skeleton with timing features. Therefore, it is important to understand how each application that will be discussed in the following sections are timed.
+
+Recall that in Figure \ref{fig:scheduling} the timing properties in a scheduled system is explained. By making use of the figure, limitations of implementations and the implemented timing features could be listed as follows:
+\begin{itemize}
+	\item Because the values such as IPT, CETs and RT (referred from the Figure \ref{fig:scheduling}) are out of our reach since they are hidden in the Linux kernel, in the online timing analysis features that are implemented, the aforementioned values have been neglected. With offline scheduling analysis, however, CET values could be easily obtained.
+	\item Recording the the start and end times of execution using an accurate clock. For that purpose, in computers there are two types of clocks: (1)- User CPU clock and (2)- System CPU clock. While user CPU clock is used for finding out how long it has passed since the program has started, the system CPU clock takes place in the kernel space and measures how long it has passed since 1st of January, 1970. The latter clock was found as the viable solution as user CPU clock would not allow comparison along the entire Linux kernel. In the code, functions time.time() for Python and clock\texttt{\_}t clock() have been used in order to record start and end times more accurately \cite{cpuandusertimes} \cite{cpuandusertimes2}.
+	\item Finding the execution time (ET) of one iteration using the following Equation, provided that start\texttt{\_}time is the time recorded before the iteration and end\texttt{\_}time is the time recorded after the iteration. The units are all seconds.
+	\begin{equation}
+	execution\texttt{\_}time=end\texttt{\_}time - start\texttt{\_}time
+	\end{equation}
+	In the version that is developed for C language, since clock\texttt{\_}t is able to measure clock cycles rather than seconds, the Equation is changed to the following:
+	\begin{equation}
+	execution\texttt{\_}time=\frac{end\texttt{\_}time - start\texttt{\_}time} {CLOCKS\texttt{\_}PER\texttt{\_}SEC}
+	\end{equation}
+	
+	\item Finding the slack time (ST) is one of the most important tasks that is within the scope of the online timing features because as a rule of thumb, we could assess the timing performance by saying that if a process has a higher slack time than before, it means that that task is better utilized compared to before as the idle time the CPU is doing some other task is more than what it used to be. The slack time of a previous iteration is measured by the following Equation, provided that the calculation takes place right after start time is recorded and IPT is neglected. It should also be noted that the C language version could be created by dividing the clock cycles with the clock cycles per second (CLOCKS\texttt{\_}PER\texttt{\_}SEC) in the same manner as execution time.
+	\begin{equation}
+	previous\texttt{\_}slack\texttt{\_}time=start\texttt{\_}time - end\texttt{\_}time
+	\end{equation}
+	
+	\item In order to keep a constant period while the process is being scheduled, the processes are delayed dynamically between each iteration. Thus, processes which have a constant period could be modeled easier and having the constant period will make the process or thread schedulable. In order to achieve a constant period each process are delayed by the following:
+	\begin{equation}
+	delay\texttt{\_}time=period - execution\texttt{\_}time
+	\end{equation}
+	However, if the execution time of a process is bigger than its period, that process could be counted a process that missed its deadline, given that its period is equal to its deadline due to practicality. In addition, it should be known that the deadline miss percentage is another important criteria in order to assess parallelization quality as it is normally undesired to have missed deadlines. In case of a missed deadline in A4MCAR, the process is not delayed.
+	
+	\item As seen in \ref{fig:rpicomponents}, there are many timing log files that are created. Those timing log files are created within every user-defined process and later are used in the Touchscreen Display application.
+\end{itemize}
+
+While each processes and thread are constructed in the manner that is explained, the overall online evaluation is handled within the Touchscreen Display process in the TimingCalculation thread (shown in Figure \ref{fig:rpicomponents}).
+
+An example of the timing skeleton for Python-running processes are given in the Listing \ref{lst_timingskeleton}. The user-defined Python-running applications have been created using this template, and the space that is left for task content is used for the actual features of that task.
+\newpage
+\lstinputlisting[caption=Online timing features implemented in Python language, label=lst_timingskeleton]{content/listings/lst_timingskeleton.txt}
+
+In the given code by the Listing \ref{lst_timingskeleton}, following remarks should be made:
+
+\begin{itemize}
+	\item Lines 2 through 5 indicate which libraries are used.
+	\item Between the Lines 8 and 13, global variables to hold the time values are initialized.
+	\item A timing data logging function is created (Lines 15 through 33). In this function, timing log file is opened (Lines 23 through 26), execution time is calculated after end time is recorded (Line 27 and Line 28) and then all the timing values at that instant is written into the opened text file (Lines 29 through 33). After the write operation the file is closed (Line 33).
+	\item In the loop section of the process start time and previous slack time are recorded (Lines 37 through 38) before the actual task content (Lines 40 through 42) is executed. After the task content is executed, timing log is created by using the timing data logging function (Line 45) and then the task is delayed according to its period by finding the delay\texttt{\_}time that was given in (4.5). This delay operation is also given in the Listing \ref{lst_timingskeleton} at the Lines 48 through 49.  
+\end{itemize}
+
+\subsubsection{Core Reader}
+To help with the utilization assessment and visualization purposes, a core reading process is developed that monitors cores every three seconds and writes the core usage information to a text file. For that purpose, the 'psutil' module \cite{psutil} from Python is used. The 'psutil' module allows to find information of Linux processes and cores. The core usage information for four cores of Raspberry Pi that is logged into a text file is then used for visualization in the web interface and the touchscreen interface. 
+
+With the help of a simple function the core usage information is easily retrieved. The function is given in the Listing \ref{lst_psutil}. It should be noted that 'd' in the listing is an array with 4 elements, each of which indicating core usage for individual cores.
+
+\lstinputlisting[caption=Psutil function to retrieve core utilization information , label=lst_psutil]{content/listings/lst_psutil.txt}
+
+\subsubsection{Ethernet (TCP) Client Implementation}
+In order to maintain a sound data communication between low-level module and high-level module, a TCP client process is implemented in the high-level module. Since Python language offers very stable and easy-to-use threading support and exception handling, the TCP client implementation is done using Python. The 'socket' library \cite{socketpython} in Python is capable of delivering several functions and objects that are used for this purpose. The TCP client has been configured to have non-blocking data reception with 0.5 second period and with a timeout of 2 seconds. While the data reception is handled by an additional thread, operations such as connecting to the server, binding to the server port, and sending data periodically is handled in the main thread. The overriding driving command which is send to the low-level module is read from file before data transmission. It should be also noted that after the data reception the content is written to the file which is responsible for holding low-level module core usage information. This communication between high-level module and low-level module is illustrated in the deployment diagram given by the Figure \ref{fig:ethernetdeployment}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.7]{content/images/ethernetdeployment.png}
+	\caption{Deployment diagram showing Ethernet communication}
+	\label{fig:ethernetdeployment}
+\end{figure}
+
+
+\subsubsection{Web Server}
+In order to develop a web interface for the A4MCAR, a web server is installed and configured to the high-level module. Web servers are responsible for processing HTTP requests and delivering HTTP responses \cite{apacheguide}. The HTTP requests and responses are usually visualized using a web browser from clients in the form of web pages \cite{apacheguide}. In A4MCAR high-level module, Apache 2 web server is installed and configured as the web server since it is an open-source, robust, light-weight cross-platform that has a large user community. Additionally, another reason Apache 2 is selected is that it is capable of serving for script languages such as PHP and Python, which are used in A4MCAR applications.
+
+Just like a Telnet server, a web server is bind to a port in a wireless or wired network. Although for different communication channels one could use different ports, web servers usually use the port number 80. Another difference of a web server is that unlike a telnet server, the data that is sent and interpreted is in the HTTP (HyperText Transfer Protocol) \cite{webserver} format unlike the TCP (Transmission Control Protocol) format. How web servers and web browsers work in order to help us visualize web pages is illustrated with the Figure \ref{fig:webserver} \cite{webserver}. \\
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.5]{content/images/webserver.png}
+	\caption{How web servers and web browsers work illustrated \cite{webserver}}
+	\label{fig:webserver}
+\end{figure}
+
+The following technologies have been used in order to create dynamical webpage:
+\begin{itemize}
+	\item \textbf{HTML:} This markup language is used for defining how body elements are located in a web page and including scripts.
+	\item \textbf{CSS:} CSS is used for defining the style of body elements. Borders, background properties, colors, button styles, positioning of elements are defined with CSS language.
+	\item \textbf{JavaScript:} The JavaScript language is used for defining animations, as well as how events would behave.
+	\item \textbf{jQuery:} jQuery \cite{jquery} is a JavaScript framework that is written using JavaScript which helps to use define scripts easier than it is with the JavaScript. It is open-source and widely used in almost every web page.
+	\item \textbf{AJAX:} AJAX \cite{howajaxworks} is another framework for JavaScript which is used for handling dynamical HTTP requests without having to refresh the page. With the objects it delivers, events such as key press, mouse events, conditional events could be sent to server and processed. The returned data could be processed using JavaScript in order to dynamically update the page content \cite{howajaxworks}. This mentioned working principle is illustrated in the Figure \ref{fig:ajaxpng} \cite{howajaxworks}. 
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[scale=0.5]{content/images/ajax.png}
+		\caption{How AJAX works \cite{howajaxworks}}
+		\label{fig:ajaxpng}
+	\end{figure}
+\end{itemize}
+
+\subsubsection{Web Page Design and Implementation} 
+The web page that has been designed for users is shown in the Figure \ref{fig:web}. In the web page, it is seen that a camera stream, control buttons and sliders, and an information graph that shows core utilization in both high-level and low-level module are embedded. For the static design of the web page HTML and CSS are used, while the dynamical behavior of the web page is supported with jQuery, AJAX, and Python. The dynamical behavior of the individual parts of the web page will be explained in the following sections.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\textwidth]{content/images/web.png}
+	\caption{Web interface of A4MCAR}
+	\label{fig:web}
+\end{figure}
+
+An alternative to this interface have also been created which is used for smoother driving by using arrow buttons. However, the interface that uses buttons can use only constant speeds for actuation which are set to 80 percent of the full speed. The alternative interface can be seen in Figure \ref{fig:web2}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{content/images/web2.png}
+	\caption{Alternative web interface of A4MCAR}
+	\label{fig:web2}
+\end{figure}
+
+The overall dynamical behavior of the web page is illustrated in component diagram that is seen in the Figure \ref{fig:weboverallbehavior}. In the diagram, it should be noticed that the server page jqueryControl.php is the main web interface. It has some server pages and files embedded to it in order to function as a whole to deliver the features of controlling A4MCAR, core utilization display, and camera streaming. In the following subsections, each of these tasks will be explained using the component diagram shown in the Figure \ref{fig:weboverallbehavior}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{content/images/weboverallbehavior.png}
+	\caption{Component diagram showing how communication inside the created web-interface works}
+	\label{fig:weboverallbehavior}
+\end{figure}
+
+\subsubsection{Controlling A4MCAR via Web Page}
+At the top right of the Figure \ref{fig:web}, the controls to drive the A4MCAR over web interface is shown. It is seen that there are gear selection buttons such as Forward (FWD) and Reverse (REV), along with two sliders. The sliders are created using the third party script library called 'jquery\texttt{\_}ui'. While the vertical slider is for speed adjustment, the horizontal slider is used for angle adjustment. Additionally, to select the very left, straight, and very right angles the arrow buttons could be used. 
+
+With the help of jQuery and AJAX' ability to create event handlers within server pages, on a button press or when slider position is changed, an event handler is run that collects the position and gear information and sends it using an HTTP "GET" request dynamically to another server page called pythonControl.php (shown in Figure \ref{fig:web}). With the idea of demonstrating a basic AJAX request, an example of this is given in the Listing \ref{lst_ajax}.
+
+\lstinputlisting[caption=Sending dynamic HTTP GET requests using jQuery , label=lst_ajax]{content/listings/lst_ajax.txt}
+
+As it is seen from the Listing \ref{lst_ajax} url field, the information that is sent is nothing other than the format defined for the bluetooth communication in the low-level module, which is given in \ref{fig:bluetoothcommand}. In the Figure \ref{fig:web}, it is seen that after the information is received by pythonControl.php, using the ability of PHP to run a shell script, a Python script is run using the Python shell automatically. The python script, whenever executed, writes the received driving command information into the text file that holds the driving command. This operation is done asynchronously. 
+\subsubsection{Camera Streaming}
+For the camera streaming, the third party module mjpg-streamer \cite{mjpgstreamergithub} has been used. This module is able to communicate over CSI interface in order to generate a stream on a network port, which then could be embedded to web pages. It is seen on the Figure \ref{fig:weboverallbehavior} how this module works along with the Apache2 Web Server. 
+
+For the stream, Raspberry Pi camera version 2.0 with CSI interface is used which is shown in the Figure \ref{fig:rpicam20}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.5]{content/images/rpicam20.jpg}
+	\caption{Raspberry Pi camera v2.0}
+	\label{fig:rpicam20}
+\end{figure}
+
+Based on the documentation of the mjpg-streamer, a script using Bash language is created which is used for generating a web stream with the correct parameters. These parameters involve resolution, frames per second, quality value, and port on which the stream will be generated. For the case of A4MCAR, the experimental version of mjpg-streamer has been used which is able to stream using the Raspberry Pi camera besides a webcam. By using the experimental version library, the following setup is found to give robust performance:
+\begin{itemize}
+	\item Resolution:        640x480
+	\item Frames per second: 30
+	\item Quality:           default
+	\item Port:              8081
+\end{itemize}
+\subsubsection{Core Utilization Display}
+Core utilization display is shown at the bottom of the Figure \ref{fig:web}. It is responsible for gathering all the core usage information from the files, displaying a graph showing percentages, and calculating average core utilizations. These operations are handled within the server page utilizationGraph.php as shown in the Figure \ref{fig:weboverallbehavior}. This server page is embedded into the main web interface which is jqueryControl.php.
+
+For the efforts regarding creating a graph, a third party script library called 'jqPlot' \cite{jqplot} which runs within the jQuery framework is used.  The jqPlot offers various functions in order to create various plots such as bar graphs, line graphs, pie charts and 3D plots. In order to embed the plots into the web page, AJAX has been used.
+
+\subsubsection{Dummy Loads and Dummy Graph}
+In order to fully utilize the developed parallel software on the high-level module under full load, several processes have been created which do dummy operations to use a certain percentage of the cores. Although the initial distribution does not involve dummy load processes due to increased responsiveness, the dummy loads is used for stressing the software. To create dummy loads, two ideas are investigated:
+\begin{itemize}
+	\item \textbf{Basic load with very short periods:} While using this methodology achieves certain core percentage loads, having a very short delay is considered to be non model-safe and since periods of the processes are very short, timing logs resulted in deadline misses for further analysis. Therefore, a new method of using bigger load with bigger periods is analyzed.
+	
+	\item \textbf{Bigger load with bigger periods:} While using a bigger load with bigger period is also viable in achieving certain core percentages, the fluctuation in the core utilization values higher than the previous option. This fluctuation is trivial in our application as most of the processes behave this way.
+	
+	\lstinputlisting[caption=Dummy load created with Python , label=lst_dummyload]{content/listings/lst_dummyload.txt}
+	
+	In order to create the dummy loads in the code, matrix multiplication of random 1000 by 1000 matrices is processed. Python offers libraries to create those matrices as well as to multiply them. The basic load that is written in Python is given with the Listing \ref{lst_dummyload}.
+	
+	While various loads with the same matrix operation are created, it should be noted that they differ in their iteration periods which helps to achieve different core utilization percentages. The Table \ref{tbl_dummyloads} is a list of all dummy processes that are created in order to help with the utilization research:
+	
+	\begin{table}[h!]
+		\centering
+		\begin{tabular}{|l|l|l|l|}
+			\hline
+			Process Name & File Name & Period & Core Utilization \\
+			\hline
+			\hline
+			CycleWaster25\texttt{\_}1 & dummy\texttt{\_}load25\texttt{\_}1.py & 1.4 second & 25 percent \\
+			\hline
+			CycleWaster25\texttt{\_}2 & dummy\texttt{\_}load25\texttt{\_}2.py & 1.4 second &  25 percent \\
+			\hline
+			CycleWaster25\texttt{\_}3 & dummy\texttt{\_}load25\texttt{\_}3.py & 1.4 second &  25 percent \\
+			\hline
+			CycleWaster25\texttt{\_}4 & dummy\texttt{\_}load25\texttt{\_}4.py & 1.4 second &  25 percent \\
+			\hline
+			CycleWaster25\texttt{\_}5 & dummy\texttt{\_}load25\texttt{\_}5.py & 1.4 second &  25 percent \\
+			\hline
+			CycleWaster100 & dummy\texttt{\_}load100.py & 0.50 second & 100 percent \\
+			\hline
+		\end{tabular}
+		\caption{Dummy load processes running in high-level module}
+		\label{tbl_dummyloads}
+	\end{table}
+	
+\end{itemize}
+
+Although the aforementioned processes have been created to stress the Raspberry Pi to find out the parallelization behavior in full utilization, several other purposes have also been considered. One very important distinction that seperates APP4MC's industrial use from A4MCAR is that industry has complicated tracing and distribution tools and standards such as AUTOSAR. Thus, in industry, fine-grained runnables can be created and distributed easily. However in A4MCAR, experiments showed that distributing and tracing such runnables are not so easy with real-world applications. This means that granularity of processes and threads might have a huge size difference when the functionality of the system is considered. Therefore, to demonstrate the partitioning feature of the APP4MC as in an industry application, a software graph that is called 'Dummy Graph' has been created using Python threads. The created software graph is illustrated in the Figure \ref{fig:dummygraph}.
+
+Created graph depicts software runnables (in our case threads that are distributed) and their global communication via shared variables. Each arrow represents a label access and chronological execution order of runnables. For example, arrow pointing from B to F indicates that B writes to a shared variable, and after it is done, F can read and start its calculations. Inside the threads, dummy matrix multiplication with adjustable matrix size (default: 190x190) is introduced. By looping this multiplication and writing a byte to a shared variable after this is done, dummy graph has been completed. As the legend of the image suggests, each thread is activated using 0.5 second periodic activations and threads have instruction sizes varying from approximately 9 million to 81 million, according to the dynamic profiling results. 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.4]{content/images/dummygraph.png}
+	\caption{Dummy Graph that is created and its details}
+	\label{fig:dummygraph}
+\end{figure}
+
+
+\subsubsection{Image Processing with OpenCV}
+Developing cyber-physical systems with multiple sensors require a good knowledge of computer vision. Automotive applications especially when developing Advanced Driving Asistance Systems (ADAS) make use of this knowledge. Huge computational power need involved in such applications makes such processes a challenge. Therefore, a demonstration of an image processing application is crucial in A4MCAR.
+
+For demonstration of parallelization of an image processing process along with several other processes and threads, an application that can roughly detect a traffic cone has been developed using the C++-based and well established computer vision library OpenCV \cite{opencv}. The developed application makes use of Raspberry Pi camera (using 'raspicam' library) to retrieve images and performs several transforms to the image to detect traffic cones. The developed application outputs an "OBJECT FOUND" message to demonstrate its operation. An example of detections are given in the Figure \ref{fig:traffic_cone_detection}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.15]{content/images/traffic_cone_detection.png}
+	\caption{Developed Image Processing Application}
+	\label{fig:traffic_cone_detection}
+\end{figure}
+
+The applied transformations and how the traffic cone is detected as demonstration is illustrated with the Figure \ref{fig:imageproc}. The idea that is depicted is to retrieve contours of the possible objects and then determining whether it is a traffic cone or not by filtering those contours by their sizes and aspect ratios. In the figure, it is seen that several transformations are applied for this purpose. Creating the threshold image and then subtracting the background (steps: Background AND, Flood Fill, Image Inversion, Bitwise OR), the image is prepared for the canny edge detection step. Canny Edge Detector, i.e. 'Canny' function is able to find edges of desired objects. By using edges, contours can be found which represent the outlines of objects. By judging the contours on their sizes and aspect ratios the desired objects are detected.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{content/images/imageproc.png}
+	\caption{Applied Functions in OpenCV to Detect a Traffic Cone}
+	\label{fig:imageproc}
+\end{figure}
+
+\subsection{Touchscreen Display}
+%Add state machine diagram for display modes
+\subsubsection{Touchscreen Display Features}
+Touchscreen display that is embedded onto the Raspberry Pi 3 features several functions. It can not only show core utilization graph, average utilization percentages, timing performance, but also can be used to manage and allocate the processes of the high-level module. It also features connectivity settings in order to connect to an access point. Main interface and buttons are shown in the Figure \ref{fig:displaybuttons}. Using those buttons users can switch between display modes that are mentioned, as well as go to the Settings menu, exit the touchscreen application, and shutdown the Raspberry Pi. 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.5]{content/images/displaybuttons.png}
+	\caption{Button functions of A4MCAR Touchscreen Display}
+	\label{fig:displaybuttons}
+\end{figure}
+
+\subsubsection{Touchscreen Display Implementation}
+%explain used libraries pygame, psutil and touchscreen interfacing hdmi etc...
+%Linux tools and created .sh scripts will be in Section (5)
+%Maybe add how graph is made...
+As for the hardware, 5 inch HDMI touchscreen module from Waveshare has been used. This module can act as a primary monitor for Raspberry Pi. Addinitionally, the module features touchscreen controls using SPI pins of the Raspberry Pi GPIO. The module driver is installed and calibrated on Raspberry Pi in order to use the module as a primary monitor. 
+
+The touchscreen display process uses a third-party library from Python that is called Pygame \cite{pygame}. This library is exclusively developed for creating Python language based games but it is also useful for creating graphical interfaces. After the images for the interface have been designed, the main interface has been created using the functions from Pygame. As an example, one page is designed to show the system core utilization. In that page, visualization is handled by creating rectangles that scale from 0 percent to 100 percent to show the core utilization in each core that are obtained by reading the files that are responsible for holding the core usage information for both low and high level modules.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.6]{content/images/touschreen5inc.jpg}
+	\caption{5 inch Touchscreen module from Waveshare}
+	\label{fig:touschreen5inc}
+\end{figure}
+
+Pages that are developed for the touchscreen module are shown in the Figure \ref{fig:displays}. In order to understand the behavioral operation of the touchscreen process, the Figure in \ref{fig:TouchscreenProcessSM} should be observed in parallel with the Figure \ref{fig:displays}. 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\textwidth]{content/images/TouchscreenProcessSM.png}
+	\caption{State machine of touchscreen process for pages as modes}
+	\label{fig:TouchscreenProcessSM}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\textwidth]{content/images/displays.png}
+	\caption{Display modes from A4MCAR Touchscreen Display}
+	\label{fig:displays}
+\end{figure}
+
+The introduction page that is shown in Figure \ref{fig:displays} (a) is entered as the process is started. After displaying the logo for 3 seconds, other pages are entered. The pages (b) through (g) (shown in Figure \ref{fig:TouchscreenProcessSM}) is navigated with the help of the Next and Previous button in this state. Users can browse the settings page, shutdown or exit the touchscreen display process by clicking to the respective buttons.
+
+In order to make the the touchscreen display software modular, a class that is called 'aprocess' has been created. By instantiating 'aprocess' objects and appending them to the object list 'aprocess\texttt{\_}list', one can define the processes or threads that will be displayed and traced. The touchscreen display software is designed in the modular fashion that it automatically generates all the pages using the aprocess object list. 'aprocess' class have the following attributes and functions to make process handling easier in Python-based software:
+
+\begin{itemize}
+	\item \textbf{Attributes:} Process Name (\texttt{apname}), Process ID (\texttt{apid}), Running flag (\texttt{aprunning}), Core Affinity (\texttt{aaffinity}), Command to start the process (\texttt{apstartcommand}), Traceable flag (\texttt{traceable}), Online tracing log file (\texttt{aplogfilepath}), Displayed flag (\texttt{displayed}), Display name (\texttt{display\_name}), Flag to tell if it is a process or a thread (\texttt{is\_thread})
+	\item \textbf{Functions:} \texttt{UpdateProcessIDAndRunning()} function is used to update the object process ID and whether the process is running. \texttt{UpdateProcessCoreAffinity()} function is used to retrieve the process core affinity while the  \texttt{SetCoreAffinity(core\_affinity)} function is used for setting the core affinity. There are also thread-specific methods such as \texttt{SetCoreAffinityOfThread(core\_affinity)} and \texttt{UpdateThreadIDAndRunning()}.
+\end{itemize}
+
+Touchscreen display process have a multi-threaded design. In this design Python's threading library \cite{pythonthreading} has been used. With Python's threading library, one can create threads and handle the shared memory communication between threads. The aforementioned process and thread list, 'aprocess{\_}list' is protected by using the mutex implementation 'Lock()' \cite{pythonthreading} of Python's threading library. The following listing shows how locking works with Python's threading library:
+\begin{lstlisting}
+lock.acquire()
+# Access to the shared variable
+lock.release()
+\end{lstlisting}
+
+In the implementation of the touchscreen application, the display resulted in problems due to non-locked access to 'aprocess{\_}list' variable. The concurrent write and reads to this shared variable therefore is prevented using 'Lock()'.
+
+Initial implementation of the touchscreen display did not involve any threads. However, that resulted in several problems. The most crucial problem that occured by not having a multi-threaded design was that in order to make the processes schedulable, the responsiveness of the touchscreen would drop significantly since each display mode has different periods due to embedded calculations. By isolating the calculations, touchscreen events, and utilization updates, this problem is resolved. The four threads that touchscreen display has can be listed as follows:
+
+\begin{itemize}
+	\item \textbf{Main Thread:} Responsible of solely displaying the information using shared variables
+	\item \textbf{TimingCalculation Thread:} This thread is responsible of reading from all the timing log files that are registered to the application using 'aprocess' class, and calculating the values such as gross execution time, slack time average, deadline misses, traceable processes running.
+	\item \textbf{TouchscreenEvents Thread:} Pygame library provides all event handling within a loop. Therefore, it is unwise to handle it without a thread, in case there are many events to be checked. For that purpose, TouchscreenEvents thread is created. The thread is able to emit events in case there is a mouse click or key press.
+	\item \textbf{UpdateUtil Thread:} This thread is able to read from core utilization log files and parse the information to update shared variables so that the Main Thread could show the results.
+\end{itemize}
+
+For the sake of informational completeness, how the schedulable Python threads are created should be depicted. Therefore, the Listing given in \ref{lst_threadskeleton} should be explained.
+
+\lstinputlisting[caption=Thread skeleton in Python, label=lst_threadskeleton]{content/listings/lst_threadskeleton.txt}
+
+In the Listing \ref{lst_threadskeleton}, a schedulable dummy thread is skeleton is shown. Between lines 2 through 4, the shared variables are defined. Lines 7 shows instantiating an 'aprocess' object by entering thread name, traceability, log file, displayability, display name, starting command, and whether or not if it is a thread, respectively. In the line 8 and line 9, thread ID is updated and the core affinity of the thread is set. Lines 10 through 12 shows globally updating the 'aprocess{\_}list' with the created thread by making use of mutexes. Between lines 16 and 24, the schedulability and traceability features are implemented.
+
+Since the touchscreen display process is responsible from displaying many information, libraries to gather up such information have been used. Furthermore, the data that is gathered in the timing logs and core usage logs have also been used in this application. Information that is gathered involve core usage percentages of both low-level and high-level modules, slack times of high-level processes, core frequency of high-level module, active cores count for the high-level module and core mapping list from the high-level module. There is also ability to change the core frequency (Figure \ref{fig:displays} (g)), and display gross execution time. 
+
+\subsubsection{VNC Server}
+Virtual Network Computing (VNC) is a system that allows creating and managing virtual computers as well as connecting to them remotely \cite{vncmagazine}. While dealing with programming single board computers such as Raspberry Pi, it is used for viewing the single board computer desktop remotely. During the development of A4MCAR, a third-party application called XtightVNC is installed to both the Raspberry Pi and the development computer in order to connect to it without having to use external hardware.  The VNC server that is installed in Raspberry Pi, XtightVNC, is run at boot time and scheduled like any other process on the Raspberry Pi. While the server has not been manipulated during the development, in order to investigate the parallelism efficiency, this third party application should also be considered in order to get more accurate results. 
+
+\subsection{Android Application Implementation}
+To control the A4MCAR remotely via communicating with the RN42 bluetooth module that is connected to the low-level module, A4MCAR control application is developed using Android \cite{androidwebsite} environment. In the Figure \ref{fig:tasksoverall}, one can see how developed A4MCAR control application interacts with the entire software that is developed for A4MCAR. 
+
+As an integrated Android development environment, Android Studio \cite{androidstudio} is used. Using Android Studio, developers can not only design XML-based user interfaces for their applications, but also can describe the behavior of their programs using Java programming language. Additionally, Android Studio can emulate many of the available Android devices to help the developers debug their software. 
+
+The developed Android application interface is given in Figure \ref{fig:androidapp}. In the figure, it is seen that the interface consists of a joystick and gear buttons that helps in constructing the driving command that was given by the Figure in \ref{fig:bluetoothcommand}. Furthermore, using a bluetooth device list, A4MCAR could be paired with and then connected in order to start data communication.
+
+For the joystick controls, a third-party Android library that is called virtual-joystick \cite{virtualjoystick} is used. Using this library, one can import the joystick mechanism into their applications. In order to handle the data created from the joystick, an on move event handler has been created which is a callback function which acts every time the joystick is moved. Using this callback function, the angle and strength information that results from the joystick has been transformed to conform to the driving command (Figure \ref{fig:bluetoothcommand}). With the help of the Figure \ref{fig:joystickpie}, this data transformation can be explained easily.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.5]{content/images/androidapp.png}
+	\caption{Android Application Developed for Driving A4MCAR Remotely}
+	\label{fig:androidapp}
+\end{figure}
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.5]{content/images/joystickpie.png}
+	\caption{Joystick angle transformation to construct driving command}
+	\label{fig:joystickpie}
+\end{figure}
+
+Using the joystick illustration given in a Cartesian coordinate system, the angles that are generated by the joystick library itself $\theta$ (0 to 360 degrees) have been converted to the angles for the driving command format $\theta\textsubscript{new}$ (0 to 100). Although the transformations are made to the values from 0 to 100, later on this is reduced to the values from 0 to 99 in order to get rid of the 3-digit format which is not accepted by the command parser written in the low-level module side.
+
+As it is clearly shown in the Figure \ref{fig:joystickpie}, there are certain dead zone regions on the joystick which are not taken into account in the transformation for the sake of the comfort of the users. While the transformed angle $\theta\textsubscript{new}$ is  constant in the dead-zone regions, a few equations have been used in order to handle the mapping of angles in the remaining regions:
+\begin{itemize}
+	\item If the angle is between 30 degrees and 150 degrees, the transformed new angle is calculated using the following:
+	\begin{equation}
+	\theta\textsubscript{new}=\left(1 - \frac{\theta - 30}{120}\right) 100
+	\end{equation}
+	\item If the angle is between 210 degrees and 330 degrees, the transformed new angle is calculated using the following:
+	\begin{equation}
+	\theta\textsubscript{new}=\left(\frac{\theta - 210}{120}\right) 100
+	\end{equation} 
+\end{itemize}
+After the calculations, with the current gear setup the data is sent to the low-level module using the bluetooth functionality of the Android application.
+\newpage
+\section{Exploring Tracing, Mapping, and Energy Consumption Features}
+\subsection{Introduction}
+After the distributed multi-core system is developed and defined, the evaluations regarding different software distributions are needed in order to parallelize the system efficiently. For that purpose, one should know how to manage the multi-core system. While managing the system is quite important to maintain and properly optimize the system to its full capabilities, one requires information regarding the system itself in order to achieve this optimization. As an example, the textbook methodology of extracting useful information from a software is to analyze online and offline trace of the system. 
+
+In order to obtain information regarding a software such as number of instructions, how tasks are scheduled, timing details regarding tasks, core frequencies, energy consumption rates, the following techniques are mostly used:
+\begin{itemize}
+	\item \textbf{Static Binary Analysis:} Static binary analysis is a reverse engineering methodology that helps in finding errors in code such as the errors that involve non-determinism \cite{staticanalysisPRE}. It is essentially analyzing the binaries that are created from C and C++ programs to have another approach to traditional error finding methodologies such as testing and code inspection \cite{staticanalysisPRE}. It is important to keep in mind that in the static binary analysis, the program is not executed \cite{dynamicanalysisphd}. Therefore, the information regarding execution and timing are not provided while the instruction information could be extracted. However, it should be noted that some processor or platform specific tools can estimate the timing based on the number of instructions and the processor information. With the static binary analysis, the disassembly information which is the list of all the instructions could be observed. With the help of the binary analyzer tools, detailed information on number of function calls, nesting, and cyclic complexity could be observed \cite{staticvsdynamicanalysis}. %cyclomatic complexity.
+	%this is simply observing disassembly
+	\item \textbf{Profiling (Dynamic Analysis):}
+	Dynamic analysis, also called profiling, is the methodology of analyzing the program by considering its execution in contrast to the static binary analysis \cite{dynamicanalysisphd}. Dynamic analysis is often done by using tools and it is done in order to get information of how a program is executed on a real or virtual processor \cite{staticvsdynamicanalysis}. While dynamic analysis is quite useful for identifying vulnerabilities in a runtime environment and obtaining information such as timing of execution, it can not guarantee the full test coverage of the source code \cite{staticvsdynamicanalysis}. Using dynamic binary instrumentation (DBI) tools for Linux platform this way, one can obtain information such as CPU time, execution times, memory and I/O of a program \cite{dynamicanalysisphd}. 
+	\item \textbf{Tracing:} Tracing is a methodology which is often mixed with profiling. According to IPM \cite{IPM}, a trace records the chronological information of the execution of a program or a system via logging the the execution with timestamps, whereas a profile is the collection of performance events and timings for a program's execution as a whole. Therefore, it can be said that the scheduling of an Operating system could be analyzed with the help of tracing. 
+	
+	The A4MCAR involves tracing features that are not only supplied by Linux tools but are also developed within the project. It can be generalized that online tracing is a type of tracing that is done while the program is being executed using buffered logs while offline tracing is done after the program has executed using the entire logs. Regarding this information, it can be said that the developed tracing features are created for online tracing in A4MCAR while the existing tooling is used for offline tracing. The following sections consist of the information regarding tracing developments as well as the tooling support regarding tracing a Linux system.
+	\item \textbf{System Monitoring:} Unlike static binary analysis and profiling, system monitoring \cite{systemmonitoring} is done within the entire system and it is used for obtaining useful information regarding the system performance as a whole. Operating systems (especially Linux platform) usually have system logs which could be observed via system monitoring in order to extract useful information regarding the system performance. Speaking for A4MCAR, the performance values such as core frequency and core utilization information are extracted using system monitoring.
+	%We did this with psutil, also proc folder
+\end{itemize}
+
+Low-level and high-level modules of A4MCAR requires several information. To start with, in order to model the software system of both modules with A4MCAR, the number of instructions, task iteration periods, and if exists event occurrance types are needed. This could be achieved by using static binary analysis method in the low-level module due to the fact that XTA tool can estimate instructions, timing, and path from the static binary analysis. The information of number of instructions and periods are obtained from the high-level module Linux platform by using tools that perform profiling. Although using a static binary analysis tool is possible, using a profiler tool was selected as the option for easement of the process. Secondly, system monitoring is needed in both of the modules. While the system monitoring is done using registers in the memory for the low-level module, it is achieved by using Linux kernel tools in high-level module. System monitoring in A4MCAR is essentially needed in order to obtain core utilization percentages, live CPU frequency and active core count. Finally, the profiling and tracing of the programs of the high-level module is needed in order to evaluate parallelization performance and visualize how processes are scheduled. The data that are obtained from profiling and tracing involve slack time, execution times, start and end times.
+
+In this chapter, the aforementioned techniques for system analysis will be discussed with the emphasis of their applicability on a real distributed multi-core system that involves elements from a low-level multi-core micro-controller and a high-level single board computer that is running on x86/Linux platform in order to elaborate  modeling, managing, profiling, tracing of systems and evaluation of various software distributions.
+
+\subsection{Low-Level Module Information Tracing and System Management}
+\subsubsection{Static Binary Analysis via XTA} \label{staticbinary}
+XMOS Timing Analyzer (XTA) \cite{xtamanual} is an Eclipse-based tool that comes with xTIMEcomposer platform which is used for analyzing the timing and the execution details of the multi-tasked software that are developed using XMOS boards and processors \cite{xtamanual}. The tool is able to measure shortest and longest time required to execute a section of code by analyzing the binary file. Thus, the code is not executed in order to be analyzed. Furthermore, it is also able to check the minimum and maximum number of instructions required to execute a section of the code.  A screenshot from the XTA tool is given in the Figure \ref{fig:xtass}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.9\textwidth]{content/images/xtass.png}
+	\caption{XMOS Timing Analyzer (XTA) screenshot}
+	\label{fig:xtass}
+\end{figure}
+
+Once the code is written and built in xTIMEcomposer platform, a binary file is generated with the extension .XE. By loading this binary file using XTA, the timing analysis could be performed. In order to load the binary to XTA, "Load Binary" button (shown as 1 in the Figure \ref{fig:xtass}) should be pressed. Once the binary is loaded, the Disassembly window (shown as 4) appears which shows all the runnables that are automatically detected from the binary. Using the disassembly window, the instructions that are used in runnables could be seen. 
+
+XTA tool is also able to work with specific commands by using the XTA console (shown as 5). Using the specific commands taken from XTA manual \cite{xtamanual}, timing analysis could be done easily. In order to start timing analysis, an execution path should be defined. The execution path could be determined analyzed using the following possible ways \cite{xtamanual}:
+
+\begin{itemize}
+	\item Via placing end points into the code using compiler directive \texttt{\#}pragma as shown in the Listing \ref{lst_xtaendpoints}.
+	\lstinputlisting[caption=Placing end points in xC code to define execution path , label=lst_xtaendpoints]{content/listings/lst_xtaendpoints.txt}
+	The timing analysis between two endpoints could be started by entering the following command to the XTA console:
+	\begin{lstlisting}
+	analyze endpoints start_endpoint1 stop_endpoint1
+	\end{lstlisting}
+	\item A function or a runnable with the name "Function\texttt{\_}Name" could be analyzed from its starting point to its return point by using the following command:
+	\begin{lstlisting}
+	analyze function Function_Name
+	\end{lstlisting}
+	\item Finally, loops can be analyzed using XTA. The way a loop is defined is either setting a loop point from the editor or defining an endpoint inside loop. A loop point having and end point "looppoint" can be analyzed using the following command in the XTA console: \\
+	\begin{lstlisting}
+	analyze loop looppoint
+	\end{lstlisting}
+\end{itemize}
+
+The entire code could be modified in the aforementioned fashion in order to do a timing analysis to all of the runnables of the software system. One can set up timing constraints to make sure every dead line is matched \cite{xtamanual}. Once the timing analysis starts, the selected route, i.e. a function, a loop, or a route between two endpoints are shown in the Routes window (shown as 2 in the Figure \ref{fig:xtass}). The selected route is shown in blocks in another window which is shown as 3 in the figure. Here, it is seen that the best case execution time and the worst case execution time of each block is estimated. As an example, for the WriteData function, the best case execution time is estimated to be 3.584 microseconds, whereas the worst case execution time is 432 nanoseconds. Further information that is provided by XTA regarding timing analysis is given in the Figure \ref{fig:xtafurther}. As it is seen in the figure, what kind of timing paths could have been taken for the function can be visualized using the Visualizations window. Furthermore, information such as thread cycles, number of instructions, number of Fnops, and number of paths are also shown.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{content/images/xtafurther.png}
+	\caption{XTA Visualizations window with further information}
+	\label{fig:xtafurther}
+\end{figure}
+
+For the software that is developed for the low-level module of the A4MCAR, for modeling purposes in APP4MC  the number of instructions are obtained for almost every runnable and event by using aforementioned techniques. For the events, the technique of defining endpoints is used, whereas for the runnables the function analysis is used. However, due to the non-determisim in the some of the branch instructions and code sections that are related to hardware communication, some sections in many runnables were not able to be analyzed properly and returned the "Unresolved" error. In order to get rid of this error, following techniques are used:
+
+\begin{itemize}
+	\item The "Unresolved" error occurs usually when XTA can not resolve a branch instruction whose branch target is unknown \cite{xtamanual}. In order to get rid of this issue, trace of the system should be printed and branch instruction target should be pointed manually. The details of how this is done is given in the XTA manual \cite{xtamanual}. By using this technique, some of the "Unresolved" errors were resolved and number of instructions of those runnables were found.
+	
+	\item When the technique above failed to work because of memory instructions such as memset and infinite loops, the number of instructions are gathered by counting the instructions from Disassembly window. Although this technique is time consuming and error-prone, it is assumed that the gathered information is close to the real number of instructions. Additionally, APP4MC partitioning and mapping accuracy would not change drastically if the gathered information is not exact. 
+\end{itemize}
+
+\subsubsection{Distribution of Tasks to Cores}
+In a properly utilized parallel system, gathered information are used in order to find which software distribution is the most efficient. Here, the software distribution refers to the mapping stage, which is the distribution of the tasks that result from partitioning to the cores.
+
+In xTIMEcomposer platform, task mapping is done easily with the capabilities of the xC programming language. Since xCORE provides a multi-core platform, using the cores for different tasks can be achieved by using simple statements. In XMOS, placement of a function into a core is done by using "par" statement. In the main block of a software, "par" statement can be used in order to create several tasks in parallel. Additionally, using global interface variables, one can handle the inter-task communication between two parellel tasks.
+
+As opposed to the Listing \ref{lst_howtasksconnectxc}, a simple example would help one better understand how this works using xC:
+
+\begin{lstlisting}
+int main(void)
+{
+interface my_interface i1;
+par
+{
+on tile[0].core[2] :  Task1 (i1);
+on tile[1].core[3] :  Task2 (i2);
+}
+}
+\end{lstlisting}
+
+The given code is a basic example of using xC functionality to do a task mapping. The parallel block in the code could be given as the Lines 4 through 8. It is seen that the "Task1" is pinned to the core 2 of tile 0, whereas the "Task2" is pinned to the core 3 of the tile 1. Furthermore, a global interface of type "my\texttt{\_}interface" having the name i1 is declared in the Line 3. This interface handles the communication between the tasks "Task1" and "Task2". As mentioned, the hardware realizes the interface by using the xCONNECT switches to construct a bridge between tiles and cores. Additionally, it should be noted that unlike Raspberry Pi, the tasks are distributed to cores during the reconfiguration in a xC program, i.e where a Task is located can not be changed during run-time due to the nature of xCORE and due to the fact that hardware availability differs from tile to tile \cite{xmosprogrguide}.
+
+By using the aforementioned technique, all the low-level module tasks are distributed to cores at the build-time. 
+
+\subsubsection{System Monitoring in xCORE}
+System monitoring is done by polling a system register and finding out if that core is busy or idle at that moment. Referring back to the Listing  \ref{lst_coremonitoring}, how this is achieved could be better understood.
+
+Besides the implemented core monitoring task, XMOS features several more means to monitor the system. First, system could be monitored at build-time using the XTA tool Binary window, Resource Usage tab. In the Figure given in \ref{fig:binaryresourceusage}, it is seen that the information regarding stack memory, program memory, free memory, cores, timers, and channels could be observed in one window using XTA Binary. Another mean to monitor the system is provided by a function called "debug\texttt{\_}printf". As the name of the function suggests, it is essentially a "printf" function to observe your variables. However, "debug\texttt{\_}printf" is a function that does not interrupt inter-process communication and that does not block cores while printing so that developers can monitor without having to worry about so much overhead \cite{xmosprogrguide}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=\textwidth]{content/images/binaryresourceusage.png}
+	\caption{XTA Binary Resource Usage}
+	\label{fig:binaryresourceusage}
+\end{figure}
+
+Using the "debug\texttt{\_}printf" function, xC-specific tools, a function has been created that helps to find out which function refers to which core. The reason this information is important is because the core ids that are referred with the "par" statements are not the same ids of the core usage implemention. The same issue holds true for the tile ids, as well. By using the following listing, this information could be monitored at run-time:
+
+\newpage\begin{lstlisting}
+int PrintCoreAndTileInformation(char * Function_Name)
+{
+debug_printf("Starting %s task on core ID %d on tile %x\n", Function_Name, 	get_logical_core_id(), get_local_tile_id());
+return 1;
+}
+\end{lstlisting}
+
+Here, the get\texttt{\_}logical\texttt{\_}core\texttt{\_}id() is the function to get the real core id from system registers, whereas the get\texttt{\_}local\texttt{\_}tile\texttt{\_}id() function returns the real tile id. This way, we make sure which task uses how many percentage of the core. Once every task is manipulated so that they use this function while the core monitoring is running, system monitoring could be done easily by observing the Console. An example output of the Console from final version of the low-level module software is given with the Figure \ref{fig:finalmonitoring}. It is seen that the core IDs for every task is given and then the core utilization percentages are listed for cores 0 through 7 for each tile.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.7\textwidth]{content/images/finalmonitoring.png}
+	\caption{System monitoring implemented on xCORE}
+	\label{fig:finalmonitoring}
+\end{figure}
+
+\subsubsection{Discovering Energy Consumption Features}
+One of the most important optimization goals include reducing the energy consumption. To reduce the energy consumption one should have a properly utilized software which is achieved through balancing the CPU load through all the cores of the system. In order to understand this, Power Consumption Application Manual for XS1-L devices \cite{xs1energymanual} should be studied well. 
+
+There are two types of power consumption described regarding a processing unit. Static power consumption describes a chip's power consumption that is caused by the leakage current as the chip is heating \cite{springerparallel}. Therefore, since the leakage current could not be controlled by a user directly, dynamic power consumption, which is the power consumption that is resulted from actual computations, is the concern of our research. The dynamic power consumption of a chip is described by the following equation \cite{dvfspaper}: 
+\begin{equation} \label{dyneq}
+P\textsubscript{dynamic} = {\alpha} {C\textsubscript{L}} {V\textsubscript{DD}\textsuperscript{2}} {f\textsubscript{clk}}
+\end{equation}
+
+We can see from the equation that the power depends on switching probability ${\alpha}$, chip voltage ${V\textsubscript{DD}}$, clock frequency ${f\textsubscript{clk}}$ and collective switching capacitance ${C\textsubscript{L}}$. It is stated in the \cite{springerparallel} that since ${V\textsubscript{DD}}$ linearly depends on the clock frequency ${f\textsubscript{clk}}$, a cubic relationship between power consumption and clock frequency could be observed. The linear relationship between the current ${I\textsubscript{DD}}$ and the frequency is also depicted in the Figure \ref{fig:xs1energy}, showing the performance values for a XS1-L device of XMOS xCORE-200 eXplorerKIT \cite{xs1energymanual}.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.5]{content/images/xs1energy.png}
+	\caption{XS-1 Power Graph Related to Base Current for an xCORE Core}
+	\label{fig:xs1energy}
+\end{figure}
+
+In the figure, we see that the base power consumption of one xCORE running an instruction sequence is given with respect to the clock frequency. By looking at the figure, we can see that the internal base current that is related to the operation of xCORE is directly proportional to the clock frequency of the xCORE core. Since the current is directly proportional to the power, as seen by the equation i.e. $P = {I\textsubscript{DD}}  {V\textsubscript{DD}}$, we can conclude that load balancing is one of the most important things to take care of to get a lower frequency thus current in the core, thus reducing the power consumption. It is important to add at this point that power consumption and energy consumption are directly proportional if system is not fully loaded. In other words, decreasing the clock frequency alone is useful to achieve reduced energy consumption in a system in which the load is balanced and there are no deadline misses \cite{dvfspaper}. Using provided internal registers, xCORE core and tile frequencies can be reduced according to the manual \cite{xs1energymanual}. 
+
+It is important to keep in mind that reducing the clock speed is not the only way to reduce the power consumption. If the dynamic switching power is considered rather than the base power consumption, the factors such as operating frequency, amount of communication, and the data itself are all big causes of the power consumption \cite{xs1energymanual}. Therefore, two techniques with which power and energy can be reduced, can be defined. First technique encapsulates the aforementioned techniques, i.e decreasing the frequency of a chip dynamically by using DFS (Dynamic Frequency Scaling) and decreasing the frequency and operating voltage together dynamically (Dynamic Voltage and Frequency Scaling). The second technique involves shutting down the chip sections which are not used dynamically. In the following sections, these techniques will be referenced.
+
+An important energy related feature that comes with XS-1 devices is the AEC (Active Energy Consumption) mode \cite{xs1energymanual} which can be an example of the mixture of both of the aforementioned techniques. When this mode is turned on and AEC mode clock frequency is set to a desired value, xCORE device lowers the clock frequency of the AEC-enabled cores to the desired AEC mode clock frequency when the core is paused or waiting for an input \cite{xs1energymanual}. This could be slightly related to DVFS (Dynamic Voltage and Frequency Scaling) \cite{dvfsieee} which is a processors ability to dynamically scale its frequency and operating voltage depending on the load. DVFS is common for Linux OS running computers and it will be discussed in the next section.
+
+\subsection{High-Level Module Information Tracing and System Management}
+
+\subsubsection{Binary Analysis of Instructions}
+% perf stat, objdump, dis
+In order to obtain number of instructions of the created processes on the high-level side for modeling purposes, a couple of options are investigated. Most of the techniques are used in A4MCAR in order to model the system using APP4MC.
+
+As a static binary analysis solution, "objdump" \cite{objdump} module of Linux provides disassembly information of C-based libraries and executables. After the compilation of a C/C++ program, GNU C Compiler (GCC) provides an object file which contains the binary data for the program. Using the "objdump" module, C/C++ programs, functions, libraries could be analyzed easily. Objdump provides not only the disassembled instruction list but also can provide information such as symbol tables and debug information. In order to record the instructions of a C/C++ application, one of the following Linux shell commands are used:
+\begin{lstlisting}
+objdump MyObject.o -D > MyObjectDump.txt
+objdump MyObject.o -S > MyObjectDump.txt
+\end{lstlisting}
+These commands provide disassembled instructions from MyObject.o and records them into a file called MyObjectDump.txt. The command with the -D option provides the complete disassembly information for each function whereas the command with the -S option provides source code along with instructions. 
+
+Although using "objdump" is useful for C/C++ applications, it does not provide any means to investigate Python-based processes. To get the instruction information for Python-based processes Python library "dis" \cite{dis} provides a couple of functions. These functions must be used in the Python program itself in order to print out or record the instruction information. A simple example of using "dis" in a Linux shell is given below:
+\begin{lstlisting}
+python -m dis PythonApp.py
+\end{lstlisting}
+This command will give bytecodes of each code line, hence giving instructions for every line of code. One can also disassemble functions by using the following in a Python code:
+\begin{lstlisting}
+import dis
+dis.dis(FunctionName)
+\end{lstlisting}
+
+Perf \cite{perf1} \cite{perf2} is a well-known lightweight system performance counter and profiler tool for Linux. Using perf, one can obtain event and instruction counts, record events, run benchmarks, and analyze processes \cite{perf1}. In A4MCAR, Perf profiler tool has been used for many purposes that include process instruction analysis, system-wide scheduling trace, and trace data conversion. Perf can perform dynamic analysis (profiling) in order to obtain the number of instructions for processes and runnables using Linux shell command shown in the following listing. It should be noted that the number of instructions are obtained dynamically so the process should either be exited or should have a finite number of iterations for the result to be accurate. It should also be made sure that since the command is used for counting the number of instructions of a running process, the command should be executed right after the process starts. In the listing, command counts the instructions only in user mode to avoid including any system overhead and the <pid> is the Process ID of the process according to the Linux kernel. How process ID of a process is obtained and what it means is discussed in the next section.
+\begin{lstlisting}
+sudo perf stat -e instructions:u -p <pid>
+\end{lstlisting}
+For the analysis of high-level applications in A4MCAR, the following variation of the perf stat command is used which is able to determine the instruction count of a running process or thread with a timeout. If the timeout is set to the period of the schedulable process or thread, one can obtain rough idea about the granularity of the process or thread. In the following listing, <timeout> is the period in seconds.
+\begin{lstlisting}
+sudo perf stat -e instructions:u -p <pid> -- sleep <timeout>
+\end{lstlisting}
+For threads, the aforementioned method is error-prone, therefore using \textbf{--per-thread} switch is more reliable when profiling threads of a process.
+\begin{lstlisting}
+sudo perf stat --per-thread -e instructions:u -p <pid> -I <timeout>
+\end{lstlisting}
+
+\subsubsection{Process Management and Monitoring}
+Managing and monitoring processes and threads of a Linux system are crucial preliminaries that should be discussed in order to work with A4MCAR's high-level module using Linux platform. One can list the process management and monitoring issues as follows:
+\begin{itemize}
+	\item \textbf{Listing Processes and Threads:}
+	By using the "top" command, processes and threads that are running can be listed. A couple of example commands and their outputs are explained below \cite{topexamples}. By using the following, processes of the entire system could be monitored.
+	\begin{lstlisting}
+	top
+	\end{lstlisting}
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[width=0.8\textwidth]{content/images/topexample1.png}
+		\caption{Top command output}
+		\label{fig:topexample1}
+	\end{figure}
+	It is seen in the Figure \ref{fig:topexample1} that each process are listed in descending order according to their CPU usages. Processes could be identified by looking at their commands. Information such as owned user (USER), process ID (PID), how much virtual memory are accessed (VIRT), physical memory usage (RES and MEM), how much virtual memory is shared (SHR), cpu usage (CPU) could be monitored in this window. By using the following command, one could also see the threads of a process given its process ID:
+	\begin{lstlisting}
+	top -H -p <pid>
+	\end{lstlisting}
+	
+	Another way to manage processes is done by using "ps" command. This command not only allows to list processes or threads but also is used to kill processes. Similarly to "top" command, "ps" command could be used like the Listing given below in order to list processes and threads:
+	\begin{lstlisting}
+	ps -aux             #All processes
+	ps -T -p <pid>      #Threads of a process
+	ps H -p <pid> -o 'pid tid cmd comm' #Threads of a process including their names
+	\end{lstlisting}
+	
+	\item \textbf{Obtaining Process ID of a Process:} Identifying the process ID or a process is crucial in order to work with processes in Linux. By using the following command, the PID of a process can be obtained by the process name:
+	\begin{lstlisting}
+	pgrep -f <process_name> -n 
+	\end{lstlisting}
+	Using this knowledge, a Linux bash script has been created that monitors a process by finding the process ID from the process name and then using perf profiler. The script is given in the Listing \ref{lst_AppMonitor}
+	\lstinputlisting[caption=Created Bash script to dynamically profile applications (AppMonitor.sh), label=lst_AppMonitor]{content/listings/lst_AppMonitor.txt}
+	
+	By calling bash AppMonitor.sh <process\texttt{\_}name> from Linux shell, this script could be used to monitor applications using perf. In the script, it should be noted that command argument is retrieved (Line 2 and Line 3), process ID is obtained (Line 4) and then perf stat is used (Line 5). 
+	\lstinputlisting[caption=Function to obtain process ID from Python environment, label=lst_CheckIfProcessRunning]{content/listings/lst_CheckIfProcessRunning.txt}
+	
+	Since touchscreen display process is responsible of doing all the online timing calculations, a function has been written which returns the PID of a process if the process is running (Listing \ref{lst_CheckIfProcessRunning}). In the following, it is seen that using subprocess module of Python, one can check the output of a Linux shell command from Python environment (Line 4 of Listing \ref{lst_CheckIfProcessRunning}).
+	
+	\item \textbf{Killing a Process:} Killing a process is handled through a simple Linux shell command that is given below:
+	\begin{lstlisting}
+	sudo kill -9 <pid>
+	\end{lstlisting}
+	Using the same manner that is explained by the Listing \ref{lst_AppMonitor}, a Linux shell script that is called KillProcess.sh has been created which is able to kill running process by their names.
+	\item \textbf{Monitoring Process Details using Linux kernel folders:} Linux kernel provides a virtual filesystem that are located under /proc directory that contain runtime system information for system, device, connectivity and process monitoring \cite{linuxproc}. Regarding process monitoring, using the process ID as the folder name and simply viewing the files that are located under /proc/<pid>/ many information such as process status (observed in Figure \ref{fig:processlifecycle}), memory maps, libraries and executables, executed cpu, scheduling information can be monitored. A few examples are given in the Listing \ref{lst_procexamples} with their explanations \cite{linuxproc}.
+	\lstinputlisting[caption=Kernel virtual filesystem /proc information retrieval examples \cite{linuxproc}, label=lst_procexamples]{content/listings/lst_procexamples.txt}
+	
+\end{itemize} 
+
+\subsubsection{System Monitoring for Linux Platform}
+%proc folder, psutil, top, ps
+As mentioned, for system monitoring /proc folder is also widely used. The information that are stored in the virtual filesystem involve the following information \cite{linuxproc}:
+\begin{itemize}
+	\item Advanced power management info
+	\item Information about the processor, such as its type, make, model, and performance
+	\item  List of device drivers configured into the currently running kernel
+	\item Filesystems configured/supported into/by the kernel
+	\item Which interrupts are in use, and how many of each there have been
+	\item Memory map
+	\item Masks for irq (interrupt request line) to cpu affinity
+	\item Kernel locks
+	\item Information about memory usage, both physical and swap
+	\item Mounted filesystems
+	\item Status information about network protocols
+\end{itemize}
+
+Although with the issues of Linux system administration those information are useful, a more easy way to obtain certain information could be done through using third party modules. In A4MCAR, 'psutil' Python module has been used in order to monitor system information such as number of active cores running, core frequencies and CPU utilization of each core. 
+Using the following function, the core frequencies are extracted in MHz:
+\begin{lstlisting}
+str(psutil.cpu_freq()).split(',')[0].split('=')[1]
+\end{lstlisting}
+Similarly, psutil.cpu\texttt{\_}count() function can be used to extract the number of active cores and psutil.cpu\texttt{\_}percent() function can be used to extract the core utilization percentages in a given time period \cite{psutil}. 
+
+\subsubsection{Tracing the System to Obtain Scheduling Information}
+To evaluate performance indicators and observe load balance, tracing the high-level module processes is crucial in A4MCAR. By recording a system trace and using scheduling visualization tools in Linux, one can see how processes and threads are distributed amongst the existing cores. For that purpose, tracing and visualization options should be investigated as follows:
+\begin{itemize}
+	\item \textbf{Tracing via perf and viewing the trace:}
+	In order to trace the system using perf profiler, perf's record command is used \cite{perf2}. As an example, the system trace could be obtained for 15 seconds by entering the following command into the Linux shell:
+	\begin{lstlisting}
+	sudo perf sched record -- sleep 15
+	\end{lstlisting}
+	Once the tracing is done, system trace is recorded to a file called "perf.data". This trace file uses perf tracing format which is not a common format. Therefore, it is not recognized by many of the trace visualization software. In order to visualize a basic system trace using perf.data file, the following command could be used which saves the full trace in a text file called fulldump.txt:
+	\begin{lstlisting}
+	sudo perf sched script > fulldump.txt
+	\end{lstlisting}
+	A few first lines of the fulldump.txt should be analyzed in order to understand what information can be inferred from the trace. Referring to the code given in the Listing \ref{lst_perfschedscriptdump}, each line represents a kernel event. If a task is being started to execute on a core that event is referred to as sched\texttt{\_}switch event, whereas if a task that was in the sleeping state is being executed again this is referred to as the sched\texttt{\_}wakeup event. Another information regarding trace events involve process name (comm), process ID (pid), target core (target\texttt{\_}cpu) and time at which the event occurred. 
+	\lstinputlisting[caption=Perf sched script command output \cite{perf2}, label=lst_perfschedscriptdump]{content/listings/lst_perfschedscriptdump.txt}
+	
+	\lstinputlisting[caption=Perf sched map command output \cite{perf2}, label=lst_perfschedmapdump]{content/listings/lst_perfschedmapdump.txt}
+	
+	Since perf sched script output might be messy for a system trace, one could be more interested in seeing a system trace in a more abstract form. In that regards, obtaining a cpu mapping view of the trace could help. In order to obtain a cpu mapping view, the following command could be used in Linux shell:
+	\begin{lstlisting}
+	sudo perf sched map
+	\end{lstlisting}
+	The output of this command can be seen in the Listing \ref{lst_perfschedmapdump}. In the code, it is seen that each column represents a core whereas vertical axis can be thought of the time axis. In other words, each time an event occurs, a new line is added and the task is placed to a column depending on which core it is running. It should be noted that asterisk symbol near a task is used to indicate sched\texttt{\_}switch events. The timing information, the process name and process ID are also given in this view. 
+	
+	Speaking for the example in Listing \ref{lst_perfschedmapdump}, if the cores were to have names 0 through 3 depending on their column index, it should be seen that the core 0 (first column) is not doing anything whereas most of the load is located on on cores 2 and 3. It should be also seen that the process A0 (hence, perf) had switched from core 2 to core 3 at some point in time.
+	
+	\item \textbf{Trace-Cmd trace and visualization via kernelshark:}
+	Trace-cmd \cite{tracecmd} is yet another tool that records system trace. Trace-cmd trace could be generated into a file trace.dat by using the following command:
+	\begin{lstlisting}
+	sudo trace-cmd record -e sched
+	\end{lstlisting}
+	The trace that is generated from trace-cmd tool could be observed via a visualization tool called kernelshark. By simplying calling "kernelshark" from the directory that trace.dat is located, one can launch kernelshark to observe the system trace. An example of kernelshark is shown in the Figure \ref{fig:kernelshark}.
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[scale=0.5]{content/images/kernelshark.png}
+		\caption{Kernelshark running on Linux (Raspbian) OS}
+		\label{fig:kernelshark}
+	\end{figure}
+	Although kernelshark along with trace-cmd are useful tools that show a CPU graph along with processes, the visualization does not provide information regarding CPU utilization details and communication. For that purpose, TraceCompass tool will be used which will explained in the following paragraph. 
+	\item \textbf{Perf and Babeltrace CTF tracing and visualization via TraceCompass:} 	Eclipse TraceCompass \cite{tracecompass} is an Eclipse-based open-source platform that is used for providing views, graphs and metrics for many type of logs and traces \cite{tracecompass} The graphical user interface of the Eclipse TraceCompass is shown in Figure \ref{fig:tracecompass}. Since the information that is provided by Eclipse TraceCompass is more user-friendly and more detailed than the other visualization options that are discussed, in A4MCAR Eclipse TraceCompass has been used for watching the high-level module system trace.
+	
+	LTTng \cite{lttng} is an open-source tracing framework that is provided for Linux platform which is quite often used with Eclipse TraceCompass due to its format compatibility, i.e. both LTTng and TraceCompass can handle the standard tracing format, CTF (Common Trace Format) well. However, since LTTng requires system tracepoints to be designed in the software development stage, in A4MCAR due to its ease of implementation Perf is used for tracing. Although TraceCompass accepts many trace formats, it can not read directly from perf format (perf.data). Therefore, the perf trace format should be converted to CTF in order to be watched using the Eclipse TraceCompass.
+	
+	In order to convert the perf format, one has to build a new version of perf from a Linux kernel module \cite{jolsa} with tracing options enabled and also with a tracing library that is called LibBabelTrace. The detailed information regarding this building process could be seen in \cite{perfbabeltrace}. Once the perf is built and installed with babeltrace, one can use the following commands to record a trace and then convert it to CTF data format. 
+	\begin{lstlisting}
+	sudo perf sched record -e 'sched:*,raw_syscalls:*' -- sleep 15
+	sudo LD_LIBRARY_PATH=/opt/libbabeltrace/lib perf data convert --to-ctf=./ctf
+	\end{lstlisting}
+	
+	Once the trace which is in CTF format is generated, it can be imported into the Eclipse TraceCompass. An example trace imported into Eclipse TraceCompass platform is given in the Figure \ref{fig:tracecompass}. Using the figure, the main windows in the Eclipse TraceCompass can be discussed. TraceCompass enables users to look at their system using several views such as call graphs, threads, context switches, cpu usage, critical path, I/O, control flow, and resources which can be seen as (1) in the figure. Control flow window (2) shows each process state with respect to time including the transitions along all the processes. System-wide CPU usage and individual processes' CPU usages are shown in the CPU Usage window which is shown as (3) in the figure. Therefore, if the system has 4 cores, the CPU usage of up to 400 percent could be observed. Resources window (shown as (4)) depicts how processes are distributed amongst the existing cores with respect to time. Therefore, the load balancing could be roughly observed from this view by simply looking at each of the cores. Moreover, using the Resources window, one can measure and estimate the timing properties of the schedule of the system. Finally, the trace event list (shown as (5)) can be used to see exact events that occurred in a specific time by selecting a time frame from other windows.
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[scale=0.4]{content/images/tracecompass.png}
+		\caption{Eclipse TraceCompass running on Windows}
+		\label{fig:tracecompass}
+	\end{figure}
+	
+	To ease the process of having to trace using perf, convert the trace, and take a look at the process ID list to interpret the trace, a Linux shell (bash) script has been created in order to get necessary outputs from tracing processes and threads automatically. The Listing \ref{lst_tracebash} shows the content of the script. It is seen in the script that command line arguments are taken (Lines 1 to 4) to make the process more modular. The Lines 11 to 20 is dedicated to executing the commands that are discussed above by making use of the command line arguments. By stating the trace name, tracing period, and perf module installation location, one can use this script to generate traces easier. 
+	\newpage
+	\lstinputlisting[caption=Script to generate traces automatically, label=lst_tracebash]{content/listings/lst_tracebash.txt}
+	
+	At this point, it is really important for a developer to let Linux Kernel and by extension the TraceCompass identify the processes and threads. The way this is achieved is by manipulating the name of the processes and threads that are visible to Linux kernel, which is known as \texttt{command}. In this work, this is researched for both C++ (POSIX threads) and Python (threading) processes and threads.
+	
+	For POSIX-thread based C/C++ programs, \texttt{command} is the executable name for a process when executed as \texttt{./cppprogram}. However to set the \texttt{command} for the threads of a POSIX-thread based program, \texttt{pthread{\_}setname{\_}np} function should be used.
+	
+	For Python's threading-based programs, both process and thread names should be made visible by specifying \texttt{command}, or either the TraceCompass will recognize the processes and threads as just \texttt{python}. To set the \texttt{command} for a Python executable the first line of the Python program should be set to \texttt{\#!/usr/bin/python} as opposed to \texttt{\#!/usr/bin/env python} to make the script executable. After that, if the process is executed using its name \texttt{./pyprogram}, the TraceCompass will recognize the process name. Moreover for threads inside a Python program, prctl module can be used to set the \texttt{command}. The function \texttt{prctl.set{\_}name} is useful in this regard.
+	
+	With all processes and threads named and traced, TraceCompass will visualize the scheduling as shown in Figure \ref{fig:tracecompasscommands}.
+	
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[width=\textwidth]{content/images/tracecompasscommands.png}
+		\caption{TraceCompass visualization of processes and threads}
+		\label{fig:tracecompasscommands}
+	\end{figure}
+\end{itemize}
+
+\subsubsection{Process and Thread Mapping}
+% taskset, CorePlacer.sh, coredeflist.a4p isleri touchscreende
+After software evaluation, processes and threads should be pinned to cores properly. To place the processes and threads to cores, tasks taskset module of Linux platform is used. Taskset module \cite{taskset} is used to set or retrieve the CPU affinity of a running process given its process ID. CPU affinity is a scheduler property that pins a process to a given set of CPUs on the system. Therefore, the process will not run on any other CPUs after an affinity is set to that process \cite{taskset}. As mentioned in the \cite{taskset}, Linux scheduler also supports natural CPU affinity: the scheduler attempts to keep processes on the same CPU as long as practical for performance reasons \cite{taskset}. Therefore, in A4MCAR, by forcing a specific CPU affinity, we investigate if a better distribution could be accomplished than the one Linux schedules. To place a process to a core given its process ID, following command is used:
+
+\begin{lstlisting}
+#Place the process on a specific core.
+sudo taskset -pc <coreaffinity> <pid>
+\end{lstlisting}
+
+As an example, for a 4-core system such as Raspberry Pi 3, core affinity can be values such as 0, 1, 2, 3, 0-1, 0-2, 0-3, 2-3. It can be understood from this example that core affinity not necessarily has to be selected as only one core and it can be selected as a range of cores for a process to be distributed. The Listing \ref{lst_CorePlacer} depicts how a process is pinned to a core using its name.
+\lstinputlisting[caption=CorePlacer.sh script to pin a process to a core using its name, label=lst_CorePlacer]{content/listings/lst_CorePlacer.txt}
+
+In A4MCAR or any other equally or more complex applications, to manage the distribution process for every process might be time consuming. In order to overcome this issue, a file format has been designed which is then read by the main processing task (Touchscreen display process). Touchscreen process, when the distribution is selected, reads from this file format coredef\texttt{\_}list.a4p and makes core placements accordingly. An example coredef\texttt{\_}list.a4p is shown by the Listing \ref{lst_coredeflista4p}. It can be seen in the listing that task names and cores are listed by each line.
+\lstinputlisting[caption=File format that contains overall
+process pinning information, label=lst_coredeflista4p]{content/listings/lst_coredeflista4p.txt}
+
+Reading the file and making the changes required is done by using the function given with the Listing \ref{lst_pythondistribute}. In this listing, file is opened (Line 7), each line is parsed (Lines 8 through 14), then the allocation is done by searching for the item in the global 'aprocess{\_}list' (Line 15 through 24) and executing a taskset command with arguments as name of the process and core if the item is found in the process and thread list 'aprocess{\_}list'. Remembering back the Figure \ref{fig:rpicomponents}, one can better understand how this procedure is located amongst other processes in the high-level module. One should also notice that in the line 25, core affinities of processes are updated.
+\lstinputlisting[caption=Reading coredef\texttt{\_}list.a4p and pinning tasks with Python, label=lst_pythondistribute]{content/listings/lst_pythondistribute.txt}
+
+\subsubsection{Discovering Energy Consumption Features}
+One of the biggest advantages of achieving a better core utilization is to invoke energy saving features of processors by running CPU at lower clock speeds and lower voltages. As mentioned before, computers that run on Linux platform provide a feature that is called DVFS (Dynamic Voltage and Frequency Scaling) \cite{dvfsieee} which is a processor's ability to dynamically scale its frequency and operating voltage depending on the load. DVFS can affect hardware peripheral chips apart from the processor. Here, Figure \ref{fig:dvfsexplanation} \cite{dvfspaper} depicts how using DVFS can improve the energy consumption in a system.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.3]{content/images/dvfsexplanation.png}
+	\caption{How DVFS reduces energy consumption explained \cite{dvfspaper}}
+	\label{fig:dvfsexplanation}
+\end{figure}
+
+Consider the dynamic power consumption equation that was given in \ref{dyneq}. Considering a fixed chip operating voltage ${V\textsubscript{DD}}$, it can be easily seen from the figure that the power is directly proportional to the operation frequency of the CPU. For example, a processor that is running on 500MHz will be drawing less current than the same one that is running on 200MHz. However, using a lesser frequency is not the only way to get a lesser power consumption. One can also reduce the operating voltage ${V\textsubscript{DD}}$ of a chip to reduce power, provided that the ${V\textsubscript{DD}}$ is greater or equal to the minimum working voltage of that particular chip \cite{dvfspaper}. It should be noted that that clock frequency should also be reduced in a system with a reduced operating voltage ${V\textsubscript{DD}}$ for the system to function correctly \cite{dvfspaper2}. The figure depicts that by decreasing frequency and operating voltage at the same time (DVFS), power consumption is reduced a lot more than it is in the frequency scaling.
+
+In Linux, CPUFreq \cite{cpufrequencyscaling} is provided which is a module that is responsible for handling dynamic frequency scaling. CPUFreq governors which are responsible for deciding, what frequency should be used in a system, manipulate the CPUFreq driver to switch the policy of the CPU depending on the system load \cite{cpufrequencyscaling}. In A4MCAR, CPUFreq governor of the high-level module is changed in order to achieve less power consumption. Raspberry Pi 3 supports two frequencies that can be used within CPUFreq governors: 600MHz and 1.2GHz. The available governors and their functions are listed below \cite{gateworks}:
+
+\begin{itemize}
+	\item \textbf{performance} - sets the frequency statically to the highest available CPU frequency (in Raspberry Pi 3, this is 1.2GHz)
+	\item \textbf{powersave} - sets the frequency statically to the lowest available CPU frequency (in Raspberry Pi 3, this is 600MHz)
+	\item \textbf{userspace} - set the frequency from a userspace program. A userspace program can determine customized policies and frequencies to be used. For detailed information on userspace governor, \cite{gateworks} can be read.
+	\item \textbf{ondemand} - adjust based on utilization
+	\item \textbf{conservative} - adjust based on utilization but be a bit more conservative by adjusting gradually
+\end{itemize}
+
+CPUFreq governor of a Linux system can be changed at any given moment by using the cpufreq-utils command. The following Linux shell commands shows installation of cpufreq-utils (Line 1), listing information (Line 2), and current governor selection (Line 3), respectively.
+\begin{lstlisting}
+sudo apt-get install cpufrequtils
+cpufreq-info
+cpufreq-set -g <governor>  #<governor> could be either of the governors that are listed.
+\end{lstlisting}
+
+\subsubsection{Online Timing Analysis Features in A4MCAR}
+Every created application in A4MCAR's high-level module are built on a template that is able to log timing information. The timing logs are read in the Touchscreen display process, which we refer to as the main processing task in the high level module. The role of main processing task in the online timing analysis is depicted in the Figure \ref{fig:a4mcartiming}. As seen, main processing task is responsible to calculate performance indicators such as average slack time ${ST\textsubscript{avg}}$ and overall deadline misses percentage ${DLM}$ using the timing values from other processes in seconds such as execution time ${ET}$, slack time ${ST}$, deadline ${DL}$ and period ${PER}$ (Recall from Section \ref{schedulingsection}). Main processing task can also read from core usage logs and inform users about the low-level module core utilization percentages ${LU\textsubscript{0-15}}$ and high-level module core utilization percentages ${HU\textsubscript{0-3}}$. Furthermore, number of active cores ${N\textsubscript{cores}}$, number of active and traceable processes ${N\textsubscript{process}}$, number of missed deadlines ${N\textsubscript{missed}}$ and clock frequency ${f\textsubscript{CPU}}$ are also shown by reading the respective logs. 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[scale=0.4]{content/images/a4mcartiming.png}
+	\caption{Online Timing Analysis explained in A4MCAR}
+	\label{fig:a4mcartiming}
+\end{figure}
+
+Subsection \ref{onlinetiming} explains the calculation of ${ET}$, ${ST}$, and determination of ${DL}$ and ${PER}$. Users are able to observe ${ST\textsubscript{avg}}$ and ${DLM}$ on the touchscreen display as seen in the Figure \ref{fig:displays} (g). Calculation of the information that are presented to the user ${ST\textsubscript{avg}}$ and ${DLM}$ are carried out as follows:
+
+\begin{itemize}
+	\item ${ST\textsubscript{avg}}$ in seconds is calculated simply by using the following equation:
+	\begin{equation}
+	ST\textsubscript{avg} =  {\frac{1}{N\textsubscript{process}}} {\sum_{n=0}^{N\textsubscript{process}} ST\textsubscript{n}} 
+	\end{equation}
+	\item To find ${DLM}$, first, ${ET}$ and ${DL}$ of each process are compared. If ${ET}$ is larger than ${DL}$, that process is said to have missed its deadline. A deadline flag ${DF}$ is defined which is 1 if the deadline is missed for a process, and 0 if the deadline is not missed. By using the sum of every deadline flag ${DF}$, the ${DLM}$ is calculated as follows:
+	\begin{equation}
+	DLM =  {\frac{100}{N\textsubscript{process}}} {\sum_{n=0}^{N\textsubscript{process}} DF\textsubscript{n}} 
+	\end{equation}
+\end{itemize}
+\newpage
+\section{Modeling and Results}
+\newpage
+\section{About Using the Software}
+\subsection{Preliminaries}
+In order to use the applications created for Low-level Module (XMOS) and High-level Module (RPI) folder, the complete hardware of A4MCAR is needed. However, the scripts in the High-level module, Android application, and AMALTHEA models could be re-used in any project without modification.
+\subsection{Re-using the Software}
+The software that is developed during the evolution of A4MCAR is distributed under Eclipse Public License (EPL). A4MCAR's repository is located at APP4MC's examples repository \texttt{http://git.eclipse.org/c/ap p4mc/org.eclipse.app4mc.examples.git/} which is downloadable from the git address \texttt{git://git.ecl ipse.org/gitroot/app4mc/org.eclipse.app4mc.examples.git} along with several other demonstrators. Thus it can be downloaded using the following command with Git:
+\begin{lstlisting}
+	git clone git://git.eclipse.org/gitroot/app4mc/org.eclipse.app4mc.examples.git
+\end{lstlisting}
+
+The repository contains several folders inside the a4mcar folder, each of which contain the files for distinct development environments along with a readme file. The mentioned folders involve web{\_}interface, high{\_}level{\_}applications, models, android{\_}application, low{\_}level{\_}applications, documentation. These folders and their content scope could be explained as follows:
+
+\begin{itemize}
+	\item \textbf{web{\_}interface: } This folder contains the files of the web interface that is developed for A4MCAR project which is used to control A4MCAR over remote Wi-Fi connection. 
+	
+	In order to set up web{\_}interface and install the dependent software, one should run the setup script: \texttt{web{\_}interface/setup{\_}web{\_}interface.sh}
+	
+	In order to run the web{\_}interface correctly, the high-level modules core{\_}reader
+	and ethernet{\_}client should be ready and working.
+	To run the web{\_}interface one should connect to the access point of Raspberry Pi
+	from a client computer web browser and visit 
+	\texttt{http://IP{\_}Address/jqueryControl2.php} or \texttt{http://IP{\_}Address/jqueryControl.php}.
+	
+	\item \textbf{high{\_}level{\_}applications: } This module consists of several high-level applications that are developed for A4MCAR's high-level module (Raspberry Pi). These applications involve: 
+	touchscreen{\_}display, core{\_}recorder, dummy{\_}loads, ethernet{\_}client, and 
+	image{\_}processing.
+	
+	In order to run the applications, respective Python files could be run or C/C++
+	binaries could be executed. Also the scripts that are located under scripts folder could be used to initialize some of the applications.
+	
+	In order to set up high{\_}level{\_}applications module dependencies, one should run
+	the setup script and follow the instructions:
+	\texttt{high{\_}level{\_}applications/setup{\_}high{\_}level{\_}applications.sh}
+	\item \textbf{models: } A4MCAR's hardware and software model with Eclipse APP4MC is located in this 
+	directory.
+	\item \textbf{android{\_}application: } This directory consists of the source files that belong to the A4MCAR's bluetooth
+	based driving application. The source and design files could be used in an Android IDE in order to make tweaks to the application and to generate new .apk files.
+	\item \textbf{low{\_}level{\_}applications: } low{\_}level{\_}applications module involves the source code for the low-level module that
+	are run using a multi-core microcontroller XMOS xCORE-200 eXplorerKIT. The low level
+	applications are responsible for tasks such as sensor driving, actuation, communication,
+	and core monitoring of the A4MCAR. The low{\_}level{\_}applications module could be imported into xTIMEcomposer to make tweaks to the tasks.
+	\item \textbf{documentation: } This is the directory that involves created documentations for A4MCAR in LaTeX format.
+\end{itemize}
+\subsection{Re-using the Scripts}
+Created scripts for the x86/Linux platform is located under \texttt{a4mcar/high{\_}level{\_}applications/scripts/}. In the folder many Bash scripts could be found. The purposes of these scripts involve starting and killing the applications in a4mcar, environment configuration, process manipulation, and tracing. The scripts that are related to process manipulation and tracing is made in a reusable format, thus they can be used in any x86/Linux system regardless of its hardware. The created reusable scripts address tackling the challenges mentioned: placing a process or a thread to a core, monitoring apps, killing processes by their names, tracing and monitoring a Linux system, profiling (getting instruction details dynamically) of the threads of a process, profiling a process, monitoring the threads of a process, and listing the threads of a process.
+
+\newpage
+\section{Conclusion}
+\newpage
+\bibliography{bib}{}
+\bibliographystyle{plain}
+\end{document}

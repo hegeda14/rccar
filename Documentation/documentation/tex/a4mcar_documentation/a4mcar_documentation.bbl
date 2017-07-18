@@ -1,0 +1,322 @@
+\begin{thebibliography}{10}
+
+\bibitem{jolsa}
+git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git.
+
+\bibitem{IPM}
+http://ipm-hpc.sourceforge.net/profilingvstracing.html.
+
+\bibitem{lttng}
+http://lttng.org/.
+
+\bibitem{opencv}
+http://opencv.org/.
+
+\bibitem{cpuandusertimes}
+https://cs.umd.edu/class/spring2015/cmsc411-0201/lectures/lecture04\texttt{\_}performance\texttt{\_}reliability.pdf.
+
+\bibitem{androidstudio}
+https://developer.android.com/studio/index.html.
+
+\bibitem{python27}
+https://docs.python.org/2/.
+
+\bibitem{dis}
+https://docs.python.org/2/library/dis.html.
+
+\bibitem{socketpython}
+https://docs.python.org/2/library/socket.html.
+
+\bibitem{pythonthreading}
+https://docs.python.org/2/library/threading.html.
+
+\bibitem{gcc}
+https://gcc.gnu.org/onlinedocs/gcc-6.3.0/gcc/.
+
+\bibitem{virtualjoystick}
+https://github.com/controlwear/virtual-joystick-android.
+
+\bibitem{mjpgstreamergithub}
+https://github.com/jacksonliam/mjpg-streamer.
+
+\bibitem{jquery}
+https://jquery.com/.
+
+\bibitem{taskset}
+https://linux.die.net/man/1/taskset.
+
+\bibitem{tracecmd}
+https://lwn.net/articles/410200/.
+
+\bibitem{perf1}
+https://perf.wiki.kernel.org/index.php/main\texttt{\_}page.
+
+\bibitem{app4mcproposaleclipse}
+https://projects.eclipse.org/proposals/app4mc.
+
+\bibitem{psutil}
+https://pypi.python.org/pypi/psutil.
+
+\bibitem{objdump}
+https://sourceware.org/binutils/docs/binutils/objdump.html.
+
+\bibitem{gsoc}
+https://summerofcode.withgoogle.com/projects/{\#}5257433030066176.
+
+\bibitem{cpuandusertimes2}
+http://stackoverflow.com/questions/4310039/user-cpu-time-vs-system-cpu-time.
+
+\bibitem{perfbabeltrace}
+http://stackoverflow.com/questions/43576997/building-perf-with-babeltrace-for-perf-to-ctf-conversion.
+
+\bibitem{ubuntumatedownload}
+https://ubuntu-mate.org/raspberry-pi/.
+
+\bibitem{cpufrequencyscaling}
+https://wiki.debian.org/howto/cpufrequencyscaling.
+
+\bibitem{androidwebsite}
+https://www.android.com/.
+
+\bibitem{staticanalysisPRE}
+https://www.cs.ru.nl/e.poll/ufrj/5\texttt{\_}staticanalysisprefast.pdf.
+
+\bibitem{app4mcweb}
+https://www.eclipse.org/app4mc/.
+
+\bibitem{app4mchelp}
+https://www.eclipse.org/app4mc/help/app4mc-0.8.0/index.html.
+
+\bibitem{epl}
+https://www.eclipse.org/legal/epl-v10.html.
+
+\bibitem{timingposter}
+https://www.gliwa.com/downloads/timing%20poster.pdf.
+
+\bibitem{pygame}
+https://www.pygame.org/.
+
+\bibitem{raspbiandownload}
+https://www.raspberrypi.org/downloads/raspbian/.
+
+\bibitem{raspberrypiinfo}
+https://www.raspberrypi.org/products/raspberry-pi-3-model-b/.
+
+\bibitem{topexamples}
+https://www.tecmint.com/12-top-command-examples-in-linux/.
+
+\bibitem{howajaxworks}
+https://www.w3schools.com/xml/ajax\texttt{\_}intro.asp.
+
+\bibitem{xs1energymanual}
+https://www.xmos.com/download/private/an01005%3a-estimating-power-consumption-for-xs1-l-devices%281.0.2rc1%29.pdf.
+
+\bibitem{xmosprogrguide}
+https://www.xmos.com/download/private/xmos-programming-guide-(documentation)(e).pdf.
+
+\bibitem{xtamanual}
+https://www.xmos.com/download/private/xmos-timing-analyzer-manual%281.2%29.pdf.
+
+\bibitem{xmoskitweb}
+https://www.xmos.com/support/boards?product=18230.
+
+\bibitem{bash}
+http://tldp.org/ldp/abs/html/.
+
+\bibitem{tracecompass}
+http://tracecompass.org/.
+
+\bibitem{gateworks}
+http://trac.gateworks.com/wiki/dvfs.
+
+\bibitem{amalthea4publicweb}
+http://www.amalthea-project.org/.
+
+\bibitem{perf2}
+http://www.brendangregg.com/perf.html.
+
+\bibitem{webserver}
+http://www.clib.dauniv.ac.in/e-lecture/web%20server.pdf.
+
+\bibitem{remotedebuggingeclipse}
+http://www.gurucoding.com/en/raspberry\texttt{\_}pi\texttt{\_}eclipse/index.php.
+
+\bibitem{jqplot}
+http://www.jqplot.com/.
+
+\bibitem{staticvsdynamicanalysis}
+http://www.testingexcellence.com/static-analysis-vs-dynamic-analysis-software-testing/.
+
+\bibitem{linuxproc}
+http://www.tldp.org/ldp/linux-filesystem-hierarchy/html/proc.html.
+
+\bibitem{systemmonitoring}
+http://www.tldp.org/ldp/sag/html/system-monitoring.html.
+
+\bibitem{xmosflyer}
+http://www.xmos.com/download/private/xcore-architecture-flyer%281.1%29.pdf.
+
+\bibitem{xmosdatasheet}
+http://www.xmos.com/download/private/xe216-512-tq128-datasheet%281.12%29.pdf.
+
+\bibitem{paper3}
+M.~Alfranseder, M.~Deubzer, B.~Justus, J.~Mottok, and C.~Siemers.
+\newblock An efficient spin-lock based multi-core resource sharing protocol.
+\newblock In {\em 2014 IEEE 33rd International Performance Computing and
+  Communications Conference (IPCCC)}, pages 1--7, Dec 2014.
+
+\bibitem{dvfsieee}
+Shi-Hao Chen and Jiing-Yuan Lin.
+\newblock Implementation and verification practices of dvfs and power gating.
+\newblock In {\em 2009 International Symposium on VLSI Design, Automation and
+  Test}, pages 19--22, April 2009.
+
+\bibitem{sysml}
+Sanford Friedenthal, Alan Moore, and Rick Steiner.
+\newblock Omg systems modeling language tutorial.
+\newblock 2006-2009.
+
+\bibitem{pipelinebook}
+Carl Hamacher.
+\newblock {\em Computer Organization (5th Edition)}.
+\newblock McGraw Hill Higher Education, 2001.
+
+\bibitem{priorpaperapp4mc}
+Robert H{\"o}ottger, Lukas Krawczyk, and Burkhard Igel.
+\newblock Model-based automotive partitioning and mapping for embedded
+  multicore systems.
+\newblock {\em International Journal of Computer, Electrical, Automation,
+  Control and Information Engineering}, 9(1):268 -- 274, 2015.
+
+\bibitem{ICPDSSE}
+Robert H{\"o}ttger, Lukas Krawczyk, and Burkhard Igel.
+\newblock {Model-Based Automotive Partitioning and Mapping for Embedded
+  Multicore Systems}.
+\newblock In {\em International Conference on Parallel, Distributed Systems and
+  Software Engineering}, volume~2 of {\em ICPDSSE'15}, pages 2643--2649. World
+  Academy of Science, Engineering and Technology, 2015.
+
+\bibitem{constrainedpaper}
+Robert H{\"o}ttger, Mustafa {\"O}zcelik{\"o}rs, Philipp Heisig, Lukas Krawczyk,
+  Carsten Wolff, and Burkhard Igel.
+\newblock Constrained mixed-critical parallelization for distributed
+  heterogeneous systems.
+\newblock In {\em The 9\textsuperscript{th} IEEE International Conference on
+  Intelligent Data Acquisition and Advanced Computing Systems, Technology and
+  Applications}, 2017.
+
+\bibitem{autosarospaper1}
+Devika K and Syama R.
+\newblock An overview of autosar multicore operating system implementation.
+\newblock In {\em International Journal of Innovative Research in Science,
+  Engineering, and Technology Vol. 2, Issue 7}, July 2013.
+
+\bibitem{roundrobin}
+Leonard Kleinrock.
+\newblock Analysis of a time-shared processor.
+\newblock {\em Naval Research Logistics Quarterly}, 11(1):59--73, 1964.
+
+\bibitem{lukas1}
+Lukas Krawczyk, Robert Hoettger, and Uwe Lauschner.
+\newblock Introduction in dps architecture, distributed and parallel systems
+  lecture notes, esm dps ws 2015/2016.
+
+\bibitem{dvfspaper2}
+Etienne Le~Sueur and Gernot Heiser.
+\newblock Dynamic voltage and frequency scaling: The laws of diminishing
+  returns.
+\newblock In {\em Proceedings of the 2010 International Conference on Power
+  Aware Computing and Systems}, HotPower'10, pages 1--8, Berkeley, CA, USA,
+  2010. USENIX Association.
+
+\bibitem{apacheguide}
+Igor Ljubuncic.
+\newblock Apache web server complete guide.
+\newblock 2011.
+
+\bibitem{paper5}
+Y.~Lu, T.~Nolte, I.~Bate, J.~Kraft, and C.~Norström.
+\newblock Assessment of trace-differences in timing analysis for complex
+  real-time embedded systems.
+\newblock In {\em 2011 6th IEEE International Symposium on Industrial and
+  Embedded Systems}, pages 284--293, June 2011.
+
+\bibitem{linuxkernelbook}
+Wolfgang Mauerer.
+\newblock {\em Professional Linux Kernel Architecture}.
+\newblock Wiley Publishing, Inc., 2008.
+
+\bibitem{paper2}
+N.~Navet, A.~Monot, B.~Bavoux, and F.~Simonot-Lion.
+\newblock Multi-source and multicore automotive ecus - os protection mechanisms
+  and scheduling.
+\newblock In {\em 2010 IEEE International Symposium on Industrial Electronics},
+  pages 3734--3741, July 2010.
+
+\bibitem{dynamicanalysisphd}
+Nicholas Nethercote.
+\newblock Dynamic binary analysis and instrumentation.
+\newblock 2004.
+
+\bibitem{paper6}
+S.~Nilakantan, K.~Sangaiah, A.~More, G.~Salvadory, B.~Taskin, and M.~Hempstead.
+\newblock Synchrotrace: synchronization-aware architecture-agnostic traces for
+  light-weight multicore simulation.
+\newblock In {\em 2015 IEEE International Symposium on Performance Analysis of
+  Systems and Software (ISPASS)}, pages 278--287, March 2015.
+
+\bibitem{springerparallel}
+Thomas Rauber and Gudula R{\"u}nger.
+\newblock {\em Parallel Programming}.
+\newblock Springer-Verlag Berlin Heidelberg, 2013.
+
+\bibitem{vncmagazine}
+Tristan Richardson, Quentin Stafford-Fraser, Kenneth~R. Wood, and Andy Hopper.
+\newblock Virtual network computing.
+\newblock {\em IEEE Internet Computing}, 2(1), January/February 1998.
+
+\bibitem{comparisonpaperapp4mc}
+A.~Sailer, S.~Schmidhuber, M.~Hempe, M.~Deubzer, and J.~Mottok.
+\newblock Distributed multi-core development in the automotive domain - a
+  practical comparison of asam mdx vs. autosar vs. amalthea.
+\newblock In {\em ARCS 2016; 29th International Conference on Architecture of
+  Computing Systems}, pages 1--8, April 2016.
+
+\bibitem{dvfspaper}
+Diary~R. Suleiman, Muhammad~A. Ibrahim, and Ibrahim~I. Hamarash.
+\newblock {Dynamic Voltage Frequency Scaling (DVFS) for Microprocessors Power
+  and Energy Reduction}.
+\newblock 2005.
+
+\bibitem{howlinuxworksbook}
+Brian Ward.
+\newblock {\em How Linux Works}.
+\newblock No Starch Press, 2014.
+
+\bibitem{tileref}
+David Wentzlaff, Patrick Griffin, and Henry~Hoffmann et~al.
+\newblock {On-chip Interconnection Architecture of the Tile Processor}.
+\newblock pages 15--31. IEEE Computer Society, 2017.
+
+\bibitem{graphtheory}
+Robin~J. Wilson.
+\newblock {\em Introduction to Graph Theory: Fourth Edition}.
+\newblock Prentice Hall, 1996.
+
+\bibitem{toolchaintailoringapp4mc}
+C.~Wolff, L.~Krawczyk, R.~Höttger, C.~Brink, U.~Lauschner, D.~Fruhner,
+  E.~Kamsties, and B.~Igel.
+\newblock Amalthea - tailoring tools to projects in automotive software
+  development.
+\newblock In {\em 2015 IEEE 8th International Conference on Intelligent Data
+  Acquisition and Advanced Computing Systems: Technology and Applications
+  (IDAACS)}, volume~2, pages 515--520, Sept 2015.
+
+\bibitem{paper4}
+F.~W. Yu, B.~H. Zeng, Y.~H. Huang, H.~I. Wu, C.~R. Lee, and R.~S. Tsay.
+\newblock A critical-section-level timing synchronization approach for
+  deterministic multi-core instruction-set simulations.
+\newblock In {\em 2013 Design, Automation Test in Europe Conference Exhibition
+  (DATE)}, pages 643--648, March 2013.
+
+\end{thebibliography}

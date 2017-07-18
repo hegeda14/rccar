@@ -1,0 +1,9 @@
+cat /proc/<pid>/cmdline #Command line arguments.
+cat /proc/<pid>/cpu     #Current and last cpu in which it was executed.
+cat /proc/<pid>/cwd     #Link to the current working directory.
+cat /proc/<pid>/exe     #Link to the executable of this process.
+cat /proc/<pid>/maps    #Memory maps to executables and library files.
+cat /proc/<pid>/mem     #Memory held by this process.
+cat /proc/<pid>/root    #Link to the root directory of this process.
+cat /proc/<pid>/statm   #Process memory status information.
+cat /proc/<pid>/status  #Process status in human readable form.

@@ -1,0 +1,3 @@
+#pragma xta endpoint "start_endpoint1"
+	data = DoSomeCalculations();
+#pragma xta endpoint "stop_endpoint1"
