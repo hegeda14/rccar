@@ -112,6 +112,9 @@ I was expecting a `,' or a `}'---line 628 of file bib.bib
 I'm skipping whatever remains of this entry
 Warning--entry type for "gsoc" isn't style-file defined
 --line 759 of file bib.bib
+Warning--entry type for "nasachallenge" isn't style-file defined
+--line 765 of file bib.bib
+Warning--to sort, need author or key in nasachallenge
 Warning--to sort, need author or key in amalthea4publicweb
 Warning--to sort, need author or key in app4mcproposaleclipse
 Warning--to sort, need author or key in gsoc

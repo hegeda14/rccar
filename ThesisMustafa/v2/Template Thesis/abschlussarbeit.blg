@@ -146,6 +146,10 @@ I was expecting a `,' or a `}'---line 628 of file bib/bib.bib
  :  url={http://opencv.org/}
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
+Warning--entry type for "gsoc" isn't style-file defined
+--line 759 of file bib/bib.bib
+Warning--entry type for "nasachallenge" isn't style-file defined
+--line 765 of file bib/bib.bib
 Warning--empty note in dsm
 Warning--empty note in lukas1
 Warning--empty note in multicore1
