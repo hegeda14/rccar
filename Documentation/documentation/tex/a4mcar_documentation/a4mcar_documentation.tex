@@ -1195,7 +1195,7 @@ The repository contains several folders inside the a4mcar folder, each of which 
 	are run using a multi-core microcontroller XMOS xCORE-200 eXplorerKIT. The low level
 	applications are responsible for tasks such as sensor driving, actuation, communication,
 	and core monitoring of the A4MCAR. The low{\_}level{\_}applications module could be imported into xTIMEcomposer to make tweaks to the tasks.
-	\item \textbf{documentation: } This is the directory that involves created documentations for A4MCAR in LaTeX format.
+	\item \textbf{documentation: } This is the directory that involves created documentations for A4MCAR in PDF format.
 \end{itemize}
 \subsection{Re-using the Scripts}
 Created scripts for the x86/Linux platform is located under \texttt{a4mcar/high{\_}level{\_}applications/scripts/}. In the folder many Bash scripts could be found. The purposes of these scripts involve starting and killing the applications in a4mcar, environment configuration, process manipulation, and tracing. The scripts that are related to process manipulation and tracing is made in a reusable format, thus they can be used in any x86/Linux system regardless of its hardware. The created reusable scripts address tackling the challenges mentioned: placing a process or a thread to a core, monitoring apps, killing processes by their names, tracing and monitoring a Linux system, profiling (getting instruction details dynamically) of the threads of a process, profiling a process, monitoring the threads of a process, and listing the threads of a process.
