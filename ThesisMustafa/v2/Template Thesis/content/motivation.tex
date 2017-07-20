@@ -1569,70 +1569,78 @@ In the Section \ref{app4mcchapter}, motivations and design techniques of using A
 \end{itemize}
 Although the previously explained model includes both low-level module and high-level module components, to generate partitioning and mapping outputs, the model is seperated to two AMALTHEA models, each of which containing the elements for respective modules (high-level and low-level). The reason to use this approach was the lack of the implementation of tag-based (in our case with respect to modules) partition grouping in the version of APP4MC (0.8.1) that was used. 
 
+\section{Partitioning and Mapping}
+
 One important thing to consider when partitioning, especially in the Critical Path Partitioning, is that when label accesses are strictly modeled, the partitioning output might not be ideal for parallelization towards load balancing. The reason is that APP4MC, in the partitioning stage puts all the runnables that belong to the critical path to one single partition. Our experiments showed that A4MCAR's real-world application encountered to this problem that results in poor load balancing. To solve this issue, we considered two solutions: (1) - Removing non-critical label accesses, (2) - Defining non-critical label accesses as 'Access Precedence' to prevent APP4MC from considering label accesses strictly in model, and do the partitioning towards load-balancing.
 
 After the modeling, partitioning (pre-partitioning is performed automatically before partitioning), task generation, and mapping is performed by using APP4MC to obtain the distribution results. Obtained results will be shown in the following sections.
+
+For the sake of completeness, how partitioning and mapping outcomes look in APP4MC should be briefly discussed. After the model is complete, by using APP4MC multicore sections drop-down menu, one can perform several operations. After partitioning is complete on the initally created model, new model that involves the process prototypes is generated in the \texttt{output} folder in the APP4MC project. Under Process Prototypes, partitions could be seen which shows all the runnables that are in a partition. The Figure \ref{fig:partitions} depicts an example partitioning outcome.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/partitions.png}
+	\caption{Example partitioning output from APP4MC}
+	\label{fig:partitions}
+\end{figure}
+
+After the partitioning, one should generate tasks using the same drop-down menu. On the created new model, one can perform mapping. Mapping will generate the utilization information on console for the given model as well as the mapping output on the model as shown in Figure \ref{fig:mappings}. By looking at the model given in the figure, one can see how created partitions are allocated to the cores. If one desires, using these mapping outcomes and using a custom scheduler, the visualization of tasks on cores are also possible by using the APP4MC's multicore feature "Visualize Task Execution". Since in this work real traces are used for visualizing the task execution, this feature is not used.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/mappings.png}
+	\caption{Example mapping outputs from APP4MC}
+	\label{fig:mappings}
+\end{figure}
+
+In the APP4MC's mapping stage, ILP-based mapping algorithm towards load balancing goal has been used. The ILP-based mapping algorithm of APP4MC features a 1-step algorithm that is used toward the goal of minimizing the total computation time. After this goal is achieved, remaining processes are more or less distributed randomly. However it is said that with a 2-step or n-step algorithm, the load on cores could be balanced more optimally \cite{mappingbook}. APP4MC's mapping results present a suggestive mapping outcome to the user. User could decide to use lesser number of cores or under-clock the cores to reduce power consumption.
 
 %then what happens? partitioning mapping etc.
 %maybe add window from Partitioning console window and Mapping console window
 % basit model interfaceler + rpi dekiler..
 
 \section{Evaluation of Different Distributions}
-Some text \\
+Several evaluation metrics are used for evaluating different distributions, using the results from sequential, OS-based, and APP4MC-based software deployment outcomes. These metrics are discussed previously, and involves average slack time, gross execution time, computation time, speedup factor, utilization percentages in cores, deadline misses, current used by the processor (in relation to power consumption).  Furthermore, tracing results are be visualised using Eclipse TraceCompass for every distribution.
+
 %maybe add window from Partitioning console window and Mapping console window
 %Give Everything in a table, which core mapped, period, execution time rougly, cpu core usage roughly.
 %Also use data from TraceCompass
+%TODO also add FORMULA FROM LUKAS + OMVisualizer.java outcomes to the sections
 \subsection{Evaluation of High Level Module Distributions}
+In this section, APP4MC outcomes are compared to Sequential and GNU/Linux OS outcomes. For the sake of clarity, this section introduces all the implemented and modeled runnables with their granularities and activations in the Table \ref{tbl_allhlprocesses}. Because of the aforementioned limitations, only the dependency graph for the Dummy Graph process is modeled,  which is shown in the Figure \ref{fig:dummygraph}.
 
-\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution HL{\_}Distr{\_}wStream}
+Later in this section for specific distributions, some threads and processes will be picked and partitioning and mapping outcomes will be discussed for those process and thread groups. Furthermore, the visualizations of the system traces will be presented to depict how distribution briefly looks and how much of CPU time is fully utilized.
+
+Three mapping results are compared for every high-level distribution at the end of this section: OS distribution where core affinities are not constrained (that is, processes and threads are not on a single core, they can be moved between the cores 0-3 at any time by the kernel when scheduling), Sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping abilities. 
+
+To have flexibility in the mapping stage, the partitioning feature of APP4MC is configured to create 12 partitions that are created using ESSP (Earliest Start Schedule Partitioning). For the mapping stage, for all distributions we select ILP-based load balancing technique from APP4MC which is currently aimed towards reducing the overall computation time, as mentioned.
+
+\allhlprocesses
+
+\subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}wStream}
 
 Initial distribution for high-level module, HL{\_}Distr{\_}wStream, involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Since both the image processing process and the camera stream use the Raspberry Pi camera, this distribution demonstrates how mapping will result when the camera is used by Camera Stream. That is to say, image processing application is not running but will be given with another distribution. 
 
-Three mapping results are compared: OS distribution where core affinities are not constrained, Sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping abilities. With the Tables \ref{tbl_hlmdistrInitialOS}, \ref{tbl_hlmdistrInitialSequential}, and \ref{tbl_hlmdistrInitialAFP}, process and thread details and mapping set-up are given for the HL{\_}Distr{\_}wStream distribution mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
+In the HL{\_}Distr{\_}wStream distribution, following processes are considered active (running, contributes to the processing, and therefore modeled) from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Camera Stream}, \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{Dummy Graph}.
 
-\hlmdistrInitialOS
 
-\hlmdistrInitialSequential
+\subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}wImageProc}
 
-\hlmdistrInitialAFP
+The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. In the distribution HL{\_}Distr{\_}wImageProc, following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{ImageProcess}, \texttt{Dummy Graph}.
 
-% ExpLAIN PARTITIONING RESULTS, DUMMY GRAPH PARTITIONING ALSO, MAPPING RESULTS, INFERENCES...
 
-\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distributions HL{\_}Distr{\_}wImageProc}
+\subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}AvgStress}
 
-The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. HL{\_}Distr{\_}wImageProc set-up for OS, Sequential, and APP4MC-based mapping are given with the Tables \ref{tbl_hlmdistrInitial2OS}, \ref{tbl_hlmdistrInitial2Sequential}, and \ref{tbl_hlmdistrInitial2AFP}, respectively.
+In the distribution HL{\_}Distr{\_}AvgStress, the A4MCAR is partially stressed. This is achieved by introducing two dummy loads. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}.
 
-\hlmdistrInitialTOS
 
-\hlmdistrInitialTSequential
+\subsubsection{APP4MC Results for the Distribution HL{\_}Dist{\_}FullStress}
 
-\hlmdistrInitialTAFP
+The distribution HL{\_}Dist{\_}FullStress represents the distribution in which nearly all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}, \texttt{dummy{\_}load{\_}100}.
 
-% ExpLAIN PARTITIONING RESULTS, DUMMY GRAPH PARTITIONING ALSO, MAPPING RESULTS, INFERENCES...
 
-\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution HL{\_}Distr{\_}AvgStress}
-
-In the distribution HL{\_}Distr{\_}AvgStress, the A4MCAR is partially stressed. This is achieved by introducing two dummy loads. After this introduction, the APP4MC model is updated and results are obtained once more. The Tables \ref{tbl_hlmdistrAOS}, \ref{tbl_hlmdistrASequential}, \ref{tbl_hlmdistrAAFP} show this distribution details mapped by OS, mapped sequentially, and mapped using APP4MC, respectively.
-
-\hlmdistrAOS
-
-\hlmdistrASequential
-
-\hlmdistrAAFP
-
-% ExpLAIN PARTITIONING RESULTS, DUMMY GRAPH PARTITIONING ALSO, MAPPING RESULTS, INFERENCES...
-
-\subsubsection{OS, Sequential and APP4MC Mapping Results of the Distribution HL{\_}Dist{\_}FullStress}
-
-The distribution HL{\_}Dist{\_}FullStress represents the distribution in which all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. By using APP4MC once again to model this fully stressed state, OS, Sequential, and APP4MC mapping set-up are given with the Tables \ref{tbl_hlmdistrBOS}, \ref{tbl_hlmdistrBSequential}, and \ref{tbl_hlmdistrBAFP}, respectively.
-
-\hlmdistrBOS
-
-\hlmdistrBSequential
-
-\hlmdistrBAFP
-
-% ExpLAIN PARTITIONING RESULTS, DUMMY GRAPH PARTITIONING ALSO, MAPPING RESULTS, INFERENCES...
 
 \subsubsection{Comparison of High-level Module Distributions}
 Some text
