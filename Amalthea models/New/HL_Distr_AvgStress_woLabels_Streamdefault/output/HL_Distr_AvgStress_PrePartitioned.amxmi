@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<am:Amalthea xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:am="http://app4mc.eclipse.org/amalthea/0.8.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <commonElements>
+    <tags name="ASIL_A" tagType="Safety"/>
+    <tags name="ASIL_B" tagType="Safety"/>
+    <tags name="ASIL_C" tagType="Safety"/>
+    <tags name="ASIL_D" tagType="Safety"/>
+    <tags name="LLM_Task" tagType="Process Allocation"/>
+    <tags name="HLM_Task" tagType="Process Allocation"/>
+  </commonElements>
+  <swModel>
+    <runnables name="T_EthernetApp" tags="HLM_Task?type=Tag" activations="P_10ms_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="120000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_CoreReader" tags="HLM_Task?type=Tag" activations="P_3s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="525000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_TightVNC" tags="HLM_Task?type=Tag" activations="periodic_1000ms_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="10000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Apache" tags="HLM_Task?type=Tag" activations="periodic_1000ms_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="500000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Cyclewaster25_1" tags="HLM_Task?type=Tag" activations="P_1.4s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="198000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_Cyclewaster25_2" tags="HLM_Task?type=Tag" activations="P_1.4s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="198000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_TouchscreenDisplay" tags="HLM_Task?type=Tag" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="110000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_TouchscreenDisplay_UpdateUtil" tags="HLM_Task?type=Tag" activations="P_2s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="150000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_TouchscreenDisplay_TimingCalculation" tags="HLM_Task?type=Tag" activations="P_2.8s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="158000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_TouchscreenDisplay_TouchscreenEvents" tags="HLM_Task?type=Tag" activations="P_100ms_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="10000000"/>
+      </runnableItems>
+    </runnables>
+    <runnables name="T_DummyGraph_A" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="9000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_AE_8?type=Label" access="write"/>
+    </runnables>
+    <runnables name="T_DummyGraph_B" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="27000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_BF_8?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="l_BG_8?type=Label" access="write"/>
+      <runnableItems xsi:type="am:LabelAccess" data="l_BJ_8?type=Label" access="write"/>
+    </runnables>
+    <runnables name="T_DummyGraph_C" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="36000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_CH_8?type=Label" access="write"/>
+    </runnables>
+    <runnables name="T_DummyGraph_D" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="81000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_DJ_8?type=Label" access="write"/>
+    </runnables>
+    <runnables name="T_DummyGraph_E" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="9000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_AE_8?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="l_EH_8?type=Label" access="write"/>
+    </runnables>
+    <runnables name="T_DummyGraph_F" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="18000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_BF_8?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="l_FI_8?type=Label" access="write"/>
+    </runnables>
+    <runnables name="T_DummyGraph_G" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="45000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_BG_8?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="l_GI_8?type=Label" access="write"/>
+    </runnables>
+    <runnables name="T_DummyGraph_H" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="27000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_EH_8?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="l_HI_8?type=Label" access="write"/>
+    </runnables>
+    <runnables name="T_DummyGraph_I" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="18000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_FI_8?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="l_GI_8?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="l_HI_8?type=Label" access="read"/>
+    </runnables>
+    <runnables name="T_DummyGraph_J" activations="P_0.5s_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="36000000"/>
+      </runnableItems>
+      <runnableItems xsi:type="am:LabelAccess" data="l_BJ_8?type=Label" access="read"/>
+      <runnableItems xsi:type="am:LabelAccess" data="l_DJ_8?type=Label" access="read"/>
+    </runnables>
+    <runnables name="T_MJPGStreamer" tags="HLM_Task?type=Tag" activations="periodic_1000ms_H?type=PeriodicActivation" callback="false" service="false">
+      <runnableItems xsi:type="am:RunnableInstructions">
+        <default xsi:type="am:InstructionsConstant" value="1500000"/>
+      </runnableItems>
+    </runnables>
+    <labels name="l_t_corereader" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_t_ethernet" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_t_imageproc" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_dummy25_1" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_dummy25_2" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_dummy25_3" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_dummy25_4" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_dummy25_5" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_dummy100" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_rpiutil" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_coremap" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_xmosutil" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_f_drvcomm" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_var1" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_var2" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_var3" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_var4" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_var5" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_var6" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_var7" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_t_timingcalc" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_t_updateutil" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_t_touchevt" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_t_mainthr" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <labels name="l_BF_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="l_BG_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="l_BJ_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="l_CH_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="l_AE_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="l_EH_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="l_DJ_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="l_HI_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="l_GI_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="l_FI_8" constant="false" bVolatile="false">
+      <size value="1" unit="B"/>
+    </labels>
+    <labels name="dummy" constant="false" bVolatile="false">
+      <size value="32" unit="B"/>
+    </labels>
+    <processPrototypes name="periodic_1000ms_HHLM_Task" activation="periodic_1000ms_H?type=PeriodicActivation">
+      <runnableCalls runnable="T_TightVNC?type=Runnable"/>
+      <runnableCalls runnable="T_Apache?type=Runnable"/>
+      <runnableCalls runnable="T_MJPGStreamer?type=Runnable"/>
+    </processPrototypes>
+    <processPrototypes name="P_100ms_HHLM_Task" activation="P_100ms_H?type=PeriodicActivation">
+      <runnableCalls runnable="T_TouchscreenDisplay_TouchscreenEvents?type=Runnable"/>
+    </processPrototypes>
+    <processPrototypes name="P_10ms_HHLM_Task" activation="P_10ms_H?type=PeriodicActivation">
+      <runnableCalls runnable="T_EthernetApp?type=Runnable"/>
+    </processPrototypes>
+    <processPrototypes name="P_3s_HHLM_Task" activation="P_3s_H?type=PeriodicActivation">
+      <runnableCalls runnable="T_CoreReader?type=Runnable"/>
+    </processPrototypes>
+    <processPrototypes name="P_1.4s_HHLM_Task" activation="P_1.4s_H?type=PeriodicActivation">
+      <runnableCalls runnable="T_Cyclewaster25_1?type=Runnable"/>
+      <runnableCalls runnable="T_Cyclewaster25_2?type=Runnable"/>
+    </processPrototypes>
+    <processPrototypes name="P_0.5s_H" activation="P_0.5s_H?type=PeriodicActivation">
+      <runnableCalls runnable="T_DummyGraph_A?type=Runnable"/>
+      <runnableCalls runnable="T_DummyGraph_B?type=Runnable"/>
+      <runnableCalls runnable="T_DummyGraph_C?type=Runnable"/>
+      <runnableCalls runnable="T_DummyGraph_D?type=Runnable"/>
+      <runnableCalls runnable="T_DummyGraph_E?type=Runnable"/>
+      <runnableCalls runnable="T_DummyGraph_F?type=Runnable"/>
+      <runnableCalls runnable="T_DummyGraph_G?type=Runnable"/>
+      <runnableCalls runnable="T_DummyGraph_H?type=Runnable"/>
+      <runnableCalls runnable="T_DummyGraph_I?type=Runnable"/>
+      <runnableCalls runnable="T_DummyGraph_J?type=Runnable"/>
+    </processPrototypes>
+    <processPrototypes name="P_0.5s_HHLM_Task" activation="P_0.5s_H?type=PeriodicActivation">
+      <runnableCalls runnable="T_TouchscreenDisplay?type=Runnable"/>
+    </processPrototypes>
+    <processPrototypes name="P_2.8s_HHLM_Task" activation="P_2.8s_H?type=PeriodicActivation">
+      <runnableCalls runnable="T_TouchscreenDisplay_TimingCalculation?type=Runnable"/>
+    </processPrototypes>
+    <processPrototypes name="P_2s_HHLM_Task" activation="P_2s_H?type=PeriodicActivation">
+      <runnableCalls runnable="T_TouchscreenDisplay_UpdateUtil?type=Runnable"/>
+    </processPrototypes>
+    <activations xsi:type="am:PeriodicActivation" name="periodic_0ms_20ms_H">
+      <min value="0" unit="ms"/>
+      <max value="20" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="periodic_1000ms_H">
+      <min value="1000" unit="ms"/>
+      <max value="1000" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="periodic_200ms_H">
+      <min value="200" unit="ms"/>
+      <max value="200" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_100ms_H">
+      <min value="100" unit="ms"/>
+      <max value="100" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_10ms_H">
+      <min value="10" unit="ms"/>
+      <max value="10" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_3s_H">
+      <min value="3" unit="s"/>
+      <max value="3" unit="s"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_10us_H">
+      <min value="10" unit="us"/>
+      <max value="10" unit="us"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_100ns_H">
+      <min value="100" unit="ns"/>
+      <max value="100" unit="ns"/>
+    </activations>
+    <activations xsi:type="am:SporadicActivation" name="Sporadic_H"/>
+    <activations xsi:type="am:PeriodicActivation" name="P_1.4s_H">
+      <min value="1400" unit="ms"/>
+      <max value="1400" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_0.5s_H">
+      <min value="500" unit="ms"/>
+      <max value="500" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_200ms_H">
+      <min value="200" unit="ms"/>
+      <max value="200" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_2.8s_H">
+      <min value="2800" unit="ms"/>
+      <max value="2800" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_2s_H">
+      <min value="2000" unit="ms"/>
+      <max value="2000" unit="ms"/>
+    </activations>
+    <activations xsi:type="am:PeriodicActivation" name="P_0.65s_H">
+      <min value="650" unit="ms"/>
+      <max value="650" unit="ms"/>
+    </activations>
+  </swModel>
+  <hwModel>
+    <coreTypes name="ARM Cortex-A53" bitWidth="64" instructionsPerCycle="1.0"/>
+    <system>
+      <ecus name="RPI3">
+        <microcontrollers name="ARM Cortex-A53">
+          <cores name="RPI_0" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0"/>
+          <cores name="RPI_1" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0"/>
+          <cores name="RPI_2" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0"/>
+          <cores name="RPI_3" coreType="ARM+Cortex-A53?type=CoreType" lockstepGroup="0"/>
+        </microcontrollers>
+      </ecus>
+      <quartzes name="ClockARM0">
+        <frequency unit="GHz" value="1.2"/>
+      </quartzes>
+      <quartzes name="ClockARM1">
+        <frequency unit="GHz" value="1.2"/>
+      </quartzes>
+      <quartzes name="ClockARM2">
+        <frequency unit="GHz" value="1.2"/>
+      </quartzes>
+      <quartzes name="ClockARM3">
+        <frequency unit="GHz" value="1.2"/>
+      </quartzes>
+    </system>
+  </hwModel>
+  <constraintsModel>
+    <runnableSequencingConstraints name="T_DummyGraph_A-->T_DummyGraph_E" orderType="successor">
+      <runnableGroups runnables="T_DummyGraph_A?type=Runnable"/>
+      <runnableGroups runnables="T_DummyGraph_E?type=Runnable"/>
+    </runnableSequencingConstraints>
+    <runnableSequencingConstraints name="T_DummyGraph_B-->T_DummyGraph_F" orderType="successor">
+      <runnableGroups runnables="T_DummyGraph_B?type=Runnable"/>
+      <runnableGroups runnables="T_DummyGraph_F?type=Runnable"/>
+    </runnableSequencingConstraints>
+    <runnableSequencingConstraints name="T_DummyGraph_B-->T_DummyGraph_G" orderType="successor">
+      <runnableGroups runnables="T_DummyGraph_B?type=Runnable"/>
+      <runnableGroups runnables="T_DummyGraph_G?type=Runnable"/>
+    </runnableSequencingConstraints>
+    <runnableSequencingConstraints name="T_DummyGraph_B-->T_DummyGraph_J" orderType="successor">
+      <runnableGroups runnables="T_DummyGraph_B?type=Runnable"/>
+      <runnableGroups runnables="T_DummyGraph_J?type=Runnable"/>
+    </runnableSequencingConstraints>
+    <runnableSequencingConstraints name="T_DummyGraph_D-->T_DummyGraph_J" orderType="successor">
+      <runnableGroups runnables="T_DummyGraph_D?type=Runnable"/>
+      <runnableGroups runnables="T_DummyGraph_J?type=Runnable"/>
+    </runnableSequencingConstraints>
+    <runnableSequencingConstraints name="T_DummyGraph_E-->T_DummyGraph_H" orderType="successor">
+      <runnableGroups runnables="T_DummyGraph_E?type=Runnable"/>
+      <runnableGroups runnables="T_DummyGraph_H?type=Runnable"/>
+    </runnableSequencingConstraints>
+    <runnableSequencingConstraints name="T_DummyGraph_F-->T_DummyGraph_I" orderType="successor">
+      <runnableGroups runnables="T_DummyGraph_F?type=Runnable"/>
+      <runnableGroups runnables="T_DummyGraph_I?type=Runnable"/>
+    </runnableSequencingConstraints>
+    <runnableSequencingConstraints name="T_DummyGraph_G-->T_DummyGraph_I" orderType="successor">
+      <runnableGroups runnables="T_DummyGraph_G?type=Runnable"/>
+      <runnableGroups runnables="T_DummyGraph_I?type=Runnable"/>
+    </runnableSequencingConstraints>
+    <runnableSequencingConstraints name="T_DummyGraph_H-->T_DummyGraph_I" orderType="successor">
+      <runnableGroups runnables="T_DummyGraph_H?type=Runnable"/>
+      <runnableGroups runnables="T_DummyGraph_I?type=Runnable"/>
+    </runnableSequencingConstraints>
+  </constraintsModel>
+</am:Amalthea>
