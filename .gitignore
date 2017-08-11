@@ -16,3 +16,5 @@ abschlussarbeit.pdf
 *.lot
 *.lol
 roverdoc.pdf
+*.bbl
+*.blg
