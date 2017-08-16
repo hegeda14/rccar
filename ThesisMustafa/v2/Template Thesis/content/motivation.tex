@@ -192,7 +192,7 @@ Not every parallel program are beneficial. In order for a parallel program to be
 	\label{fig:optimization2}
 \end{figure}
 
-On a higher level, there is always a question whether the optimized software is really optimal or not. There are strategies with which this could be measured and true optimization could be achieved \cite{lukas1}. Those strategies involve Linear Programming, Integer Linear Programming, Mixed Integer Linear Programming, Quadratic Programming, Evolutionary Algorithm, and Simulated Annealing \cite{lukas1}. Although it is useful to know such strategies exist, the optimization of an parallel software on a higher abstraction layer will not be a part of this work. 
+On a higher level, there is always a question whether the optimized software is really optimal or not. There are strategies with which this could be measured and true optimization could be achieved \cite{lukas1}. Those strategies involve Linear Programming, Integer Linear Programming, Genetic Algorithms, Mixed Integer Linear Programming, Quadratic Programming, Evolutionary Algorithm, and Simulated Annealing \cite{lukas1}. Although it is useful to know such strategies exist, the optimization of an parallel software on a higher abstraction layer will not be a part of this work. 
 
 As mentioned before, one of the most basic evaluation techniques to determine if a parallelized software is beneficial as opposed to a sequential software is to check the run-times of the processes. If the parallel run-time (overall execution time) of a program is less than the sequential run-time, then it could be said that parallelization helped in terms of computation time. The following list involved the parallelization evaluation techniques that will be a part of this work in evaluating software distributions.
 \begin{itemize}
@@ -273,7 +273,7 @@ An illustration of how parallel software can be designed for embedded multi-core
 	\item \textbf{Modeling:} Design of a parallel software starts with modeling in APP4MC. An AMALTHEA model is constructed that involves three seperate models: (1)- hardware model, (2)-software model, (3)-constraints model. In the hardware model, each distributed ECU is modeled in a hierarchical  manner. Hardware model involves information such as number of processor cores, system clock frequency for processors, and memory details. In the software model, runnables are modeled. Runnables are found with the help of binary analysis tools and by using the decomposition technique mentioned in the Section \ref{designtech}. Each runnable are modeled by making use of information such as granularity (number of instructions) and label accesses (memory read-write). In the early development stages, model contains a rough model of the software, but the model is constantly improved by using the Tracing functionality of the APP4MC as well it can be improved by using several other tracing software.
 	\item \textbf{Partitioning:} Partitioning stage in APP4MC-aided parallel design corresponds to identification of initial tasks. After an initial AMALTHEA model is constructed, the one can perform partitioning in APP4MC by simply selecting the model and pressing the "Perform Partitioning" button. At this stage, APP4MC will analyze the runnables and runnable label accesses in order to suggest how tasks should look like for a balanced parallel distribution. APP4MC uses two partitioning algorithms that are ESSP (Earliest Start Schedule Partitioning) (performed by default) and CPP (Critical Path Partitioning) in order to find the partitions of the system. ESSP and CPP algorithms are based on the Graph Theory \cite{graphtheory} which is commonly used in hardware and software co-design. Partitioning algorithms are used for analysis of the granularity and communication costs of individual runnables and create best possible parallelized partitions.
 	\item \textbf{Task Generation:} Initial tasks (partitions) are finalized by pressing "Generate Tasks" button. By making use of the dependencies between partitions and by grouping them, APP4MC generates a model that contains the desired amount of tasks with the help of "Task Generation" phase. 
-	\item \textbf{Mapping (with Simulation and Optimization):} As known, mapping is the stage of placing the software distributions (tasks, processes, threads) into the processors. By making use of the hardware capabilities and using optimization strategies (such as Integer Linear Programming), APP4MC is able to find a mapping model of the system. The utilization details of the simulations will be seen at the end of the mapping stage.
+	\item \textbf{Mapping (with Simulation and Optimization):} As known, mapping is the stage of placing the software distributions (tasks, processes, threads) into the processors. By making use of the hardware capabilities and using optimization strategies (such as Integer Linear Programming or Genetic Algorithms), APP4MC is able to find a mapping model of the system. The utilization details of the simulations will be seen at the end of the mapping stage.
 	\item \textbf{Code Generation:} Since APP4MC provides model-based development, code generation features for C language are available. If desired, APP4MC generates tasks that are written in C language by using the AMALTHEA system model.
 	\item \textbf{Tracing:} By making use of binary tracing, AMALTHEA trace model can be observed and can be re-used to update the system model.
 \end{itemize}
@@ -304,7 +304,7 @@ The works that involve APP4MC-based and AMALTHEA model-based parallelization are
 
 The work by Carsten Wolff et al. \cite{toolchaintailoringapp4mc} introduces the evolution of AMALTHEA tool project. Many aspects such as standardization, tool-chain support and evolution, software development methodology in the tool-chain are explained. The paper also introduces Eclipse-based open source framework development. Due to AMALTHEA's close relevance to APP4MC project, it is crucial to understand how AMALTHEA is tailored and how it became an open-source embedded multi-core development platform. 
 
-While the aforementioned paper explains the standardization and tool-chain aspects, the paper by Robert H{\"o}ttger et al. \cite{priorpaperapp4mc} describes the model-based partitioning and mapping features of AMALTHEA (and by extension APP4MC) with the emphasis of automotive domain. In the paper, novel approaches to partitioning and mapping in terms of model-based embedded multi-core system engineering are introduced. This work shows that the performance, energy efficiency and timing requirements are improved using their partitioning and mapping methodologies. The work compares approaches such as Critical Path Partitioning and Earliest Start Scheduling Partitioning regarding partitioning and Integer Linear Programming based optimization approaches towards mapping. How specific goals such as energy consumption and load balancing are addressed are also included in this paper. The paper also discussed benefits, industrial relevance and features of the presented model-based multi-core partitioning and mapping techniques in common with existing approaches.
+While the aforementioned paper explains the standardization and tool-chain aspects, the paper by Robert H{\"o}ttger et al. \cite{priorpaperapp4mc} describes the model-based partitioning and mapping features of AMALTHEA (and by extension APP4MC) with the emphasis of automotive domain. In the paper, novel approaches to partitioning and mapping in terms of model-based embedded multi-core system engineering are introduced. This work shows that the performance, energy efficiency and timing requirements are improved using their partitioning and mapping methodologies. The work compares approaches such as Critical Path Partitioning and Earliest Start Scheduling Partitioning regarding partitioning and GA- (Genetic Algorithm) based optimization approaches towards mapping. How specific goals such as energy consumption and load balancing are addressed are also included in this paper. The paper also discussed benefits, industrial relevance and features of the presented model-based multi-core partitioning and mapping techniques in common with existing approaches.
 
 The publication by Andreas Sailer et al. \cite{comparisonpaperapp4mc} gives an extended practical comparison of distributed multi-core development standards in the automotive domain. The XML-based automotive software standards ASAM MDX, AUTOSAR and AMALTHEA are compared with regard to their model, methodology, reference implementation. It is mentioned that out of three standards only AMALTHEA is open-source and has special focus on multi-core development. It is also mentioned that exchange format of AMALTHEA allows the detailed specification of dynamic software architecture properties. Regarding the overall comparison results using a case study, although it is stated that AUTOSAR is much more than just a standard to automotive software development and is capable of many things, the paper concludes that AMALTHEA is able to address some of the deficits of AUTOSAR within the scope of multi-core. Also AUTOSAR compatibility of AMALTHEA within the project AMALTHEA4public and AMALTHEA being a relatively new but open-source supplementary tool to the automotive world is highlighted in the paper \cite{comparisonpaperapp4mc}.
 
@@ -1595,7 +1595,7 @@ After the partitioning, one should generate tasks using the same drop-down menu.
 	\label{fig:mappings}
 \end{figure}
 
-In the APP4MC's mapping stage, ILP-based mapping algorithm towards load balancing goal has been used. The ILP-based mapping algorithm of APP4MC features a 1-step algorithm that is used toward the goal of minimizing the total computation time. After this goal is achieved, remaining processes are more or less distributed randomly. However it is said that with a 2-step or n-step algorithm, the load on cores could be balanced more optimally \cite{mappingbook}. APP4MC's mapping results present a suggestive mapping outcome to the user. User could decide to use lesser number of cores or under-clock the cores to reduce power consumption.
+In the APP4MC's mapping stage, GA-based mapping algorithm towards load balancing goal has been used, due to a minor bug at the ILP-based algorithm at the time. The ILP-based mapping algorithm of APP4MC features a 1-step algorithm that is used toward the goal of minimizing the total computation time. After this goal is achieved, remaining processes are more or less distributed randomly. In the case of A4MCAR's applications, GA-based algorithm and ILP-based algorithm only had very minor utilization differences. However it is said that with a 2-step or n-step algorithm, the load on cores could be balanced more optimally \cite{mappingbook}. APP4MC's mapping results present a suggestive mapping outcome to the user. User could decide to use lesser number of cores or under-clock the cores to reduce power consumption.
 
 %then what happens? partitioning mapping etc.
 %maybe add window from Partitioning console window and Mapping console window
@@ -1615,7 +1615,7 @@ Later in this section for specific distributions, some threads and processes wil
 
 Three mapping results are compared for every high-level distribution at the end of this section: OS distribution where core affinities are not constrained (that is, processes and threads are not on a single core, they can be moved between the cores 0-3 at any time by the kernel when scheduling), Sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping abilities. 
 
-To have flexibility in the mapping stage, the partitioning feature of APP4MC is configured to create 12 partitions that are created using ESSP (Earliest Start Schedule Partitioning). For the mapping stage, for all distributions we select ILP-based load balancing technique from APP4MC which is currently aimed towards reducing the overall computation time, as mentioned.
+To have flexibility in the mapping stage, the partitioning feature of APP4MC is configured to create 10 partitions that are created using ESSP (Earliest Start Schedule Partitioning). In APP4MC's ESSP algorithm, runnables that have the same activation period or activation type are placed to seperate partitions. With partitions that have same activation period, placement of runnables to partitions are carried out to reach load balancing. For the mapping stage, for all distributions we select GA-based load balancing technique from APP4MC which is currently aimed towards reducing the overall computation time, as mentioned.
 
 \allhlprocesses
 
@@ -1625,29 +1625,108 @@ Initial distribution for high-level module, HL{\_}Distr{\_}wStream, involves the
 
 In the HL{\_}Distr{\_}wStream distribution, following processes are considered active (running, contributes to the processing, and therefore modeled) from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Camera Stream}, \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{Dummy Graph}.
 
+Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrwStream}.
+
+\partitioningHLDistrwStream
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}wImageProc}
 
 The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. In the distribution HL{\_}Distr{\_}wImageProc, following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{ImageProcess}, \texttt{Dummy Graph}.
+
+Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrwImageProc}.
+
+\partitioningHLDistrwImageProc
 
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}AvgStress}
 
 In the distribution HL{\_}Distr{\_}AvgStress, the A4MCAR is partially stressed. This is achieved by introducing two dummy loads. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}.
 
+Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrAvgStress}.
+
+\partitioningHLDistrAvgStress
+
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Dist{\_}FullStress}
 
-The distribution HL{\_}Dist{\_}FullStress represents the distribution in which nearly all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}, \texttt{dummy{\_}load{\_}100}.
+The distribution HL{\_}Dist{\_}FullStress represents the distribution in which nearly all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}, \texttt{dummy{\_}load{\_}25{\_}3}, \texttt{dummy{\_}load{\_}25{\_}4}, \texttt{dummy{\_}load{\_}25{\_}5}, \texttt{dummy{\_}load{\_}100}.
 
+Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrFullStress}.
+
+\partitioningHLDistrFullStress
 
 
 \subsubsection{Comparison of High-level Module Distributions}
-Some text
+APP4MC is able to display theoretical load utilization among modeled cores of a system after it's done optimizing. The experiments done using GA-based mapping approach with 10-partitions partitioned using ESSP algorithm resulted in the utilization given in the Figure \ref{fig:mappingutil}. %TODO The figure...
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/mappingutil.png}
+	\caption{Resulted Mapping Utilizations from Distributions}
+	\label{fig:mappingutil}
+\end{figure}
+
+It should be kept in mind that due to the several limitations mentioned below, the obtained results do not have a complete load balance. Moreover, the utilizations presented in the table are theoretical results with one core running at 100\% everytime, and using a Linux scheduler on top of it would alter the utilizations obtained in actual case.
+
+\begin{itemize}
+	\item Partitioning considers load-balancing, but with only for partitions that have the same type of activation.
+	\item Partitioning gives higher priority to sequences, since considering synchronization between runnables will result in reduced computation time.
+	\item Mapping approach in APP4MC is focused on reducing overall computation time rather than achieving pure load balance.
+	\item Modeled runnables are not very exactly fine-grained as it is in the theoretical or industrial applications. This could also lead to load imbalance between cores.
+\end{itemize}
+
+By applying APP4MC-based, OS-based, and Sequential core affinities to the processes and threads in A4MCAR, the Table \ref{tbl_hlcomparison} is obtained. In the given table, distributions are evaluated by changed the distribution type (APP4MC, OS, Sequential) and CPU clock speed (f\textsubscript{clk} = 1.2GHz or 600MHz). Obtained performance indicators involve, overall execution time (GET), slack time average (ST\textsubscript{avg}), deadline miss percentage (DLM), utilization in each core (U\textsubscript{0-3}), and current going into the board (I\textsubscript{DD}) as an indicator of power consumption. Evaluating the high-level distributions, several remarks could be made, which are given in the following list:
+
 \hlcomparison
 
+\begin{itemize}
+	\item Resulted APP4MC timing performance by looking at slack time averages and overall execution time is better than Sequential timing in all cases as expected.
+	\item In a lot of the times, Linux OS context-switching mechanism with no core affinity constraints performed better than APP4MC-based core affinity distributed results. However, we see that in HL{\_}Distr{\_}wStream, APP4MC scored better than OS distribution. Therefore, we can say that achieving a better performance than OS-based distribution in Linux-based systems is possible, but not guaranteed.
+	\item As seen from the table, in almost every distribution, APP4MC improved current and thereby power consumption by around 0.10-0.15A. It is observed that OS-based distribution resulted in the highest power consumption, whereas power consumption in APP4MC and Sequential distributions were similar. It should be noted that this is due to intensive context-switching in OS-based distribution when core affinity is not constrained.
+	\item It is also seen from table that changing the clock frequency alone improved the current consumption, but very slightly. One can see this improvement from table which is about 0.01-0.05A. It should be commented that using a lower chip voltage would make this power improvement a lot better. Due to safety concerns, this approach has not been used in this work. 
+	\item One should also note that achieving significantly reduced power consumption is achieved through load balancing. Since approaches used in APP4MC does not concentrate on pure load-balancing in non industry-type systems, the power consumption improvement observed in this evaluation is smaller.
+	\item It should be noted that sequential distributions led to huge stability issues which were noticable from the system operation and are observable from deadline misses given in the table.
+	\item Experiments made with ILP-based mapping algorithm and GA-based mapping algorithm gave similar results. Due to bugs in the ILP-based mapping algorithm at the time of evaluation, GA-based results are used.
+	\item OS-based distribution scored mostly 0\% deadline misses. However, APP4MC introduced slight deadline misses to the system and resulted in higher execution times. This can be reasoned by the following:
+	\begin{itemize}
+		\item The real-time capability of Raspberry Pi is very low. Implemented schedulability and tracing features as well as Linux kernel introduces huge overheads. This effects the  obtained results. Using a real-time kernel with minimal overhead would produce better results.
+		\item Main purpose with APP4MC is that it is used as a supplementary tool for standards such as AUTOSAR. Using the tool with a non-industry board and distribution (Raspberry Pi, Raspbian) is effecting the results because scheduling is left entirely to Linux kernel and it is not necessarily real-time.
+		\item The fact that APP4MC scored better in HL{\_}Distr{\_}wStream indicate that when processes and threads are more fine-grained and dependency of processes and threads are lesser (thus, more parallelization potential due to non-sequal runnables), it is possible that APP4MC can produce better results than OS-based distributions.
+		\item Technologies used in APP4MC require actual runnables to be partitioned and mapped. Since this is not possible in Raspberry Pi, and only thread and process can be distributed among cores, threads and processes are modeled as runnables. With this approach, dependencies between runnables and dependencies between threads are counted as the same. But in fact, it may not. APP4MC is built for more low-level design but in this work it is used in high-level design.
+		\item APP4MC's partitioning algorithm is concerned about load-balancing only when activation periods of runnables are the same. Since in our particular application, periods are runnables are quite different, partitioning gave results that are not aimed toward load-balancing.
+		\item Furthermore, APP4MC's mapping algorithm is also not focused on load balancing. The main optimization goal used in APP4MC's mapping algorithm is reducing the overall computation time. And partitions are distributed randomly otherwise. Therefore, OS scored better performance than APP4MC in timing because the load is not sufficiently balanced in APP4MC (comparing U\textsubscript{0-3} entries in Table \ref{tbl_hlcomparison}).
+	\end{itemize}
+\end{itemize}
+
+To make sure distributed processes (and not threads) affected the results, a second experiment has been done with only threads, Dummy Graph (given in Fig \ref{fig:dummygraph}), running in the Linux system. This experiment also showed that the OS is capable of performing better in terms of timing. For example, an average slack time of 0.48s is obtained with OS-based distribution whereas APP4MC was able to score 0.44s. Thus, the results shown in this section are considered to show the actual performance of APP4MC.
+
+To demonstrate how affinity constraints affected system performance, the work done in the tracing chapter is used and system traces have been taken. The 10 second system traces for entire Linux system are taken with perf, converted to CTF format, and visualized using Eclipse TraceCompass. The Figure \ref{fig:tracesAvgStress} demonstrates how OS-based, APP4MC-based, and sequential distribution in HL{\_}Distr{\_}AvgStress is scheduled by Linux kernel among the Raspberry Pi's cores. Moreover, the distribution when APP4MC performed better than OS is also given with the Figure \ref{fig:traceswStream}.
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/tracesAvgStress.png}
+	\caption{System trace showing how processes and threads are distributed and how CPU performed in HL{\_}Distr{\_}AvgStress}
+	\label{fig:tracesAvgStress}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\captionsetup{justification=centering}
+	\includegraphics[width=\textwidth]{content/images/traceswStream.png}
+	\caption{System trace showing how processes and threads are distributed and how CPU performed in HL{\_}Distr{\_}wStream}
+	\label{fig:traceswStream}
+\end{figure}
+
+In the aforementioned figures, it is seen that the load is most efficiently distributed in OS-based distribution, whereas APP4MC lacked balanced load in HL{\_}Distr{\_}AvgStress. In HL{\_}Distr{\_}wStream, APP4MC's load distribution looks more balanced. Therefore it can be seen that it is able to perform better than OS-based distribution slightly. This can be reasoned by stating that non fine-grained processes and threads such as dummy loads and image processing are not involved in HL{\_}Distr{\_}wStream. 
+
 \subsection{Evaluation of Low Level Module Distributions}
-\subsubsection{LLM-Distribution-A}
+\subsubsection{LLM-Distribution-APP4MC}
+Some text
+\llmdistrA
+
+\subsubsection{LLM-Distribution-Hand}
 Some text
 \llmdistrA
 
