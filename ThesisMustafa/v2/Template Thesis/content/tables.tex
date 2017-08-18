@@ -219,7 +219,7 @@
 				OS &
 				1.2GHz &
 				2-2.5s &
-				0.73s &
+				0.71s &
 				varies &
 				0 \% &
 				0.79-0.85A \\
@@ -239,7 +239,7 @@
 				APP4MC &
 				1.2GHz &
 				1.88s &
-				0.71s &
+				0.73s &
 				25/25/55/35 &
 				0 \% &
 				0.75-0.81A \\
@@ -461,7 +461,7 @@
 		\end{table}
 }
 
-\newcommand{\llmdistrA}{
+\newcommand{\llmdistrExperimental}{
 \begin{table}[!ht]
 	\resizebox{\textwidth}{!}{%
 	\begin{tabular}{|l|l|l|l|l|l|}
@@ -473,49 +473,49 @@
 		1000 & 
 		Periodic 5s & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		EthernetServer.ShareCoreUsage0 &
 		50 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		EthernetServer.ShareCoreUsage1 &
 		50 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		EthernetServer.xtcp\texttt{\_}event &
 		100 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		ControlLightSystem.ST\texttt{\_}Timer &
 		1001 & 
 		Periodic 0s-0.020s & 
 		Manual &
-		1 &
+		7 &
 		0\\
 		\hline
 		ControlLightSystem.TH\texttt{\_}Timer &
 		1001 & 
 		Periodic 0s-0.020s & 
 		Manual &
-		1 &
+		7 &
 		0\\
 		\hline
 		ControlLightSystem.ShareState &
 		50 & 
 		Sporadic & 
 		Manual &
-		1 &
+		7 &
 		0\\
 		\hline
 		Bluetooth.UART\texttt{\_}RXDataReady &
@@ -539,135 +539,135 @@
 		1 &
 		0\\
 		\hline
-		MotorController.ShareSteering &
+		ServoController.ShareSteering &
 		30 & 
 		Sporadic & 
 		Manual &
-		1 &
+		4 &
 		0\\
 		\hline
-		MotorController.TimerEvent &
+		ServoController.TimerEvent &
 		987 & 
 		Periodic 0s-0.020s & 
 		Manual &
-		1 &
+		4 &
 		0\\
 		\hline
 		ReadSonarSensors &
 		519 & 
 		Periodic 0.200s & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		DriveTBLE02S.ShareDistance &
 		50 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		DriveTBLE02S.ShareDirection &
 		50 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		DriveTBLE02S.ShareSpeed &
 		50 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		DriveTBLE02S.TimerEvent &
 		1001 & 
 		Periodic 0s-0.020s & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		output\texttt{\_}gpio &
 		44 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		input\texttt{\_}gpio &
 		15 & 
 		Sporadic & 
 		Manual &
-		1 &
+		0 &
 		0\\
 		\hline
 		i2c\texttt{\_}master &
 		1188 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		uart\texttt{\_}rx &
 		448 & 
 		Sporadic & 
 		Manual &
-		1 &
+		0 &
 		0\\
 		\hline
 		uart\texttt{\_}tx &
 		71 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		xtcp &
 		2000 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		MonitorCores0 &
 		245 & 
 		Periodic 1s & 
 		Manual &
-		1 &
+		- &
 		0\\
 		\hline
 		MonitorCores1 &
 		245 & 
 		Periodic 1s & 
 		Manual &
-		1 &
+		- &
 		1\\
 		\hline
 		smi &
 		225 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		1\\
 		\hline
 		rgmii\texttt{\_}ethernet\texttt{\_}mac &
 		4000 & 
 		Sporadic & 
 		Manual &
-		1 &
+		- &
 		1\\
 		\hline
 		ar8035\texttt{\_}phy\texttt{\_}driver &
 		75 & 
 		Periodic 1s & 
 		Manual &
-		1 &
+		- &
 		1\\
 		\hline
 	\end{tabular}}
-	\caption{LLM-Distribution-A details in Low-level Module}
-	\label{tbl_LLM_Distribution_A}
+	\caption{LLM-Distribution-Experimental details in Low-level Module}
+	\label{tbl_LLM_Distribution_Experimental}
 \end{table}
 }
 

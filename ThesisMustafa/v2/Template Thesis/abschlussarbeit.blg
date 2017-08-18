@@ -150,6 +150,10 @@ Warning--entry type for "gsoc" isn't style-file defined
 --line 759 of file bib/bib.bib
 Warning--entry type for "nasachallenge" isn't style-file defined
 --line 765 of file bib/bib.bib
+Warning--entry type for "cfs" isn't style-file defined
+--line 789 of file bib/bib.bib
+Warning--entry type for "binpacking" isn't style-file defined
+--line 796 of file bib/bib.bib
 Warning--empty note in dsm
 Warning--empty note in lukas1
 Warning--empty note in multicore1
@@ -158,4 +162,5 @@ Warning--empty note in sysml
 Warning--empty note in apacheguide
 Warning--empty note in dynamicanalysisphd
 Warning--empty booktitle in dvfspaper
+Warning--can't use both author and editor fields in mappingbook
 (There was 1 error message)

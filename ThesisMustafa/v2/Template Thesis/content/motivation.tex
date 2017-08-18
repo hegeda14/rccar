@@ -435,6 +435,8 @@ High-level processing unit of A4MCAR, Raspberry Pi 3, is a widely used single bo
 
 Raspberry Pi 3 can be booted with modern Linux-based operating system distributions such as Debian-based Raspbian OS \cite{raspbiandownload} and Ubuntu-based Ubuntu MATE\cite{ubuntumatedownload} \cite{raspberrypiinfo}. It should be noted that in A4MCAR, Raspbian OS has been used due to its wide software repository and driver support. The fact that Raspberry Pi 3 functions as a Linux computer helps in developing high-level applications that require operating system presence. The open-source nature of Linux and its software ecosystem provides flexible and traceable software development. In A4MCAR, the traceability and flexibility features of Raspberry Pi 3 are highly used. Furthermore, a wide variety of programming languages such as C, C++, Java, LISP, Python, Bash, Perl etc. are supported in Raspberry Pi. In A4MCAR, programming languages such as C, C++, Python, Bash, HTML, JavaScript has been used in order to develop high-level module.
 
+Linux uses a Round-robin based scheduler called Completely Fair Scheduler (CFS). The goal of CFS is to maximize overall CPU utilization while also maximizing interactive performance and being fair to all the processes and threads \cite{cfs}. In order to ensure fairness, a tree structure of process execution times are created and sorted. Every time, the process which is executed the least time is picked from the tree and executed until preemption \cite{cfs}.
+
 A brief explanation of the architecture of Linux-based computers and as an extension the architecture of the Raspberry Pi 3 should be given in order to develop applications and understand how applications running on Linux work. With that idea in mind, high-level overview of the structure of  the \textbf{Linux kernel} and high-level layers in a Linux system which is given in Figure \ref{fig:linuxarchitecture} should be considered \cite{linuxkernelbook}.
 \begin{figure}[!ht]
 	\centering
@@ -1688,10 +1690,11 @@ By applying APP4MC-based, OS-based, and Sequential core affinities to the proces
 	\item One should also note that achieving significantly reduced power consumption is achieved through load balancing. Since approaches used in APP4MC does not concentrate on pure load-balancing in non industry-type systems, the power consumption improvement observed in this evaluation is smaller.
 	\item It should be noted that sequential distributions led to huge stability issues which were noticable from the system operation and are observable from deadline misses given in the table.
 	\item Experiments made with ILP-based mapping algorithm and GA-based mapping algorithm gave similar results. Due to bugs in the ILP-based mapping algorithm at the time of evaluation, GA-based results are used.
+	\item It can be seen that power consumption is higher when core usage is high. However, having high core usage makes the system better in timing performance. The reason why load balancing is important lies in this fact to have timing performance and power consumption improved at the same time.
 	\item OS-based distribution scored mostly 0\% deadline misses. However, APP4MC introduced slight deadline misses to the system and resulted in higher execution times. This can be reasoned by the following:
 	\begin{itemize}
-		\item The real-time capability of Raspberry Pi is very low. Implemented schedulability and tracing features as well as Linux kernel introduces huge overheads. This effects the  obtained results. Using a real-time kernel with minimal overhead would produce better results.
-		\item Main purpose with APP4MC is that it is used as a supplementary tool for standards such as AUTOSAR. Using the tool with a non-industry board and distribution (Raspberry Pi, Raspbian) is effecting the results because scheduling is left entirely to Linux kernel and it is not necessarily real-time.
+		\item The real-time capability of Raspberry Pi is very low because the scheduler used in Raspbian (CFS) has high fairness. Furthermore, implemented schedulability and tracing features as well as Linux kernel introduces overheads. This effects the  obtained results. Using a real-time kernel with minimal overhead would produce better results.
+		\item Main purpose with APP4MC is that it is used as a supplementary tool for standards such as AUTOSAR. Using the tool with a non-industry board and distribution (Raspberry Pi, Raspbian) is effecting the results because scheduling is left entirely to Linux kernel which does not ensure the causal order (dependencies) of runnables and it is not necessarily real-time.
 		\item The fact that APP4MC scored better in HL{\_}Distr{\_}wStream indicate that when processes and threads are more fine-grained and dependency of processes and threads are lesser (thus, more parallelization potential due to non-sequal runnables), it is possible that APP4MC can produce better results than OS-based distributions.
 		\item Technologies used in APP4MC require actual runnables to be partitioned and mapped. Since this is not possible in Raspberry Pi, and only thread and process can be distributed among cores, threads and processes are modeled as runnables. With this approach, dependencies between runnables and dependencies between threads are counted as the same. But in fact, it may not. APP4MC is built for more low-level design but in this work it is used in high-level design.
 		\item APP4MC's partitioning algorithm is concerned about load-balancing only when activation periods of runnables are the same. Since in our particular application, periods are runnables are quite different, partitioning gave results that are not aimed toward load-balancing.
@@ -1721,14 +1724,16 @@ To demonstrate how affinity constraints affected system performance, the work do
 
 In the aforementioned figures, it is seen that the load is most efficiently distributed in OS-based distribution, whereas APP4MC lacked balanced load in HL{\_}Distr{\_}AvgStress. In HL{\_}Distr{\_}wStream, APP4MC's load distribution looks more balanced. Therefore it can be seen that it is able to perform better than OS-based distribution slightly. This can be reasoned by stating that non fine-grained processes and threads such as dummy loads and image processing are not involved in HL{\_}Distr{\_}wStream. 
 
+New algorithms are now being developed for APP4MC to ignore dependencies to make sure APP4MC could be used for OS-based systems as well rather than low-level systems that ensure the causal order (dependencies) of runnables. Ignoring dependencies using bin-packing algorithms \cite{binpacking} will be used in APP4MC for producing results for applications running in complex OS-based systems.
+
 \subsection{Evaluation of Low Level Module Distributions}
+\subsubsection{LLM-Distribution-Experimental}
+Some text
+\llmdistrExperimental
+
 \subsubsection{LLM-Distribution-APP4MC}
 Some text
-\llmdistrA
-
-\subsubsection{LLM-Distribution-Hand}
-Some text
-\llmdistrA
+%\llmdistrAFP
 
 \subsubsection{Comparison of Low-level Module Distributions}
 Some text

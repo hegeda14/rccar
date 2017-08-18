@@ -1,0 +1,710 @@
+\newcommand{\allhlprocesses}{
+	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|l|l|l|}
+				\hline
+				\textbf{Process / Thread Name} & \textbf{Granularity} & \textbf{Activation} \\
+				\hline
+				\hline
+				Web Server & 500000 &  Sporadic [1s periodic]\\
+				\hline
+				Core Recorder & 525000 &  Periodic 3s \\
+				\hline
+				Ethernet Client & 120000 &  Periodic 0.01s \\
+				\hline
+				VNC Server & 10000000 &  Sporadic [1s periodic] \\
+				\hline
+				
+				Camera Stream & 1500000 &  Sporadic [1s periodic] \\
+				\hline
+				ImageProcess & 450000000 &  Periodic 0.65s \\
+				\hline
+				dummy{\_}load{\_}25\texttt{\_}1 & 198000000 &  Periodic 1.4s \\
+				\hline
+				dummy{\_}load{\_}25\texttt{\_}2 & 198000000 &  Periodic 1.4s \\
+				\hline
+				dummy{\_}load{\_}25\texttt{\_}3 & 198000000 &  Periodic 1.4s \\
+				\hline
+				dummy{\_}load{\_}25\texttt{\_}4 & 198000000 &  Periodic 1.4s \\
+				\hline
+				dummy{\_}load{\_}25\texttt{\_}5 & 198000000 &  Periodic 1.4s \\
+				\hline
+				dummy{\_}load{\_}100 & 198000000 & Periodic 0.5s \\
+				\hline
+				\textbf{Touchscreen} & \textit{threads given below} &  \textit{threads given below} \\
+				\hline
+				MainThread & 110000000 &  Periodic 0.5s \\
+				\hline
+				UpdateUtil & 150000000 &  Periodic 2s \\
+				\hline
+				TimingCalculation & 158000000 &  Periodic 2.8s \\
+				\hline
+				TouchEvents & 10000000 &  Periodic 0.1s \\
+				\hline
+				\textbf{Dummy Graph} & \textit{threads given below} &  \textit{threads given below} \\
+				\hline
+				A & 9000000 & Periodic 0.5s \\
+				\hline
+				B & 27000000 & Periodic 0.5s \\
+				\hline
+				C & 36000000 & Periodic 0.5s \\
+				\hline
+				D & 81000000 & Periodic 0.5s \\
+				\hline
+				E & 9000000 & Periodic 0.5s \\
+				\hline
+				F & 18000000 & Periodic 0.5s \\
+				\hline
+				G & 45000000 & Periodic 0.5s \\
+				\hline
+				H & 27000000 & Periodic 0.5s \\
+				\hline
+				I & 18000000 & Periodic 0.5s \\
+				\hline
+				J & 36000000 & Periodic 0.5s \\
+				\hline
+		\end{tabular}}
+		\caption{All processes and threads with their granularity and activation information (with Sporadic activation assumptions shown with square brackets)}
+		\label{tbl_allhlprocesses}
+	\end{table}
+}
+
+\newcommand{\partitioningHLDistrwStream}{
+	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|l|l|l|}
+				\hline
+				\textbf{Partition Name} & \textbf{Process (Threads) List} & \textbf{Allocated Core} \\
+				\hline
+				\hline
+				ESSP0 & Touchscreen (TouchEvents) & 1 \\
+				\hline
+				ESSP1 & Ethernet Client & 1 \\
+				\hline
+				ESSP2 & Core Reader & 2 \\
+				\hline
+				ESSP3 & Touchscreen (MainThread) & 1 \\
+				\hline
+				ESSP4 & Touchscreen (TimingCalculation) & 0 \\
+				\hline
+				ESSP5 & Touchscreen (UpdateUtil) & 1 \\
+				\hline
+				ESSP6 & Dummy Graph (A, E, C, F, D, J) & 2 \\
+				\hline
+				ESSP7 & Dummy Graph (B, H, G, I) & 3 \\
+				\hline
+				ESSP8 & Web Server, VNC Server & 1 \\
+				\hline
+				ESSP9 & Camera Stream & 1 \\
+				\hline
+		\end{tabular}}
+		\caption{Partitioning and mapping results of HL{\_}Distr{\_}wStream using APP4MC}
+		\label{tbl_partitioningHLDistrwStream}
+	\end{table}
+}
+
+\newcommand{\partitioningHLDistrwImageProc}{
+	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|l|l|l|}
+				\hline
+				\textbf{Partition Name} & \textbf{Process (Threads) List} & \textbf{Allocated Core} \\
+				\hline
+				\hline
+				ESSP0 & VNC Server, Web Server & 0 \\
+				\hline
+				ESSP1 & Touchscreen(TouchEvents) & 0 \\
+				\hline
+				ESSP2 & Ethernet Client & 1 \\
+				\hline
+				ESSP3 & Core Reader & 1 \\
+				\hline
+				ESSP4 & Touchscreen (MainThread) & 0 \\
+				\hline
+				ESSP5 & Touchscreen (TimingCalculation) & 3 \\
+				\hline
+				ESSP6 & Touchscreen (UpdateUtil) & 1 \\
+				\hline
+				ESSP7 & ImageProcess & 2 \\
+				\hline
+				ESSP8 & Dummy Graph (A, E, C, F, D, J) & 1 \\
+				\hline
+				ESSP9 & Dummy Graph (B, H, G, I) & 0 \\
+				\hline
+		\end{tabular}}
+		\caption{Partitioning and mapping results of HL{\_}Distr{\_}ImageProc using APP4MC}
+		\label{tbl_partitioningHLDistrwImageProc}
+	\end{table}
+}
+
+\newcommand{\partitioningHLDistrAvgStress}{
+	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|l|l|l|}
+				\hline
+				\textbf{Partition Name} & \textbf{Process (Threads) List} & \textbf{Allocated Core} \\
+				\hline
+				\hline
+				ESSP0 & VNC Server, Web Server, Camera Stream & 2 \\
+				\hline
+				ESSP1 & Touchscreen (TouchEvents) & 1 \\
+				\hline
+				ESSP2 & Ethernet Client & 1 \\
+				\hline
+				ESSP3 & Core Reader & 3 \\
+				\hline
+				ESSP4 & Dummy Graph (all threads) & 1 \\
+				\hline
+				ESSP5 & Touchscreen (MainThread) & 3 \\
+				\hline
+				ESSP6 & Touchscreen (TimingCalculation) & 0 \\
+				\hline
+				ESSP7 & Touchscreen (UpdateUtil) & 2 \\
+				\hline
+				ESSP8 & dummy{\_}load{\_}25{\_}2 & 1 \\
+				\hline
+				ESSP9 & dummy{\_}load{\_}25{\_}1 & 3 \\
+				\hline
+		\end{tabular}}
+		\caption{Partitioning and mapping results of HL{\_}Distr{\_}AvgStress using APP4MC}
+		\label{tbl_partitioningHLDistrAvgStress}
+	\end{table}
+}
+
+\newcommand{\partitioningHLDistrFullStress}{
+	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
+			\begin{tabular}{|l|l|l|}
+				\hline
+				\textbf{Partition Name} & \textbf{Process (Threads) List} & \textbf{Allocated Core} \\
+				\hline
+				\hline
+				ESSP0 & VNC Server, Web Server, Camera Stream & 1 \\
+				\hline
+				ESSP1 & Touchscreen (TouchEvents) & 3 \\
+				\hline
+				ESSP2 & Ethernet Client & 1 \\
+				\hline
+				ESSP3 & Core Reader & 0 \\
+				\hline
+				ESSP4 & Dummy Graph (all threads) & 3 \\
+				\hline
+				ESSP5 & Touchscreen (UpdateUtil) & 0 \\
+				\hline
+				ESSP6 & dummy{\_}load{\_}25{\_}5, dummy{\_}load{\_}25{\_}3, dummy{\_}load{\_}25{\_}1 & 2 \\
+				\hline
+				ESSP7 & dummy{\_}load{\_}25{\_}4, dummy{\_}load{\_}25{\_}2 & 1 \\
+				\hline
+				ESSP8 & Touchscreen (MainThread) & 0 \\
+				\hline
+				ESSP9 & dummy{\_}load{\_}100 & 1 \\
+				\hline
+		\end{tabular}}
+		\caption{Partitioning and mapping results of HL{\_}Distr{\_}FullStress using APP4MC}
+		\label{tbl_partitioningHLDistrFullStress}
+	\end{table}
+}
+
+\newcommand{\hlcomparison}{
+	\begin{table}[!ht]
+		\resizebox{\textwidth}{!}{%
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+			\hline
+			\textbf{No} & \textbf{Distr.Name} & \textbf{Distr.Type} & \textbf{f\textsubscript{clk}} &\textbf{GET} &  \textbf{ST\textsubscript{avg}} &  \textbf{U\textsubscript{0-3} (\%)} & 
+			\textbf{DLM} &  \textbf{I\textsubscript{DD}} \\
+				\hline
+				\hline
+				1 &
+				HL{\_}Distr{\_}wStream &
+				OS &
+				1.2GHz &
+				2-2.5s &
+				0.71s &
+				varies &
+				0 \% &
+				0.79-0.85A \\
+				\hline
+				2 &
+				HL{\_}Distr{\_}wStream &
+				Sequential &
+				1.2GHz &
+				14.50s &
+				0.42s &
+				0/0/0/100 &
+				43 \% &
+				0.77A \\
+				\hline
+				3 &
+				HL{\_}Distr{\_}wStream &
+				APP4MC &
+				1.2GHz &
+				1.88s &
+				0.73s &
+				25/25/55/35 &
+				0 \% &
+				0.75-0.81A \\
+				\hline
+				4 &
+				HL{\_}Distr{\_}wImageProc &
+				OS &
+				1.2GHz &
+				3.4s &
+				0.65s &
+				varies&
+				0 \% &
+				0.890-0.920A \\
+				\hline
+				5 &
+				HL{\_}Distr{\_}wImageProc &
+				Sequential &
+				1.2GHz &
+				14.5s &
+				0.38s &
+				0/0/0/100 &
+				35 \% &
+				0.8A \\
+				\hline
+				6 &
+				HL{\_}Distr{\_}wImageProc &
+				APP4MC &
+				1.2GHz &
+				6s &
+				0.55s &
+				80/55/57/30 &
+				5-23 \% &
+				0.85A \\
+				\hline
+				7 &
+				HL{\_}Distr{\_}AvgStress &
+				OS &
+				1.2GHz &
+				3.34s &
+				0.71s &
+				varies  &
+				0 \% &
+				0.800-0.950A \\
+				\hline
+				8 &
+				HL{\_}Distr{\_}AvgStress &
+				Sequential &
+				1.2GHz &
+				21.55s &
+				0.38s &
+				0/0/0/100 &
+				50 \% &
+				0.750A \\
+				\hline
+				9 &
+				HL{\_}Distr{\_}AvgStress &
+				APP4MC &
+				1.2GHz &
+				8.66s &
+				0.55s &
+				30/100/5/35 &
+				22-33 \% &
+				0.760A \\
+				\hline
+				10 &
+				HL{\_}Distr{\_}FullStress &
+				OS &
+				1.2GHz &
+				9.59s &
+				0.57s &
+				100/100/96/100 &
+				18 \% &
+				0.940.975A \\
+				\hline
+				11 &
+				HL{\_}Distr{\_}FullStress &
+				Sequential &
+				1.2GHz &
+				59s &
+				0.26s &
+				0/0/0/100 &
+				68 \% &
+				0.750A \\
+				\hline
+				12 &
+				HL{\_}Distr{\_}FullStress &
+				APP4MC &
+				1.2GHz &
+				13.48s &
+				0.45s &
+				75/100/85/95 &
+				18-22 \% &
+				0.88A \\
+				\hline
+				13 &
+				HL{\_}Distr{\_}wStream &
+				OS &
+				600MHz &
+				2.2-2.6s &
+				0.69s &
+				varies &
+				0 \% &
+				0.77-0.82A \\
+				\hline
+				14 &
+				HL{\_}Distr{\_}wStream &
+				Sequential &
+				600MHz &
+				14.66s &
+				0.43s &
+				0/0/0/100 &
+				43 \% &
+				0.76A \\
+				\hline
+				15 &
+				HL{\_}Distr{\_}wStream &
+				APP4MC &
+				600MHz &
+				1.94s &
+				0.72s &
+				25/25/55/35 &
+				0 \% &
+				0.73-0.75A \\
+				\hline
+				16 &
+				HL{\_}Distr{\_}wImageProc &
+				OS &
+				600MHz &
+				4.0s &
+				0.58s &
+				varies&
+				0 \% &
+				0.87-0.91A \\
+				\hline
+				17 &
+				HL{\_}Distr{\_}wImageProc &
+				Sequential &
+				600MHz &
+				15.15s &
+				0.38s &
+				0/0/0/100 &
+				35-43 \% &
+				0.79A \\
+				\hline
+				18 &
+				HL{\_}Distr{\_}wImageProc &
+				APP4MC &
+				600MHz &
+				6.1s &
+				0.55s &
+				80/55/57/30 &
+				31 \% &
+				0.82-0.85A \\
+				\hline
+				19 &
+				HL{\_}Distr{\_}AvgStress &
+				OS &
+				600MHz &
+				3.40s &
+				0.70s &
+				varies  &
+				0 \% &
+				0.760A \\
+				\hline
+				20 &
+				HL{\_}Distr{\_}AvgStress &
+				Sequential &
+				600MHz &
+				21.05s &
+				0.34s &
+				0/0/0/100 &
+				52 \% &
+				0.739A \\
+				\hline
+				21 &
+				HL{\_}Distr{\_}AvgStress &
+				APP4MC &
+				600MHz &
+				8.70s &
+				0.53s &
+				30/100/5/35 &
+				22-33 \% &
+				0.74A \\
+				\hline
+				22 &
+				HL{\_}Distr{\_}FullStress &
+				OS &
+				600MHz &
+				9.7s &
+				0.54s &
+				100/100/100/100 &
+				22 \% &
+				0.940A \\
+				\hline
+				23 &
+				HL{\_}Distr{\_}FullStress &
+				Sequential &
+				600MHz &
+				57-59s &
+				0.18-0.28s &
+				0/0/0/100 &
+				68-75 \% &
+				0.740A \\
+				\hline
+				24 &
+				HL{\_}Distr{\_}FullStress &
+				APP4MC &
+				600MHz &
+				13.70s &
+				0.41-0.44s &
+				75/100/85/95 &
+				18-31 \% &
+				0.87A \\
+				\hline
+			\end{tabular}
+			}
+			\caption{Distributions compared in High-level module}
+			\label{tbl_hlcomparison}
+		\end{table}
+}
+
+\newcommand{\llmdistrExperimental}{
+\begin{table}[!ht]
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|l|l|l|l|l|l|}
+		\hline
+		\textbf{Task Name} & \textbf{Granularity} & \textbf{Activation} & \textbf{Mapping} & \textbf{Core} & \textbf{Tile} \\
+		\hline
+		\hline
+		EthernetServer.TimerEvent &
+		1000 & 
+		Periodic 5s & 
+		Manual &
+		- &
+		0\\
+		\hline
+		EthernetServer.ShareCoreUsage0 &
+		50 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		EthernetServer.ShareCoreUsage1 &
+		50 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		EthernetServer.xtcp\texttt{\_}event &
+		100 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		ControlLightSystem.ST\texttt{\_}Timer &
+		1001 & 
+		Periodic 0s-0.020s & 
+		Manual &
+		7 &
+		0\\
+		\hline
+		ControlLightSystem.TH\texttt{\_}Timer &
+		1001 & 
+		Periodic 0s-0.020s & 
+		Manual &
+		7 &
+		0\\
+		\hline
+		ControlLightSystem.ShareState &
+		50 & 
+		Sporadic & 
+		Manual &
+		7 &
+		0\\
+		\hline
+		Bluetooth.UART\texttt{\_}RXDataReady &
+		1017 & 
+		Sporadic & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		Bluetooth.SendCmdEvent &
+		127 & 
+		Periodic 0.050s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		Bluetooth.TimerEvent &
+		1000 & 
+		Periodic 0.050s & 
+		Manual &
+		1 &
+		0\\
+		\hline
+		ServoController.ShareSteering &
+		30 & 
+		Sporadic & 
+		Manual &
+		4 &
+		0\\
+		\hline
+		ServoController.TimerEvent &
+		987 & 
+		Periodic 0s-0.020s & 
+		Manual &
+		4 &
+		0\\
+		\hline
+		ReadSonarSensors &
+		519 & 
+		Periodic 0.200s & 
+		Manual &
+		- &
+		0\\
+		\hline
+		DriveTBLE02S.ShareDistance &
+		50 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		DriveTBLE02S.ShareDirection &
+		50 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		DriveTBLE02S.ShareSpeed &
+		50 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		DriveTBLE02S.TimerEvent &
+		1001 & 
+		Periodic 0s-0.020s & 
+		Manual &
+		- &
+		0\\
+		\hline
+		output\texttt{\_}gpio &
+		44 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		input\texttt{\_}gpio &
+		15 & 
+		Sporadic & 
+		Manual &
+		0 &
+		0\\
+		\hline
+		i2c\texttt{\_}master &
+		1188 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		uart\texttt{\_}rx &
+		448 & 
+		Sporadic & 
+		Manual &
+		0 &
+		0\\
+		\hline
+		uart\texttt{\_}tx &
+		71 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		xtcp &
+		2000 & 
+		Sporadic & 
+		Manual &
+		- &
+		0\\
+		\hline
+		MonitorCores0 &
+		245 & 
+		Periodic 1s & 
+		Manual &
+		- &
+		0\\
+		\hline
+		MonitorCores1 &
+		245 & 
+		Periodic 1s & 
+		Manual &
+		- &
+		1\\
+		\hline
+		smi &
+		225 & 
+		Sporadic & 
+		Manual &
+		- &
+		1\\
+		\hline
+		rgmii\texttt{\_}ethernet\texttt{\_}mac &
+		4000 & 
+		Sporadic & 
+		Manual &
+		- &
+		1\\
+		\hline
+		ar8035\texttt{\_}phy\texttt{\_}driver &
+		75 & 
+		Periodic 1s & 
+		Manual &
+		- &
+		1\\
+		\hline
+	\end{tabular}}
+	\caption{LLM-Distribution-Experimental details in Low-level Module}
+	\label{tbl_LLM_Distribution_Experimental}
+\end{table}
+}
+
+\newcommand{\llcomparison}{
+\begin{table}[!ht]
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|l|l|l|l|l|l|l|}
+		\hline
+		\textbf{Device} & \textbf{f\textsubscript{clk}} & \textbf{Distribution} & \textbf{GET} & \textbf{ST\textsubscript{avg}} &  \textbf{U\textsubscript{0-3} (\%)} &  \textbf{I\textsubscript{DD}} \\
+		\hline
+		\hline
+		LLM &
+		500MHz &
+		Distribution-1 &
+		0.005s &
+		0.1232s &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		LLM &
+		500MHz &
+		Distribution-2 &
+		0.005s &
+		0.1232s &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+		LLM &
+		500MHz &
+		Distribution-3 &
+		0.005s &
+		0.1232s &
+		54/23/11/99 &
+		0.670A \\
+		\hline
+	\end{tabular}}
+	\caption{Distributions compared in Low-level module}
+	\label{tbl_llcomparison}
+\end{table}
+}
