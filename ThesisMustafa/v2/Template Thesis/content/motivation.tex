@@ -1623,9 +1623,9 @@ To have flexibility in the mapping stage, the partitioning feature of APP4MC is 
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}wStream}
 
-Initial distribution for high-level module, HL{\_}Distr{\_}wStream, involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Since both the image processing process and the camera stream use the Raspberry Pi camera, this distribution demonstrates how mapping will result when the camera is used by Camera Stream. That is to say, image processing application is not running but will be given with another distribution. 
+Initial distribution for high-level module, \texttt{HL{\_}Distr{\_}wStream}, involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Since both the image processing process and the camera stream use the Raspberry Pi camera, this distribution demonstrates how mapping will result when the camera is used by Camera Stream. That is to say, image processing application is not running but will be given with another distribution. 
 
-In the HL{\_}Distr{\_}wStream distribution, following processes are considered active (running, contributes to the processing, and therefore modeled) from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Camera Stream}, \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{Dummy Graph}.
+In the \texttt{HL{\_}Distr{\_}wStream} distribution, following processes are considered active (running, contributes to the processing, and therefore modeled) from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Camera Stream}, \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{Dummy Graph}.
 
 Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrwStream}.
 
@@ -1633,7 +1633,7 @@ Partitioning and mapping of this distribution using APP4MC resulted in the parti
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}wImageProc}
 
-The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. In the distribution HL{\_}Distr{\_}wImageProc, following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{ImageProcess}, \texttt{Dummy Graph}.
+The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. In the distribution \texttt{HL{\_}Distr{\_}wImageProc}, following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{ImageProcess}, \texttt{Dummy Graph}.
 
 Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrwImageProc}.
 
@@ -1642,7 +1642,7 @@ Partitioning and mapping of this distribution using APP4MC resulted in the parti
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}AvgStress}
 
-In the distribution HL{\_}Distr{\_}AvgStress, the A4MCAR is partially stressed. This is achieved by introducing two dummy loads. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}.
+In the distribution \texttt{HL{\_}Distr{\_}AvgStress}, the A4MCAR is partially stressed. This is achieved by introducing two dummy loads. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}.
 
 Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrAvgStress}.
 
@@ -1651,7 +1651,7 @@ Partitioning and mapping of this distribution using APP4MC resulted in the parti
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Dist{\_}FullStress}
 
-The distribution HL{\_}Dist{\_}FullStress represents the distribution in which nearly all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}, \texttt{dummy{\_}load{\_}25{\_}3}, \texttt{dummy{\_}load{\_}25{\_}4}, \texttt{dummy{\_}load{\_}25{\_}5}, \texttt{dummy{\_}load{\_}100}.
+The distribution \texttt{HL{\_}Dist{\_}FullStress} represents the distribution in which nearly all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}, \texttt{dummy{\_}load{\_}25{\_}3}, \texttt{dummy{\_}load{\_}25{\_}4}, \texttt{dummy{\_}load{\_}25{\_}5}, \texttt{dummy{\_}load{\_}100}.
 
 Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrFullStress}.
 
@@ -1684,7 +1684,7 @@ By applying APP4MC-based, OS-based, and Sequential core affinities to the proces
 
 \begin{itemize}
 	\item Resulted APP4MC timing performance by looking at slack time averages and overall execution time is better than Sequential timing in all cases as expected.
-	\item In a lot of the times, Linux OS context-switching mechanism with no core affinity constraints performed better than APP4MC-based core affinity distributed results. However, we see that in HL{\_}Distr{\_}wStream, APP4MC scored better than OS distribution. Therefore, we can say that achieving a better performance than OS-based distribution in Linux-based systems is possible, but not guaranteed.
+	\item In a lot of the times, Linux OS context-switching mechanism with no core affinity constraints performed better than APP4MC-based core affinity distributed results. However, we see that in \texttt{HL{\_}Distr{\_}wStream}, APP4MC scored better than OS distribution. Therefore, we can say that achieving a better performance than OS-based distribution in Linux-based systems is possible, but not guaranteed.
 	\item As seen from the table, in almost every distribution, APP4MC improved current and thereby power consumption by around 0.10-0.15A. It is observed that OS-based distribution resulted in the highest power consumption, whereas power consumption in APP4MC and Sequential distributions were similar. It should be noted that this is due to intensive context-switching in OS-based distribution when core affinity is not constrained.
 	\item It is also seen from table that changing the clock frequency alone improved the current consumption, but very slightly. One can see this improvement from table which is about 0.01-0.05A. It should be commented that using a lower chip voltage would make this power improvement a lot better. Due to safety concerns, this approach has not been used in this work. 
 	\item One should also note that achieving significantly reduced power consumption is achieved through load balancing. Since approaches used in APP4MC does not concentrate on pure load-balancing in non industry-type systems, the power consumption improvement observed in this evaluation is smaller.
@@ -1694,17 +1694,18 @@ By applying APP4MC-based, OS-based, and Sequential core affinities to the proces
 	\item OS-based distribution scored mostly 0\% deadline misses. However, APP4MC introduced slight deadline misses to the system and resulted in higher execution times. This can be reasoned by the following:
 	\begin{itemize}
 		\item The real-time capability of Raspberry Pi is very low because the scheduler used in Raspbian (CFS) has high fairness. Furthermore, implemented schedulability and tracing features as well as Linux kernel introduces overheads. This effects the  obtained results. Using a real-time kernel with minimal overhead would produce better results.
-		\item Main purpose with APP4MC is that it is used as a supplementary tool for standards such as AUTOSAR. Using the tool with a non-industry board and distribution (Raspberry Pi, Raspbian) is effecting the results because scheduling is left entirely to Linux kernel which does not ensure the causal order (dependencies) of runnables and it is not necessarily real-time.
-		\item The fact that APP4MC scored better in HL{\_}Distr{\_}wStream indicate that when processes and threads are more fine-grained and dependency of processes and threads are lesser (thus, more parallelization potential due to non-sequal runnables), it is possible that APP4MC can produce better results than OS-based distributions.
+		\item Main purpose with APP4MC is that intends to move the embedded development in the direction of model-based development. It is used as a supplementary tool for standards such as AUTOSAR. Using the tool with a non-industry board and distribution (Raspberry Pi, Raspbian) is effecting the results because scheduling is left entirely to Linux kernel which does not ensure the causal order (dependencies) of runnables and it is not necessarily real-time.
+		\item The fact that APP4MC scored better in \texttt{HL{\_}Distr{\_}wStream} indicate that when processes and threads are more fine-grained and dependency of processes and threads are lesser (thus, more parallelization potential due to non-sequal runnables), it is possible that APP4MC can produce better results than OS-based distributions.
 		\item Technologies used in APP4MC require actual runnables to be partitioned and mapped. Since this is not possible in Raspberry Pi, and only thread and process can be distributed among cores, threads and processes are modeled as runnables. With this approach, dependencies between runnables and dependencies between threads are counted as the same. But in fact, it may not. APP4MC is built for more low-level design but in this work it is used in high-level design.
 		\item APP4MC's partitioning algorithm is concerned about load-balancing only when activation periods of runnables are the same. Since in our particular application, periods are runnables are quite different, partitioning gave results that are not aimed toward load-balancing.
 		\item Furthermore, APP4MC's mapping algorithm is also not focused on load balancing. The main optimization goal used in APP4MC's mapping algorithm is reducing the overall computation time. And partitions are distributed randomly otherwise. Therefore, OS scored better performance than APP4MC in timing because the load is not sufficiently balanced in APP4MC (comparing U\textsubscript{0-3} entries in Table \ref{tbl_hlcomparison}).
+		\item APP4MC focuses on ideal vision of embedded computing, that is using static scheduling to base parallelization foundations based on models. Even OS such as Linux uses dynamic scheduling and migrating all the tasks between several cores, it can be said that APP4MC, using static scheduling was able to suggest better outcomes.
 	\end{itemize}
 \end{itemize}
 
 To make sure distributed processes (and not threads) affected the results, a second experiment has been done with only threads, Dummy Graph (given in Fig \ref{fig:dummygraph}), running in the Linux system. This experiment also showed that the OS is capable of performing better in terms of timing. For example, an average slack time of 0.48s is obtained with OS-based distribution whereas APP4MC was able to score 0.44s. Thus, the results shown in this section are considered to show the actual performance of APP4MC.
 
-To demonstrate how affinity constraints affected system performance, the work done in the tracing chapter is used and system traces have been taken. The 10 second system traces for entire Linux system are taken with perf, converted to CTF format, and visualized using Eclipse TraceCompass. The Figure \ref{fig:tracesAvgStress} demonstrates how OS-based, APP4MC-based, and sequential distribution in HL{\_}Distr{\_}AvgStress is scheduled by Linux kernel among the Raspberry Pi's cores. Moreover, the distribution when APP4MC performed better than OS is also given with the Figure \ref{fig:traceswStream}.
+To demonstrate how affinity constraints affected system performance, the work done in the tracing chapter is used and system traces have been taken. The 10 second system traces for entire Linux system are taken with perf, converted to CTF format, and visualized using Eclipse TraceCompass. The Figure \ref{fig:tracesAvgStress} demonstrates how OS-based, APP4MC-based, and sequential distribution in \texttt{HL{\_}Distr{\_}AvgStress} is scheduled by Linux kernel among the Raspberry Pi's cores. Moreover, the distribution when APP4MC performed better than OS is also given with the Figure \ref{fig:traceswStream}.
 
 \begin{figure}[!ht]
 	\centering
@@ -1722,25 +1723,33 @@ To demonstrate how affinity constraints affected system performance, the work do
 	\label{fig:traceswStream}
 \end{figure}
 
-In the aforementioned figures, it is seen that the load is most efficiently distributed in OS-based distribution, whereas APP4MC lacked balanced load in HL{\_}Distr{\_}AvgStress. In HL{\_}Distr{\_}wStream, APP4MC's load distribution looks more balanced. Therefore it can be seen that it is able to perform better than OS-based distribution slightly. This can be reasoned by stating that non fine-grained processes and threads such as dummy loads and image processing are not involved in HL{\_}Distr{\_}wStream. 
+In the aforementioned figures, it is seen that the load is most efficiently distributed in OS-based distribution, whereas APP4MC lacked balanced load in \texttt{HL{\_}Distr{\_}AvgStress}. In \texttt{HL{\_}Distr{\_}wStream}, APP4MC's load distribution looks more balanced. Therefore it can be seen that it is able to perform better than OS-based distribution slightly. This can be reasoned by stating that non fine-grained processes and threads such as dummy loads and image processing are not involved in \texttt{HL{\_}Distr{\_}wStream}. 
 
 New algorithms are now being developed for APP4MC to ignore dependencies to make sure APP4MC could be used for OS-based systems as well rather than low-level systems that ensure the causal order (dependencies) of runnables. Ignoring dependencies using bin-packing algorithms \cite{binpacking} will be used in APP4MC for producing results for applications running in complex OS-based systems.
 
-\subsection{Evaluation of Low Level Module Distributions}
-\subsubsection{LLM-Distribution-Experimental}
-Some text
-\llmdistrExperimental
+\subsection{Evaluation of Low Level Module Distributions} \label{sectionlldistr}
 
-\subsubsection{LLM-Distribution-APP4MC}
-Some text
-%\llmdistrAFP
+In the low-level module, contribution of APP4MC is more essential because of the fact that the number of tasks exceed the number of cores and there is no automatic mapping implemented in xCORE. If the APP4MC is not used, the code can't even be compiled because some tasks should be squeezed in cores. If cores are not specified, xCORE will give error stating that the number of cores required exceeded. The mapping is done manually at the compile-time, not automatically in run-time. Therefore, developers have to decide by themselves which tasks should be placed on which cores. Considering that the goal is minimizing the overall computation time and achieving a better parallel performance, APP4MC results help greatly in low-level in this matter.
 
-\subsubsection{Comparison of Low-level Module Distributions}
-Some text
+In this context, to find the correct distribution to reduce the number of cores used and to compile the code properly, two distributions are presented. First distribution, \texttt{LLM-Distribution- Unconstrained}, is the unconstrained version of the created APP4MC model. In this model, constraints that are used are kept at minimal level in order to see what would happen if model is not properly engineered. 
+
+In xCORE developments, the coding experiments show that some types of tasks should be placed in cores seperately regardless of their load balancing such as the tasks that are more sporadically activated rather than periodic. In order not to interfere with the functionality of the applications, these apps are constrained in the model to be placed in seperate cores. The distribution that involves this approach is given with \texttt{LLM-Distribution- Constrained}.
+
+\subsubsection{LLM-Distribution-Unconstrained}
+In the previous section, Section \ref{sectionlldistr}, the scope of \texttt{LLM-Distribution-Unconstrained} distribution is explained. The mapping results of this distribution using APP4MC could be seen in the Table \ref{tbl_LLM_Distribution_Unconstrained}. It is seen that in this model, the distribution is loosely constrained.
+
+\llmdistrUnconstrained
+
+\subsubsection{LLM-Distribution-Constrained}
+In Section \ref{sectionlldistr}, the scope of \texttt{LLM-Distribution-Constrained} distribution is explained. The additional constraints are applied to the existing model regarding sporadically activated tasks and the model details are shown with the Table \ref{tbl_LLM_Distribution_Constrained}. 
+
+\llmdistrConstrained
+
+\subsubsection{Results of Low-level Evaluation}
+The low-level module distributions are compared with the Table \ref{tbl_llcomparison}. Due to the limited available timers, the low-level module is evaluated with the available metrics such as slack time, execution time, and average utilization. The table shows that the unconstrained model is less utilized than the constrained model. Slack time of the unconstrained model being less than that of the constrained model suggests that timing performance of the constrained model is also better. It is important to add that unconstrained model results in functionality problems. As a result, we can learn that platform-specific and OS-specific constraints should be well engineered in the APP4MC model in order to achieve a higher performance and more stable embedded system. 
+
 \llcomparison
 
-\section{Results}
-Some text \\
 %Distributed system and embedded systems characteristics.... scalability etc.. real-time system.
 %Also description of our systems characteristics.
 
@@ -1796,6 +1805,28 @@ Some text \\
 
 %%% CHAPTER Conclusion ----------------------------begin----
 \chapter{Conclusion} \label{conclusionchapter}
+APP4MC is a tool that used for engineering embedded multi-core and many-core software systems. It emphasizes especially on automotive domain where standards such as AUTOSAR is highly involved. From the results, one can differentiate APP4MC from other available tooling as follows. With this report, several conclusions should be pointed out:
+\begin{itemize}
+	\item In this work, it is focused on evaluating a tool that is intended for industrial use on non industry-compliant platforms. Therefore, using more low-level industry tools should produce better results. Moreover, Raspberry Pi's real-time capabilities are proven to be very poor because the scheduler used in Raspbian (CFS) has high fairness. Using a real-time kernel, one should expect more well utilized software with APP4MC results.
+	\item APP4MC focuses on static scheduling. By migrating tasks in between cores, OS dynamic schedulers introduce non-determinism in the design. However, with APP4MC every step is well-known and well-modeled. This way, many suggestive distributions can be generated using APP4MC. The developers should make design choices based on their optimization goals. Developers might redirect their projects towards load balancing, power optimization, total utilization etc. using APP4MC.
+	\item With the involvement of the model-based approach, every step of the embedded design should be carefully modeled. With the results of the low-level module evaluations, it is seen that constraining the model for better accuracy improves the utilization outcome that is produced by the APP4MC. Involving model-based development aspect, on a more lower level, software design and deployment is more automatized once model is created successfully.
+	\item Results show that APP4MC is able to generate core affinity restrictions that can produce better results than an operating system. In most cases, operating systems will produce better utilization. However, using an accurate model and well-engineered fine-grained software, one can achieve even better performance than the operating systems.
+	\item One should also note that achieving significantly reduced power consumption is achieved through load balancing. Since approaches used in APP4MC does not concentrate on pure load-balancing in non industry-type systems, the power consumption improvement observed in this evaluation is smaller. Yet, it is observed that results that are obtained with APP4MC improved the power consumption compared to the OS-based distributions. 
+	\item Invoking the underclocking capabilities, a slight improvement in the power consumption is observed. One can improve better power consumption by activating Active Energy Consumption (AEC) modes or involving voltage reduction in the Dynamic Voltage and Frequency Scaling (DVFS) features as well.
+	\item APP4MC's algorithms have the already mentioned limitations (listed below) that are being improved.
+	\begin{itemize}
+		\item Partitioning algorithm is concerned about load-balancing only when activation periods of runnables are the same. Since in our particular application, periods are runnables are quite different, partitioning gave results that are not aimed toward load-balancing.
+		\item Furthermore, APP4MC's mapping algorithm is also not focused on load balancing. The main optimization goal used in APP4MC's mapping algorithm is reducing the overall computation time. And partitions are distributed randomly otherwise. Therefore, OS scored better performance than APP4MC in timing in most cases because the load is not sufficiently balanced in APP4MC.
+		\item Software development involves non-determinism. For example, some tasks are not always deterministically activated. Especially in our applications, many tasks are sporadically activated. However, APP4MC is not able to process sporadically activated tasks and therefore assumptions have been made for these non-deterministic model elements.
+	\end{itemize}
+	 However these algorithms are still in the improvement stage. New algorithms are now being developed for APP4MC to ignore dependencies to make sure APP4MC could be used for OS-based systems as well rather than low-level systems that ensure the causal order (dependencies) of runnables. Ignoring dependencies using bin-packing algorithms will be used in APP4MC for producing results for applications running in complex OS-based systems.
+\end{itemize}
+
+In this work, necessary tracing, distribution, and evaluation features are discovered and implemented regarding timing and power consumption in order to contribute to the open-source tool APP4MC. Required feedback is given to APP4MC community for progress. Furthermore, a base platform is developed for embedded multi-core development studies. With parallel implementations on A4MCAR as well as other demonstrators, C++ and Python language-based multi-processed and multi-threaded embedded system is developed and maintained. Aforementioned contributions to the scientific community and open-source community are done.
+
+Multi-core processing is without a doubt today's and future's technology for information processing. Tools such as APP4MC are useful in terms of easing this technology for developers in a model-driven manner. 
+
+%TODO Model-based development motivation!!!!
 %Contributions overall
 %one contribution -> prepartitioning asamasi icin feedbackler sayesinde app4mc gelistirildi. tag'lere dayali gruplama getirildi.
 
