@@ -613,7 +613,7 @@ All the source and header files that contain task functions and that are develop
 \subsubsection{Acceleration} \label{accelerationsection}
 For acceleration and deceleration, a brushless DC motor is controlled by delivering PWM signals to the TBLE02-S Electronic Speed Controller. The task and how it is connected to other tasks can be seen in Figure \ref{fig:sysmlxmostasksbrief}. In order to deliver the desired PWM signal, a task that uses timers has been created which is given in Listing \ref{lst_tble02task}. The created template of the task in Listing \ref{lst_tble02task} is not only used for the acceleration task, but also for the other tasks that use PWM signaling to control other devices. In those tasks, it is shown that in order to generate the desired duty cycle, the amount of time for which the output signal must be on and off are calculated (Lines 19 through 38) and the output port is toggled (Lines 39 through 48) accordingly. The port toggling is done inside a timer event (shown in Line 17) that is dynamically delayed given the calculated on and off times.
 
-\newpage\lstinputlisting[caption=Created PWM signaling template, label=lst_tble02task, style=xc]{content/listings/lst_tble02task.txt}
+\lstinputlisting[caption=Created PWM signaling template, label=lst_tble02task, style=xc]{content/listings/lst_tble02task.txt}
 The desired PWM pulse widths are taken from the TBLE02-S Electronic Speed Controller manual and the overall PWM period has been set to 20ms which is the standard period for most of the controllers. Since the motor speed can be very high but is not desired to that extent in our application, the pulse widths are manipulated in order to reach lower speeds in full force. The interface \texttt{control\texttt{\_}if} (Line 9 and Line 13) is used that delivers a number between 0-100 in order to express speeding information while also delivering a direction value which is either FORWARD (0) or REVERSE (1). With this information, the developed task is able to control the acceleration of the A4MCAR. Additionaly, the acceleration task is modified in order to control acceleration using the proximity sensor inputs for safety. Minimum safest front distance is set to 50 centimeters.
 
 The acceleration task and how data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with the acceleration task having the function name \texttt{Task\texttt{\_}DriveTBLE02E}.
@@ -686,6 +686,8 @@ The operation of this portion of the task is explained as follows:
 	\item Reverse driving mode is not entered by the TBLE02-S Electronic Speed Controller unless the motor fully stops. To achieve this, normally the  user has to select reverse mode several times from the controller. In order to get rid of this issue, once the reverse command is received, the software enters the reverse mode a few times with very short delays, thus users can select it only once and enjoy driving without having to select the mode multiple times by themselves. This implementation is shown in Line 23 in the Listing \ref{lst_bluetoothtask}.
 	\item The obtained control and steering values are sent to the associated task functions in order to handle the actuation (Listing \ref{lst_bluetoothtask}, Lines 27 through 29).
 \end{itemize}
+
+\newpage
 \lstinputlisting[caption=Bluetooth communication task pseudocode, label=lst_bluetoothtask, style=xc]{content/listings/lst_bluetoothtask.txt}
 
 The bluetooth communication task and how data is transferred between other tasks can be seen in the software component diagram in Figure \ref{fig:sysmlxmostasksbrief} with bluetooth communication task having the function name \texttt{Task\texttt{\_}MainProcessingAndBluetoothControl}.
@@ -791,7 +793,7 @@ With the given code by the Listing \ref{lst_timingskeleton}, following remarks c
 To support the utilization assessment and visualization purposes, a core reading process is developed that monitors cores periodically and writes the core usage information to a text file. For that purpose, the \textit{psutil} module \cite{psutil} from Python is used. The \textit{psutil} module allows to find information of Linux processes and cores. The core usage information for four cores of Raspberry Pi that is logged into a text file is then used for visualization in the web interface and the touchscreen interface. 
 
 With the help of a simple function, the core usage information is easily retrieved. The function is given in the Listing \ref{lst_psutil}. It should be noted that \texttt{d} in the listing is an array with 4 elements, each of which indicating thecore usage for an individual cores.
-
+\newpage
 \lstinputlisting[caption=Psutil function to retrieve core utilization information , label=lst_psutil, style=python]{content/listings/lst_psutil.txt}
 
 \subsection{Ethernet (TCP) Client Implementation}
@@ -1025,8 +1027,8 @@ In order to make the the touchscreen display software modular, a class that is c
 	\item \textbf{Functions:} \texttt{UpdateProcessIDAndRunning()} function is used to update the object process ID and whether the process is running. \texttt{UpdateProcessCoreAffinity()} function is used to retrieve the process core affinity while the  \texttt{SetCoreAffinity(core\_affinity)} function is used for setting the core affinity. There are also thread-specific methods such as \texttt{SetCoreAffinityOfThread(core\_affinity)} and \texttt{UpdateThreadIDAndRunning()}.
 \end{itemize}
 
-The touchscreen display process has a multi-threaded design. In this design Python's threading library \cite{pythonthreading} is used. With Python's threading library, one can create threads and handle the shared memory communication between threads. The aforementioned process and thread list, \texttt{aprocess{\_}list} is protected by using the mutex implementation \texttt{Lock()} \cite{pythonthreading} of Python's threading library. The following listing shows how locking works with Python's threading library:
-\begin{lstlisting}[style=python]
+The touchscreen display process has a multi-threaded design. In this design Python's threading library \cite{pythonthreading} is used. With Python's threading library, one can create threads and handle the shared memory communication between threads. The aforementioned process and thread list, \texttt{aprocess{\_}list} is protected by using the mutex implementation \texttt{Lock()} \cite{pythonthreading} of Python's threading library. The Listing \ref{lst:lock} shows how locking works with Python's threading library:
+\begin{lstlisting}[caption={Using locks in Python},label={lst:lock},style=python]
 lock.acquire()
 # Access to the shared variable
 lock.release()
@@ -1142,16 +1144,16 @@ The XTA tool is also able to work with specific commands by using the XTA consol
 \begin{itemize}
 	\item Via placing end points into the code using compiler directive \texttt{\#}pragma as shown in Listing \ref{lst_xtaendpoints}.
 	\lstinputlisting[caption=Placing end points in xC code to define an execution path , label=lst_xtaendpoints, style=xc]{content/listings/lst_xtaendpoints.txt}
-	The timing analysis between two endpoints can be started by entering the following command to the XTA console:
-	\begin{lstlisting}[style=xc]
+	The timing analysis between two endpoints can be started by entering the command in Listing \ref{lst:xtaendpoints} to the XTA console:
+	\begin{lstlisting}[caption={Placing endpoints in XTA},label={lst:xtaendpoints},style=xc]
 	analyze endpoints start_endpoint1 stop_endpoint1
 	\end{lstlisting}
-	\item A function or a runnable with the name \texttt{Function\texttt{\_}Name} can be analyzed from its starting point to its return point by using the following command:
-	\begin{lstlisting}[style=xc]
+	\item A function or a runnable with the name \texttt{Function\texttt{\_}Name} can be analyzed from its starting point to its return point by using the command in Listing \ref{lst:analyzefcn}:
+	\begin{lstlisting}[caption={Analyzing a function in XTA},label={lst:analyzefcn},style=xc]
 	analyze function Function_Name
 	\end{lstlisting}
-	\item Finally, loops can also be investigated using XTA. The way a loop is defined is either setting a loop point from the editor or defining an endpoint inside the loop. A loop point having an end point \texttt{looppoint} can be analyzed using the following command in the XTA console: \\
-	\begin{lstlisting}[style=xc]
+	\item Finally, loops can also be investigated using XTA. The way a loop is defined is either setting a loop point from the editor or defining an endpoint inside the loop. A loop point having an end point \texttt{looppoint} can be analyzed using the command in Listing \ref{lst:analyzeloop} in the XTA console: \\
+	\begin{lstlisting}[caption={Analyzing a loop in XTA},label={lst:analyzeloop},style=xc]
 		analyze loop looppoint
 	\end{lstlisting}
 \end{itemize}
@@ -1181,9 +1183,9 @@ In a properly utilized parallel system, gathered information is used in order to
 
 Within the xTIMEcomposer platform, the task mapping is done easily with the capabilities of the xC programming language. Since xCORE provides a multi-core platform, using the cores for different tasks can be achieved by using simple statements. Although this is introduced in Section \ref{designchapter}, some of the information is summarized for completeness purposes. In XMOS, placement of a function into a core is done by using the \texttt{par} statement. In the main block of a software, the \texttt{par} statement can be used in order to create several tasks in parallel. Additionally, using global interface variables, one can handle the inter-task communication between two parellel tasks.
 
-As opposed in Listing \ref{lst_howtasksconnectxc}, a simple example help one to get a better impression of how this works using xC:
-
-\begin{lstlisting}[style=xc]
+As opposed in Listing \ref{lst_howtasksconnectxc}, a simple example in Listing \ref{lst:intrfc} help one to get a better impression of how this works using xC:
+\newpage
+\begin{lstlisting}[caption={Interfacing in XMOS},label={lst:intrfc},style=xc]
 int main(void)
 {
 	interface my_interface i1;
@@ -1212,9 +1214,9 @@ Besides the implemented core monitoring task, XMOS features several more means t
 	\label{fig:binaryresourceusage}
 \end{figure}
 
-Using the \texttt{debug\texttt{\_}printf} function and xC-specific tools, a function is created that helps to find out which function refers to which core. The reason this information is important is because the core IDs that are referred with the \texttt{par} statements are not the same IDs of the core usage implemention. The same issue holds true for the tile IDs as well. By using the following listing, this information can be monitored at run-time:
+Using the \texttt{debug\texttt{\_}printf} function and xC-specific tools, a function is created that helps to find out which function refers to which core. The reason this information is important is because the core IDs that are referred with the \texttt{par} statements are not the same IDs of the core usage implemention. The same issue holds true for the tile IDs as well. By using the code in Listing \ref{lst:printcoreinf}, this information can be monitored at run-time:
 
-\newpage\begin{lstlisting}[style=xc]
+\begin{lstlisting}[caption={Printing core and tile information},label={lst:printcoreinf},style=xc]
 	int PrintCoreAndTileInformation(char * Function_Name)
 	{
 		debug_printf("Starting %s task on core ID %d on tile %x\n", Function_Name, 	get_logical_core_id(), get_local_tile_id());
@@ -1267,34 +1269,35 @@ An important energy related feature that comes with XS-1 devices is the AEC (Act
 % perf stat, objdump, dis
 In order to obtain the number of instructions of the created processes on the high-level side for modeling purposes, a couple of options are investigated. Most of the techniques are used for the A4MCAR in order to model the system using APP4MC.
 
-As a static binary analysis solution, \textit{objdump} \cite{objdump} module of Linux provides disassembly information of C-based libraries and executables. After the compilation of a C/C++ program, the GNU C Compiler (GCC) provides an object file which contains the binary data for the program. Using the \textit{objdump} module, C/C++ programs, functions, libraries can be analyzed easily. \textit{Objdump} provides not only the disassembled instruction list but also information such as symbol tables and debug information. In order to record the instructions of a C/C++ application, one of the following Linux shell commands are used:
-\begin{lstlisting}[style=bash]
+As a static binary analysis solution, \textit{objdump} \cite{objdump} module of Linux provides disassembly information of C-based libraries and executables. After the compilation of a C/C++ program, the GNU C Compiler (GCC) provides an object file which contains the binary data for the program. Using the \textit{objdump} module, C/C++ programs, functions, libraries can be analyzed easily. \textit{Objdump} provides not only the disassembled instruction list but also information such as symbol tables and debug information. In order to record the instructions of a C/C++ application, one of the commands in Listing \ref{lst:uobjdump} are used.
+\begin{lstlisting}[caption={Using objdump},label={lst:uobjdump},style=bash]
 	objdump MyObject.o -D > MyObjectDump.txt
 	objdump MyObject.o -S > MyObjectDump.txt
 \end{lstlisting}
 These commands provide disassembled instructions from \texttt{MyObject.o} and records them into a file called \texttt{MyObjectDump.txt}. The command with the \texttt{-D} option provides the complete disassembly information for each function whereas the command with the \texttt{-S} option provides source code along with instructions. 
 
-Although using \texttt{objdump} is useful for C/C++ applications, it does not provide any means to investigate Python-based processes. To get the instruction information for Python-based processes Python library \texttt{dis} \cite{dis} provides a couple of functions. These functions must be used in the Python program itself in order to print out or record the instruction information. A simple example of using \texttt{dis} in a Linux shell is given below:
-\begin{lstlisting}[style=bash]
+Although using \texttt{objdump} is useful for C/C++ applications, it does not provide any means to investigate Python-based processes. To get the instruction information for Python-based processes Python library \texttt{dis} \cite{dis} provides a couple of functions. These functions must be used in the Python program itself in order to print out or record the instruction information. A simple example of using \texttt{dis} in a Linux shell is given in Listing \ref{lst:udis}.
+\begin{lstlisting}[caption={Using dis},label={lst:udis},style=bash]
 python -m dis PythonApp.py
 \end{lstlisting}
-This command will give bytecodes of each code line, hence giving instructions for every line of code. One can also disassemble functions by using the following in a Python code:
-\begin{lstlisting}[style=bash]
+This command will give bytecodes of each code line, hence giving instructions for every line of code. One can also disassemble functions by using the Python code in Listing \ref{lst:udisp}.
+\begin{lstlisting}[caption={Using dis in Python shell},label={lst:udisp},style=bash]
 import dis
 dis.dis(FunctionName)
 \end{lstlisting}
  
-\textit{Perf} \cite{perf1} \cite{perf2} is a well-known lightweight system performance counter and profiler tool for Linux. Using perf, one can obtain event and instruction counts, record events, run benchmarks, and analyze processes \cite{perf1}. For the A4MCAR, the Perf profiler tool has been used for many purposes that include process instruction analysis, system-wide scheduling tracing, and trace data conversion. Perf can perform dynamic analysis (profiling) in order to obtain the number of instructions for processes and runnables using Linux shell command shown in the following listing. 
-\begin{lstlisting}[style=bash]
+\textit{Perf} \cite{perf1} \cite{perf2} is a well-known lightweight system performance counter and profiler tool for Linux. Using perf, one can obtain event and instruction counts, record events, run benchmarks, and analyze processes \cite{perf1}. For the A4MCAR, the Perf profiler tool has been used for many purposes that include process instruction analysis, system-wide scheduling tracing, and trace data conversion. Perf can perform dynamic analysis (profiling) in order to obtain the number of instructions for processes and runnables using Linux shell command shown in the Listing \ref{lst:perfp}. 
+\begin{lstlisting}[caption={Using perf stat},label={lst:perfp},style=bash]
 sudo perf stat -e instructions:u -p <pid>
 \end{lstlisting}
 It must be noted that the number of instructions are obtained dynamically so the process should either be exited or should have a finite number of iterations for the result to be accurate. It must also be made sure that since the command is used for counting the number of instructions of a running process, the command should be executed right after the process starts. In the listing, command counts the instructions only in user mode to avoid including any system overhead and the \texttt{<pid>} is the Process ID of the process according to the Linux kernel. How a process ID of a process is obtained and what it means is discussed in the next section.
-For the analysis of high-level applications in A4MCAR, the following variation of the perf stat command is used which is able to determine the instruction count of a running process or thread with a timeout. If the timeout is set to the period of the schedulable process or thread, one can obtain rough idea about the granularity of the process or thread. In the following listing, \texttt{<timeout>} is the period in seconds.
-\begin{lstlisting}[style=bash]
+For the analysis of high-level applications in A4MCAR, the following variation of the perf stat command is used which is able to determine the instruction count of a running process or thread with a timeout. If the timeout is set to the period of the schedulable process or thread, one can obtain rough idea about the granularity of the process or thread. In Listing \ref{lst:perfpt}, \texttt{<timeout>} is the period in seconds.
+\newpage
+\begin{lstlisting}[caption={Using perf stat with timeout},label={lst:perfpt},style=bash]
 sudo perf stat -e instructions:u -p <pid> -- sleep <timeout>
 \end{lstlisting}
-For threads, the aforementioned method is error-prone, therefore using \texttt{--per-thread} switch is more reliable when profiling threads of a process as shown in the following listing.
-\begin{lstlisting}[style=bash]
+For threads, the aforementioned method is error-prone, therefore using \texttt{--per-thread} switch is more reliable when profiling threads of a process as shown in Listing \ref{lst:perfpp}.
+\begin{lstlisting}[caption={Using perf stat with per thread switch},label={lst:perfpp},style=bash]
 sudo perf stat --per-thread -e instructions:u -p <pid> -I <timeout>
 \end{lstlisting}
 
@@ -1302,8 +1305,8 @@ sudo perf stat --per-thread -e instructions:u -p <pid> -I <timeout>
 Managing and monitoring processes and threads of a the Linux system are crucial preliminaries that should be discussed in order to work with A4MCAR's high-level module using Linux platform. One can list the process management and monitoring issues as follows:
 \begin{itemize}
 	\item \textbf{Listing Processes and Threads:}
-	By using the \texttt{top} command, processes and threads that are running can be listed. A couple of example commands and their outputs are explained below \cite{topexamples}. By using the following, processes of the entire system could be monitored.
-	\begin{lstlisting}[style=bash]
+	By using the \texttt{top} command, processes and threads that are running can be listed. A couple of example commands and their outputs are explained below \cite{topexamples}. By using the command in Listing \ref{lst:topl}, processes of the entire system could be monitored.
+	\begin{lstlisting}[caption={Top command in Linux shell},label={lst:topl},style=bash]
 		top
 	\end{lstlisting}
 	\begin{figure}[!ht]
@@ -1313,23 +1316,24 @@ Managing and monitoring processes and threads of a the Linux system are crucial 
 		\caption{Top command output}
 		\label{fig:topexample1}
 	\end{figure}
-	In, \ref{fig:topexample1} each process are listed in descending order according to their CPU usages. Processes could be identified by looking at their commands. Information such as \textit{owned user (USER)}, \textit{process ID (PID)}, how much \textit{virtual memory are accessed (VIRT)}, \textit{physical memory usage (RES and MEM)}, \textit{how much virtual memory is shared (SHR)}, \textit{cpu usage (CPU)} can be monitored in this window. By using the following command, one could also see the threads of a process given its process ID:
-	\begin{lstlisting}[style=bash]
+	In, \ref{fig:topexample1} each process are listed in descending order according to their CPU usages. Processes could be identified by looking at their commands. Information such as \textit{owned user (USER)}, \textit{process ID (PID)}, how much \textit{virtual memory are accessed (VIRT)}, \textit{physical memory usage (RES and MEM)}, \textit{how much virtual memory is shared (SHR)}, \textit{cpu usage (CPU)} can be monitored in this window. By using the command in Listing \ref{lst:topt}, one could also see the threads of a process given its process ID.
+	\begin{lstlisting}[caption={Using top to monitor threads},label={lst:topt},style=bash]
 	top -H -p <pid>
 	\end{lstlisting}
 	
-	Another way to manage processes is done by using \texttt{ps} command. This command not only allows to list processes or threads but also is used to kill processes. Similarly to \texttt{top} command, \texttt{ps} command could be used like the Listing given below in order to list processes and threads:
-	\begin{lstlisting}[style=bash]
+	Another way to manage processes is done by using \texttt{ps} command. This command not only allows to list processes or threads but also is used to kill processes. Similarly to \texttt{top} command, \texttt{ps} command could be used like the Listing \ref{lst:psu} in order to list processes and threads.
+	\begin{lstlisting}[caption={Using ps in Linux shell},label={lst:psu},style=bash]
 	ps -aux             #All processes
 	ps -T -p <pid>      #Threads of a process
 	ps H -p <pid> -o 'pid tid cmd comm' #Threads of a process including their names
 	\end{lstlisting}
 	
-	\item \textbf{Obtaining Process ID of a Process:} Identifying the process ID or a process is crucial in order to work with processes in Linux. By using the following command, the PID of a process can be obtained by the process name:
-	\begin{lstlisting}[style=bash]
+	\item \textbf{Obtaining Process ID of a Process:} Identifying the process ID or a process is crucial in order to work with processes in Linux. By using the command in Listing \ref{lst:pgrepu}, the PID of a process can be obtained by the process name.
+	\begin{lstlisting}[caption={Using pgrep},label={lst:pgrepu},style=bash]
 		pgrep -f <process_name> -n 
 	\end{lstlisting}
-	Using this knowledge, a Linux bash script has been created that monitors a process by finding the process ID from the process name and then using perf profiler. The script is given in Listing \ref{lst_AppMonitor}
+	Using this knowledge, a Linux bash script has been created that monitors a process by finding the process ID from the process name and then using perf profiler. The script is given in Listing \ref{lst_AppMonitor}.
+	\newpage
 	\lstinputlisting[caption=Created Bash script to dynamically profile applications (AppMonitor.sh), label=lst_AppMonitor, style=bash]{content/listings/lst_AppMonitor.txt}
 	
 	By calling \texttt{bash AppMonitor.sh <process\texttt{\_}name>} from the Linux shell, this script is used to monitor applications using perf. In the script, thecommand argument is retrieved (Line 2 and Line 3), process ID is obtained (Line 4) and then perf stat is used (Line 5). 
@@ -1337,8 +1341,8 @@ Managing and monitoring processes and threads of a the Linux system are crucial 
 	
 	Since the touchscreen display process is responsible of doing all the online timing calculations, a function has been implemented which returns the PID of a process if the process is running (Listing \ref{lst_CheckIfProcessRunning}). In the following, it is seen that using \textit{subprocess} module of Python, one can check the output of a Linux shell command from Python environment (Line 4 of Listing \ref{lst_CheckIfProcessRunning}).
 	
-	\item \textbf{Killing a Process:} Killing a process is handled through a simple Linux shell command that is given below:
-	\begin{lstlisting}[style=bash]
+	\item \textbf{Killing a Process:} Killing a process is handled through a simple Linux shell command that is given in Listing \ref{lst:kill9}.
+	\begin{lstlisting}[caption={Killing processes from Linux shell},label={lst:kill9},style=bash]
 		sudo kill -9 <pid>
 	\end{lstlisting}
 	Using the same manner that is explained by the Listing \ref{lst_AppMonitor}, a Linux shell script that is called \texttt{KillProcess.sh} has been created which is able to kill running process by their names.
@@ -1367,8 +1371,8 @@ As mentioned, for system monitoring investigating the \texttt{/proc} folder is a
 \end{itemize}
 
 Although regarding the Linux system administration those information are useful, a more easy way to obtain certain information can be done through using third party modules. For the A4MCAR, \textit{psutil} Python module has been used in order to monitor system information such as number of active cores running, core frequencies and CPU utilization of each core. 
-Using the following function, the core frequencies are extracted in MHz:
-\begin{lstlisting}[style=python]
+Using the function given in Listing \ref{lst:psutilx}, the core frequencies are extracted in MHz.
+\begin{lstlisting}[caption={Using psutil to get CPU frequencies},label={lst:psutilx},style=python]
 	str(psutil.cpu_freq()).split(',')[0].split('=')[1]
 \end{lstlisting}
 Similarly, the \texttt{psutil.cpu\texttt{\_}count()} function can be used to extract the number of active cores and the \texttt{psutil.cpu\texttt{\_}percent()} function can be used to extract the core utilization percentages in a given time period \cite{psutil}. 
@@ -1378,12 +1382,12 @@ Similarly, the \texttt{psutil.cpu\texttt{\_}count()} function can be used to ext
 To evaluate performance indicators and observe load balancing, tracing the high-level module processes is crucial for the A4MCAR. By recording a system trace and using scheduling visualization tools in Linux, one can see how processes and threads are distributed amongst the existing cores. For that purpose, tracing and visualization options are investigated as follows:
 \begin{itemize}
 	\item \textbf{Tracing via perf and viewing the trace:}
-	In order to trace the system using perf profiler, perf's record command is used \cite{perf2}. As an example, the system trace could be obtained for 15 seconds by entering the following command into the Linux shell:
-	\begin{lstlisting}[style=bash]
+	In order to trace the system using perf profiler, perf's record command is used \cite{perf2}. As an example, the system trace could be obtained for 15 seconds by entering the command in Listing \ref{lst:perfschedx} into the Linux shell.
+	\begin{lstlisting}[caption={Using perf sched record},label={lst:perfschedx},style=bash]
 		sudo perf sched record -- sleep 15
 	\end{lstlisting}
-	Once the tracing is done, the system trace is recorded to a file called \texttt{perf.data}. This trace file uses the perf tracing format which is not a common format. Therefore, it is not recognized by many of the trace visualization software. In order to visualize a basic system trace using perf.data file, the following command could be used which saves the full trace in a text file called \texttt{fulldump.txt}:
-	\begin{lstlisting}[style=bash]
+	Once the tracing is done, the system trace is recorded to a file called \texttt{perf.data}. This trace file uses the perf tracing format which is not a common format. Therefore, it is not recognized by many of the trace visualization software. In order to visualize a basic system trace using perf.data file, the command given in Listing \ref{lst:perfscr} could be used which saves the full trace in a text file called \texttt{fulldump.txt}.
+	\begin{lstlisting}[caption={Using perf sched script to get full dump of scheduling in Linux},label={lst:perfscr},style=bash]
 		sudo perf sched script > fulldump.txt
 	\end{lstlisting}
 	First lines of the \texttt{fulldump.txt} should be analyzed in order to understand what information can be inferred from the trace. Referring to the code given in the Listing \ref{lst_perfschedscriptdump}, each line represents a kernel event. If a task is being started to execute on a core that event is referred to as a \texttt{sched\texttt{\_}switch} event, whereas if a task that was in the sleeping state is being executed again this is referred to as the \texttt{sched\texttt{\_}wakeup} event. Another information regarding trace events involve \textit{process name (comm)}, \textit{process ID (pid)}, \textit{target core (target\texttt{\_}cpu)} and \textit{time at which the event occurred}. 
@@ -1391,8 +1395,8 @@ To evaluate performance indicators and observe load balancing, tracing the high-
 	
 	\lstinputlisting[caption=\texttt{Perf sched map} command output \cite{perf2}, label=lst_perfschedmapdump, style=python]{content/listings/lst_perfschedmapdump.txt}
 	
-	Since the \texttt{perf sched script} output might be messy for a system trace, one could be more interested in seeing a system trace in a more abstract form. In that regards, obtaining a cpu mapping view of the trace could help. In order to obtain a cpu mapping view, the following command is used from the Linux shell:
-	\begin{lstlisting}[style=bash]
+	Since the \texttt{perf sched script} output might be messy for a system trace, one could be more interested in seeing a system trace in a more abstract form. In that regards, obtaining a cpu mapping view of the trace could help. In order to obtain a cpu mapping view, the command in Listing \ref{lst:perfmap} is used from the Linux shell.
+	\begin{lstlisting}[caption={Obtaining CPU mapping view using perf},label={lst:perfmap},style=bash]
 		sudo perf sched map
 	\end{lstlisting}
 	The output of this command can be seen in Listing \ref{lst_perfschedmapdump}. In the code, it is shown that each column represents a core whereas vertical axis is the time axis. In other words, each time an event occurs, a new line is added and the task is placed to a column depending on which core it is running. It should be noted that star symbol near a task is used to indicate \texttt{sched\texttt{\_}switch} events. The timing information, the process name and process ID are also given in this view. 
@@ -1400,8 +1404,8 @@ To evaluate performance indicators and observe load balancing, tracing the high-
 	Concerning the example in Listing \ref{lst_perfschedmapdump}, if the cores had names 0 through 3 depending on their column index, it must be seen that the core 0 (first column) is not doing anything whereas most of the load is located on on cores 2 and 3. It must also seen that the process A0 (hence, perf) had switched from core 2 to core 3 at some point in time.
 	
 	\item \textbf{Trace-Cmd trace and visualization via kernelshark:}
-	Trace-cmd \cite{tracecmd} is yet another tool that records system trace. Trace-cmd trace is generated into a file\texttt{ trace.dat} by using the following command:
-	\begin{lstlisting}[style=bash]
+	Trace-cmd \cite{tracecmd} is yet another tool that records system trace. Trace-cmd trace is generated into a file\texttt{ trace.dat} by using the command given in Listing \ref{lst:tracec}.
+	\begin{lstlisting}[caption={Recording a system trace using trace-cmd},label={lst:tracec},style=bash]
 		sudo trace-cmd record -e sched
 	\end{lstlisting}
 	The trace that is generated from \textit{trace-cmd tool} could be observed via a visualization tool called \textit{kernelshark}. By simplying calling \texttt{kernelshark} from the directory that \texttt{trace.dat} is located, one can launch kernelshark to observe the system trace. An example of kernelshark is shown in the Figure \ref{fig:kernelshark}.
@@ -1417,8 +1421,8 @@ To evaluate performance indicators and observe load balancing, tracing the high-
 	
 	\textit{LTTng} \cite{lttng} is an open-source tracing framework that is provided for the Linux platform which is quite often used with Eclipse TraceCompass due to its format compatibility, i.e. both LTTng and TraceCompass can handle the standard tracing format, \textit{CTF (Common Trace Format)} well. However, since LTTng requires system tracepoints to be designed in the software development stage, in A4MCAR due to its ease of implementation Perf is used for tracing. Although TraceCompass accepts many trace formats, it can not read directly from perf format (\texttt{perf.data}). Therefore, the perf trace format should be converted to CTF in order to be analyzed using the Eclipse TraceCompass.
 	
-	In order to convert the perf format, one has to build a new version of perf from a Linux kernel module \cite{jolsa} with tracing options enabled and also with a tracing library that is called LibBabelTrace. The detailed information regarding this building process could be seen at \cite{perfbabeltrace}. Once the perf is built and installed with babeltrace, one can use the following commands to record a trace and then convert it to CTF data format. 
-	\begin{lstlisting}[style=bash]
+	In order to convert the perf format, one has to build a new version of perf from a Linux kernel module \cite{jolsa} with tracing options enabled and also with a tracing library that is called LibBabelTrace. The detailed information regarding this building process could be seen at \cite{perfbabeltrace}. Once the perf is built and installed with babeltrace, one can use the commands in Listing \ref{lst:convctf} to record a trace and then convert it to CTF data format. 
+	\begin{lstlisting}[caption={Conversion to Common Trace Format},label={lst:convctf},style=bash]
 		sudo perf sched record -e 'sched:*,raw_syscalls:*' -- sleep 15
 		sudo LD_LIBRARY_PATH=/opt/libbabeltrace/lib perf data convert --to-ctf=./ctf
 	\end{lstlisting}
@@ -1427,12 +1431,13 @@ To evaluate performance indicators and observe load balancing, tracing the high-
 	\begin{figure}[!ht]
 		\centering
 		\captionsetup{justification=centering}
-		\includegraphics[scale=0.45]{content/images/tracecompass.png}
+		\includegraphics[scale=0.40]{content/images/tracecompass.png}
 		\caption{Eclipse TraceCompass running on Windows}
 		\label{fig:tracecompass}
 	\end{figure}
 
 	To ease the process of having to trace using perf, convert the trace, and take a look at the process ID list to interpret the trace, a Linux shell (bash) script has been created in order to get necessary outputs from tracing processes and threads automatically. Listing \ref{lst_tracebash} shows the content of the script. It is seen in the script that command line arguments are taken (Lines 1 to 4) to make the process more modular. The Lines 11 to 20 are dedicated to executing the commands that are discussed above by making use of the command line arguments. By stating the trace name, tracing period, and perf module installation location, one can use this script to generate traces easier. %explain some lines..
+	\newpage
 	\lstinputlisting[caption=Script to generate traces automatically, label=lst_tracebash, style=python]{content/listings/lst_tracebash.txt}
 	
 	At this point, it is really important for a developer to let the Linux Kernel and by extension the TraceCompass identify the processes and threads. The way this is achieved is by manipulating the name of the processes and threads that are visible to Linux kernel, which is known as \texttt{command}. In this work, this is researched for both C++ (POSIX threads) and Python (threading) processes and threads.
@@ -1455,14 +1460,15 @@ To evaluate performance indicators and observe load balancing, tracing the high-
 
 \subsection{Process and Thread Mapping}
 % taskset, CorePlacer.sh, coredeflist.a4p isleri touchscreende
-After software evaluation, processes and threads should be pinned to cores properly. To place the processes and threads to cores, the \textit{taskset} module of the Linux platform is used. Taskset module \cite{taskset} is used to set or retrieve the CPU affinity of a running process given its process ID. CPU affinity is a scheduler property that pins a process to a given set of CPUs on the system. Therefore, the process will not run on any other CPUs after an affinity is set to that process \cite{taskset}. As described in \cite{taskset}, the Linux scheduler also supports natural CPU affinity: the scheduler attempts to migrate processes along different CPUs as long as it is practical for performance reasons \cite{taskset}. Therefore, in A4MCAR, by forcing a specific CPU affinity, we investigate if a better distribution could be accomplished than the scheduling automatically done by Linux. To place a process to a core given its process ID, the following command is used:
+After software evaluation, processes and threads should be pinned to cores properly. To place the processes and threads to cores, the \textit{taskset} module of the Linux platform is used. Taskset module \cite{taskset} is used to set or retrieve the CPU affinity of a running process given its process ID. CPU affinity is a scheduler property that pins a process to a given set of CPUs on the system. Therefore, the process will not run on any other CPUs after an affinity is set to that process \cite{taskset}. As described in \cite{taskset}, the Linux scheduler also supports natural CPU affinity: the scheduler attempts to migrate processes along different CPUs as long as it is practical for performance reasons \cite{taskset}. Therefore, in A4MCAR, by forcing a specific CPU affinity, we investigate if a better distribution could be accomplished than the scheduling automatically done by Linux. To place a process to a core given its process ID, the command given in Listing \ref{lst:usingtaskset} is used.
 
-\begin{lstlisting}[style=bash]
+\begin{lstlisting}[caption={Using taskset},label={lst:usingtaskset},style=bash]
 	#Place the process on a specific core.
 	sudo taskset -pc <coreaffinity> <pid>
 \end{lstlisting}
 
 As an example, for a 4-core system such as Raspberry Pi 3, core affinity can be values such as 0, 1, 2, 3, 0-1, 0-2, 0-3, 2-3. This example shows that core affinity not necessarily has to be selected as only one core and it can be selected as a range of cores for a process to be distributed. The Listing \ref{lst_CorePlacer} depicts how a process is pinned to a core using its name.
+\newpage
 \lstinputlisting[caption=CorePlacer.sh script to pin a process to a core using its name, label=lst_CorePlacer, style=bash]{content/listings/lst_CorePlacer.txt}
 
 To manage the distribution process for every process might be time consuming. In order to overcome this issue, a file format has been designed which is then read by the main processing task (Touchscreen display process). The touchscreen process, when the distribution is selected, reads from this file format \texttt{coredef\texttt{\_}list.a4p} and makes core placements accordingly. An example \texttt{coredef\texttt{\_}list.a4p} is shown in Listing \ref{lst_coredeflista4p}. It is shown in the listing that task names and cores are listed by each line.
@@ -1497,8 +1503,8 @@ In Linux, \textit{CPUFreq} \cite{cpufrequencyscaling} is provided as a module th
 	\item \textbf{conservative} - adjust based on utilization but be a bit more conservative by adjusting gradually
 \end{itemize}
 
-The CPUFreq governor of a Linux system can be changed at any given moment by using the \texttt{cpufreq-utils} command. The following Linux shell commands show installation of \texttt{cpufreq-utils} (Line 1), listing information (Line 2), and current governor selection (Line 3), respectively.
-\begin{lstlisting}[style=bash]
+The CPUFreq governor of a Linux system can be changed at any given moment by using the \texttt{cpufreq-utils} command. The Linux shell commands in Listing \ref{lst:cpufrequ} show installation of \texttt{cpufreq-utils} (Line 1), listing information (Line 2), and current governor selection (Line 3), respectively.
+\begin{lstlisting}[caption={Changing CPU governer from Linux shell},label={lst:cpufrequ},style=bash]
 	sudo apt-get install cpufrequtils
 	cpufreq-info
 	cpufreq-set -g <governor>  #<governor> could be either of the governors that are listed.
@@ -1535,25 +1541,25 @@ Subsection \ref{onlinetiming} explains the calculation of ${ET}$, ${ST}$, and de
 	DLM =  {\frac{100}{N\textsubscript{process}}} {\sum_{n=0}^{N\textsubscript{process}} DF\textsubscript{n}} 
 	\end{equation}
 \end{itemize}
-In Chapter \ref{evaluationchapter}, the evaluation of distributions and results will be given and explained.
+In the following chapter, the evaluation of distributions and results is given and explained.
 
 %%% CHAPTER Information Tracing and System Modeling --------end----
 %%% CHAPTER Effective Parallelism Evaluation --------begin----
 \chapter{Evaluation and Results}\label{evaluationchapter}
 \section{System Limitations and Factors that Affect the Results} %hw-sw limitations, xmos hw & xta tracing limitations, overall tracing limitations, perf limitations, granularity limitations due to process-based distribution, image processing has significantly more load,
-In this chapter, system modeling with APP4MC and evaluations of mapping outcomes are discussed. A4MCAR, like every embedded system does, has its limitations that are related to both hardware and software. APP4MC has primary objective of serving industry-related applications, supported with industry-related tools with precise tracing and distribution interfaces. However, applying APP4MC solutions for custom open-source and commercial tools requires some effort regarding developing tool support for the aforementioned interfaces. Furthermore, overheads and limitations are present for custom platforms and tools. The following list explains the limitations that affect the demonstrative purposes of the project and the results of the software distribution:
+In this chapter, system modeling with APP4MC and evaluations of mapping outcomes are discussed. The A4MCAR, like every embedded system, has its limitations related to both hardware and software. APP4MC' primary objective is serving industry-related applications, supported with industry-related tools with precise tracing and distribution interfaces. However, applying APP4MC solutions for custom open-source and commercial tools requires some effort regarding developing tool support for dealing with the issues such as modeling, tracing, and distribution. Furthermore, overheads and limitations are present for custom open-source platforms and tools. The following list explains the limitations that affect the demonstrative purposes of the project and the results of the software distribution:
 \begin{itemize}
-	\item \textbf{Model limitations and overheads in the system}: Although the created AMALTHEA model contains most of the information related to runnables, it does not contain information such as OS scheduling, reading/writing to/from files, kernel overheads, and tracing overheads. Furthermore, due to easement, some trivial shared resources and runnables are not modeled. Therefore, created AMALTHEA model is not 100\% precise. This situation will create non-deterministic error in the outcomes that should be noted. 
+	\item \textbf{Model limitations and overheads in the system}: Although the created AMALTHEA model contains most of the information related to runnables, it does not contain information such as OS scheduling, reading/writing to/from files, kernel overheads, and tracing overheads. Furthermore, in order to ease the modeling process, some trivial shared resources and runnables that mainly belong to Linux system's internal operation are not modeled. Therefore, created AMALTHEA model is not 100\% precise. This situation will create non-deterministic error in the outcomes that should be noted. 
 	\item \textbf{Sporadic activations}: Since some tasks especially in the low-level module are activated randomly rather than periodically, the system and the model has non-deterministic behavior to some degree. That is one of the limitations which constrain the output from APP4MC. %non-determinism & randomness
-	\item \textbf{Limitations of perf profiler}: Perf profiler uses dynamic analysis to get the granularity of the tasks \cite{perf2}. Due to the profiler overhead, the resulting granularities that are observed with the help of the perf profiler might contain errors. However, it is assumed in this work that granularities of tasks being relative would not produce errors in the partitioning.
-	\item \textbf{Limitations of process-based distribution}: Since in this work not very fine-grained processes are distributed, the load balancing by 100\% would not be possible. As an example, image processing process contains significantly higher instruction size than of any other process. Therefore, the goal is to achieve the best possible load balancing with the obtained granularity data. %reverse engineering, high granularity, image processing app
-	\item \textbf{Limitations of XTA}: XTA tool, as mentioned in the section \ref{staticbinary}, generates hardware related unresolvable errors when analyzing the granularities for runnables. In this work, for the tasks that the timing analysis resulted in unresolvable errors, the disassembly instructions are counted. This approach disregards loops and might lead to non-accurate granularities.
+	\item \textbf{Limitations of perf the profiler}: The perf profiler uses dynamic analysis to get the granularity of tasks \cite{perf2}. Due to the profiler overhead, the resulting granularities that are observed with the help of the perf profiler might contain errors. However, it is assumed in this work that granularities of tasks being relative would not produce errors in the partitioning.
+	\item \textbf{Limitations of process-based distribution}: Since in this work not very fine-grained processes are distributed, the load balancing by 100\% would not be possible. As an example, image processing process contains a significantly higher instruction size than any of the other processes. Therefore, the goal is to achieve the best possible load balancing with the obtained granularity data. %reverse engineering, high granularity, image processing app
+	\item \textbf{Limitations of XTA}: The XTA tool, as mentioned in Section \ref{staticbinary}, generates hardware related unresolvable errors when analyzing the granularities for runnables. In this work, for the tasks that the timing analysis resulted in unresolvable errors, the disassembly instructions are counted. This approach disregards loops and might lead to non-accurate granularities.
 	\item \textbf{Hardware limitations}: Hardware limitations affect the outcomes when the energy consumption is a concern. Since the default DVFS option for Raspberry Pi 3 only allows underclocking to 600MHz clock frequency and other frequencies are not supported, the default underclocking is investigated to obtain reduced energy consumption.%Rpi clock can take only 600mhz and 1.2GHz
-	\item \textbf{XMOS Multicore Design Rules and Third-party library conflict:} In the low-level module, which uses XMOS xCORE-200 eXplorerKIT multi-core development board as its basis, some tasks could not distributed effectively along individual cores of the system. This is because of the conflict between XMOS multi-core design rules and the used third party libraries. According to XMOS multi-core design rules which are explained in \cite{xmosprogrguide}, a combinable function can only be distributed to a core. However, due to the fact that core implementations of some library functions does not have a combinable nature, those functions were not able to be distributed. Furthermore, the library functions which use multiple cores were not also able to be distributed manually to cores. Although these changes are reflected to the model, due to being unable to distribute some tasks, the output from APP4MC does not present an optimal solution regarding load balancing and reduced energy consumption.
-	\item \textbf{Deficiency in Core Utilization Tracing in XMOS:} The provided register information is not sufficient in reading core utilization information for some tasks. For that reason, the utilization is not visualized very efficiently.
+	\item \textbf{XMOS Multicore Design Rules and Third-party library conflicts:} In the low-level module, which uses the XMOS xCORE-200 eXplorerKIT multi-core development board as its basis, some tasks could not distributed effectively along individual cores of the system. This is because of the conflict between XMOS multi-core design rules and the used third party libraries. According to XMOS multi-core design rules which are explained in \cite{xmosprogrguide}, only a combinable function can be distributed to a single core. However, due to the fact that core implementations of some library functions do not have a combinable nature, those functions were not able to be distributed. Furthermore, the library functions which use multiple cores were not also able to be distributed manually to cores. Although these changes are reflected to the model, due to being unable to distribute some tasks, the output from APP4MC does not present an optimal solution regarding load balancing and reduced energy consumption.
+	\item \textbf{Deficiency in Core Utilization Tracing in XMOS:} The provided register information is not sufficient in reading core utilization information for sporadic tasks. Only periodic tasks are correctly measured with the introduced core reading methodology. For that reason, the utilization is not visualized very efficiently.
 \end{itemize}
 \section{Modeling the A4MCAR using APP4MC}
-In the Section \ref{app4mcchapter}, motivations and design techniques of using APP4MC has been introduced. Recall from the aforementioned section that user has to start designing the parallel application by making use of the modeling functionality of APP4MC. In order to evaluate how APP4MC performs using A4MCAR, the design starts by identifying several attributes that are related to software and hardware. With the help of the modeling functionality of the APP4MC, A4MCAR's hardware details, software details, constraints, and common elements (such as tags) are described. It is important to mention that APP4MC can be used to describe several types of models such as Components Model, OS Model, Mapping Model, Stimuli Model, and Event Model. However, depicted model in this work explains the minimalistic model that can be used to make use of APP4MC's partitioning and mapping features. The models contain XML-based hierarchy with elements having their childs and attributes. With this hierarchy, containment of the elements are described easily. The following list briefly explains the initially created model, which is also shown in the \textit{AMALTHEA Contents tree window} given by the Figure \ref{fig:overallmodel}:
+In Section \ref{app4mcchapter}, motivations and design techniques of APP4MC were introduced. The users have to start designing the parallel application by making use of the modeling functionality of APP4MC. In order to evaluate how APP4MC performs in regard to the A4MCAR, the design starts by identifying several attributes that are related to software and hardware. With the help of the modeling functionality of APP4MC, A4MCAR's hardware details, software details, constraints, and common elements (such as tags) are described. It is important to mention that APP4MC can be used to describe several types of models such as Components Model, OS Model, Mapping Model, Stimuli Model, and Event Model. However, the model in this work explains the minimalistic model that can be used to make use of APP4MC's partitioning and mapping features. The models contain XML-based hierarchy with elements having their childs and attributes. With this hierarchy, the containments of the elements are described easily. The following list briefly explains the initially created model, which is also shown in the \textit{AMALTHEA Contents tree window} given by the Figure \ref{fig:overallmodel}:
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
@@ -1562,25 +1568,25 @@ In the Section \ref{app4mcchapter}, motivations and design techniques of using A
 	\label{fig:overallmodel}
 \end{figure}
 \begin{itemize}
-	\item \textbf{Hardware Model:} Hardware model consists of two processor types: \textit{xCORE-200} for low-level module (XMOS board), and \textit{ARM Cortex-A53} for high-level module (RPI3 board). The \textit{HW System} element contains ECUs (\textit{XMOS} and \textit{RPI3}) with each of ECUs having their respective microcontrollers defined under them. In A4MCAR, \textit{XMOS} ECU has two tiles defined as microcontrollers (\textit{Tile0} and \textit{Tile1}) , whereas \textit{RPI3} ECU has only one microcontroller element which is \textit{CortexA53}. Each microcontroller element has their respective clocks and individual cores defined under them. That is, \textit{Tile0} has 8 cores, \textit{Tile1} has 8 cores, and \textit{CortexA53} has 4 cores. Furthermore, default clock setup (when energy consumption is not a concern) requires \textit{Tile0} and \textit{Tile1} to have 500MHz system frequency in the model whereas \textit{CortexA53} is defined as 1.2GHz. The defined hardware model is used in APP4MC when mapping of software processes to the hardware cores are performed.
-	\item \textbf{Software Model:} Software model defines the pairwise relationship between runnables, activation conditions of runnables, labels (memory read and write accesses), events and interrupts. A minimalistic software model in APP4MC should have runnables, labels and activations defined which are shown in the Figure \ref{fig:overallmodel}. 
+	\item \textbf{Hardware Model:} The hardware model consists of two processor types: \textit{xCORE-200} for the low-level module (XMOS board), and \textit{ARM Cortex-A53} for the high-level module (RPI3 board). The \textit{HW System} element contains ECUs (\textit{XMOS} and \textit{RPI3}) with each of the ECUs having their respective microcontrollers defined. For the A4MCAR, the \textit{XMOS} ECU has two tiles defined as microcontrollers (\textit{Tile0} and \textit{Tile1}) , whereas the \textit{RPI3} ECU has only one microcontroller element which is \textit{CortexA53}. Each microcontroller element has their respective clocks and individual cores defined under them. That is, \textit{Tile0} has 8 cores, \textit{Tile1} has 8 cores, and \textit{CortexA53} has 4 cores. Furthermore, the default clock setup (when energy consumption is not a concern) requires \textit{Tile0} and \textit{Tile1} to have 500MHz system frequency in the model whereas \textit{CortexA53} is defined as 1.2GHz. The defined hardware model is used in APP4MC for the mapping of software processes to the hardware cores.
+	\item \textbf{Software Model:} The software model defines the pairwise relationship between runnables, activation conditions of runnables, labels (memory read and write accesses), events and interrupts. A minimalistic software model in APP4MC should have runnables, labels and activations defined which are shown in the Figure \ref{fig:overallmodel}. 
 	
-	Recall that in the chapter \ref{informationchapter}, the information tracing of multi-tasked systems are discussed. By making use of the aforementioned techniques, runnables, labels, and activations should be defined. Even in a distributed architecture such as A4MCAR, all the runnables from each ECU are listed under the \textit{Runnables} element. Runnables usually are the independent smallest functional parts of a task. However, in A4MCAR some processes, events, and tasks are modeled as runnables due to the ease of modeling. In A4MCAR, an initial analysis led up to a model with 41 runnables. Each runnable listed under \textit{Runnables} element has their granularity (i.e number of instructions) defined. Furthermore, labels are used to define shared variables and inter-process communication. After labels are defined (either by defining bit size or memory size), each runnable are configured depending on their read and write accesses to labels. One should take a look at the Figures \ref{fig:sysmlxmostasksbrief} and \ref{fig:rpicomponents} in order to better understand label accesses that are modeled in A4MCAR's low-level module and high-level module. Finally, activations of each runnable are listed under \textit{Activations} element. Activation can either be periodic or sporadic (random).
+	In chapter \ref{informationchapter}, the information tracing of multi-tasked systems is discussed. By making use of the aforementioned techniques, runnables, labels, and activations should be defined. Even in a distributed architecture such as the A4MCAR, all the runnables from each ECU are listed under the \textit{Runnables} element. Runnables usually are the smallest execution units of a task. However, for the A4MCAR some processes, events, and tasks are modeled as runnables due to the ease of modeling. For the A4MCAR, an initial analysis led up to a model with 41 runnables. Each runnable listed under \textit{Runnables} element has its own granularity (i.e number of instructions) defined. Furthermore, labels are used to define shared variables and inter-process communication. Labels are defined e.g. in bit size and memory size and each runnable is configured depending on their read and write accesses to labels. One should take a look at the Figures \ref{fig:sysmlxmostasksbrief} and \ref{fig:rpicomponents} in order to see label accesses that are modeled in A4MCAR's low-level and high-level module. Finally, activations of each runnable are listed. Commonly, activations can either be periodic or sporadic (random).
 	
 	After the minimalistic software model is ready, performing partitioning and tracing features will improve the existing model. As an example, \textit{Process Prototypes} will be automatically generated after the partitioning.
-	\item \textbf{Constraints Model:} Contraints model define target core dependencies and pairings in the generated partitions. In A4MCAR's model, runnables that functionally belong together are paired using constraints model. As an example, in the Figure \ref{fig:overallmodel} it is seen that tasks related to e.g. \textit{Bluetooth}, \textit{Ethernet} and \textit{Steering} are bound together. Thus, the created partitions and tasks would consider this runnable binding. Furthermore, target core requirements for \textit{Monitor\texttt{\_}Tile0} task and \textit{Monitor\texttt{\_}Tile1} task are defined using constraints model, since \textit{Monitor\texttt{\_}Tile0} task should be on one of the \textit{Tile0} cores and \textit{Monitor\texttt{\_}Tile1} task should be on one of the \textit{Tile1} cores. Finally, generic core specifications are defined (\textit{GenericRPIBinder} and \textit{GenericXMOSBinder}) . Since A4MCAR has a distributed architecture, it is important to make sure that low-level module tasks are mapped to low-level module cores and high-level module tasks are mapped to high-level cores by specifying those binders.
+	\item \textbf{Constraints Model:} The contraints model commonly is used for defining target core dependencies and pairings for the generated partitions. In A4MCAR's model, runnables that functionally belong together are paired using constraints model (by using \textit{Runnable Pairing Constraint}). As an example, in Figure \ref{fig:overallmodel} it is shown that tasks related to e.g. \textit{Bluetooth}, \textit{Ethernet} and \textit{Steering} are bound together. Thus, the created partitions and tasks would consider this runnable binding. Furthermore, target core requirements for \textit{Monitor\texttt{\_}Tile0} task and \textit{Monitor\texttt{\_}Tile1} task are defined using the constraints model, since \textit{Monitor\texttt{\_}Tile0} task should be on one of the \textit{Tile0} cores and \textit{Monitor\texttt{\_}Tile1} task should be on one of the \textit{Tile1} cores. Finally, generic core specifications are defined (\textit{GenericRPIBinder} and \textit{GenericXMOSBinder}) . Since the A4MCAR has a distributed architecture, it is important to make sure that low-level module tasks are mapped to low-level module cores and high-level module tasks are mapped to high-level cores by specifying those binders.
 	As a general note, the information that is specified in the constraints model is used in the pre-partitioning, partitioning, and mapping phases.
-	\item \textbf{Common Elements:} In A4MCAR, tags are used from common elements model. Tags define binders for runnables that are considered in the pre-partitioning phase. Thus, pre-partitioning phase would generate partitions that have the same tags. In A4MCAR, by making use of two tags which are \textit{LLM\texttt{\_}Task} and \textit{HLM\texttt{\_}Task}, it is made sure that generated partitions and tasks will not have runnables that run on the other module. That is, low-level module runnables and high-level module runnables are isolated.   
+	\item \textbf{Common Elements:} In A4MCAR, tags are used from the common elements model. Tags define binders for runnables that are considered in the pre-partitioning phase. Thus, the pre-partitioning phase would generate partitions that have the same tags. In A4MCAR, by making use of two tags which are \textit{LLM\texttt{\_}Task} and \textit{HLM\texttt{\_}Task}, it is made sure that generated partitions and tasks will not have runnables that run on the other module. This means that low-level module runnables and high-level module runnables are isolated.   
 \end{itemize}
 Although the previously explained model includes both low-level module and high-level module components, to generate partitioning and mapping outputs, the model is seperated to two AMALTHEA models, each of which containing the elements for respective modules (high-level and low-level). The reason to use this approach was the lack of the implementation of tag-based (in our case with respect to modules) partition grouping in the version of APP4MC (0.8.1) that was used. 
 
 \section{Partitioning and Mapping}
 
-One important thing to consider when partitioning, especially in the Critical Path Partitioning, is that when label accesses are strictly modeled, the partitioning output might not be ideal for parallelization towards load balancing. The reason is that APP4MC, in the partitioning stage puts all the runnables that belong to the critical path to one single partition. Our experiments showed that A4MCAR's real-world application encountered to this problem that results in poor load balancing. To solve this issue, we considered two solutions: (1) - Removing non-critical label accesses, (2) - Defining non-critical label accesses as \textit{Access Precedence} to prevent APP4MC from considering label accesses strictly in model, and do the partitioning towards load-balancing.
+One important thing to consider when partitioning the runnables, especially in the Critical Path Partitioning, is that when label accesses are strictly modeled, the partitioning output might not be ideal for parallelization towards load balancing. The reason is that APP4MC, in the partitioning stage puts all the runnables that belong to the critical path to one single partition. Our experiments showed that A4MCAR's real-world application encountered to this problem that results in poor load balancing initially due to the fact that task dependencies are strictly considered in APP4MC in contrast with OS-based scheduling. To solve this issue, two solutions are considered: (1) - Removing non-critical label accesses, (2) - Defining non-critical label accesses as \textit{Access Precedence} to prevent APP4MC from considering label accesses strictly in model, and do the partitioning towards load-balancing.
 
-After the modeling, partitioning (pre-partitioning is performed automatically before partitioning), task generation, and mapping is performed by using APP4MC to obtain the distribution results. Obtained results will be shown in the following sections.
+After the modeling, partitioning (pre-partitioning is performed automatically before partitioning), task generation, and mapping are performed by using APP4MC to obtain the distribution results. Obtained results will be shown in the following sections.
 
-For the sake of completeness, how partitioning and mapping outcomes look in APP4MC should be briefly discussed. After the model is complete, by using APP4MC multicore sections drop-down menu, one can perform several operations. After partitioning is complete on the initally created model, new model that involves the process prototypes is generated in the \texttt{output} folder in the APP4MC project. Under Process Prototypes, partitions could be seen which shows all the runnables that are in a partition. The Figure \ref{fig:partitions} depicts an example partitioning outcome.
+For the sake of completeness, APP4MC's partitioning and mapping outcomes are briefly discussed. After the model is complete, by using APP4MC multicore sections drop-down menu, one can perform several operations. After the partitioning is complete on the initally created model, a new model that includes the process prototypes is generated in the \texttt{output} folder in the APP4MC project. Under \textit{Process Prototypes}, partitions can be seen which shows all the runnables that are in a partition. The Figure \ref{fig:partitions} depicts an example partitioning outcome.
 
 \begin{figure}[!ht]
 	\centering
@@ -1590,55 +1596,55 @@ For the sake of completeness, how partitioning and mapping outcomes look in APP4
 	\label{fig:partitions}
 \end{figure}
 
-After the partitioning, one should generate tasks using the same drop-down menu. On the created new model, one can perform mapping. Mapping will generate the utilization information on console for the given model as well as the mapping output on the model as shown in Figure \ref{fig:mappings}. By looking at the model given in the figure, one can see how created partitions are allocated to the cores. If one desires, using these mapping outcomes and using a custom scheduler, the visualization of tasks on cores are also possible by using the APP4MC's multicore feature \textit{Visualize Task Execution}. Since in this work real traces are used for visualizing the task execution, this feature is not used.
+After the partitioning, one should generate tasks using the same drop-down menu. On the created new model, one can perform the mapping process. It is important to know that all the steps such as partitioning, task generation, and mapping can be handled by using the \textit{MC Wizard} tool of APP4MC. The mapping generates the utilization information shown at the console for the given model as well as the mapping output on the model as shown in Figure \ref{fig:mappings}. In the figure, allocation of created partitions to the cores is illustrated. If desired, using these mapping outcomes and using a custom scheduler, the simulation of the schedule of tasks on cores are also possible by using the APP4MC's \textit{Visualize Task Execution} feature. Since in this work, real traces are used for visualizing the task execution, this feature is not used.
 
 \begin{figure}[!ht]
 	\centering
 	\captionsetup{justification=centering}
 	\includegraphics[width=\textwidth]{content/images/mappings.png}
-	\caption{Example mapping outputs from APP4MC}
+	\caption{Example mapping outputs from APP4MC (ESSP partitioning, 10 partitions)}
 	\label{fig:mappings}
 \end{figure}
 
-In the APP4MC's mapping stage, GA-based mapping algorithm towards load balancing goal has been used, due to a minor bug at the ILP-based algorithm at the time. The ILP-based mapping algorithm of APP4MC features a 1-step algorithm that is used toward the goal of minimizing the total computation time. After this goal is achieved, remaining processes are more or less distributed randomly. In the case of A4MCAR's applications, GA-based algorithm and ILP-based algorithm only had very minor utilization differences. However it is said that with a 2-step or n-step algorithm, the load on cores could be balanced more optimally \cite{mappingbook}. APP4MC's mapping results present a suggestive mapping outcome to the user. User could decide to use lesser number of cores or under-clock the cores to reduce power consumption.
+In the APP4MC's mapping stage, GA-based mapping algorithm towards load balancing goal has been used, due to a minor bug at the ILP-based algorithm at the time. The ILP-based mapping algorithm of APP4MC features a 1-step algorithm that is used toward the goal of minimizing the total computation time. After this goal is achieved, remaining processes are more or less distributed randomly. In the case of A4MCAR's applications, GA-based algorithm and ILP-based algorithm only had very minor utilization differences. However, Lukas Krawczyk et al. \cite{mappingbook} states that with a 2-step or n-step algorithm, the load on cores could be balanced more optimally. APP4MC's mapping results present a suggestive mapping outcome to the user. User could decide to use lesser number of cores or under-clock the cores to reduce power consumption. Further evaluations in this report shows the results of mapping using GA-based load balancing algorithm.
 
 %then what happens? partitioning mapping etc.
 %maybe add window from Partitioning console window and Mapping console window
 % basit model interfaceler + rpi dekiler..
 
 \section{Evaluation of Different Distributions}
-Several evaluation metrics are used for evaluating different distributions, using the results from sequential, OS-based, and APP4MC-based software deployment outcomes. These metrics are discussed previously, and involves average slack time, gross execution time, computation time, speedup factor, utilization percentages in cores, deadline misses, current used by the processor (in relation to power consumption).  Furthermore, tracing results are be visualised using Eclipse TraceCompass for every distribution.
+Several evaluation metrics are used for evaluating different distributions, using the results from sequential, OS-based, and APP4MC-based software deployment outcomes. These metrics are presented previously and involve average slack time, gross execution time, computation time, utilization percentages in cores, deadline misses, current utilization used by the processor (in relation to power consumption). Furthermore, tracing results are be visualised using Eclipse TraceCompass for key distributions in the following subsections.
 
 %maybe add window from Partitioning console window and Mapping console window
 %Give Everything in a table, which core mapped, period, execution time rougly, cpu core usage roughly.
 %Also use data from TraceCompass
 %TODO also add FORMULA FROM LUKAS + OMVisualizer.java outcomes to the sections
-\subsection{Evaluation of High Level Module Distributions}
-In this section, APP4MC outcomes are compared to Sequential and GNU/Linux OS outcomes. For the sake of clarity, this section introduces all the implemented and modeled runnables with their granularities and activations in the Table \ref{tbl_allhlprocesses}. Because of the aforementioned limitations, only the dependency graph for the Dummy Graph process is modeled,  which is shown in the Figure \ref{fig:dummygraph}.
+\subsection{Evaluation of the High Level Module Distributions}
+In this section, APP4MC outcomes are presented and compared to Sequential and GNU/Linux OS outcomes. For the sake of clarity, this section introduces all the implemented and modeled runnables with their instruction sizes (obtained using \texttt{perf stat} tool) and activations in the Table \ref{tbl_allhlprocesses}. Because of the aforementioned limitations (causal order is not necessary in many applications, and OS does not ensure causal order), only the dependency graph for the Dummy Graph process is modeled,  which is shown in the Figure \ref{fig:dummygraph}, to demonstrate partitioning outcomes.
 
-Later in this section for specific distributions, some threads and processes will be picked and partitioning and mapping outcomes will be discussed for those process and thread groups. Furthermore, the visualizations of the system traces will be presented to depict how distribution briefly looks and how much of CPU time is fully utilized.
+Later in this section for specific distributions, some threads and processes will be picked and partitioning and mapping outcomes will be discussed for those process and thread groups. Furthermore, the visualizations of the system traces are presented to depict how distribution briefly looks and to what extent the CPU is utilized.
 
-Three mapping results are compared for every high-level distribution at the end of this section: OS distribution where core affinities are not constrained (that is, processes and threads are not on a single core, they can be moved between the cores 0-3 at any time by the kernel when scheduling), Sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping abilities. 
+Three mapping results are compared for every high-level distribution at the end of this section: OS distribution in which core affinities are not constrained (that is, processes and threads are not bound on a single core, they can be moved between the cores 0-3 at any time by the kernel when scheduling), sequential mapping where core affinities are forced to only one single core, and APP4MC mapping where core affinity results are obtained by making use of APP4MC's partitioning and mapping results. 
 
-To have flexibility in the mapping stage, the partitioning feature of APP4MC is configured to create 10 partitions that are created using ESSP (Earliest Start Schedule Partitioning). In APP4MC's ESSP algorithm, runnables that have the same activation period or activation type are placed to seperate partitions. With partitions that have same activation period, placement of runnables to partitions are carried out to reach load balancing. For the mapping stage, for all distributions we select GA-based load balancing technique from APP4MC which is currently aimed towards reducing the overall computation time, as mentioned.
+To have flexibility in the mapping stage, the partitioning feature of APP4MC is configured to create 10 partitions that are created using ESSP (Earliest Start Schedule Partitioning). In APP4MC's ESSP algorithm, runnables that have the same activation period or activation type are placed to seperate partitions if not configured otherwise. With partitions that have same activation period, runnables are placed to partitions to reach load balancing. For the mapping stage, for all distributions GA-based load balancing technique is chosen from APP4MC which is currently optimized towards reducing the overall computation time.
 
 \allhlprocesses
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}wStream}
 
-Initial distribution for high-level module, \texttt{HL{\_}Distr{\_}wStream}, involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Since both the image processing process and the camera stream use the Raspberry Pi camera, this distribution demonstrates how mapping will result when the camera is used by Camera Stream. That is to say, image processing application is not running but will be given with another distribution. 
+The initial distribution for the high-level module (\texttt{HL{\_}Distr{\_}wStream}) involves the processes and threads that actually contribute to the functionality of the A4MCAR. In other words, the A4MCAR is not stressed by using any additional dummy load processes. Since both the image processing process and the camera stream use the Raspberry Pi camera, this distribution demonstrates the mapping results when the camera is used by the \texttt{Camera Stream} process. This means that the \texttt{Image Processing} process is not active in this distribution but is active with another distribution. 
 
-In the \texttt{HL{\_}Distr{\_}wStream} distribution, following processes are considered active (running, contributes to the processing, and therefore modeled) from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Camera Stream}, \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{Dummy Graph}.
+In the \texttt{HL{\_}Distr{\_}wStream} distribution, the following processes are considered active (running, contributes to the processing, and therefore modeled) from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Camera Stream}, \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{Dummy Graph}.
 
-Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrwStream}.
+Partitioning and mapping of this distribution using APP4MC with no constraints resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrwStream}.
 
 \partitioningHLDistrwStream
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Distr{\_}wImageProc}
 
-The process list when the camera stream is not active but the image processing is active is also modeled and evaluated as mentioned. In the distribution \texttt{HL{\_}Distr{\_}wImageProc}, following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{ImageProcess}, \texttt{Dummy Graph}.
+The process list in which the \texttt{camera stream} is not active but the \texttt{image processing} is active is also modeled and evaluated in this distribution. In the distribution \texttt{HL{\_}Distr{\_}wImageProc}, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Touchscreen}, \texttt{ImageProcess}, \texttt{Dummy Graph}.
 
-Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrwImageProc}.
+Partitioning and mapping of this distribution using APP4MC with no constraints resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrwImageProc}.
 
 \partitioningHLDistrwImageProc
 
@@ -1647,22 +1653,22 @@ Partitioning and mapping of this distribution using APP4MC resulted in the parti
 
 In the distribution \texttt{HL{\_}Distr{\_}AvgStress}, the A4MCAR is partially stressed. This is achieved by introducing two dummy loads. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}.
 
-Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrAvgStress}.
+Partitioning and mapping of this distribution using APP4MC with no constraints resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrAvgStress}.
 
 \partitioningHLDistrAvgStress
 
 
 \subsubsection{APP4MC Results for the Distribution HL{\_}Dist{\_}FullStress}
 
-The distribution \texttt{HL{\_}Dist{\_}FullStress} represents the distribution in which nearly all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_}load{\_}25{\_}2}, \texttt{dummy{\_}load{\_}25{\_}3}, \texttt{dummy{\_}load{\_}25{\_}4}, \texttt{dummy{\_}load{\_}25{\_}5}, \texttt{dummy{\_}load{\_}100}.
+The distribution \texttt{HL{\_}Dist{\_}FullStress} represents the distribution in which nearly all the created processes and threads are running. Thus, the A4MCAR's high-level module is in the most stressed state. In this distribution, the following processes are considered active from the process and thread list given in Table \ref{tbl_allhlprocesses}: \texttt{Web Server}, \texttt{Core Recorder}, \texttt{Ethernet Client}, \texttt{VNC Server}, \texttt{Dummy Graph}, \texttt{Touchscreen}, \texttt{Camera Stream}, \texttt{dummy{\_}load{\_}25{\_}1}, \texttt{dummy{\_} load{\_}25{\_}2}, \texttt{dummy{\_}load{\_}25{\_}3}, \texttt{dummy{\_}load{\_}25{\_}4}, \texttt{dummy{\_}load{\_}25{\_}5}, \texttt{dummy{\_}load{\_}100}.
 
-Partitioning and mapping of this distribution using APP4MC resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrFullStress}.
+Partitioning and mapping of those processes and threads using APP4MC with no constraints resulted in the partitions that are shown in the Table \ref{tbl_partitioningHLDistrFullStress}.
 
 \partitioningHLDistrFullStress
 
 
 \subsubsection{Comparison of High-level Module Distributions}
-APP4MC is able to display theoretical load utilization among modeled cores of a system after it's done optimizing. The experiments done using GA-based mapping approach with 10-partitions partitioned using ESSP algorithm resulted in the utilization given in the Figure \ref{fig:mappingutil}. %TODO The figure...
+APP4MC is able to display theoretical load utilization among modeled cores of a system. The experiments done using GA-based mapping approach with 10-partitions partitioned using ESSP algorithm resulted in the utilization given in the Figure \ref{fig:mappingutil}. 
 
 \begin{figure}[!ht]
 	\centering
@@ -1672,43 +1678,43 @@ APP4MC is able to display theoretical load utilization among modeled cores of a 
 	\label{fig:mappingutil}
 \end{figure}
 
-It should be kept in mind that due to the several limitations mentioned below, the obtained results do not have a complete load balance. Moreover, the utilizations presented in the table are theoretical results with one core running at 100\% everytime, and using a Linux scheduler on top of it would alter the utilizations obtained in actual case.
+It must be observed that due to the several limitations mentioned below, the obtained results do not have a complete load balance. Moreover, the utilizations presented in the table are theoretical results with one core running at 100\% everytime because the mapping is implemented this way to reduce computation time. A 100\% percentage is adapted towards total time for the specific distribution, not toward deadlines and activations. Using a Linux scheduler on top of these results would alter the utilizations obtained in actual case.
 
 \begin{itemize}
-	\item Partitioning considers load-balancing, but with only for partitions that have the same type of activation.
-	\item Partitioning gives higher priority to sequences, since considering synchronization between runnables will result in reduced computation time.
-	\item Mapping approach in APP4MC is focused on reducing overall computation time rather than achieving pure load balance.
-	\item Modeled runnables are not very exactly fine-grained as it is in the theoretical or industrial applications. This could also lead to load imbalance between cores.
+	\item By default, partitioning considers load-balancing, but with only for partitions that have the same type of activation. However, one can deactivate activation grouping in APP4MC. Deactivating activation grouping may result in better load balancing but unfeasible executions. In the case of A4MCAR, activation grouping caused partitions to have improperly load balanced partitions.
+	\item Partitioning gives higher priority to sequences, since considering synchronization between runnables will result in reduced computation time. However, it is important to note that dependencies in sequences are not ensured in OS.
+	\item The mapping approach in APP4MC focuses on reducing overall computation time rather than achieving pure load balance. Reducing the overall computation time is focused on improving deadline misses, whereas load balancing helps with energy efficiency and slack time.
+	\item Modeled runnables are not 100\% fine-grained as it is in the theoretical or industrial applications. The reason it is not 100\% fine-grained as in the industry is the lack of low-level open-source real-time tools. Since the functionality of the application is complex and open-source tools are used, the amount of overhead is significantly higher than it is in industrial software systems. This could also lead to load imbalance between cores.
 \end{itemize}
 
-By applying APP4MC-based, OS-based, and Sequential core affinities to the processes and threads in A4MCAR, the Table \ref{tbl_hlcomparison} is obtained. In the given table, distributions are evaluated by changed the distribution type (APP4MC, OS, Sequential) and CPU clock speed (f\textsubscript{clk} = 1.2GHz or 600MHz). Obtained performance indicators involve, overall execution time (GET), slack time average (ST\textsubscript{avg}), deadline miss percentage (DLM), utilization in each core (U\textsubscript{0-3}), and current going into the board (I\textsubscript{DD}) as an indicator of power consumption. Evaluating the high-level distributions, several remarks could be made, which are given in the following list:
+By applying APP4MC-based, OS-based, and Sequential core affinities to the processes and threads for the A4MCAR, Table \ref{tbl_hlcomparison} is obtained. In Table \ref{tbl_hlcomparison}, distributions are evaluated by changed the distribution type (APP4MC, OS, Sequential) and CPU clock speed (f\textsubscript{clk} = 1.2GHz or 600MHz). Obtained performance indicators involve, total gross execution time (GET), slack time average (ST\textsubscript{avg}), deadline miss percentage (DLM), utilization in each core (U\textsubscript{0-3}), and the current drained by the board (I\textsubscript{DD}) as an indicator for power consumption. When evaluating the high-level distributions, the following assessments should be outlined:
 
 \hlcomparison
 
 \begin{itemize}
 	\item Resulted APP4MC timing performance by looking at slack time averages and overall execution time is better than Sequential timing in all cases as expected.
-	\item In a lot of the times, Linux OS context-switching mechanism with no core affinity constraints performed better than APP4MC-based core affinity distributed results. However, we see that in \texttt{HL{\_}Distr{\_}wStream}, APP4MC scored better than OS distribution. Therefore, we can say that achieving a better performance than OS-based distribution in Linux-based systems is possible, but not guaranteed.
-	\item As seen from the table, in almost every distribution, APP4MC improved current and thereby power consumption by around 0.10-0.15A. It is observed that OS-based distribution resulted in the highest power consumption, whereas power consumption in APP4MC and Sequential distributions were similar. It should be noted that this is due to intensive context-switching in OS-based distribution when core affinity is not constrained.
-	\item It is also seen from table that changing the clock frequency alone improved the current consumption, but very slightly. One can see this improvement from table which is about 0.01-0.05A. It should be commented that using a lower chip voltage would make this power improvement a lot better. Due to safety concerns, this approach has not been used in this work. 
-	\item One should also note that achieving significantly reduced power consumption is achieved through load balancing. Since approaches used in APP4MC does not concentrate on pure load-balancing in non industry-type systems, the power consumption improvement observed in this evaluation is smaller.
-	\item It should be noted that sequential distributions led to huge stability issues which were noticable from the system operation and are observable from deadline misses given in the table.
-	\item Experiments made with ILP-based mapping algorithm and GA-based mapping algorithm gave similar results. Due to bugs in the ILP-based mapping algorithm at the time of evaluation, GA-based results are used.
-	\item It can be seen that power consumption is higher when core usage is high. However, having high core usage makes the system better in timing performance. The reason why load balancing is important lies in this fact to have timing performance and power consumption improved at the same time.
+	\item In a lot of cases, the Linux OS context-switching mechanism with no core affinity constraints performed better than APP4MC-based core affinity distributed results. However, we see that in \texttt{HL{\_}Distr{\_}wStream}, APP4MC scored better than OS distribution. Therefore, we can say that achieving a better performance than OS-based distribution in Linux-based systems is possible, but not guaranteed. In order to ensure to obtained best results every time, models should be made precise and application needs to be as fine-grained as possible.
+	\item As shown the table, in almost every distribution, APP4MC improved current and thereby power consumption by around 0.10-0.15A. It is observed that OS-based distribution resulted in the highest power consumption, whereas power consumption in APP4MC and Sequential distributions were similar. It should be noted that this is due to intensive context-switching in OS-based distribution when core affinities not constrained.
+	\item It is also shown in table that changing the clock frequency alone improved the current consumption, but very slightly. One can observe this improvement from table which is about 0.01-0.05A. By using a lower chip voltage would make this power improvement a lot better. Due to safety concerns, this approach has not been applied to this work. 
+	\item One should also note that achieving significantly reduced power consumption is possible through load balancing. Since approaches used in APP4MC does not concentrate on pure load-balancing in non industry-type systems, the power consumption improvement observed in this evaluation is smaller.
+	\item It must be noted that sequential distributions led to huge stability issues which were noticable from the system operation and are observable from deadline misses given in the table.
+	\item Experiments made with ILP-based mapping algorithm and GA-based mapping algorithm gave similar results. Due to bugs in the ILP-based mapping algorithm at the time of evaluation (such as partitions not being mapped to a core at all), GA-based results are used.
+	\item It can be seen that power consumption is higher when core usage is high. However, having high core usage improves the system timing performance. The reason why load balancing is important lies in this fact to have timing performance and power consumption improved at the same time.
 	\item OS-based distribution scored mostly 0\% deadline misses. However, APP4MC introduced slight deadline misses to the system and resulted in higher execution times. This can be reasoned by the following:
 	\begin{itemize}
 		\item The real-time capability of Raspberry Pi is very low because the scheduler used in Raspbian (CFS) has high fairness. Furthermore, implemented schedulability and tracing features as well as Linux kernel introduces overheads. This effects the  obtained results. Using a real-time kernel with minimal overhead would produce better results.
 		\item Main purpose with APP4MC is that intends to move the embedded development in the direction of model-based development. It is used as a supplementary tool for standards such as AUTOSAR. Using the tool with a non-industry board and distribution (Raspberry Pi, Raspbian) is effecting the results because scheduling is left entirely to Linux kernel which does not ensure the causal order (dependencies) of runnables and it is not necessarily real-time.
-		\item The fact that APP4MC scored better in \texttt{HL{\_}Distr{\_}wStream} indicate that when processes and threads are more fine-grained and dependency of processes and threads are lesser (thus, more parallelization potential due to non-sequal runnables), it is possible that APP4MC can produce better results than OS-based distributions.
-		\item Technologies used in APP4MC require actual runnables to be partitioned and mapped. Since this is not possible in Raspberry Pi, and only thread and process can be distributed among cores, threads and processes are modeled as runnables. With this approach, dependencies between runnables and dependencies between threads are counted as the same. But in fact, it may not. APP4MC is built for more low-level design but in this work it is used in high-level design.
-		\item APP4MC's partitioning algorithm is concerned about load-balancing only when activation periods of runnables are the same. Since in our particular application, periods are runnables are quite different, partitioning gave results that are not aimed toward load-balancing.
-		\item Furthermore, APP4MC's mapping algorithm is also not focused on load balancing. The main optimization goal used in APP4MC's mapping algorithm is reducing the overall computation time. And partitions are distributed randomly otherwise. Therefore, OS scored better performance than APP4MC in timing because the load is not sufficiently balanced in APP4MC (comparing U\textsubscript{0-3} entries in Table \ref{tbl_hlcomparison}).
-		\item APP4MC focuses on ideal vision of embedded computing, that is using static scheduling to base parallelization foundations based on models. Even OS such as Linux uses dynamic scheduling and migrating all the tasks between several cores, it can be said that APP4MC, using static scheduling was able to suggest better outcomes.
+		\item The fact that APP4MC scored better in \texttt{HL{\_}Distr{\_}wStream} indicate that when processes and threads are more fine-grained and dependency of processes and threads are lesser (thus, more parallelization potential due to non-sequential runnables), it is possible that APP4MC can produce better results than OS-based distributions.
+		\item Technologies used in APP4MC require actual runnables to be partitioned and mapped. Since this is not possible for the Raspberry Pi, and only thread and process can be distributed among cores, threads and processes are modeled as runnables. Since runnable distribution and tracing in the lowest level would require too much effort for the scope of thesis, threads and processes are used. With this approach, dependencies between runnables and dependencies between threads are counted as the same. But in fact, it may not. APP4MC is built for more low-level design but in this work it is used in high-level design.
+		\item APP4MC's partitioning algorithm uses activation period-based grouping by default. Having no activation grouping may result in better load balancing but unfeasible executions. Since in our particular application, periods used in are runnables are quite different, partitioning gave results that are not aimed toward load-balancing.
+		\item Furthermore, APP4MC's mapping algorithm is not entirely focused on load balancing. The main optimization goal used in APP4MC's GA-based mapping algorithm (in version 0.8.1) is reducing the overall computation time. Partitions are distributed randomly otherwise. Therefore, OS scored better performance than APP4MC in timing because the load is not sufficiently balanced in APP4MC (comparing U\textsubscript{0-3} entries in Table \ref{tbl_hlcomparison}).
+		\item APP4MC focuses on ideal vision of embedded computing, that is using static scheduling to base parallelization foundations based on models. OS systems such as Linux uses dynamic scheduling and migrates all the tasks between several cores. Using static scheduling with models for specific optimization goals can suggest better outcomes.
 	\end{itemize}
 \end{itemize}
 
-To make sure distributed processes (and not threads) affected the results, a second experiment has been done with only threads, Dummy Graph (given in Fig \ref{fig:dummygraph}), running in the Linux system. This experiment also showed that the OS is capable of performing better in terms of timing. For example, an average slack time of 0.48s is obtained with OS-based distribution whereas APP4MC was able to score 0.44s. Thus, the results shown in this section are considered to show the actual performance of APP4MC.
+To make sure that distributed processes (and not threads) affect the results, a second experiment has been conducted with only threads, formed by a \textit{dummy graph} (given in Fig \ref{fig:dummygraph}), running in the Linux system. This experiment also showed that the OS is capable of performing better in terms of timing. For example, an average slack time of 0.48s is obtained with OS-based distribution whereas APP4MC was able to score 0.44s. Thus, the results shown in this section are considered to show the actual performance of APP4MC. Furthermore, the Linux OS scheduler is able to split the graph more fine-grained because of the fact that it can migrate tasks between cores at any time. 
 
-To demonstrate how affinity constraints affected system performance, the work done in the tracing chapter is used and system traces have been taken. The 10 second system traces for entire Linux system are taken with perf, converted to CTF format, and visualized using Eclipse TraceCompass. The Figure \ref{fig:tracesAvgStress} demonstrates how OS-based, APP4MC-based, and sequential distribution in \texttt{HL{\_}Distr{\_}AvgStress} is scheduled by Linux kernel among the Raspberry Pi's cores. Moreover, the distribution when APP4MC performed better than OS is also given with the Figure \ref{fig:traceswStream}.
+To demonstrate how affinity constraints affected system performance, the work done in the tracing chapter is used and system traces have been taken. The 10 second system traces for entire Linux system are taken with perf \cite{perf1}, converted to CTF format \cite{perfbabeltrace}, and visualized using Eclipse TraceCompass \cite{tracecompass}. The Figure \ref{fig:tracesAvgStress} demonstrates how OS-based, APP4MC-based, and sequential distributions for the \texttt{HL{\_}Distr{\_}AvgStress} is scheduled by Linux kernel among the Raspberry Pi's cores. Moreover, the distribution when APP4MC performed better than OS is also given with the Figure \ref{fig:traceswStream}.
 
 \begin{figure}[!ht]
 	\centering
@@ -1726,30 +1732,30 @@ To demonstrate how affinity constraints affected system performance, the work do
 	\label{fig:traceswStream}
 \end{figure}
 
-In the aforementioned figures, it is seen that the load is most efficiently distributed in OS-based distribution, whereas APP4MC lacked balanced load in \texttt{HL{\_}Distr{\_}AvgStress}. In \texttt{HL{\_}Distr{\_}wStream}, APP4MC's load distribution looks more balanced. Therefore it can be seen that it is able to perform better than OS-based distribution slightly. This can be reasoned by stating that non fine-grained processes and threads such as dummy loads and image processing are not involved in \texttt{HL{\_}Distr{\_}wStream}. 
+In the aforementioned figures, it is shown that the load is most efficiently distributed in OS-based distribution, whereas APP4MC lacked balanced load in \texttt{HL{\_}Distr{\_}AvgStress}. In \texttt{HL{\_}Distr{\_}wStream}, APP4MC's load distribution looks more balanced. Therefore it can be shown that it is able to perform better than OS-based distribution slightly. This can be reasoned by stating that non fine-grained processes and threads such as dummy loads and image processing are not involved in \texttt{HL{\_}Distr{\_}wStream}. 
 
 New algorithms are now being developed for APP4MC to ignore dependencies to make sure APP4MC could be used for OS-based systems as well rather than low-level systems that ensure the causal order (dependencies) of runnables. Ignoring dependencies using bin-packing algorithms \cite{binpacking} will be used in APP4MC for producing results for applications running in complex OS-based systems.
 
 \subsection{Evaluation of Low Level Module Distributions} \label{sectionlldistr}
 
-In the low-level module, contribution of APP4MC is more essential because of the fact that the number of tasks exceed the number of cores and there is no automatic mapping implemented in xCORE. If the APP4MC is not used, the code can't even be compiled because some tasks should be squeezed in cores. If cores are not specified, xCORE will give error stating that the number of cores required exceeded. The mapping is done manually at the compile-time, not automatically in run-time. Therefore, developers have to decide by themselves which tasks should be placed on which cores. Considering that the goal is minimizing the overall computation time and achieving a better parallel performance, APP4MC results help greatly in low-level in this matter.
+In the low-level module, the contribution of APP4MC is more essential because of the fact that the number of tasks exceed the number of cores and there is no automatic mapping implemented in xCORE. If the APP4MC is not used, the code can't even be compiled because some tasks should be squeezed in cores. If cores are not specified, xCORE gives an error stating that the number of cores required exceeded. The mapping is done manually at the compile-time, not automatically at run-time. Therefore, developers have to decide by themselves which tasks should be placed on which cores. Considering that the goal is minimizing the overall computation time and achieving a better parallel performance, APP4MC results help greatly in terms of low-level implementations.
 
-In this context, to find the correct distribution to reduce the number of cores used and to compile the code properly, two distributions are presented. First distribution, \texttt{LLM-Distribution- Unconstrained}, is the unconstrained version of the created APP4MC model. In this model, constraints that are used are kept at minimal level in order to see what would happen if model is not properly engineered. 
+In this context, to find the correct distribution to reduce the number of cores used and to compile the code properly, two distributions are presented. The first distribution, \texttt{LLM-Distribution- Unconstrained}, is the unconstrained version of the created APP4MC model. In this model, constraints that are used are kept at minimal level in order to see what would happen if the model is not properly engineered. 
 
-In xCORE developments, the coding experiments show that some types of tasks should be placed in cores seperately regardless of their load balancing such as the tasks that are more sporadically activated rather than periodic. In order not to interfere with the functionality of the applications, these apps are constrained in the model to be placed in seperate cores. The distribution that involves this approach is given with \texttt{LLM-Distribution- Constrained}.
+In xCORE-based software development, the coding experiments show that some types of tasks should be placed in cores seperately regardless of their load balancing such as the tasks that are more sporadically activated rather than periodically. In order not to interfere with the functionality of the applications, these apps are constrained in the model to be placed in seperate cores. The distribution that involves this approach is given with \texttt{LLM-Distribution- Constrained}.
 
 \subsubsection{LLM-Distribution-Unconstrained}
-In the previous section, Section \ref{sectionlldistr}, the scope of \texttt{LLM-Distribution-Unconstrained} distribution is explained. The mapping results of this distribution using APP4MC could be seen in the Table \ref{tbl_LLM_Distribution_Unconstrained}. It is seen that in this model, the distribution is loosely constrained.
+In the first subsection of Section \ref{sectionlldistr}, the scope of \texttt{LLM-Distribution-Unconstrained} distribution is explained. The mapping results of this distribution using APP4MC could be seen in the Table \ref{tbl_LLM_Distribution_Unconstrained}. It is shown that in this model, the distribution is loosely constrained.
 
 \llmdistrUnconstrained
 
 \subsubsection{LLM-Distribution-Constrained}
-In Section \ref{sectionlldistr}, the scope of \texttt{LLM-Distribution-Constrained} distribution is explained. The additional constraints are applied to the existing model regarding sporadically activated tasks and the model details are shown with the Table \ref{tbl_LLM_Distribution_Constrained}. 
+In the first subsection of Section \ref{sectionlldistr}, the scope of \texttt{LLM-Distribution-Constrained} distribution is explained. The additional constraints are applied to the existing model regarding sporadically activated tasks and the model details are shown with the Table \ref{tbl_LLM_Distribution_Constrained}. 
 
 \llmdistrConstrained
 
 \subsubsection{Results of Low-level Evaluation}
-The low-level module distributions are compared with the Table \ref{tbl_llcomparison}. Due to the limited available timers, the low-level module is evaluated with the available metrics such as slack time, execution time, and average utilization. The table shows that the unconstrained model is less utilized than the constrained model. Slack time of the unconstrained model being less than that of the constrained model suggests that timing performance of the constrained model is also better. It is important to add that unconstrained model results in functionality problems. As a result, we can learn that platform-specific and OS-specific constraints should be well engineered in the APP4MC model in order to achieve a higher performance and more stable embedded system. 
+The low-level module distributions are compared at Table \ref{tbl_llcomparison}. Due to the limited available timers, the low-level module is evaluated with the available metrics such as slack time, execution time, and average utilization. The table shows that the unconstrained model is less utilized than the constrained model. Slack time of the unconstrained model being less than that of the constrained model suggests that timing performance of the constrained model is also better. It is important to add that unconstrained model results in functionality problems. As a result, one can learn that platform-specific and OS-specific constraints should be well engineered in the APP4MC model in order to achieve a higher performance and a more stable embedded system. 
 
 \llcomparison
 
@@ -1808,24 +1814,33 @@ The low-level module distributions are compared with the Table \ref{tbl_llcompar
 
 %%% CHAPTER Conclusion ----------------------------begin----
 \chapter{Conclusion} \label{conclusionchapter}
-APP4MC is a tool that used for engineering embedded multi-core and many-core software systems. It emphasizes especially on automotive domain where standards such as AUTOSAR is highly involved. From the results, one can differentiate APP4MC from other available tooling as follows. With this report, several conclusions should be pointed out:
+APP4MC is a platform that is used for engineering embedded multi-core and many-core embedded systems. It emphasizes especially on the automotive domain where standards such as AUTOSAR are highly involved. From the results, one can differentiate APP4MC from other available tooling as follows. With this report, several conclusions should be pointed out:
 \begin{itemize}
-	\item In this work, it is focused on evaluating a tool that is intended for industrial use on non industry-compliant platforms. Therefore, using more low-level industry tools should produce better results. Moreover, Raspberry Pi's real-time capabilities are proven to be very poor because the scheduler used in Raspbian (CFS) has high fairness. Using a real-time kernel (such as preemptRT \cite{preemptRT}), one should expect more well utilized software with APP4MC results.
+	\item In this work, APP4MC is evaluated using non-industry tools and platforms on a higher level. Therefore, using more lower level industry tools and platforms should produce better results. Moreover, Raspberry Pi's real-time capabilities are proven to be very poor because the scheduler used in Raspbian (CFS) has high fairness. Using a real-time kernel (such as preemptRT \cite{preemptRT}), one should expect more well utilized software with APP4MC results.
 	\item APP4MC focuses on static scheduling. By migrating tasks in between cores, OS dynamic schedulers introduce non-determinism in the design. However, with APP4MC every step is well-known and well-modeled. This way, many suggestive distributions can be generated using APP4MC. The developers should make design choices based on their optimization goals. Developers might redirect their projects towards load balancing, power optimization, total utilization etc. using APP4MC.
-	\item With the involvement of the model-based approach, every step of the embedded design should be carefully modeled. With the results of the low-level module evaluations, it is seen that constraining the model for better accuracy improves the utilization outcome that is produced by the APP4MC. Involving model-based development aspect, on a more lower level, software design and deployment is more automatized once model is created successfully.
-	\item Results show that APP4MC is able to generate core affinity restrictions that can produce better results than an operating system. In most cases, operating systems will produce better utilization. However, using an accurate model and well-engineered fine-grained software, one can achieve even better performance than the operating systems.
-	\item One should also note that achieving significantly reduced power consumption is achieved through load balancing. Since approaches used in APP4MC does not concentrate on pure load-balancing in non industry-type systems, the power consumption improvement observed in this evaluation is smaller. Yet, it is observed that results that are obtained with APP4MC improved the power consumption compared to the OS-based distributions. 
-	\item Invoking the underclocking capabilities, a slight improvement in the power consumption is observed. One can improve better power consumption by activating Active Energy Consumption (AEC) modes or involving voltage reduction in the Dynamic Voltage and Frequency Scaling (DVFS) features as well.
-	\item APP4MC's algorithms have the already mentioned limitations (listed below) that are being improved.
+	\item With the involvement of the model-based approach, every step of the embedded design should be carefully modeled. With the results of the low-level module evaluations, it is shown that constraining the model for better accuracy improves the utilization outcome that is produced by the APP4MC. Involving model-based development aspect, on a more lower level, software design and deployment is more automatized once model is created successfully.
+	\item Results show that APP4MC is able to result in core affinity restrictions that can produce better results than an operating system. In the experiments, operating systems mostly produced better utilization. However, using an accurate model and well-engineered fine-grained software, one can achieve even better performance than the operating systems.
+	\item Achieving significantly reduced power consumption is made possible through load balancing. Since approaches used in APP4MC do not concentrate on pure load-balancing in non industry-type systems, the power consumption improvement observed in this evaluation is smaller. Yet, observed results with APP4MC improved the power consumption compared to the OS-based distributions. 
+	\item Invoking the underclocking capabilities, a slight improvement in the power consumption is observed. One can improve power consumption efficiency by activating Active Energy Consumption (AEC) modes or involving voltage reduction in the Dynamic Voltage and Frequency Scaling (DVFS) features as well.
+	\item APP4MC's algorithms have the already mentioned limitations (listed below) in version 0.8.1
 	\begin{itemize}
-		\item Partitioning algorithm is concerned about load-balancing only when activation periods of runnables are the same. Since in our particular application, periods are runnables are quite different, partitioning gave results that are not aimed toward load-balancing.
-		\item Furthermore, APP4MC's mapping algorithm is also not focused on load balancing. The main optimization goal used in APP4MC's mapping algorithm is reducing the overall computation time. And partitions are distributed randomly otherwise. Therefore, OS scored better performance than APP4MC in timing in most cases because the load is not sufficiently balanced in APP4MC.
-		\item Software development involves non-determinism. For example, some tasks are not always deterministically activated. Especially in our applications, many tasks are sporadically activated. However, APP4MC is not able to process sporadically activated tasks and therefore assumptions have been made for these non-deterministic model elements.
+		\item APP4MC's partitioning algorithm uses activation period-based grouping by default. Having no activation grouping may result in better load balancing but unfeasible executions. Since in our particular application, periods used in runnables are quite different, partitioning gave results that are not aimed toward load-balancing.
+		\item Furthermore, APP4MC's mapping algorithm is not focused on load balancing. The main optimization goal used in APP4MC's mapping algorithm is reducing the overall computation time. Partitions are distributed randomly otherwise. Therefore, OS scored better performance than APP4MC in timing in most cases because the load is not sufficiently balanced in APP4MC.
+		\item A4MCAR's software development involves non-determinism. For example, some tasks are not always deterministically activated. Especially in our applications, many tasks are sporadically activated. However, APP4MC is not able to process sporadically activated tasks and therefore assumptions have been made for these non-deterministic model elements.
 	\end{itemize}
-	 However these algorithms are still in the improvement stage. New algorithms are now being developed for APP4MC to ignore dependencies to make sure APP4MC could be used for OS-based systems as well rather than low-level systems that ensure the causal order (dependencies) of runnables. Ignoring dependencies using bin-packing algorithms will be used in APP4MC for producing results for applications running in complex OS-based systems.
+	 However, these algorithms are still in the improvement stage. New algorithms are now being developed for APP4MC to ignore dependencies to make sure APP4MC could be used for OS-based systems as well rather than low-level systems that ensure the causal order (dependencies) of runnables. Ignoring dependencies using bin-packing algorithms will be used in APP4MC for producing results for applications running in complex OS-based systems.
 \end{itemize}
 
-In this work, necessary tracing, distribution, and evaluation features are discovered and implemented regarding timing and power consumption in order to contribute to the open-source tool APP4MC. Required feedback is given to APP4MC community for progress. Furthermore, a base platform is developed for embedded multi-core development studies. With parallel implementations on A4MCAR as well as other demonstrators, C++ and Python language-based multi-processed and multi-threaded embedded system is developed and maintained. Aforementioned contributions to the scientific community and open-source community are done.
+In this work, necessary tracing, distribution, and evaluation features are discovered and implemented regarding timing and power consumption in order to contribute to the open-source tool APP4MC. Required feedback is given to APP4MC community for progress. Furthermore, a base platform is developed for embedded multi-core development studies. With parallel implementations on the A4MCAR as well as other demonstrators, C++ and Python language-based multi-processed and multi-threaded embedded system is developed and maintained. Aforementioned contributions to the scientific community and open-source community are done. 
+
+The contributions to APP4MC demonstrators by this thesis' author are maintained in the following web links:
+\begin{itemize}
+	\item \textbf{The APP4MC Demonstrator repository:} \\ \texttt{https://git.eclipse.org/r/app4mc/org.eclipse.app4mc.examples}
+	\item \textbf{Commits:} \\ \texttt{http://git.eclipse.org/c/app4mc/org.eclipse.app4mc.examples.git/log/}
+	\item \textbf{Source Tree:} \\ \texttt{http://git.eclipse.org/c/app4mc/org.eclipse.app4mc.examples.git/tree/}
+	\item \textbf{Documentation:} \\
+	\texttt{https://mozcelikors.github.io/a4mcar/}
+\end{itemize}
 
 Multi-core processing is without a doubt today's and future's technology for information processing. Tools such as APP4MC are useful in terms of easing this technology for developers in a model-driven manner. 
 
