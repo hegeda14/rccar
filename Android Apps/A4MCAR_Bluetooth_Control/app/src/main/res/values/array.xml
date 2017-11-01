@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="menuArray">
+            <item>Paired devices</item>
+            <item>Search devices</item>
+            <item>Settings</item>
+    </string-array>
+</resources>
+
