@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
@@ -43,13 +42,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sccomponents.gauges.ScArcGauge;
 import com.sccomponents.gauges.ScGauge;
@@ -60,7 +56,6 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -71,6 +66,7 @@ import static com.example.phil.rc_car_app.R.string.activateBluetooth;
 class BluetoothState {
     private boolean isBluetoothOn = false;
     private ChangeListener changeListener;
+    public BroadcastReceiver stateChangedReceiver;
 
     public boolean get() {
         return isBluetoothOn;
@@ -96,36 +92,35 @@ class BluetoothState {
 }
 
 public class MainActivity extends AppCompatActivity {
-    private ListView myListView;
+
+
     private BluetoothSocket myBluetoothSocket;
-    private BluetoothAdapter myBluetoothAdapter;
-    private Set<BluetoothDevice> pairedDevices;
-    private SeekBar sBar2;
-    private SeekBarVertical verticalSB;
-    private static TextView speedValueField, angleValueField;
-    public static TextView connectionView;
-    private static OutputStream outStream = null;
+    private BluetoothAdapter bluetoothAdapter;
+
     private int speedValueMax = 99, angleValueMax = 99;
     private int speedValueStart = 0, angleValueStart = 50;
+
     private BluetoothState isBluetoothOn = null;
     private static final int BLUETOOTH_ON = 1;
     private static DecimalFormat formatter;
     private static char direction = 'F';
     private static int angle, speed;
     private static int last_angle = 50, last_speed = 0;
+
     // speedZero and angleZero have to be initialized like in the app,
     // because otherwise the value of angle is '0' and not '50'
+
     private static String speedZero = "00", angleZero = "50", speedTen, angleTen, command;
     private static final char endOFCommand = 'E';
+
     // SPP UUID service
     private static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    ImageView image;
+
 
     private Snackbar infoMessageSnack = null;
     private Snackbar errorMessageSnack = null;
     private Snackbar activateBluetoothSnack = null;
 
-    private String[] menuTitles;
     private ListView menuList;
 
     private GestureDetectorCompat mDetector;
@@ -147,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         // Initialization for the navigation drawer element (right sidebar)
-        menuTitles = getResources().getStringArray(R.array.menuArray);
+        String[] menuTitles = getResources().getStringArray(R.array.menuArray);
         menuList = (ListView)findViewById(R.id.left_drawer);
         // Set the adapter for the list view
         menuList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, menuTitles));
@@ -170,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeBluetooth() {
         // Get the default bluetooth adapter and it's state
-        myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // Observe the state change of the bluetooth adapter
         isBluetoothOn = new BluetoothState();
         isBluetoothOn.setListener(new BluetoothState.ChangeListener() {
@@ -189,21 +184,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        // Always inspect the adapter's state in an anonymous thread
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            isBluetoothOn.set(myBluetoothAdapter.isEnabled());
-                        }
-                    });
-                    SystemClock.sleep(500);
+
+        isBluetoothOn.set(bluetoothAdapter.isEnabled());
+
+        IntentFilter filterStateChanged = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(isBluetoothOn.stateChangedReceiver = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                // When discovery finished
+                if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(intent.getAction())) {
+                    isBluetoothOn.set(bluetoothAdapter.isEnabled());
                 }
             }
-        }).start();
+        }, filterStateChanged);
 
         // Listener for the bluetooth button
         (findViewById(R.id.connectButton)).setOnTouchListener(new View.OnTouchListener() {
@@ -214,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent turnBluetoothOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(turnBluetoothOn, BLUETOOTH_ON);
                     } else {
-                        myBluetoothAdapter.disable();
+                        bluetoothAdapter.disable();
                     }
                 }
                 return false;
@@ -232,14 +224,14 @@ public class MainActivity extends AppCompatActivity {
         // As the progress feature by default the last to be draw I must bring the notches feature on top.
         speedoMeter.bringOnTop(ScGauge.NOTCHES_IDENTIFIER);
         // If you set the value from the xml that not produce an event so I will change the value from code.
-        speedoMeter.setHighValue(0);
+        speedoMeter.setHighValue(speedValueStart);
         // Each time I will change the value I must write it inside the counter text.
         speedoMeter.setOnEventListener(new ScGauge.OnEventListener() {
             @Override
             public void onValueChange(float lowValue, float highValue) {
                 // Write the value
                 int value = (int)ScGauge.percentageToValue(highValue, 0.0f, 100.0f);
-                speedoMeterCounter.setText(value + "");
+                speedoMeterCounter.setText(Integer.toString(value));
             }
         });
 
@@ -251,14 +243,14 @@ public class MainActivity extends AppCompatActivity {
         // As the progress feature by default the last to be draw I must bring the notches feature on top.
         angleMeter.bringOnTop(ScGauge.NOTCHES_IDENTIFIER);
         // If you set the value from the xml that not produce an event so I will change the value from code.
-        angleMeter.setHighValue(50);
+        angleMeter.setHighValue(angleValueStart);
         // Each time I will change the value I must write it inside the counter text.
         angleMeter.setOnEventListener(new ScGauge.OnEventListener() {
             @Override
             public void onValueChange(float lowValue, float highValue) {
                 // Write the value
                 int value = (int)ScGauge.percentageToValue(highValue, 0.0f, 100.0f);
-                angleMeterCounter.setText(value + "");
+                angleMeterCounter.setText(Integer.toString(value));
             }
         });
     }
@@ -290,8 +282,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMove(int retrieved_angle, int retrieved_speed)
             {
-                if (retrieved_speed > 99)
-                    retrieved_speed = 99;
+                if (retrieved_speed > speedValueMax)
+                    retrieved_speed = speedValueMax;
 
                 angleMeter.setHighValue(angle);
 
@@ -305,14 +297,14 @@ public class MainActivity extends AppCompatActivity {
                         formatter = new DecimalFormat("0" + retrieved_speed);
                         speedTen = formatter.format(speed);
                     }
-                }else{
+                } else {
                     speed = retrieved_speed;
                 }
 
                 if (retrieved_angle >= 0 && retrieved_angle <= 180)
                 {
                     if (retrieved_angle >= 0 && retrieved_angle <= 30) {
-                        retrieved_angle = 99;
+                        retrieved_angle = angleValueMax;
                         //direction = 'F';
                     } else if (retrieved_angle > 30 && retrieved_angle < 150) {
                         retrieved_angle = (int) ((1 - ((retrieved_angle - 30) / 120.0)) * 100); //((150-retrieved_angle)/120)*100
@@ -321,13 +313,10 @@ public class MainActivity extends AppCompatActivity {
                         retrieved_angle = 0;
                         //direction = 'F';
                     }
-                    if (direction == 'R')
-                    {
+                    if (direction == 'R') {
                         speed = 0;
                     }
-                }
-                else
-                {
+                } else {
                     if (retrieved_angle>180 && retrieved_angle<=210)
                     {
                         retrieved_angle = 0;
@@ -351,11 +340,11 @@ public class MainActivity extends AppCompatActivity {
 
                 speedoMeter.setHighValue(speed);
 
-                if (retrieved_angle > 99)
-                    retrieved_angle = 99;
+                if (retrieved_angle > angleValueMax)
+                    retrieved_angle = angleValueMax;
 
-                if (retrieved_speed > 99)
-                    retrieved_speed = 99;
+                if (retrieved_speed > speedValueMax)
+                    retrieved_speed = speedValueMax;
 
                 if (retrieved_speed == 0)
                 {
@@ -403,89 +392,103 @@ public class MainActivity extends AppCompatActivity {
             ((DrawerLayout)findViewById(R.id.drawer_layout)).closeDrawer(Gravity.LEFT);
 
             FragmentManager fragmentManager = getFragmentManager();
-            final BluetoothAddressList list = new BluetoothAddressList();
+            if (fragmentManager.findFragmentById(android.R.id.content) != null) return;
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
 
+            switch (position) {
+                case 0: {
+                    final BluetoothAddressList listFragment = new BluetoothAddressList();
+                    fragmentTransaction.add(android.R.id.content, listFragment);
 
-            if (fragmentManager.findFragmentById(android.R.id.content) == null) {
+                    ArrayList<HashMap<String,String>> pairedDevicesList = new ArrayList<>();
 
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
-                fragmentTransaction.add(android.R.id.content, list);
-                fragmentTransaction.commit();
-                getSupportFragmentManager().executePendingTransactions();
-
-                //fragmentTransaction.remove(fragmentManager.findFragmentByTag("Note"));
-
-
-            }
-
-            if(position == 0) {
-                pairedDevices = myBluetoothAdapter.getBondedDevices();
-
-
-                ArrayList<HashMap<String,String>> pairedDevicesList = new ArrayList<>();
-
-                HashMap<String,String> item;
-                for (BluetoothDevice device : pairedDevices) {
-                    item = new HashMap<>();
-                    item.put( "name", device.getName());
-                    item.put( "address", device.getAddress());
-                    pairedDevicesList.add( item );
-                }
-
-                final ListAdapter adapter =  new SimpleAdapter(getApplicationContext(), pairedDevicesList,
-                        android.R.layout.simple_list_item_2,
-                        new String[] { "name","address" },
-                        new int[] {android.R.id.text1, android.R.id.text2});
-
-                list.fillListView(adapter);
-
-
-            } else {
-
-
-                myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                myBluetoothAdapter.startDiscovery();
-
-                final ArrayList<HashMap<String,String>> scannedDevicesList = new ArrayList<>();
-
-                // Register the BroadcastReceiver
-                IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-                registerReceiver(new BroadcastReceiver() {
-                    public void onReceive(Context context, Intent intent) {
-                        String action = intent.getAction();
-                        // When discovery finds a device
-                        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-
-                            // Get the BluetoothDevice object from the Intent
-                            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                            // Add the name and address to an array adapter to show in a ListView
-                            //myBluetoothDeviceList.add(device.getName() + "\n" + device.getAddress());
-                            //adapter.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, myBluetoothDeviceList));
-
-                            HashMap<String,String> item = new HashMap<>();
-                            item.put( "name", device.getName());
-                            item.put( "address", device.getAddress());
-                            scannedDevicesList.add( item );
-
-                            final ListAdapter adapter =  new SimpleAdapter(getApplicationContext(), scannedDevicesList,
-                                    android.R.layout.simple_list_item_2,
-                                    new String[] { "name","address" },
-                                    new int[] {android.R.id.text1, android.R.id.text2});
-
-                            list.fillListView(adapter);
-
-
-                        }
+                    HashMap<String,String> item;
+                    for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
+                        item = new HashMap<>();
+                        item.put( "name", device.getName());
+                        item.put( "address", device.getAddress());
+                        pairedDevicesList.add( item );
                     }
-                }, filter);
 
+                    final ListAdapter adapter =  new SimpleAdapter(getApplicationContext(), pairedDevicesList,
+                            android.R.layout.simple_list_item_2,
+                            new String[] {"name", "address"},
+                            new int[] {android.R.id.text1, android.R.id.text2});
+
+                    listFragment.fillListView(adapter);
+
+                } break;
+                case 1: {
+                    final BluetoothAddressList listFragment = new BluetoothAddressList();
+                    fragmentTransaction.add(android.R.id.content, listFragment);
+
+                    bluetoothAdapter.startDiscovery();
+
+                    final ArrayList<HashMap<String,String>> scannedDevicesList = new ArrayList<>();
+
+                    // Register the BroadcastReceiver
+                    final BroadcastReceiver deviceFoundReceiver;
+                    IntentFilter filterDeviceFound = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+                    registerReceiver(deviceFoundReceiver = new BroadcastReceiver() {
+                        public void onReceive(Context context, Intent intent) {
+                            // When discovery finds a device
+                            if (BluetoothDevice.ACTION_FOUND.equals(intent.getAction())) {
+                                // Get the BluetoothDevice object from the Intent
+                                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                                // Add the name and address to the hashmap to show in a ListView
+                                HashMap<String,String> item = new HashMap<>();
+                                item.put( "name", device.getName());
+                                item.put( "address", device.getAddress());
+                                scannedDevicesList.add( item );
+
+                                final ListAdapter adapter =  new SimpleAdapter(getApplicationContext(), scannedDevicesList,
+                                        android.R.layout.simple_list_item_2,
+                                        new String[] {"name", "address"},
+                                        new int[] {android.R.id.text1, android.R.id.text2});
+
+                                listFragment.fillListView(adapter);
+                            }
+                        }
+                    }, filterDeviceFound);
+
+                    IntentFilter filterDiscoveryFinished = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+                    registerReceiver(new BroadcastReceiver() {
+                        public void onReceive(Context context, Intent intent) {
+                            // When discovery finished
+                            if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(intent.getAction())) {
+
+                                unregisterReceiver(deviceFoundReceiver);
+                                unregisterReceiver(this);
+
+                                if(!scannedDevicesList.isEmpty()) return;
+
+                                messageFromGUI("INFO", "No device found!");
+
+                                FragmentManager fragmentManager = getFragmentManager();
+                                if (fragmentManager.findFragmentById(android.R.id.content) != null) {
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+                                    fragmentTransaction.remove(fragmentManager.findFragmentById(android.R.id.content));
+                                    fragmentTransaction.commit();
+                                    fragmentManager.executePendingTransactions();
+                                }
+                            }
+                        }
+                    }, filterDiscoveryFinished);
+
+                } break;
             }
+
+            fragmentTransaction.commit();
+            getSupportFragmentManager().executePendingTransactions();
         }
     }
 
 
     private void changeDirection() {
+        // This needed, to prevent the direction changing when offline
+        if(!isBluetoothOn.get()) return;
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView);
         if(direction == 'F') {
             direction = 'R';
@@ -507,28 +510,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        //unregisterReceiver(mReceiver);
         try {
+            unregisterReceiver(isBluetoothOn.stateChangedReceiver);
             myBluetoothSocket.close();
         } catch (Exception e) {
         }
         super.onDestroy();
     }
 
+    /**
+     * On the press of the back button search for active fragment and remove it
+     * If not found any, then use the default handler
+     * @return
+     * @throws
+     */
     @Override
     public void onBackPressed() {
-
         FragmentManager fragmentManager = getFragmentManager();
-
         if (fragmentManager.findFragmentById(android.R.id.content) != null) {
-
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
             fragmentTransaction.remove(fragmentManager.findFragmentById(android.R.id.content));
             fragmentTransaction.commit();
             fragmentManager.executePendingTransactions();
         } else {
-
             super.onBackPressed();
         }
     }
@@ -547,63 +552,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Switch, witch connects the device (where the the android app run)
-     * with the RC-Car to be able to send specific data.
-     */
-    /*private void switchListener() {
-        bluetoothConnect = (Switch) findViewById(R.id.connect);
-        // attach a listener to check for changes in state
-        bluetoothConnect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // switch bluetooth on
-                    bluetoothOn(buttonView);
-                    if (isBluetoothOn.get() == true) {
-                        visible(buttonView);
-                        connectionView.setText("Bluetooth is on.");
-                    }
-                } else {
-                    // switch bluetooth off
-                    bluetoothOff(buttonView);
-                    if (isBluetoothOn.get() == false) {
-                        connectionView.setText("Bluetooth is off.");
-                    }
-                }
-            }
-        });
-    }*/
-
-
-    /**
-     * method bluetoothOff deactivates the bluetooth Connection
-     * @param view
-     */
-    /*private void bluetoothOff(View view) {
-        myBluetoothAdapter.disable();
-        Toast.makeText(getApplicationContext(), "Turned bluetooth off", Toast.LENGTH_LONG).show();
-        isBluetoothOn.set(false);
-        myBluetoothDeviceList.clear();
-    }*/
-
-    /**
-     * method to show a list of all paired bluetooth devices
-     * @param view
-     */
-    private void bluetoothPairedList(View view) {
-        pairedDevices = myBluetoothAdapter.getBondedDevices();
-        ArrayList list = new ArrayList();
-
-        for (BluetoothDevice bt : pairedDevices)
-            list.add(bt.getName());
-        Toast.makeText(getApplicationContext(), "Showing Paired Devices", Toast.LENGTH_SHORT).show();
-
-        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
-        myListView.setAdapter(adapter);
-    }
-    
-
-    /**
      * Connect to the specified bluetooth address with the predefined method
      * @param bluetoothAddress
      * @return
@@ -611,18 +559,14 @@ public class MainActivity extends AppCompatActivity {
      */
 
     protected boolean connectBluetoothDevice(String bluetoothAddress) {
-
         try {
-            if (myBluetoothAdapter.isDiscovering()) {
-                myBluetoothAdapter.cancelDiscovery();
+            if (bluetoothAdapter.isDiscovering()) {
+                bluetoothAdapter.cancelDiscovery();
             }
 
-            BluetoothDevice remoteBluetoothDevice = myBluetoothAdapter.getRemoteDevice(bluetoothAddress);
+            final BluetoothDevice remoteBluetoothDevice = bluetoothAdapter.getRemoteDevice(bluetoothAddress);
             myBluetoothSocket = createRfcommSocket(remoteBluetoothDevice);
-
-
             myBluetoothSocket.connect();
-            outStream = myBluetoothSocket.getOutputStream();
 
             messageFromThread("INFO", "Connected to " + remoteBluetoothDevice);
 
@@ -641,11 +585,10 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-
     /**
      * Method to create a Bluetooth createRfcommSocket socket
      * @param bluetoothDevice
-     * @return
+     * @return BluetoothSocket
      * @throws IOException
      */
     private BluetoothSocket createRfcommSocket(BluetoothDevice bluetoothDevice) throws IOException {
@@ -654,7 +597,7 @@ public class MainActivity extends AppCompatActivity {
             return (BluetoothSocket) m.invoke(bluetoothDevice, 1);
         } catch (Exception exception) {
             Log.v("ERROR", exception.getMessage());
-            Toast.makeText(getApplicationContext(), "Could not create RFComm Connection", Toast.LENGTH_SHORT).show();
+            messageFromThread("ERROR", "Could not create RFComm Connection!");
         }
         //return device.createRfcommSocketToServiceRecord(myUUID);
         return null;
@@ -663,7 +606,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Method to create a Bluetooth createInsecureRfcommSocketToServiceRecord socket
      * @param bluetoothDevice
-     * @return
+     * @return BluetoothSocket
      * @throws IOException
      */
     private BluetoothSocket createInsecureRfcommSocket(BluetoothDevice bluetoothDevice) throws IOException {
@@ -672,37 +615,14 @@ public class MainActivity extends AppCompatActivity {
             return (BluetoothSocket) m.invoke(bluetoothDevice, myUUID);
         } catch (Exception exception) {
             Log.v("ERROR", exception.getMessage());
-            Toast.makeText(getApplicationContext(), "Could not create Insecure RFComm Connection", Toast.LENGTH_SHORT).show();
+            messageFromThread("ERROR", "Could not create Insecure RFComm Connection");
         }
         //return device.createRfcommSocketToServiceRecord(myUUID);
         return null;
     }
 
-
-
-
-
-
     /**
-     * Create a BroadcastReceiver for ACTION_FOUND
-     */
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            // When discovery finds a device
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // Get the BluetoothDevice object from the Intent
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // Add the name and address to an array adapter to show in a ListView
-                /*myBluetoothDeviceList.add(device.getName() + "\n" + device.getAddress());
-                myListView.setAdapter(new ArrayAdapter<String>(context,
-                        android.R.layout.simple_list_item_1, myBluetoothDeviceList));*/
-            }
-        }
-    };
-
-    /**
-     * method to set the right command for the controlling of the rc car
+     * Method to set the right command for the controlling of the rc car
      */
     private void sendRCCar(){
         if(direction != ' ') {
@@ -745,23 +665,50 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Send data to the RC-Car
-     * @param message
+     * @param   message Moving instruction, which sent to the rover
+     * @exception Exception
+     * @ThreadSafe
      */
     public void sendData(String message) {
-        char[] msgBuffer = message.toCharArray();
-        if (outStream != null) {
-            try {
-                for(char c : msgBuffer) {
-                    outStream.write(c);
-                    TimeUnit.MILLISECONDS.sleep(10);
-                }
-                outStream.flush();
-            } catch (Exception e) {}
-        } else {
+        try {
+            OutputStream outStream = myBluetoothSocket.getOutputStream();
+
+            for(char character : message.toCharArray()) {
+                outStream.write(character);
+                TimeUnit.MILLISECONDS.sleep(10);
+            }
+            outStream.flush();
+        }  catch (Exception exception) {
             messageFromThread("ERROR", command + " - outStream is Null.");
         }
     }
 
+    /**
+     * Non-thread-safe messaging from the GUI
+     * @param   type The type of the message ["ERROR", "INFO"]
+     * @param   message The message text
+     * @NonThreadSafe
+     */
+    private void messageFromGUI(final String type, final String message) {
+        switch(type){
+            case "ERROR": {
+                errorMessageSnack.setText(message);
+                errorMessageSnack.show();
+            } break;
+            case "INFO": {
+                infoMessageSnack.setText(message);
+                infoMessageSnack.show();
+            }
+            default: break;
+        }
+    }
+
+    /**
+     * Thread-safe messaging towards the GUI
+     * @param   type The type of the message ["ERROR", "INFO"]
+     * @param   message The message text
+     * @ThreadSafe
+     */
     private void messageFromThread(final String type, final String message) {
         runOnUiThread(new Runnable() {
             @Override
