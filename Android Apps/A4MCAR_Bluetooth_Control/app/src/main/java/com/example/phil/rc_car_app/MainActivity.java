@@ -27,6 +27,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -42,6 +43,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -123,21 +125,23 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView menuList;
 
-    private GestureDetectorCompat mDetector;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_main);
 
         initializeBaseics();
-        initializeBluetooth();
         initializeGauges();
         initializeJoystick();
+        initializeBluetooth();
     }
 
     private void initializeBaseics() {
+        // Modify the orientation dependent parameters
+        orientationConfig(this.getResources().getConfiguration().orientation);
         // Initialization for the toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -263,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
         joystick.setButtonDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_arrow_up_bold_circle_black));
         joystick.setEnabled(false);
 
-        mDetector = new GestureDetectorCompat(getApplicationContext(), new GestureDetector.SimpleOnGestureListener(){
+        final GestureDetectorCompat mDetector = new GestureDetectorCompat(getApplicationContext(), new GestureDetector.SimpleOnGestureListener(){
             @Override
             public boolean onDoubleTap(MotionEvent e) {
                 changeDirection();
@@ -383,6 +387,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void orientationConfig(int orientation) {
+        if(orientation == Configuration.ORIENTATION_PORTRAIT)
+            ((LinearLayout)findViewById(R.id.mainLayout)).setOrientation(LinearLayout.VERTICAL);
+        else
+            ((LinearLayout)findViewById(R.id.mainLayout)).setOrientation(LinearLayout.HORIZONTAL);
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -420,10 +431,13 @@ public class MainActivity extends AppCompatActivity {
 
                 } break;
                 case 1: {
+
+                    if(!bluetoothAdapter.isDiscovering())
+                        bluetoothAdapter.startDiscovery();
+                    else return;
+
                     final BluetoothAddressList listFragment = new BluetoothAddressList();
                     fragmentTransaction.add(android.R.id.content, listFragment);
-
-                    bluetoothAdapter.startDiscovery();
 
                     final ArrayList<HashMap<String,String>> scannedDevicesList = new ArrayList<>();
 
@@ -461,7 +475,10 @@ public class MainActivity extends AppCompatActivity {
                                 unregisterReceiver(deviceFoundReceiver);
                                 unregisterReceiver(this);
 
-                                if(!scannedDevicesList.isEmpty()) return;
+                                if(!scannedDevicesList.isEmpty()) {
+                                    messageFromGUI("INFO", "Searching finished!");
+                                    return;
+                                }
 
                                 messageFromGUI("INFO", "No device found!");
 
@@ -507,7 +524,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         try {
@@ -516,6 +532,12 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onConfigurationChanged (Configuration config) {
+        orientationConfig(config.orientation);
+        super.onConfigurationChanged(config);
     }
 
     /**
@@ -528,6 +550,10 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         FragmentManager fragmentManager = getFragmentManager();
         if (fragmentManager.findFragmentById(android.R.id.content) != null) {
+
+            if (bluetoothAdapter.isDiscovering())
+                bluetoothAdapter.cancelDiscovery();
+
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
             fragmentTransaction.remove(fragmentManager.findFragmentById(android.R.id.content));
@@ -536,19 +562,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        /*if (requestCode == BLUETOOTH_ON) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "Turned bluetooth on", Toast.LENGTH_LONG).show();
-                connectionView.setText("Bluetooth is on.");
-                isBluetoothOn.set(true);
-                getBluetoothDevices();
-            }
-        }*/
     }
 
     /**
@@ -560,9 +573,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected boolean connectBluetoothDevice(String bluetoothAddress) {
         try {
-            if (bluetoothAdapter.isDiscovering()) {
+            if (bluetoothAdapter.isDiscovering())
                 bluetoothAdapter.cancelDiscovery();
-            }
 
             final BluetoothDevice remoteBluetoothDevice = bluetoothAdapter.getRemoteDevice(bluetoothAddress);
             myBluetoothSocket = createRfcommSocket(remoteBluetoothDevice);
