@@ -1,8 +1,8 @@
 package com.example.phil.rc_car_app;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +31,7 @@ public class BluetoothAddressList extends ListFragment
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         fragmentTransaction.remove(fragmentManager.findFragmentById(android.R.id.content));
         fragmentTransaction.commit();
         fragmentManager.executePendingTransactions();
@@ -46,9 +46,9 @@ public class BluetoothAddressList extends ListFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        this.getView().setBackgroundResource(R.color.colorPrimaryOpaque);
         ListView listView = getListView();
-        listView.setBackgroundResource(R.color.colorPrimaryOpaque);
-        listView.setPadding(0, 100, 0, 0);
+        listView.setPadding(0, 70, 0, 0);
     }
 
     public void fillListView (ListAdapter list) {

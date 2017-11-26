@@ -18,8 +18,6 @@
 
 package com.example.phil.rc_car_app;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -27,9 +25,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -63,20 +64,31 @@ import java.util.concurrent.TimeUnit;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
-import static com.example.phil.rc_car_app.R.string.activateBluetooth;
-
 class BluetoothState {
+
     private boolean isBluetoothOn = false;
+    private boolean isBluetoothConnected = false;
+
     private ChangeListener changeListener;
     public BroadcastReceiver stateChangedReceiver;
 
-    public boolean get() {
+    public boolean getIsBluetoothOn() {
         return isBluetoothOn;
     }
 
-    public void set(boolean isBluetoothOn) {
+    public void setIsBluetoothOn(boolean isBluetoothOn) {
         if(this.isBluetoothOn == isBluetoothOn) return;
         this.isBluetoothOn = isBluetoothOn;
+        if (changeListener != null) changeListener.onChange();
+    }
+
+    public boolean getIsBluetoothConnected() {
+        return isBluetoothConnected;
+    }
+
+    public void setIsBluetoothConnected(boolean isBluetoothConnected) {
+        if(this.isBluetoothConnected == isBluetoothConnected) return;
+        this.isBluetoothConnected = isBluetoothConnected;
         if (changeListener != null) changeListener.onChange();
     }
 
@@ -95,19 +107,21 @@ class BluetoothState {
 
 public class MainActivity extends AppCompatActivity {
 
+    // Global Bluetooth handler variables
+    private BluetoothSocket bluetoothSocket = null;
+    private BluetoothAdapter bluetoothAdapter = null;
+    private BluetoothState bluetoothState = null;
+    public int connectionMethod = R.id.radioButton;
 
-    private BluetoothSocket myBluetoothSocket;
-    private BluetoothAdapter bluetoothAdapter;
-
-    private int speedValueMax = 99, angleValueMax = 99;
-    private int speedValueStart = 0, angleValueStart = 50;
-
-    private BluetoothState isBluetoothOn = null;
     private static final int BLUETOOTH_ON = 1;
+
     private static DecimalFormat formatter;
     private static char direction = 'F';
     private static int angle, speed;
     private static int last_angle = 50, last_speed = 0;
+
+    private int speedValueMax = 99, angleValueMax = 99;
+    private int speedValueStart = 0, angleValueStart = 50;
 
     // speedZero and angleZero have to be initialized like in the app,
     // because otherwise the value of angle is '0' and not '50'
@@ -118,30 +132,32 @@ public class MainActivity extends AppCompatActivity {
     // SPP UUID service
     private static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-
+    // GUI Snack elements
     private Snackbar infoMessageSnack = null;
     private Snackbar errorMessageSnack = null;
+    private Snackbar connectBluetoothSnack = null;
     private Snackbar activateBluetoothSnack = null;
 
-    private ListView menuList;
+    private ListView menuList = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_main);
 
-        initializeBaseics();
+        initializeBasics();
         initializeGauges();
         initializeJoystick();
         initializeBluetooth();
     }
 
-    private void initializeBaseics() {
+    private void initializeBasics() {
         // Modify the orientation dependent parameters
         orientationConfig(this.getResources().getConfiguration().orientation);
+        // Load back the saved settings
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        connectionMethod = settings.getInt(getResources().getString(R.string.setting1), R.id.radioButton);
         // Initialization for the toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -149,16 +165,19 @@ public class MainActivity extends AppCompatActivity {
         String[] menuTitles = getResources().getStringArray(R.array.menuArray);
         menuList = (ListView)findViewById(R.id.left_drawer);
         // Set the adapter for the list view
-        menuList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, menuTitles));
+        menuList.setAdapter(new ArrayAdapter<>(this, R.layout.drawer_list_item, menuTitles));
         // Set the list's click listener
         menuList.setOnItemClickListener(new DrawerItemClickListener());
         // Disable the list at startup
         menuList.setEnabled(false);
         // The default init state: Bluetooth turned OFF, show the alert snack
         ((ImageButton)findViewById(R.id.connectButton)).setImageResource(R.drawable.ic_bluetooth_off_white_36dp);
-        activateBluetoothSnack = Snackbar.make(findViewById(R.id.drawer_layout), activateBluetooth, Snackbar.LENGTH_INDEFINITE);
+        activateBluetoothSnack = Snackbar.make(findViewById(R.id.drawer_layout), R.string.activateBluetooth, Snackbar.LENGTH_INDEFINITE);
         activateBluetoothSnack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.materialRed500));
         activateBluetoothSnack.show();
+        // Alert snack to show the disconnected state
+        connectBluetoothSnack = Snackbar.make(findViewById(R.id.drawer_layout), R.string.connectBluetooth, Snackbar.LENGTH_INDEFINITE);
+        connectBluetoothSnack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.materialBlue500));
         // Snack for info messages
         infoMessageSnack = Snackbar.make(findViewById(R.id.drawer_layout), null, Snackbar.LENGTH_LONG);
         infoMessageSnack.getView().setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.materialBlue500));
@@ -171,42 +190,63 @@ public class MainActivity extends AppCompatActivity {
         // Get the default bluetooth adapter and it's state
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // Observe the state change of the bluetooth adapter
-        isBluetoothOn = new BluetoothState();
-        isBluetoothOn.setListener(new BluetoothState.ChangeListener() {
+        bluetoothState = new BluetoothState();
+        bluetoothState.setListener(new BluetoothState.ChangeListener() {
             @Override
             public void onChange() {
-                if(isBluetoothOn.get()) {
+                if(bluetoothState.getIsBluetoothOn()) {
                     ((ImageButton)findViewById(R.id.connectButton)).setImageResource(R.drawable.ic_bluetooth_white_36dp);
                     findViewById(R.id.joystickView).setEnabled(true);
                     menuList.setEnabled(true);
                     activateBluetoothSnack.dismiss();
+                    // Show if we connected to a remote device
+                    if(bluetoothState.getIsBluetoothConnected()) {
+                        ((ImageButton)findViewById(R.id.connectButton)).setImageResource(R.drawable.ic_bluetooth_connect_white_36dp);
+                        connectBluetoothSnack.dismiss();
+                    } else {
+                        ((ImageButton)findViewById(R.id.connectButton)).setImageResource(R.drawable.ic_bluetooth_white_36dp);
+                    }
                 } else {
                     ((ImageButton)findViewById(R.id.connectButton)).setImageResource(R.drawable.ic_bluetooth_off_white_36dp);
                     findViewById(R.id.joystickView).setEnabled(false);
                     menuList.setEnabled(false);
+                    connectBluetoothSnack.dismiss();
                     activateBluetoothSnack.show();
                 }
             }
         });
 
-        isBluetoothOn.set(bluetoothAdapter.isEnabled());
+        bluetoothState.setIsBluetoothOn(bluetoothAdapter.isEnabled());
 
+        // Adapter state change listener
         IntentFilter filterStateChanged = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(isBluetoothOn.stateChangedReceiver = new BroadcastReceiver() {
+        registerReceiver(bluetoothState.stateChangedReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
-                // When discovery finished
                 if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(intent.getAction())) {
-                    isBluetoothOn.set(bluetoothAdapter.isEnabled());
+                    bluetoothState.setIsBluetoothOn(bluetoothAdapter.isEnabled());
                 }
             }
         }, filterStateChanged);
-
+        // Adapter connection change listener
+        IntentFilter filterConnectionChanged = new IntentFilter();
+        filterConnectionChanged.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filterConnectionChanged.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        registerReceiver(new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(intent.getAction())) {
+                    bluetoothState.setIsBluetoothConnected(true);
+                } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(intent.getAction())) {
+                    bluetoothState.setIsBluetoothConnected(false);
+                    messageFromGUI("ERROR", getResources().getString(R.string.connectionLost));
+                }
+            }
+        }, filterConnectionChanged);
         // Listener for the bluetooth button
         (findViewById(R.id.connectButton)).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (!isBluetoothOn.get()) {
+                    if (!bluetoothState.getIsBluetoothOn()) {
                         Intent turnBluetoothOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(turnBluetoothOn, BLUETOOTH_ON);
                     } else {
@@ -219,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeGauges() {
-
         // Find the components
         final ScArcGauge speedoMeter = (ScArcGauge)this.findViewById(R.id.speedoMeter);
         assert speedoMeter != null;
@@ -402,10 +441,10 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), menuTitles[position], Toast.LENGTH_SHORT).show();
             ((DrawerLayout)findViewById(R.id.drawer_layout)).closeDrawer(Gravity.LEFT);
 
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             if (fragmentManager.findFragmentById(android.R.id.content) != null) return;
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 
             switch (position) {
                 case 0: {
@@ -452,7 +491,7 @@ public class MainActivity extends AppCompatActivity {
                                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                                 // Add the name and address to the hashmap to show in a ListView
                                 HashMap<String,String> item = new HashMap<>();
-                                item.put( "name", device.getName());
+                                item.put( "name", device.getName() == null ? "N/A" : device.getName());
                                 item.put( "address", device.getAddress());
                                 scannedDevicesList.add( item );
 
@@ -476,16 +515,16 @@ public class MainActivity extends AppCompatActivity {
                                 unregisterReceiver(this);
 
                                 if(!scannedDevicesList.isEmpty()) {
-                                    messageFromGUI("INFO", "Searching finished!");
+                                    messageFromGUI("INFO", getResources().getString(R.string.searchingFinished));
                                     return;
                                 }
 
-                                messageFromGUI("INFO", "No device found!");
+                                messageFromGUI("INFO", getResources().getString(R.string.deviceNotFound));
 
-                                FragmentManager fragmentManager = getFragmentManager();
+                                FragmentManager fragmentManager = getSupportFragmentManager();
                                 if (fragmentManager.findFragmentById(android.R.id.content) != null) {
                                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                    fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+                                    fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
                                     fragmentTransaction.remove(fragmentManager.findFragmentById(android.R.id.content));
                                     fragmentTransaction.commit();
                                     fragmentManager.executePendingTransactions();
@@ -494,6 +533,9 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }, filterDiscoveryFinished);
 
+                } break;
+                case 2: {
+                    fragmentTransaction.add(android.R.id.content, Settings.newInstance());
                 } break;
             }
 
@@ -505,7 +547,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeDirection() {
         // This needed, to prevent the direction changing when offline
-        if(!isBluetoothOn.get()) return;
+        if(!bluetoothState.getIsBluetoothOn()) return;
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView);
         if(direction == 'F') {
             direction = 'R';
@@ -527,9 +569,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         try {
-            unregisterReceiver(isBluetoothOn.stateChangedReceiver);
-            myBluetoothSocket.close();
-        } catch (Exception e) {
+            unregisterReceiver(bluetoothState.stateChangedReceiver);
+            bluetoothSocket.close();
+        } catch (Exception exception) {
+            Log.v("ERROR", exception.getMessage());
         }
         super.onDestroy();
     }
@@ -548,14 +591,14 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         if (fragmentManager.findFragmentById(android.R.id.content) != null) {
 
             if (bluetoothAdapter.isDiscovering())
                 bluetoothAdapter.cancelDiscovery();
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+            fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
             fragmentTransaction.remove(fragmentManager.findFragmentById(android.R.id.content));
             fragmentTransaction.commit();
             fragmentManager.executePendingTransactions();
@@ -577,24 +620,67 @@ public class MainActivity extends AppCompatActivity {
                 bluetoothAdapter.cancelDiscovery();
 
             final BluetoothDevice remoteBluetoothDevice = bluetoothAdapter.getRemoteDevice(bluetoothAddress);
-            myBluetoothSocket = createRfcommSocket(remoteBluetoothDevice);
-            myBluetoothSocket.connect();
+            switch (connectionMethod) {
+                case R.id.radioButton:
+                    bluetoothSocket = createRfcommSocketToServiceRecord(remoteBluetoothDevice);
+                    break;
+                case R.id.radioButton2:
+                    bluetoothSocket = createInsecureRfcommSocketToServiceRecord(remoteBluetoothDevice);
+                    break;
+                case R.id.radioButton3:
+                    bluetoothSocket = createRfcommSocket(remoteBluetoothDevice);
+                    break;
+                case R.id.radioButton4:
+                    bluetoothSocket = createInsecureRfcommSocket(remoteBluetoothDevice);
+                    break;
+            }
+            bluetoothSocket.connect();
 
-            messageFromThread("INFO", "Connected to " + remoteBluetoothDevice);
+            messageFromThread("INFO", getResources().getString(R.string.connectedTo) + remoteBluetoothDevice);
 
             return true;
 
         } catch (Exception open_exception) {
             try {
                 Log.v("ERROR", open_exception.getMessage());
-                messageFromThread("ERROR", "Bluetooth connection failed!");
-                myBluetoothSocket.close();
+                messageFromThread("ERROR", getResources().getString(R.string.connectionFailed));
+                bluetoothSocket.close();
             } catch (Exception close_exception) {
                 Log.v("ERROR", close_exception.getMessage());
             }
         }
 
         return false;
+    }
+
+    /**
+     * Method to create a Bluetooth createRfcommSocketToServiceRecord socket
+     * @param bluetoothDevice
+     * @return BluetoothSocket
+     * @throws IOException
+     */
+    private BluetoothSocket createRfcommSocketToServiceRecord(BluetoothDevice bluetoothDevice) throws IOException {
+        try {
+            return bluetoothDevice.createRfcommSocketToServiceRecord(myUUID);
+        } catch (Exception exception) {
+            Log.v("ERROR", exception.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Method to create a Bluetooth createInsecureRfcommSocketToServiceRecord socket
+     * @param bluetoothDevice
+     * @return BluetoothSocket
+     * @throws IOException
+     */
+    private BluetoothSocket createInsecureRfcommSocketToServiceRecord(BluetoothDevice bluetoothDevice) throws IOException {
+        try {
+            return bluetoothDevice.createInsecureRfcommSocketToServiceRecord(myUUID);
+        } catch (Exception exception) {
+            Log.v("ERROR", exception.getMessage());
+        }
+        return null;
     }
 
     /**
@@ -609,9 +695,7 @@ public class MainActivity extends AppCompatActivity {
             return (BluetoothSocket) m.invoke(bluetoothDevice, 1);
         } catch (Exception exception) {
             Log.v("ERROR", exception.getMessage());
-            messageFromThread("ERROR", "Could not create RFComm Connection!");
         }
-        //return device.createRfcommSocketToServiceRecord(myUUID);
         return null;
     }
 
@@ -627,9 +711,7 @@ public class MainActivity extends AppCompatActivity {
             return (BluetoothSocket) m.invoke(bluetoothDevice, myUUID);
         } catch (Exception exception) {
             Log.v("ERROR", exception.getMessage());
-            messageFromThread("ERROR", "Could not create Insecure RFComm Connection");
         }
-        //return device.createRfcommSocketToServiceRecord(myUUID);
         return null;
     }
 
@@ -637,42 +719,39 @@ public class MainActivity extends AppCompatActivity {
      * Method to set the right command for the controlling of the rc car
      */
     private void sendRCCar(){
-        if(direction != ' ') {
-            if(speed == 0){
-                if(angle == 0) {
-                    command = "S" + speedZero + "A" + angleZero + direction + endOFCommand;
-                }else if(angle <= 9){
-                    command = "S" + speedZero + "A" + angleTen + direction + endOFCommand;
-                }else{
-                    command = "S" + speedZero + "A" + angle + direction + endOFCommand;
-                }
-            }else if(angle == 0){
-                if(speed == 0) {
-                    command = "S" + speedZero + "A" + angleZero + direction + endOFCommand;
-                }else if(speed <= 9){
-                    command = "S" + speedTen + "A" + angleZero + direction + endOFCommand;
-                } else{
-                    command = "S" + speed + "A" + angleZero + direction + endOFCommand;
-                }
-            }else if(speed <= 9){
-                if(angle <= 9) {
-                    command = "S" + speedTen + "A" + angleTen + direction + endOFCommand;
-                }else{
-                    command = "S" + speedTen + "A" + angle + direction + endOFCommand;
-                }
-            }else if(angle <= 9){
-                if(speed <= 9) {
-                    command = "S" + speedTen + "A" + angleTen + direction + endOFCommand;
-                }else{
-                    command = "S" + speed + "A" + angleTen + direction + endOFCommand;
-                }
-            }else{
-                command = "S" + speed + "A" + angle + direction + endOFCommand;
+        if(speed == 0) {
+            if(angle == 0) {
+                command = "S" + speedZero + "A" + angleZero + direction + endOFCommand;
+            } else if(angle <= 9) {
+                command = "S" + speedZero + "A" + angleTen + direction + endOFCommand;
+            } else {
+                command = "S" + speedZero + "A" + angle + direction + endOFCommand;
             }
-            sendData(command);
-        }else{
-
+        } else if(angle == 0) {
+            if(speed == 0) {
+                command = "S" + speedZero + "A" + angleZero + direction + endOFCommand;
+            } else if(speed <= 9) {
+                command = "S" + speedTen + "A" + angleZero + direction + endOFCommand;
+            } else {
+                command = "S" + speed + "A" + angleZero + direction + endOFCommand;
+            }
+        } else if(speed <= 9) {
+            if(angle <= 9) {
+                command = "S" + speedTen + "A" + angleTen + direction + endOFCommand;
+            } else {
+                command = "S" + speedTen + "A" + angle + direction + endOFCommand;
+            }
+        } else if(angle <= 9) {
+            if(speed <= 9) {
+                command = "S" + speedTen + "A" + angleTen + direction + endOFCommand;
+            } else {
+                command = "S" + speed + "A" + angleTen + direction + endOFCommand;
+            }
+        } else {
+            command = "S" + speed + "A" + angle + direction + endOFCommand;
         }
+
+        sendData(command);
     }
 
     /**
@@ -683,7 +762,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void sendData(String message) {
         try {
-            OutputStream outStream = myBluetoothSocket.getOutputStream();
+            OutputStream outStream = bluetoothSocket.getOutputStream();
 
             for(char character : message.toCharArray()) {
                 outStream.write(character);
@@ -691,7 +770,7 @@ public class MainActivity extends AppCompatActivity {
             }
             outStream.flush();
         }  catch (Exception exception) {
-            messageFromThread("ERROR", command + " - outStream is Null.");
+            messageFromThread("ERROR", command + getResources().getString(R.string.outStreamNull));
         }
     }
 

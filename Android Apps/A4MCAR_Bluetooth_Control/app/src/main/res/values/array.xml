@@ -2,9 +2,9 @@
 <resources>
     <string-array
         name="menuArray">
-            <item>Paired devices</item>
-            <item>Search devices</item>
-            <item>Settings</item>
+            <item>@string/menu1</item>
+            <item>@string/menu2</item>
+            <item>@string/menu3</item>
     </string-array>
 </resources>
 

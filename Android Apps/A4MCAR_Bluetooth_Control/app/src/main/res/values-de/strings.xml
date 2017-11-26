@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activateBluetooth">Bitte aktivieren Sie die Bluetooth!</string>
+    <string name="connectBluetooth">Bitte verbinden Sie sich mit einem Gerät</string>
+    <string name="connectionLost">Verbindung unterbrochen!</string>
+    <string name="deviceNotFound">Kein Gerät gefunden!</string>
+    <string name="menu1">Gekoppelte Geräte</string>
+    <string name="menu3">Einstellungen</string>
+    <string name="menu2">Suchen Geräten</string>
+    <string name="connectionFailed">Bluetooth-Verbindung fehlgeschlagen!</string>
+    <string name="searchingFinished">Suche beendet!</string>
+    <string name="outStreamNull">" - outStream ist Null."</string>
+    <string name="connectedTo">"Angeschlossen: "</string>
+    <string name="methods">Verbindungsmethode:</string>
+</resources>
