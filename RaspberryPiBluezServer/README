@@ -1,0 +1,5 @@
+Important:
+https://raspberrypi.stackexchange.com/questions/41776/failed-to-connect-to-sdp-server-on-ffffff000000-no-such-file-or-directory
+
+Compile:
+gcc -o bluez_server ./bluez_server.c -lbluetooth -I/home/pi/Documents
