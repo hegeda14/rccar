@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"> <!--@style/AppTheme-->
         <activity
             android:name=".MainActivity"
-            android:label="A4MCAR Bluetooth Control"
+            android:label="Rover Bluetooth Control"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
