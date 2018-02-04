@@ -60,74 +60,88 @@
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <FrameLayout
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:layout_weight="1"
-                    android:padding="10dp">
+                    android:layout_height="20dp"
+                    custom:srcCompat="@drawable/roverbluetoothapplogo"
+                    android:id="@+id/imageView1"
+                    android:scaleType="fitCenter" />
 
-                    <com.sccomponents.gauges.ScArcGauge xmlns:sc="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/speedoMeter"
-                        android:layout_width="wrap_content"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:padding="10dp"
-                        sc:angleStart="-200"
-                        sc:angleSweep="220"
-                        sc:progressColor="@color/colorPrimary"
-                        sc:progressSize="20dp"
-                        sc:strokeColor="@color/colorAccent"
-                        sc:strokeSize="20dp" />
+                        android:layout_gravity="center|start"
+                        android:layout_weight="1"
+                        android:padding="10dp">
 
-                    <TextView
-                        android:id="@+id/speedoMeterCounter"
-                        android:layout_width="wrap_content"
+                        <com.sccomponents.gauges.ScArcGauge xmlns:sc="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/speedoMeter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:padding="10dp"
+                            sc:angleStart="-200"
+                            sc:angleSweep="220"
+                            sc:progressColor="@color/colorPrimary"
+                            sc:progressSize="20dp"
+                            sc:strokeColor="@color/colorAccent"
+                            sc:strokeSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/speedoMeterCounter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:layout_marginTop="40dp"
+                            android:text="0"
+                            android:textColor="#000000"
+                            android:textSize="20sp" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:layout_marginTop="40dp"
-                        android:text="0"
-                        android:textColor="#000000"
-                        android:textSize="20sp" />
+                        android:layout_gravity="center|end"
+                        android:layout_weight="1"
+                        android:padding="10dp">
 
-                </FrameLayout>
+                        <com.sccomponents.gauges.ScArcGauge xmlns:sc="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/angleMeter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:padding="10dp"
+                            sc:angleStart="-200"
+                            sc:angleSweep="220"
+                            sc:progressColor="@color/colorPrimary"
+                            sc:progressSize="20dp"
+                            sc:strokeColor="@color/colorAccent"
+                            sc:strokeSize="20dp" />
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:layout_weight="1"
-                    android:padding="10dp">
+                        <TextView
+                            android:id="@+id/angleMeterCounter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center_horizontal"
+                            android:layout_marginTop="40dp"
+                            android:text="0"
+                            android:textColor="#000000"
+                            android:textSize="20sp" />
 
-                    <com.sccomponents.gauges.ScArcGauge xmlns:sc="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/angleMeter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:padding="10dp"
-                        sc:angleStart="-200"
-                        sc:angleSweep="220"
-                        sc:progressColor="@color/colorPrimary"
-                        sc:progressSize="20dp"
-                        sc:strokeColor="@color/colorAccent"
-                        sc:strokeSize="20dp" />
-
-                    <TextView
-                        android:id="@+id/angleMeterCounter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:layout_marginTop="40dp"
-                        android:text="0"
-                        android:textColor="#000000"
-                        android:textSize="20sp" />
-
-                </FrameLayout>
+                    </FrameLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <io.github.controlwear.virtual.joystick.android.JoystickView

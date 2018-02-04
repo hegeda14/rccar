@@ -6,7 +6,7 @@
     <string name="deviceNotFound">No device found!</string>
     <string name="connectionFailed">Bluetooth connection failed!</string>
     <string name="connectedTo">"Connected to: "</string>
-    <string name="outStreamNull"> - outStream is Null.</string>
+    <string name="outStreamNull">" - outStream is Null."</string>
 
     <string name="menu1">Paired devices</string>
     <string name="menu2">Search devices</string>

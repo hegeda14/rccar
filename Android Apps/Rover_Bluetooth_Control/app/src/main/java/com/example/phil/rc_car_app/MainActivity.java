@@ -60,7 +60,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
@@ -107,30 +106,21 @@ class BluetoothState {
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int speedValueMax = 99, angleValueMax = 99;
+    private static final int speedValueStart = 0, angleValueStart = 50;
+
+    // End of command marker
+    private static final char endOFCommand = 'E';
+    // SPP UUID service
+    private static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    //
+    private static final int BLUETOOTH_ON = 1;
+
     // Global Bluetooth handler variables
     private BluetoothSocket bluetoothSocket = null;
     private BluetoothAdapter bluetoothAdapter = null;
     private BluetoothState bluetoothState = null;
     public int connectionMethod = R.id.radioButton;
-
-    private static final int BLUETOOTH_ON = 1;
-
-    private static DecimalFormat formatter;
-    private static char direction = 'F';
-    private static int angle, speed;
-    private static int last_angle = 50, last_speed = 0;
-
-    private int speedValueMax = 99, angleValueMax = 99;
-    private int speedValueStart = 0, angleValueStart = 50;
-
-    // speedZero and angleZero have to be initialized like in the app,
-    // because otherwise the value of angle is '0' and not '50'
-
-    private static String speedZero = "00", angleZero = "50", speedTen, angleTen, command;
-    private static final char endOFCommand = 'E';
-
-    // SPP UUID service
-    private static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     // GUI Snack elements
     private Snackbar infoMessageSnack = null;
@@ -303,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
         final ScArcGauge angleMeter = (ScArcGauge)this.findViewById(R.id.angleMeter);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView);
-        joystick.setButtonDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_arrow_up_bold_circle_black));
+        //joystick.setButtonDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_arrow_up_bold_circle_black));
         joystick.setEnabled(false);
 
         final GestureDetectorCompat mDetector = new GestureDetectorCompat(getApplicationContext(), new GestureDetector.SimpleOnGestureListener(){
@@ -321,28 +311,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
+            // Just remember to the previous values
+            private int last_angle = angleValueStart, last_speed = speedValueStart;
             @Override
             public void onMove(int retrieved_angle, int retrieved_speed)
             {
-                if (retrieved_speed > speedValueMax)
-                    retrieved_speed = speedValueMax;
-
-                angleMeter.setHighValue(angle);
-
-                if(retrieved_speed <= 9) {
-                    if(retrieved_speed == 0) {
-                        speed = retrieved_speed;
-                        formatter = new DecimalFormat("00");
-                        speedZero = formatter.format(speed);
-                    }else {
-                        speed = retrieved_speed;
-                        formatter = new DecimalFormat("0" + retrieved_speed);
-                        speedTen = formatter.format(speed);
-                    }
-                } else {
-                    speed = retrieved_speed;
-                }
+                // Set the direction, based on the angle's value
+                final String direction;
+                if(retrieved_angle >= 180) direction = "R";
+                else direction = "F";
 
                 if (retrieved_angle >= 0 && retrieved_angle <= 180)
                 {
@@ -355,9 +335,6 @@ public class MainActivity extends AppCompatActivity {
                     } else if (retrieved_angle >= 150 && retrieved_angle <= 180) {
                         retrieved_angle = 0;
                         //direction = 'F';
-                    }
-                    if (direction == 'R') {
-                        speed = 0;
                     }
                 } else {
                     if (retrieved_angle>180 && retrieved_angle<=210)
@@ -375,53 +352,43 @@ public class MainActivity extends AppCompatActivity {
                         retrieved_angle = 99;
                         //direction = 'R';
                     }
-                    if (direction == 'F')
-                    {
-                        speed = 0;
-                    }
                 }
-
-                speedoMeter.setHighValue(speed);
-
-                if (retrieved_angle > angleValueMax)
-                    retrieved_angle = angleValueMax;
-
-                if (retrieved_speed > speedValueMax)
-                    retrieved_speed = speedValueMax;
-
                 if (retrieved_speed == 0)
                 {
                     retrieved_angle = 50;
                 }
 
-                if (retrieved_angle <= 9)
-                {
-                    if (retrieved_angle == 0) {
-                        angle = retrieved_angle;
-                        formatter = new DecimalFormat("00");
-                        angleZero = formatter.format(angle);
-                    } else {
-                        angle = retrieved_angle;
-                        formatter = new DecimalFormat("0" + retrieved_angle);
-                        angleTen = formatter.format(angle);
-                    }
-                } else {
-                    angle = retrieved_angle;
-                }
 
-                if (Math.abs(last_angle-angle) > 8 || Math.abs(last_speed - speed) > 8)
+
+                if (retrieved_speed > speedValueMax)
+                    retrieved_speed = speedValueMax;
+                if (retrieved_angle > angleValueMax)
+                    retrieved_angle = angleValueMax;
+
+
+                angleMeter.setHighValue(retrieved_angle);
+                speedoMeter.setHighValue(retrieved_speed);
+
+
+                DecimalFormat formatter = new DecimalFormat("00");
+                final String speed = formatter.format(retrieved_speed);
+                final String angle = formatter.format(retrieved_angle);
+
+
+                if (Math.abs(last_angle - retrieved_angle) > 8 || Math.abs(last_speed - retrieved_speed) > 8)
                 {
-                    last_angle = angle;
-                    last_speed = speed;
-                    //Log.d("Sent","sent");
+                    last_angle = retrieved_angle;
+                    last_speed = retrieved_speed;
 
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            sendRCCar();
+                            sendRCCar(direction, speed, angle);
                         }
                     }).start();
                 }
+
+
             }
         });
     }
@@ -547,7 +514,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeDirection() {
         // This needed, to prevent the direction changing when offline
-        if(!bluetoothState.getIsBluetoothOn()) return;
+        /*if(!bluetoothState.getIsBluetoothOn()) return;
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView);
         if(direction == 'F') {
             direction = 'R';
@@ -562,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 sendRCCar();
             }
-        }).start();
+        }).start();*/
     }
 
 
@@ -586,8 +553,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * On the press of the back button search for active fragment and remove it
      * If not found any, then use the default handler
-     * @return
-     * @throws
      */
     @Override
     public void onBackPressed() {
@@ -718,39 +683,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Method to set the right command for the controlling of the rc car
      */
-    private void sendRCCar(){
-        if(speed == 0) {
-            if(angle == 0) {
-                command = "S" + speedZero + "A" + angleZero + direction + endOFCommand;
-            } else if(angle <= 9) {
-                command = "S" + speedZero + "A" + angleTen + direction + endOFCommand;
-            } else {
-                command = "S" + speedZero + "A" + angle + direction + endOFCommand;
-            }
-        } else if(angle == 0) {
-            if(speed == 0) {
-                command = "S" + speedZero + "A" + angleZero + direction + endOFCommand;
-            } else if(speed <= 9) {
-                command = "S" + speedTen + "A" + angleZero + direction + endOFCommand;
-            } else {
-                command = "S" + speed + "A" + angleZero + direction + endOFCommand;
-            }
-        } else if(speed <= 9) {
-            if(angle <= 9) {
-                command = "S" + speedTen + "A" + angleTen + direction + endOFCommand;
-            } else {
-                command = "S" + speedTen + "A" + angle + direction + endOFCommand;
-            }
-        } else if(angle <= 9) {
-            if(speed <= 9) {
-                command = "S" + speedTen + "A" + angleTen + direction + endOFCommand;
-            } else {
-                command = "S" + speed + "A" + angleTen + direction + endOFCommand;
-            }
-        } else {
-            command = "S" + speed + "A" + angle + direction + endOFCommand;
-        }
-
+    private void sendRCCar(String direction, String speed, String angle){
+        String command = "S" + speed + "A" + angle + direction + endOFCommand;
         sendData(command);
     }
 
@@ -763,14 +697,10 @@ public class MainActivity extends AppCompatActivity {
     public void sendData(String message) {
         try {
             OutputStream outStream = bluetoothSocket.getOutputStream();
-
-            for(char character : message.toCharArray()) {
-                outStream.write(character);
-                TimeUnit.MILLISECONDS.sleep(10);
-            }
+            outStream.write(message.getBytes());
             outStream.flush();
         }  catch (Exception exception) {
-            messageFromThread("ERROR", command + getResources().getString(R.string.outStreamNull));
+            messageFromThread("ERROR", message + getResources().getString(R.string.outStreamNull));
         }
     }
 
@@ -818,14 +748,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    /**
-     * method to make the bluetooth device for 120 seconds visible for other bluetooth devices
-     * @param view
-     */
-    /*private void visible(View view) {
-        Intent getVisible = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        startActivityForResult(getVisible, 0);
-    }*/
-
 }

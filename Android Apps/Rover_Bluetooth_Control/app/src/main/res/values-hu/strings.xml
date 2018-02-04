@@ -2,8 +2,8 @@
 <resources>
     <string name="activateBluetooth">Kérem, aktiválja a Bluetooth-t!</string>
     <string name="connectBluetooth">Kérem, kapcsolódjon egy eszközhöz</string>
-    <string name="connectedTo">\"Kapcsolódva: \"</string>
-    <string name="connectionFailed">Bluetooth kapcsolat sikertelen!</string>
+    <string name="connectedTo">"Kapcsolódva: "</string>
+    <string name="connectionFailed">Bluetooth kapcsolódás sikertelen!</string>
     <string name="connectionLost">A kapcsolat elveszett!</string>
     <string name="deviceNotFound">Nem található eszköz!</string>
     <string name="menu1">Párosított eszközök</string>

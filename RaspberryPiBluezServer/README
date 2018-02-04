@@ -1,10 +1,11 @@
 @TODO:
-The server is still defective, after a loss of signal, the app is not able to reconnect
-In case of too fast command arriving, the inout is not handled correctly
 Currently no access solution found to the bluez, apart form this low level, C-based variant through sdptool, or a D-Bus based solution 
 
 To compile the server program:
-gcc -o bluez_server ./bluez_server.c -lbluetooth -I/home/pi/Documents
+gcc -o bluez_server /home/pi/Documents/bluez_server.c -lbluetooth -I/home/pi/Documents
+
+To execute:
+/home/pi/Documents/bluez_server
 
 The sdptool is broken with the new BlueZ5 server.
 Please, follow the links below, to make the server program work.
@@ -24,3 +25,7 @@ Step 2. -- Reverts after every restart
 See the following links:
 https://raspberrypi.stackexchange.com/questions/41776/failed-to-connect-to-sdp-server-on-ffffff000000-no-such-file-or-directory
 https://bbs.archlinux.org/viewtopic.php?id=201672
+
+Based on:
+https://github.com/RyanGlScott/BluetoothTest -> C BlueZ Server
+License in the source code

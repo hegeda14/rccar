@@ -34,28 +34,32 @@
 * (Adapted from http://www.btessentials.com/examples/bluez/sdp-register.c)
 * */
 
+int port = 3, sock, client;
+
 int main(int argc, char **argv)
 {
-
 	int client = init_server();
 	char end_of_command = 'E';
 	char command[255] = { 0 };
 
 	while(1) {
-		char data[1024] = { 0 };
-		int bytes_read = read_server(client, data);
-		for(int index = 0; index < bytes_read; index++) {
-			if(data[index] == end_of_command) {
-				printf("command: [%s]\n", command);
-				memset(command, 0, 255);
-			} else {
-			//part = read_server(client);
-				char command_part[2] = {data[index], 0};
-				strcat(command, command_part);
+
+		int bytes_read = read_server(client, command);
+
+		if(bytes_read == -1) {
+			printf("Connection lost!\n");
+			int close_res = close(sock);
+			printf("Close result %d\n", close_res);
+			if(close_res != 0) {
+				printf("Couldn't close the socket!\n");
+				return 0;
 			}
-			//printf("received [%s]\n", data[index]);
+			client = init_server();
+		} else {
+			printf("Command: [%s]\n", command);
+			memset(command, 0, 255);
 		}
-		//printf("received [%s]\n", data);
+		
 	}
 	return 0;
 }
@@ -152,7 +156,7 @@ sdp_session_t *register_service(uint8_t rfcomm_channel) {
 }
 
 int init_server() {
-	int port = 3, result, sock, client, bytes_read, bytes_sent;
+	int result, bytes_read, bytes_sent;
 	struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
 	char buffer[1024] = { 0 };
 	socklen_t opt = sizeof(rem_addr);
@@ -191,11 +195,9 @@ int init_server() {
 	return client;
 }
 
-int read_server(int client, char *data) {
+int read_server(int client, char *command) {
 	// read data from the client
-	//char input[1024] = { 0 };
-	int bytes_read;
-	bytes_read = read(client, data, sizeof(data));
+	int bytes_read = recv(client, command, 8, MSG_WAITALL);
 	return bytes_read;
 }
 
