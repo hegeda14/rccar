@@ -11,6 +11,7 @@
  * Authors:
  *    originally created by Phil Naerdemann, Fachhochschule Dortmund
  *    new version Joystick, deadzone, communication updates by M. Ozcelikors <mozcelikors@gmail.com>, Fachhochschule Dortmund
+ *    full redesign, improved layout and operation by Attila Hegedüs <hegedus.attila.1992@gmail.com>, Fachhochschule Dortmund
  *
  * Update History:
  *
@@ -32,12 +33,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     private static final char endOFCommand = 'E';
     // SPP UUID service
     private static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    //
+    // Necessary for the Bluetooth starting Activity
     private static final int BLUETOOTH_ON = 1;
 
     // Global Bluetooth handler variables
@@ -293,25 +292,7 @@ public class MainActivity extends AppCompatActivity {
         final ScArcGauge angleMeter = (ScArcGauge)this.findViewById(R.id.angleMeter);
 
         JoystickView joystick = (JoystickView) findViewById(R.id.joystickView);
-        //joystick.setButtonDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_arrow_up_bold_circle_black));
         joystick.setEnabled(false);
-
-        final GestureDetectorCompat mDetector = new GestureDetectorCompat(getApplicationContext(), new GestureDetector.SimpleOnGestureListener(){
-            @Override
-            public boolean onDoubleTap(MotionEvent e) {
-                changeDirection();
-                return true;
-            }
-        });
-
-        joystick.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return mDetector.onTouchEvent(event);
-            }
-        });
-
-
 
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             // Just remember to the previous values
@@ -405,7 +386,6 @@ public class MainActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             // Highlight the selected item, update the title, and close the drawer
             menuList.setItemChecked(position, false);
-            //Toast.makeText(getApplicationContext(), menuTitles[position], Toast.LENGTH_SHORT).show();
             ((DrawerLayout)findViewById(R.id.drawer_layout)).closeDrawer(Gravity.LEFT);
 
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -510,28 +490,6 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().executePendingTransactions();
         }
     }
-
-
-    private void changeDirection() {
-        // This needed, to prevent the direction changing when offline
-        /*if(!bluetoothState.getIsBluetoothOn()) return;
-        JoystickView joystick = (JoystickView) findViewById(R.id.joystickView);
-        if(direction == 'F') {
-            direction = 'R';
-            joystick.setButtonDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_arrow_down_bold_circle_black));
-        } else {
-            direction = 'F';
-            joystick.setButtonDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_arrow_up_bold_circle_black));
-        }
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sendRCCar();
-            }
-        }).start();*/
-    }
-
 
     @Override
     protected void onDestroy() {

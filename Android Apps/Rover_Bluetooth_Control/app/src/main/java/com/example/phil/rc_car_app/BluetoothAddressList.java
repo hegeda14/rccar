@@ -52,7 +52,6 @@ public class BluetoothAddressList extends ListFragment
     }
 
     public void fillListView (ListAdapter list) {
-        //new Toast(getContext(), numbers_digits[(int) id]);
         setListAdapter(list);
     }
 }
